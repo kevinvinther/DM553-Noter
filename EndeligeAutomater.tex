@@ -1,0 +1,196 @@
+
+\chapter{Endelige Automater}
+
+Endelige automater er en type abstrakt maskine med endelig hukommelse, som kan bruges til for eksempel at matche mønstre med.
+
+\section{Deterministiske Endelige Automater}%
+\label{sec:DFA}
+
+I en deterministisk endelig automat (DFA) vil man altid vide hvilken state er den næste man havner i, efter et givet symbol. Dette bestemmes ud fra \textit{transitionsfunktionen}, som tager en state, et symbol, og giver en ny state som output. Denne nye state er automatens næste state.
+
+Vi kan beskrive en DFA grafisk ved hjælp af \textit{state diagrams}. Et eksempel på et sådan diagram kan ses i Figur~\ref{fig:sipser1.6}. Som kan ses på denne figur består den af nogle cirkler, \texttt{states}, nogle pile, \texttt{transition pile}, og en underlig dobbelt-cirkel, \texttt{accept state}. States er en form for hukommelse som en DFA kan være i på et givet tidspunkt. Efter at have læst tre karakterer af en streng, \textit{kan} den eksempelvis være i $q_{3}$, eller $q_{90}$, eller $q_{fisk}$, eller bare $fisk$. Pointen er at navnet er ligegyldig, og der er ikke en nødvendig rækkefølge for \textit{alle} strenge. Den første pil, som peger ind til $q_{1}$ er startpilen, som indikerer \textit{initial state}, altså den state der startes i når strengen skal læses. $q_{2}$, som er den state med dobbeltcirkler, er den \textit{accepterende state}, og betyder at hvis en DFA ender i denne state når den er færdig med at læse en streng, er strengen accepteret. Hvis den ikke ender i denne state, er strengen ikke accepteret. Det skal siges at det er tilladt at have mere end en accept state.
+
+\begin{figure}[ht]
+  \centering
+  \begin{tikzpicture}
+    \node[state, initial] (q1) {$q_1$};
+    \node[state, accepting, right=of q1] (q2) {$q_2$};
+    \node[state, right=of q2] (q3) {$q_{3}$};
+
+    \path[->]
+    (q1) edge[bend left] node {\texttt{1}} (q2)
+    (q1) edge[loop above] node {\texttt{0}} ()
+    (q2) edge[bend left] node {\texttt{0}} (q3)
+    (q2) edge[loop above] node {\texttt{1}} ()
+    (q3) edge[bend left] node {\texttt{0,1}} (q2);
+  \end{tikzpicture}
+  \caption{\label{fig:sipser1.6} Et eksempel på et state diagram for en automat $M_{1}$}
+\end{figure}
+
+Spørgsmålet om hvor mange accept states der kan være, samt hvordan transitionspilene fungerer, samt mere, kan forklares ved hjælp af en matematisk definition. Vi introducerer nu den formelle definition af en deterministisk endelig automat:
+
+\begin{definition}
+  En deterministisk endelig automat er en 5-tuple $(Q, \Sigma, \delta, q_{0}, F)$, hvor:
+  \begin{enumerate}
+    \item $Q$ er et endeligt sæt af states (hukommelse)
+    \item $\Sigma$ er et endeligt sæt af symboler kaldet alfabetet
+    \item $\delta$ er \textit{transitionsfunktionen}
+    \item $q_{0}$ er den state maskinen starter i (start staten)
+    \item $F$ er et endeligt sæt af \textit{accept} states ($F \subseteq Q$)
+  \end{enumerate}
+\end{definition}
+
+For at give et eksempel beskriver vi $M_{1}$ i Figur~\ref{fig:sipser1.6} formelt.\\
+$M_{1} = (Q, \Sigma, \delta, q_{1}, F)$, hvor
+\begin{enumerate}
+  \item $Q = \{q_{1}, q_{2}, q_{3}\}$
+  \item $\Sigma = \{\mathtt{0,1}\}$
+        \item $\delta$ beskrives som en tabel:
+\begin{table}[h]
+\centering
+\begin{tabular}{l|ll}
+      & \texttt{0} & \texttt{1} \\ \hline
+$q_1$ & $q_1$      & $q_2$      \\
+$q_2$ & $q_3$      & $q_2$      \\
+$q_3$ & $q_2$      & $q_2$
+\end{tabular}
+\end{table}
+  \item $q_{1}$ er start staten
+        \item $F = \{q_{2}\}$
+\end{enumerate}
+
+Vi siger at, hvis $A$ er sættet af alle strenge som $M$ accepterer, så er $A$ sproget af maskinen $M$, eller $L(M) = A$. Ligeledes siger vi at $M$ genkender $A$, eller $M$ accepterer $A$. Dog er ``genkender'' mest brugt, da accept har andre betydninger her.
+
+Læg mærke til at \textbf{hvis en maskine ikke accepterer nogen strenge}, så genkender den stadig et sprog: det tomme sprog, $\emptyset$.
+
+Vi vil gerne have en bedre forståelse af hvordan en DFA egentlig \textit{komputerer}, altså, hvordan den kommer fra $A$ til $B$. Vi introducerer her en formel definition af komputering:
+
+\begin{definition}
+  Lad $M = (Q, \Sigma, \delta, q_{0}, F)$ være en endelig automat, og lad $w = w_{1}w_{2} \cdots w_{n}$ være en streng hvor alle $w_i$ er et symbol som er medlem af alfabetet $\Sigma$. $M$ accepterer her $w$ hvis en sekvens af states $r_{0}, r_{1}, \ldots, r_{n}$ i $Q$ eksisterer med tre betingelser:
+  \begin{enumerate}
+    \item $r_{0} = q_{0}$
+    \item $\delta(r_{i}, w_{i+1}) = r_{i+1} \text{ for } i = 0, \ldots, n-1$
+    \item $r_{n} \in F$
+  \end{enumerate}
+\end{definition}
+
+Det vil altså sige at \textbf{betingelse 1} siger at maskinen starter i den initielle state. \textbf{Betingelse 2} siger at ud fra reglerne af transitionsfunktionen går maskinen fra state til state. \textbf{Betingelse 3} siger at maskinen accepterer dets input hvis den ender i en accept state.
+
+\begin{definition}
+Et sprog kaldes et \textbf{regulært sprog} hvis en endelig automat genkender det.
+\end{definition}
+
+
+\newpage
+\section{Nondeterministiske Endelige Automater}
+
+
+\newpage
+\section{Regulære Operationer}
+
+Frem for at have dette i DFA sektionen som der bliver gjort i Sipser, mener jeg at det giver mere mening at have den til sidst, hvor man kender til alle koncepterne. De regulære operationer er operationer der kan bruges på sprog, som resulterer i et nyt regulært sprog. Vi vil kigge på følgende regulære operationer:
+
+\begin{definition}
+  Lad $A$ og $B$ være sprog. Vi definerer de regulære operationer \textbf{fællesmængde} (union), \textbf{sammenkædning} (concatenation) og \textbf{stjerne} (star, kleene star), som følger:
+  \begin{enumerate}
+    \item \textbf{Fællesmængde:} $A \cup B = \{x |\; x \in A \text{ eller } x \in B \}$.
+    \item \textbf{Sammenkædning:} $A \circ B = \{xy |\; x \in A \text{ og } y \in B\}$.
+          \item \textbf{Stjerne:} $A^{*} = \{x_{1}x_{2}\ldots x_{k} |\; k \geq 0 \text{ og hvert } x_{i} \in A\}$.
+  \end{enumerate}
+\end{definition}
+
+Vi kigger på et eksempel for at demonstrere bruget af alle operationer.
+
+\begin{example}
+  Lad alfabetet $\Sigma$ være det danske alfabet $\{\mathtt{a, b, \ldots, å}\}$. Hvis $A = \{\mathtt{god, dårlig}\}$ og $B = \{\mathtt{bog, video}\}$, så:
+\begin{equation*}
+\begin{split}
+  A \cup B = \{&\mathtt{god, dårlig, bog, video}\}\\
+  A \circ B = \{&\mathtt{godvideo, godbog, dårligvideo, dårligbog}\}\\
+  A^{*} = \{&\varepsilon, \mathtt{god, dårlig, godgod, dårligdårlig, goddårlig,}\\
+  &\mathtt{dårliggod, godgodgod, godgoddårlig, goddårliggod, \ldots}\}
+\end{split}
+\end{equation*}
+\end{example}
+
+Tidligere blev det nævnt at, givet to regulære sprog (eller et, i tilfældet af stjerne-operationen), så vil de producere et nyt, regulært sprog. Dette vil vi gerne for hver af disse operationer, først kigger vi på den eneste vi kan bevise med DFA'er, og efter går vi videre til dem som lettere kan bevises med NFA'er. Vi kalder det lukket, når en operation der tager to argumenter af samme klasse, giver et output i samme klasse. Eksempelvis er multiplikation og addition lukket under positive heltal, men hverken subtraktion eller division er\footnote{Eksempelvis giver $1-100$ et negativt tal, og $1/2$ et rationelt tal.}.
+
+\begin{theorem}
+Klassen af regulære sprog er lukket under fællesmængde operationen.
+\end{theorem}
+
+Vi beviser dette ved at konsturere en DFA der holder styr på alle de mulige states den kan være i givet begge sprog.
+
+\begin{proof}
+  Lad $M_{1}$ genkende $A_{1}$, hvor $M_{1} = (Q_{1}, \Sigma, \delta_{1}, q_{1}, F_{1})$ og $M_{2}$ genkende $A_{2}$, hvor $M_{2} = (Q_{2}, \Sigma, \delta_{2}, q_{2}, F_{2})$.
+
+  Vi konsturerer en ny DFA, $M$ som genkender $A_{1} \cup A_{2}$, hvor $M = (Q, \Sigma, \delta, q_{0}, F)$, hvor:
+  \begin{enumerate}
+\item $Q = \{(r_{1}, r_{2}| \; r_{1} \in Q_{1} \text{ og } r_{2} \in Q_{2})\}$. \\
+          Dette sæt er det \textit{\textbf{Kartesiske Produkt}} af sættene $Q_{1}$ og $Q_{2}$ og er skrevet $Q_{1} \times Q_2$. Det er altså sættet af alle par af states hvor den første af fra $Q_{1}$ og den anden fra $Q_{2}$.
+    \item $\Sigma$ alfabetet, er det samme som i både $M_1$ og $M_{2}$. Hvis det ikke er ville $\Sigma = \Sigma_{1} \cup \Sigma_{2}$.
+    \item $\delta$ er transitionsfunktionen som defineres som følgende. For hvert $(r_{1}, r_{2}) \in Q$ og hvert $a \in \Sigma$, lad
+          \[\delta \left( (r_{1}, r_{2}), a \right) = \left(\delta_{1} (r_{1}, a), \delta_{2}(r_{2}, a) \right)\] Altså er den næste state parret af de næste states for hver af funktionerne.
+    \item $q_{0}$ er parret $(q_{1}, q_{2})$
+    \item $F$ er sættet af par hvori hvert medlem enten er en accept state af $M_1$ eller $M_{2}$: \[ F = \{(r_{1}, r_{2})| r_{1} \in F_{1} \text{ eller } r_{2} \in F_{2}\} \]
+          Dette er det samme som $F = (F_{1} \times Q_{2}) \cup (Q_{1} \times F_{2})$, men \textbf{ikke} det samme som $F_{1} \times F_{2}$ som ville give snittet (intersection) af to sprog.
+  \end{enumerate}
+\end{proof}
+
+\newpage
+\section{Pumpelemmaet og ikke-regulære sprog}
+
+Der findes mange sprog der er regulære, men det er også vigtigt at vide om et givet sprog er regulært. Et klassisk eksempel på et sprog der ikke er regulært er sproget der beskriver \href{https://www.hackerrank.com/challenges/balanced-brackets/problem}{Balanced Parentheses Problemet}, altså $L = \{w | w \text{ has balanced parentheses}\}$. Dette gælder strenge såsom \texttt{((((()))))(())} og \texttt{((((((((((...))))))))))}. Et hovedteorem i at finde ud af om et sprog, som for eksempel sproget beskrevet før, er regulært, er \textit{pumpe lemmaet}. Ifølge pumpe lemmaet gælder det at alle regulære sprog har en specifik egenskab, og dermed, hvis et sprog ikke har denne egenskab er det ikke et regulært sprog.
+
+\begin{theorem}[Pumpelemmaet]
+  Lad $A$ være et regulært sprog, og $p$ (\textbf{pumpelængden}) være et tal, hvor hvis $s$ er en streng i $A$ af længde mindst $p$, så kan $s$ brydes ned i mindre stykker, $s = xyz$, som opfylder de følgende betingelser:
+  \begin{enumerate}
+    \item $(\forall i \geq 0)(xy^{i}z \in A)$
+    \item $|y| > 0$
+    \item $|xy| \leq p$
+  \end{enumerate}
+\end{theorem}
+
+\textbf{Betingelse 1} siger at en del af strengen, $y$ skal kunne ``pumpes'' et uendeligt antal gange (hvor $y^{0} = \varepsilon$.) Det vil sige at hvis strengen ``abcdef'' er en del af et regulært sprog, og $y = cde$, så vil ``abf'' også være en del af sproget, ligesom ``abcdecdecdecdef''.
+\textbf{Betingelse 2} siger at $y \neq \varepsilon$, altså må $y$ ikke være en tom streng. Et enkelt symbol er nok.
+\textbf{Betingelse 3} siger at første del af strengen, uden $z$-delen, skal være mindre end eller lig med $p$ (lig med hvis $z = \varepsilon$.)
+
+Læg mærke til i betingelserne at det er tilladt for enten $x$ eller $z$ at være lig $\varepsilon$, men ikke $y$, da denne skal kunne ``pumpes''.
+
+\begin{proof}
+  Lad $M = (Q, \Sigma, \delta, q_{1}, F)$ være en DFA som genkender sproget $A$. Lad \textit{pumpelængden} $p$ være antallet af states i $M$, altså $|Q|$.
+
+  Lad $s = s_{1}s_{2} \cdots s_{n}$ være en streng i $A$ af længde $n$, hvor $n \geq p$. Lad $r_{1}, \ldots, r_{n+1}$ være sekvensen af states som $M$ går i når den gennemgår $s$. Dermed er $r_{i+1} = \delta(r_i, s_{i})$ for $1 \leq i \leq n$. Siden sekvensen har længde $n+1$ må mindst to states være ens.\footnote{Af dueslagsprincippet} Vi kalder den første $r_{j}$ og den anden $r_{l}$. Fordi $r_{l}$. Da $n+1 \geq p+1$, gennemgåes $r_{l}$ indenfor de første $p+1$ states, i en sekvens der starter ved $r_{1}$, har vi at $l \leq p+1$. Lad nu $x = s_{1} \cdots s_{j-1}, y = s_{j} \cdots s_{l-1}$ og $z = s_{l} \cdots s_{n}$. Altså har vi splittet strengen op i sekvenser af states.
+
+  Da $s_{j}$ og $s_{l}$ er ens, betyder det at $y$ kan gentages et uendeligt antal gange, og opfylder dermed betingelse 1. Siden $j \neq l$ er betingelse 2 også opfyldt, og $l \leq p+1$ betyder at betingelse 3 også er opfyldt.
+\end{proof}
+
+
+\begin{figure}[ht]
+  \centering
+  \begin{tikzpicture}[>=Stealth,shorten >=1pt,node distance=2.8cm,on grid,auto]
+       \node[state, initial] (q1) {$q_1$};
+   \node[state, right=of q1] (q9) {$q_9$};
+   \node[state, accepting, right=of q9] (q13) {$q_{13}$};
+
+   \path[->]
+    (q1) edge[bend left, dashed] node {$x$} (q9)
+    (q9) edge[loop above, dashed] node {$y$} ()
+    (q9) edge[bend left, dashed] node {$z$} (q13);
+  \end{tikzpicture}
+  \caption{\label{fig:pumpelemma} Hvordan en endelig automat kan deles op ud fra beviset.}
+\end{figure}
+
+
+Figur~\ref{fig:pumpelemma} viser en simpel version af hvordan $x, y$ og $z$ defineres grafisk ud fra $M$. Altså har du første del af strengen, som ikke er den der kan gentages. Denne del, $x$ bliver genkendt indtil vi kommer til staten der genkender starten af $y$, som kan gentages flere gange. Til sidst kommer vi til de states der genkender $z$. Læg mærke til at navnene på statesne er arbitrære, og er valgt for at vise et eksempel på den mulige længde mellem states.
+
+
+\section{Opgaver}
+
+
+%%% Local Variables:
+%%% mode: latex
+%%% TeX-engine: xetex
+%%% TeX-command-extra-options: "-shell-escape"
+%%% TeX-master: "main"
+%%% End:
