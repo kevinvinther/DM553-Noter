@@ -187,6 +187,22 @@ Figur~\ref{fig:pumpelemma} viser en simpel version af hvordan $x, y$ og $z$ defi
 
 \section{Opgaver}
 
+\noindent
+\textbf{Solve the following problem:} \\
+\noindent
+A man is travelling with a wolf ($w$) and a goat ($g$). He also brings along a nice big cabbage ($c$). He encounters a small river which e must cross to continue his travel. Fortunately, there is a small boat at the shore which he can use. However, the boat is so small that the man cannot bring more than himself and exactly one more item along (from $\{w, g, c\}$). The man knows that if left alone with the goat, the wolf will surely eat it and the goat if left alone with the cabbage will also surely eat that. The man's task is hence to device a transportation scheme in which, at any time, at most one item from $\{w,g,c\}$ is on the boat and the result is that they all crossed the river and can continue unharmed.
+
+\begin{enumerate}
+  \item[(a)] Describe a solution to the problem which satisfies the rules of the game. You may use your answer in (b) to find a solution.
+\end{enumerate}
+
+Givet at ulven og geden ikke må være alene (ulven spiser geden), og geden og kålen må ikke være alene (da geden spiser kålen), er der en mulighed tilbage ($\binom{3}{2} = 3$, og vi udelukker 2.) Derfor skal vi først tage geden, da ulven og kålen ingen virkning har på hinanden. Efter dette skal vi tage tilbage, tage kålen, og så skal vi have geden med tilbage, så den ikke spiser kålen. Når vi er tilbage smider vi geden af, og tager ulven med så den er med kålen. Denne gang tager vi ikke noget tilbage, da ulven og kålen er gode venner, så vi henter geden og kommer tilbage til begge to uden der er sket noget.
+
+\begin{enumerate}
+\item [(b)] Consider strings over the alphabet $\Sigma = \{m, w, g, c\}$ and interpret these as follows: The symbol $m$ means that the man crosses the river alone, $w$ means that he brings the wolf, etc. \\ Design a finite automaton which accepts precisely those strings over $\Sigma$ which correspond to a transportation sequence where everybody survives and is legal in the sense that the man can only bring an item (e.g. $w$) back across the river if it was actually on the shore where the boat just left from. For example, gmcg is a legal string (it is not a solution) whereas gc is not legal.
+\end{enumerate}
+
+
 
 %%% Local Variables:
 %%% mode: latex
