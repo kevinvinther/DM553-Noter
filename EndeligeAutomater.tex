@@ -65,7 +65,8 @@ Læg mærke til at \textbf{hvis en maskine ikke accepterer nogen strenge}, så g
 
 Vi vil gerne have en bedre forståelse af hvordan en DFA egentlig \textit{komputerer}, altså, hvordan den kommer fra $A$ til $B$. Vi introducerer her en formel definition af komputering:
 
-\begin{definition}
+\begin{definition}[Komputering for en DFA]
+\label{def:DFAKomputering}
   Lad $M = (Q, \Sigma, \delta, q_{0}, F)$ være en endelig automat, og lad $w = w_{1}w_{2} \cdots w_{n}$ være en streng hvor alle $w_i$ er et symbol som er medlem af alfabetet $\Sigma$. $M$ accepterer her $w$ hvis en sekvens af states $r_{0}, r_{1}, \ldots, r_{n}$ i $Q$ eksisterer med tre betingelser:
   \begin{enumerate}
     \item $r_{0} = q_{0}$
@@ -83,6 +84,111 @@ Et sprog kaldes et \textbf{regulært sprog} hvis en endelig automat genkender de
 
 \newpage
 \section{Nondeterministiske Endelige Automater}
+
+Som beskrevet i sektionen om deterministiske endelige automater, vil man altid vide, givet en state og et symbol, hvad den næste state er. Dette er hvad der gør DFA'er anderledes fra NFA'er. I nondeterministiske endelige automater er der ikke kun én, men flere mulige veje som den kan gå, givet en eller flere symboler. I Figur~\ref{fig:sipser1.27} ses et eksempel på et state diagram af en NFA.
+
+\begin{figure}[ht]
+  \centering
+  \begin{tikzpicture}[node distance=2.0cm]
+    \node[state, initial] (q1) {$q_1$};
+    \node[state, right=of q1] (q2) {$q_2$};
+    \node[state, right=of q2] (q3) {$q_{3}$};
+    \node[state, accepting, right=of q3] (q4) {$q_{4}$};
+
+    \path[->]
+    (q1) edge[loop above] node {\texttt{0, 1}} ()
+    (q1) edge[] node {\texttt{1}} (q2)
+    (q2) edge[] node {\texttt{0, $\varepsilon$}} (q3)
+    (q3) edge[] node {\texttt{1}} (q4)
+    (q4) edge[loop above] node {\texttt{0,1}} ();
+  \end{tikzpicture}
+  \caption{\label{fig:sipser1.27} En NFA $N_{1}$}
+\end{figure}
+
+Der springer med det samme nogle idéer ud af $N_{1}$ som ikke er set før. Specielt med den ekstra information at $\varepsilon$ (den tomme streng) \textbf{ikke} er en del af alfabetet! Allerede fra den første state kan du se at der er to pile der har symbolet \texttt{1} på sig. I en DFA ville dette være ulovligt, men i en NFA er det lovligt. Lad os gå state diagrammet igennem, og forstå hvad der sker. Vi har en initial state, $q_{1}$ som har pile både til sig selv, og ud til $q_{2}$. I isolation ligner pilene noget vi kunne se fra en DFA, men givet at \texttt{1} er en del af to pile, kan det godt fovrirre lidt. Det der sker her, er at maskinen laver \textit{kopier} af sig selv. Frem for kun at gå til $q_{2}$ eller $q_{1}$ går den til \textbf{både} $q_{2}$ \textit{og} $q_{1}$. Det vil altså sige, at næste gang den skal læse et symbol, vil den både være i state $q_{1}$ og $q_{2}$. Her, hvis vi får \texttt{0} som input, vil vi blive i $q_{1}$ i den maskine der self-loopede, og vi vil gå til $q_{3}$ i den anden maskine. Men faktisk sker der noget før vi overhovedet kigger på det næste input symbol. Når en maskine når til en state med et epsilon symbol $\varepsilon$, så laver den en kopi til den state som epsilon peger til. Det vil sige, at i start staten, hvis vi læser et \texttt{1}, så vil vi have ikke kun to, men tre kopier! En i $q_{1}$, en i $q_{2}$ og en i $q_{3}$. Lad os så forblive på idéen med at vi læser et \texttt{0}. Så er det jo klart hvad der sker for de maskiner der er i hhv. $q_{1}$ og $q_{2}$, men hvad med den i $q_{3}$, da der jo ingen pil med et \texttt{0} er? Den bliver destrueret! Vi er fuldstændig ligeglade med den fra nu af, da den ikke eksisterer længere. Det vil sige at vi kun gider at kigge på $q_{1}$ og $q_{3}$.
+
+Generelt set, gælder det for en NFA at, givet et symbol, kan det have nul, en, eller mange pile der kommer fra en state.
+
+En vigtigt ting med NFA'ere, er at det er en \textit{generalisering} af en DFA. Det vil sige, at den kan ikke noget som en DFA ikke kan. Det virker måske sådan lige nu, men vi vil senere se en måde hvorpå en NFA kan konverteres til en DFA med nogle simple udregninger (dog ikke \textbf{så} simple, at de tager kort tid.)
+
+Hvis vi kigger på den formelle, matematiske, definition af en NFA vil vi se at forskellen ligger i \textit{transitionsfunktionen}. Den formelle definition beskrives nu.
+
+\begin{definition}
+  \label{def:nfa}
+  En \textbf{\textit{nondeterministisk endelig automat}} er en $5-$tuple ($Q, \Sigma, \delta, q_{0}, F$), hvor
+  \begin{enumerate}
+    \item $Q$ er et endeligt sæt af states
+    \item $\Sigma$ er et endeligt alfabet
+    \item $\delta : Q \times \Sigma_{\varepsilon} \rightarrow \mathcal{P}(Q)$ er transitionsfunktionen
+    \item $q_{0} \in Q$ er startstaten
+    \item $F \subseteq Q$ er sættet af accept states
+  \end{enumerate}
+\end{definition}
+
+Vi kan her få svaret på nogle spørgsmål omkring transitionsfunktionen. Først læg mærke til at $\Sigma_{\varepsilon}$ blot er $\Sigma \cup \{\varepsilon\}$, altså alfabetet plus den tomme streng. I definition for en DFA gik den til én $Q$, her går det til \textit{potensmængden} (eng. power set) af alle states. Det vil sige, at hvis $Q = \{{1}, {2}, {3}\}$ så er $\mathcal{P}(Q) = \{\emptyset, \{1\}, \{2\}, \{3\}, \{1, 2\}, \{1, 3\}, \{2, 3\}, \{1,2,3\}\}$.
+
+For et eksempel på hvordan en NFA kan beskrives formelt, kigger vi tilbage på Figur~\ref{fig:sipser1.27}, som vi nu vil beskrive formelt.
+
+$N_{1} = (Q, \Sigma, \delta, q_{1}, F)$, hvor
+
+\begin{enumerate}
+  \item $Q = \{q_{1}, q_{2}, q_{3}, q_4\}$
+  \item $\Sigma = \{\mathtt{0,1}\}$
+  \item $\delta$ vises som en tabel:\\
+        \begin{center}
+
+        \begin{tabular}{c|ccc}
+  & 0 & 1 & $\varepsilon$ \\ \hline
+$q_1$ & $\{q_1\}$ & $\{q_1, q_2\}$ & $\emptyset$ \\
+$q_2$ & $\{q_3\}$ & $\emptyset$ & $\{q_3\}$ \\
+$q_3$ & $\emptyset$ & $\{q_4\}$ & $\emptyset$ \\
+$q_4$ & $\{q_4\}$ & $\{q_4\}$ & $\emptyset$ \\
+\end{tabular}
+\end{center}
+  \item $q_{0}$ er start staten
+        \item $F = \{q_{4}\}$
+\end{enumerate}
+
+Husk på at den tomme streng følges uanset input, trods det måske ikke er bemærket i tabellen.
+
+Vi vil nu kigge på definitionen af komputering for en NFA.
+
+\begin{definition}[Komputering for en NFA]
+  \label{def:NFAKomputering}
+  Lad $N = (Q, \Sigma, \delta, q_{0}, F)$ være en NFA og $w$ vær en streng over alfabetet $\Sigma$. Vi siger at $N$ \textbf{accepterer} $w$ hvis vi kan skrive $w$ som $w = y_{1}y_{2} \cdots y_{m}$, hvor hvert $y_{i}$ er et medlem af $\Sigma_{\varepsilon}$ og en sekvens af states $r_{0}, r_{1}, \ldots, r_{m}$ eksisterer i $Q$ med tre betingelser:
+  \begin{enumerate}
+    \item $r_{0} = q_{0}$
+    \item $r_{i+1} \in \delta(r_{i}, y_{i+1}), \text{ for } i = 0, \ldots, m - 1$
+          \item $r_{m} \in F$
+  \end{enumerate}
+\end{definition}
+  Vi er kendte med alle betingelser fra Definition~\ref{def:DFAKomputering}. Dog er det vigtigt at bemærke at i betingelse 2 her gælder det at $\delta(r_{i}, y_{i+1})$ er \textbf{sættet} af tilladte næste states, $r_{i+1}$ er blot én af disse.
+
+\newpage
+\section{Ækvivalens af NFA'er og DFA'er}
+Der er tidligere beskrevet at en NFA blot er en generalisering af en DFA. Da dette gælder, må det betyde at det er muligt at konvertere en NFA til en DFA. Måden vi vil bevise på, at NFA'er og DFA'er er ækvivalente er lige præcis ved dette: konvertering af en NFA til en DFA. Bemærk at en DFA automatisk også er en NFA, og derfor er der ingen konvertering nødvendig.
+
+\begin{theorem}
+Hver nondeterministisk endelig automat har en ækvivalent deterministisk endelig automat.
+\end{theorem}
+
+\begin{proof}
+  Lad $N = (Q, \Sigma, \delta, q_{0}, F)$ være en NFA der genkender et sprog $A$. Vi konstruerer DFA $M = (Q', \Sigma', \delta', q_{0}', F')$ til at genkende $A$. Først kigger vi på tilfældet hvor der ingen $\varepsilon$ pile er tilstæde, for at simplificere processen. Efter dette udvider vi så $\varepsilon$ pile også tages i betragtning.
+  \begin{enumerate}
+    \item $Q' = \mathcal{P}(Q)$. \\ Husk fra den formelle definition for en NFA at den går til potensmængden. Derfor er det vigtigt at kunne have alle disse muligheder med i DFA'en, selv hvis de ikke bliver brugt.
+    \item For $R \in Q'$ og $a \in \Sigma$, lad $\delta'(R, a) = \{q \in Q| q \in \delta(r,a) \text{ for en } r \in R\}$.\\ Dette kan også skrives således: \[\delta'(R,a)= \bigcup_{r \in R} \delta(r,a) \]
+    \item $q_{0}' = \{q_{0}\}$
+          \item $F' = \{R \in Q | \; R \text{ indeholder en accept state af } N\}$
+  \end{enumerate}
+
+  For at tage $\varepsilon$ pile i betragtning introducerer vi $E(R)$, som værende samlingen af states der kan nåes fra medlemmer af $R$ kun ved brug af $\varepsilon$ pile. Altså, for $R \subseteq Q$ lad \[E(R) = \{q|\; q\text{ kan nåes fra } R \text{ ved at rejse langs 0 eller flere } \varepsilon \text{ pile}\}\]
+
+Med denne nye samling af sæt, skal vi erstatte både startstaten og transitionsfunktionen. Startstaten er simpel, da vi bare ændrer $q_{0}'$ til $E(q_{0})$. I transitionsfunktionen erstatter vi $\delta(R,a)$ med $E(\delta(r,a))$, således:
+  $\delta'(R, a) = \{q \in Q| q \in E(\delta(r,a)) \text{ for en } r \in R\}$
+\end{proof}
+
+
+
 
 
 \newpage
@@ -136,6 +242,81 @@ Vi beviser dette ved at konsturere en DFA der holder styr på alle de mulige sta
           Dette er det samme som $F = (F_{1} \times Q_{2}) \cup (Q_{1} \times F_{2})$, men \textbf{ikke} det samme som $F_{1} \times F_{2}$ som ville give snittet (intersection) af to sprog.
   \end{enumerate}
 \end{proof}
+
+Vi vil nu se på et bevis på at fællesmængden er lukket under regulære sprog, hvor vi beviser det ved hjælp fra NFA'er.
+
+\begin{proof}
+Hvis vi har to sprog, $A_{1}$ og $A_{2}$, som hver har en NFA der genkender deres sprog, vil vi konstruere en ny NFA, $N$, som genkender fællesmængden af disse to sprog. En simpel måde at gøre dette på er ved at introducere en ny start state, som har en epsilonpil pegende til hver af de to NFA'ers gamle start states. Med dette har vi en NFA der genkender fællesmængden af de to sprog. En visual idé af dette kan ses i Figur~\ref{fig:sipser1.46}.
+
+\newpage
+\begin{figure}[ht]
+  \centering
+  \begin{tikzpicture}[node distance=1.5cm]
+    \node[state, initial] (q1) {};
+    \node[state, right=of q1] (q2) {};
+    \node[above=0.2cm of q2] (a1) {$N_1$, $L(N_{1}) = A_{1}$};
+    \node[state, accepting, right=of q2] (q3) {};
+    \node[state, initial, below=of q1] (q4) {};
+    \node[state, right=of q4] (q5) {};
+    \node[above=0.2cm of q5] (a2) {$N_2$, $L(N_{2}) = A_{2}$};
+    \node[state, accepting, right=of q5] (q6) {};
+
+    \path[->]
+    (q1) edge node {} (q2)
+    (q2) edge node {}(q3)
+    (q4) edge node {}(q5)
+    (q5) edge node {}(q6);
+    % (q1) edge[bend left, dashed] node {$x$} (q9)
+    % (q9) edge[loop above, dashed] node {$y$} ()
+    % (q9) edge[bend left, dashed] node {$z$} (q13);
+  \end{tikzpicture}
+  \begin{tikzpicture}[node distance=1.0cm]
+    \node[state] (q1) {};
+    \node[state, right=of q1] (q2) {};
+    \node[above right=0.2cm and -0.5cm of q1] (a1) {$N$, $L(N) = A_{1} \cup A_{2}$};
+    \node[state, accepting, right=of q2] (q3) {};
+    \node[state, below=of q1] (q4) {};
+    \node[state, right=of q4] (q5) {};
+    \node[state, accepting, right=of q5] (q6) {};
+
+    \node[state, initial, below left=0.3cm and 1.0cm of q1] (q0) {};
+
+    \path[->]
+    (q1) edge node {} (q2)
+    (q2) edge node {}(q3)
+    (q4) edge node {}(q5)
+    (q5) edge node {}(q6)
+    (q0) edge[bend left] node {$\varepsilon$}(q1)
+    (q0) edge[bend right] node {$\varepsilon$}(q4);
+  \end{tikzpicture}
+  \caption{\label{fig:sipser1.46} NFA $N$ der genkender $A_{1} \cup A_{2}$}
+\end{figure}
+\newpage
+
+Lad os nu få det beskrevet formelt. Lad $N_{1} = (Q_{1}, \Sigma, \delta_{1}, q_{1}, F_{1})$ genkende $A_{1}$ og lad $N_{2} = (Q_{2}, \Sigma, \delta_{2}, q_{2}, F_{2})$ genkende $A_{2}$.
+
+Konstruér $N = (Q, \Sigma, \delta, q_{0}, F)$ til at genkende $A_1 \cup A_{2}$.
+\begin{enumerate}
+  \item $Q = \{q_{0}\} \cup Q_{1} \cup Q_{2}$.\\ Vi tilføjer her den nye start state, $q_{0}$.
+  \item $q_{0}$
+  \item $F = F_{1} \cup F_{2}$
+  \item For en $q \in Q$ og en $a \in \Sigma_{\varepsilon}$:
+        \begin{equation*}
+\delta(q,a) = \begin{cases}
+           \delta_{1}(q,a) & q \in Q_{1} \\
+           \delta_{2}(q,a) & q \in Q_{2} \\
+           \{q_{1}, q_{2}\} & q = q_{0} \text{ og } a = \varepsilon \\
+           \emptyset & q = q_{0} \text{ og } a \neq \varepsilon
+          \end{cases}
+        \end{equation*}
+\end{enumerate}
+
+\end{proof}
+
+
+\begin{theorem}
+Klassen af regulære sprog er lukket under sammenkædningsoperationen.
+\end{theorem}
 
 \newpage
 \section{Pumpelemmaet og ikke-regulære sprog}
