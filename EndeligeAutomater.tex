@@ -155,7 +155,7 @@ Vi vil nu kigge på definitionen af komputering for en NFA.
 
 \begin{definition}[Komputering for en NFA]
   \label{def:NFAKomputering}
-  Lad $N = (Q, \Sigma, \delta, q_{0}, F)$ være en NFA og $w$ vær en streng over alfabetet $\Sigma$. Vi siger at $N$ \textbf{accepterer} $w$ hvis vi kan skrive $w$ som $w = y_{1}y_{2} \cdots y_{m}$, hvor hvert $y_{i}$ er et medlem af $\Sigma_{\varepsilon}$ og en sekvens af states $r_{0}, r_{1}, \ldots, r_{m}$ eksisterer i $Q$ med tre betingelser:
+  Lad $N = (Q, \Sigma, \delta, q_{0}, F)$ være en NFA og $w$ være en streng over alfabetet $\Sigma$. Vi siger at $N$ \textbf{accepterer} $w$ hvis vi kan skrive $w$ som $w = y_{1}y_{2} \cdots y_{m}$, hvor hvert $y_{i}$ er et medlem af $\Sigma_{\varepsilon}$ og en sekvens af states $r_{0}, r_{1}, \ldots, r_{m}$ eksisterer i $Q$ med tre betingelser:
   \begin{enumerate}
     \item $r_{0} = q_{0}$
     \item $r_{i+1} \in \delta(r_{i}, y_{i+1}), \text{ for } i = 0, \ldots, m - 1$
@@ -318,10 +318,62 @@ Konstruér $N = (Q, \Sigma, \delta, q_{0}, F)$ til at genkende $A_1 \cup A_{2}$.
 Klassen af regulære sprog er lukket under sammenkædningsoperationen.
 \end{theorem}
 
+Et visuelt bevis er her undladt, trods at det er meget deskriptivt, fordi jeg er for doven. Det kommer på min todo liste. Hvis jeg ender med ikke at inkludere det, kan det ses på side 61 i sipser.
+
+\begin{proof}
+  Lad $N_{1} =(Q_{1}, \Sigma, \delta_{1}, q_{1}, F_{1})$ genkende $A_{1}$, og $N_{2} = (Q_{2}, \Sigma, \delta_{2}, F_{2})$ genkende $A_{2}$.
+
+  Vi konstruérer en NFA til at genkende $A_{1} \circ A_{2}$, $N = (Q, \Sigma, \delta, q_{1}, F_{2})$.
+  \begin{enumerate}
+    \item $Q = Q_{1} \cup Q_{2}$
+    \item $q_{1}$ fra $N_{1}$
+    \item $F = F_{2}$ fra $N_{2}$
+    \item $\delta$ for alle $q \in Q$ og alle $a \in \Sigma_{\varepsilon}$,
+          \begin{equation*}
+\delta(q,a) = \begin{cases}
+           \delta_{1}(q,a)& q \in Q_{1} \text{ og } q \notin F_{1}\\
+           \delta_{1}(q,a)& q \in F_{1} \text{ og } a \neq \varepsilon \\
+
+           \delta_{1}(q,a) \cup \{q_{2}\}& q \in F_{1} \text{ og } a = \varepsilon \\
+           \delta_{2}(q,a) & q \in Q_{2}
+         \end{cases}
+          \end{equation*}
+  \end{enumerate}
+\end{proof}
+
+\begin{theorem}
+Klassen af regulære sprog er lukket under stjerneoperationen.
+\end{theorem}
+
+Igen undlader jeg det simple visuelle bevis af dovenskab. Denne gang kan du finde det på side 62 af Sipser.
+
+\begin{proof}
+Lad $N_1 = (Q_1, \Sigma, \delta_1, q_1, F_1)$ genkende $A_1$.
+Konstruér $N = (Q, \Sigma, \delta, q_0, F)$ som genkender $A_1^*$.
+
+\begin{enumerate}
+    \item $Q = \{q_0\} \cup Q_1$.
+    \item $q_{0}$ er en ny start state
+    \item $F = \{q_0\} \cup F_1$.
+  \item  $\delta$ så for alle $q \in Q$ og alle $a \in \Sigma$,
+\end{enumerate}
+\[
+\delta(q, a) = \begin{cases}
+\delta_1(q, a) & \text{hvis } q \in Q_1 \text{ og } q \notin F_1 \\
+\delta_1(q, a) & \text{hvis } q \in F_1 \text{ og } a \neq \varepsilon \\
+\delta_1(q, a) \cup \{q_1\} & \text{hvis } q \in F_1 \text{ og } a = \varepsilon \\
+\{q_1\} & \text{hvis } q = q_0 \text{ og } a = \varepsilon \\
+\emptyset & \text{hvis } q = q_0 \text{ og } a \neq \varepsilon
+\end{cases}
+\]
+\end{proof}
+
 \newpage
 \section{Pumpelemmaet og ikke-regulære sprog}
 
-Der findes mange sprog der er regulære, men det er også vigtigt at vide om et givet sprog er regulært. Et klassisk eksempel på et sprog der ikke er regulært er sproget der beskriver \href{https://www.hackerrank.com/challenges/balanced-brackets/problem}{Balanced Parentheses Problemet}, altså $L = \{w | w \text{ has balanced parentheses}\}$. Dette gælder strenge såsom \texttt{((((()))))(())} og \texttt{((((((((((...))))))))))}. Et hovedteorem i at finde ud af om et sprog, som for eksempel sproget beskrevet før, er regulært, er \textit{pumpe lemmaet}. Ifølge pumpe lemmaet gælder det at alle regulære sprog har en specifik egenskab, og dermed, hvis et sprog ikke har denne egenskab er det ikke et regulært sprog.
+Der findes mange sprog der er regulære, men det er også vigtigt at vide om et givet sprog er regulært. Et klassisk eksempel på et sprog der ikke er regulært er sproget der beskriver \href{https://www.hackerrank.com/challenges/balanced-brackets/problem}{om paranteser er balanceret}, altså $L = \{w | w \text{ hver ( er (på et tidspunkt) efterfulgt af et )}\}$. Dette gælder strenge såsom \texttt{((((()))))(())} og \texttt{((((((((((...))))))))))}. Bemærk at alle endelige sprog er regulære, da en endelig automat vil kunne genkende alle endelige strenge, dog kan det i mange tilfælde resultere i kæmpe maskiner.
+
+Et hovedteorem i at finde ud af om et sprog, som for eksempel sproget beskrevet før, er regulært, er \textit{pumpelemmaet}. Ifølge pumpelemmaet gælder det at alle regulære sprog har en specifik egenskab, og dermed, hvis et sprog ikke har denne egenskab er det ikke et regulært sprog.
 
 \begin{theorem}[Pumpelemmaet]
   Lad $A$ være et regulært sprog, og $p$ (\textbf{pumpelængden}) være et tal, hvor hvis $s$ er en streng i $A$ af længde mindst $p$, så kan $s$ brydes ned i mindre stykker, $s = xyz$, som opfylder de følgende betingelser:
@@ -366,6 +418,20 @@ Læg mærke til i betingelserne at det er tilladt for enten $x$ eller $z$ at væ
 Figur~\ref{fig:pumpelemma} viser en simpel version af hvordan $x, y$ og $z$ defineres grafisk ud fra $M$. Altså har du første del af strengen, som ikke er den der kan gentages. Denne del, $x$ bliver genkendt indtil vi kommer til staten der genkender starten af $y$, som kan gentages flere gange. Til sidst kommer vi til de states der genkender $z$. Læg mærke til at navnene på statesne er arbitrære, og er valgt for at vise et eksempel på den mulige længde mellem states.
 
 
+Vi vil nu vise to eksempler til hvordan pumpelemmaet kan bruges til at bevise nonregulæritet af sprog.
+
+\begin{example}[Sipser Eksempel 1.76]
+  Vi vil gerne vise at sproget $D = \{1^{n^{2}}|\; n \geq 0\}$ ikke er regulært. $D$ er sproget af strenge med $1$-taller af længde $n^{2}$. Vi beviser nonregulæritet ved bevis ved modstrid.\\
+  Lad $s = \mathtt{1}^{p^{2}}$. Fordi $s$ er et medlem af $D$ og har længde mindst $p$, så siger pumpelemmaet, at vi kan splitte det op så $s = xyz$, og for alle $i \geq 0$ er $xy^{i}z$ også en del af sproget. For at bevise det, lad os kigge på to strenge: $xyz$ og $xy^{2}z$. Forskellen på disse to strenge er et enkelt $y$. Fra betingelse 3 gælder det at $|xy| \leq p$, og dermed $|y| \leq p$ (da $|xy| \leq |y|$.) Vi ved at $xyz = p^{2}$, og dermed må $xy^{2}z \leq p^{2} + p$ men vi vil gerne have $(p+1)^{2} = p^{2}+2p+1$. Fordi betingelse 2 siger at $p \neq \varepsilon$ gælder det at $|xy^{2}z| > p^{2}$, og derfor er $xy^{2}z$ imellem to andengradspotenser, og dermed er $xy^{2}z \notin D$ og $D$ er dermed ikke regulært.
+\end{example}
+
+\begin{example}[Sipser Eksempel 1.77]
+  Vi bruger pumpelemmaet til at vise at sproget $E = \{0^{i}1^{j}|\;i>j\}$ ikke er regulært. Vi beviser ved modstrid. \\
+  Antag at  $E$ er regulært. Lad $p$ være pumpelængden af $E$. Lad $s = \mathtt{0}^{p+1}1^{p}$. $s$ kan blive opdelt i $xyz$. Hvis $y = \mathtt{0}$, så af betingelse 1 må $xy^{0}z$ også gælde. Men da $xy^{0}z = xz$ er der én mindre nul, og dermed lige mange 0'er og 1'er. Dette er en modstrid, så $E$ er \textbf{ikke} et regulært sprog.
+
+\end{example}
+
+\newpage
 \section{Opgaver}
 
 \noindent
