@@ -1,0 +1,42 @@
+\chapter{Kontekstfrie Sprog}
+
+I det tidligere kapitel om endelige automater, så vi den klasse af sprog som de genkender, regulære sprog, men vi så også eksempler på sprog som ikke er regulære, og hvordan dette kan bevises. I dette kapitel vil vi introducere \textit{kontekstfrie grammatikker} som er stærkere end endelige automater i deres deskriptionskraft. Sprogene der genkendes af kontekstfrie grammatikker kaldes \textit{kontekstfrie sprog}. Ydermere introducerer vi \textit{stakautomater} (pushdown automata på engelsk) som er en klasse af maskiner der genkender kontekstfrie sprog.
+
+\section{Kontekstfrie Grammatikker}
+En grammatik består af en samling af \textbf{substitueringsregler}, også kaldet \textit{produktioenr}. Hver regel forekommer som en linje i grammatikken,  og består af et symbol efterfulgt af en pil efterfulgt af en streng. Følgende grammatik er et eksempel på en kontekstfri grammatik $G_{1}$:
+\begin{equation}
+  \tag{$G_{1}$}
+  \begin{split}
+  A &\rightarrow \mathtt{0}A \mathtt{1}\\
+  A &\rightarrow B\\
+  B &\rightarrow \mathtt{\#}
+\end{split}
+  \label{eqn:G1}
+\end{equation}
+
+Symbolet på venstresiden kaldes en \textit{variabel}\footnote{Kært barn har mange navne, jeg har også hørt non-terminal og, simpelt, LHS.}. Strengen (højresiden) består af variabler og andre symboler, kaldet \textit{terminale}. Terminale minder om alfabetet fra en endelig automat, da disse er de endelige symboler, der udgør en resulterende streng\footnote{Dette vil vi komme ind på i mere detalje senere.}. Variabler er oftest repræsenteret som store bogstaver, hvor terminale kan være små bogstaver, tal, eller specielle symboler (såsom \#.) En af variablerne (venstrehåndssiden) bliver udpeget til at være \textbf{startvariablen}. Denne variabel skal alle udledninger\footnote{En udledning bliver beskrevet i mere detalje i næste afsnit.} af grammatikken starte på (analogt til en start state i en endelig automat.)
+
+For at beskrive et sprog med en grammatik, \textit{udleder} vi strenge fra grammatikken. Dette bliver gjort systematisk ved at \textit{substituere} variabler med andre variabler eller terminale. Eksempeltvis kan gramatikken \ref{eqn:G1} udlede strengen \texttt{000\#111}. En udledning af denne streng i \ref{eqn:G1} er følgende: $A \Rightarrow \mathtt{0}A \mathtt{1} \Rightarrow \mathtt{00}A \mathtt{11} \Rightarrow \mathtt{000}A \mathtt{111} \Rightarrow \mathtt{000}B \mathtt{111} \Rightarrow \mathtt{000\#111}$.
+
+Alle strenge du kan udlede på denne måde er en del af sproget, og udgør tilsammen det kontekstfri sprog som \ref{eqn:G1} genkender. Hvis du ikke har lagt mærke til det nu, er denne meget simple kontekstfri grammatik faktisk et eksempel på et sprog der \textbf{ikke} kan genkendes af en endelig automat. Ofte, fremfor at skrive $A \rightarrow \mathtt{0}A \mathtt{1}$ og så på en ny linje skrive $A \rightarrow B$, så skriver man blot $A \rightarrow \mathtt{0} A \mathtt{1} | B$, hvor du kan se \texttt{|} som ``eller''.
+
+Vi vil nu kigge på den formelle definition på en kontekstfri grammatik.
+
+\begin{definition}[Formel Definition på en Kontekstfri Grammatik]
+  En \textbf{kontekstfri grammatik}   er en 4-tuple $(V, \Sigma, R, S)$, hvor
+  \begin{enumerate}
+    \item $V$ er et endeligt sæt kaldet \textbf{variabler}
+    \item $\Sigma$ er et endeligt sæt, disjunkt fra $V$, kaldet \textbf{terminaler}
+    \item $R$ er et endeligt sæt af \textbf{regler}, hvor hver regel er en streng af variabler og terminaler og en variabel
+    \item $S \in V$ er startvariablen.
+  \end{enumerate}
+
+\end{definition}
+
+
+%%% Local Variables:
+%%% mode: latex
+%%% TeX-engine: xetex
+%%% TeX-command-extra-options: "-shell-escape"
+%%% TeX-master: "main"
+%%% End:
