@@ -82,8 +82,8 @@ Vi vil nu kigge på den formelle definition på en kontekstfri grammatik.
 Givet $u, v$ og $w$ er strenge af variabler, og terminale, og $A \rightarrow w$ er en regel af grammatikken, så siger vi at $uAv$ giver (\textit{yields}) $uwv$, skrevet $uAv \Rightarrow uwv$. Vi siger at $u$ udleder $v$, skrevet, $u \stackrel{*}{\Rightarrow} v$, hvis $u = v$, eller hvis en sekvens $u_{1}, u_{2}, \ldots, u_{k}$ eksisterer når $k \geq 0$ og $u \Rightarrow u_{1} \Rightarrow u_{2} \Rightarrow \ldots \Rightarrow u_{k} \Rightarrow v$. Sproget af grammatikken er $\{w \in \Sigma* | S \stackrel{*}{\Rightarrow} w\}$.
 
 \newpage
-\section{Tvetydighed}%
-\label{sec:tvetydighed}
+\subsection{Tvetydighed}%
+\label{sub:tvetydighed}
 
 En grammatik der kan generere den sammen streng på to eller flere forskellige måder (og dermed have mere end ét parsetræ for én streng), kaldes \textit{tvetydig}. For eksempel er den følgende grammatik tvetydig:
 \[
@@ -99,8 +99,8 @@ En streng $w$ er udledt \textbf{\textit{tvetydigt}} i en kontekstfri grammatik $
 Ofte, hvis man har en tvetydig grammatik, er det muligt at konvertere den til en grammatik der ikke er tvetydig. Dog er dette ikke muligt for alle sprog. Sprog hvor dette \textbf{ikke} gælder kalder vi \textbf{i sig selv tvetydige} (inherently ambiguous.)
 
 \newpage
-\section{Chomsky Normal Form}%
-\label{sec:cnf}
+\subsection{Chomsky Normal Form}%
+\label{sub:cnf}
 
 Chomsky Normal Form er en simple form af en kontekstfri grammatik.
 
@@ -122,13 +122,17 @@ Ethvert kontekstfri sprog er genereret af en kontekstfri grammatik i Chomsky Nor
 Vi vil vise at vi kan konvertere enhver grammatik til chomsky normal form. Vi vil gøre dette ved at fjerne alle regler der går imod betingelserne for CNF, og erstatte med regler der overholder. Først tilføjer vi en ny startvariabel, og eliminerer alle regler af formen $A \rightarrow \varepsilon$ (kaldet $\varepsilon$-regler.) Vi eliminerer også alle \textbf{unit rules}, som har formen $A \rightarrow B$. Til sidst konverterer vi resten til at være i ordentlig form.
 
 \begin{proof}
-  \textbf{Skridt 1:} Først tilføjer vi en ny variabel $S_{0}$ og reglen $S_{0} \rightarrow S$, hvor $S$ er det originale startvariabel.
+  \noindent
+  \textbf{\large Skridt 1:} Først tilføjer vi en ny variabel $S_{0}$ og reglen $S_{0} \rightarrow S$, hvor $S$ er det originale startvariabel.
 
-  \textbf{Skridt 2:} Efter dette fjerner vi alle regler af formen $A \rightarrow \varepsilon$, hvor $A \neq S$. Når dette er gjort fjerne vi alle regler hvor $A$ er på højresiden af en regel, og tilføjer en ny regel med $A$ fjernet. Eksempelvis bliver $R \rightarrow uAv$ til $R \rightarrow uv$ og $R \rightarrow uAvAw$ bliver til tre regler $R \rightarrow uvAw, R \rightarrow uAvw, R \rightarrow uvw$. Hvis vi har reglen $R \rightarrow \varepsilon$ tilføjer vi $R \rightarrow \varepsilon$, \textbf{undtagen hvis vi allerede har fjernet denne regel.} Vi forstætter dette indtil alle $\varepsilon$-regler er væk (undtagen startvariablen.)
+  \noindent
+  \textbf{\large Skridt 2:} Efter dette fjerner vi alle regler af formen $A \rightarrow \varepsilon$, hvor $A \neq S$. Når dette er gjort fjerne vi alle regler hvor $A$ er på højresiden af en regel, og tilføjer en ny regel med $A$ fjernet. Eksempelvis bliver $R \rightarrow uAv$ til $R \rightarrow uv$ og $R \rightarrow uAvAw$ bliver til tre regler $R \rightarrow uvAw, R \rightarrow uAvw, R \rightarrow uvw$. Hvis vi har reglen $R \rightarrow \varepsilon$ tilføjer vi $R \rightarrow \varepsilon$, \textbf{undtagen hvis vi allerede har fjernet denne regel.} Vi forstætter dette indtil alle $\varepsilon$-regler er væk (undtagen startvariablen.)
 
-  \textbf{Skridt 3:} Efter vi har gjort dette tager vi os af \textit{unit rules}. Vi fjerner en unit rule $A \rightarrow B$. Så, når $B \rightarrow u$ forekommer, tilføjer vi $A \rightarrow u$ (bemærk at vi ikke fjerner $B \rightarrow u$, da den kan komme et andet sted fra.) Vi bliver ved indtil vi har fjernet alle unit rules.
+  \noindent
+  \textbf{\large Skridt 3:} Efter vi har gjort dette tager vi os af \textit{unit rules}. Vi fjerner en unit rule $A \rightarrow B$. Så, når $B \rightarrow u$ forekommer, tilføjer vi $A \rightarrow u$ (bemærk at vi ikke fjerner $B \rightarrow u$, da den kan komme et andet sted fra.) Vi bliver ved indtil vi har fjernet alle unit rules.
 
-  \textbf{Skridt 4:} Til sidst konverterer vi resten af reglerne til den rigtige form. Vi erstatter hver regel $A \rightarrow u_{1}u_{2} \cdots u_{k}$ hvor $k \geq 3$ og hvert $u_{i}$ er en variabel eller terminalt symbol, med reglerne $A \rightarrow u_{1}A_{1}, A_{1} \rightarrow u_{2}A_{2}, A_{2} \rightarrow u_{3}A_{3}, \ldots, $ og $A_{k-2} \rightarrow u_{k-1}u_{k}$.  $A_{i}$'erne er nye variabler. Vi erstatter en hver terminal $u_{i}$ i de tidligere regler men den nye variabel $U_{i}$ og tilføjer reglen $U_{i} \rightarrow u_{i}$.
+  \noindent
+  \textbf{\large Skridt 4:} Til sidst konverterer vi resten af reglerne til den rigtige form. Vi erstatter hver regel $A \rightarrow u_{1}u_{2} \cdots u_{k}$ hvor $k \geq 3$ og hvert $u_{i}$ er en variabel eller terminalt symbol, med reglerne $A \rightarrow u_{1}A_{1}, A_{1} \rightarrow u_{2}A_{2}, A_{2} \rightarrow u_{3}A_{3}, \ldots, $ og $A_{k-2} \rightarrow u_{k-1}u_{k}$.  $A_{i}$'erne er nye variabler. Vi erstatter en hver terminal $u_{i}$ i de tidligere regler men den nye variabel $U_{i}$ og tilføjer reglen $U_{i} \rightarrow u_{i}$.
 \end{proof}
 
 Dette kan godt være svært at forstå, og derfor kigger vi på et eksempel.
@@ -144,7 +148,8 @@ B &\rightarrow b\;|\; \varepsilon
 \end{split}
 \end{equation*}
 
-\textbf{Skridt 1}:\\
+\noindent
+\textbf{\large Skridt 1}:\\
 \noindent
 Første skridt er at tilføje en ny startvairabel. Vi gør dette ved at introducere reglen $S_{0} \rightarrow S$
 
@@ -157,7 +162,8 @@ Første skridt er at tilføje en ny startvairabel. Vi gør dette ved at introduc
 \end{split}
 \end{equation*}
 
-\textbf{Skridt 2:}\\
+\noindent
+\textbf{\large Skridt 2:}\\
 \noindent
 Vi fjerner $\varepsilon-$reglerne.
 \begin{equation*}
@@ -182,7 +188,8 @@ Dog introducerer dette en ny epsilon-regel som vi må fjerne:
 \end{split}
 \end{equation*}
 
-\textbf{Skridt 3:}\\
+\noindent
+\textbf{\large Skridt 3:}\\
 \noindent
 Vi fjerner nu unit-reglen $S \rightarrow S$:
 \begin{equation*}
@@ -222,7 +229,9 @@ Til sidst fjerner vi reglen $A \rightarrow S$:
 \end{split}
 \end{equation*}
 
-\textbf{Skridt 4:}\\
+
+\noindent
+\textbf{\large Skridt 4:}\\
 \noindent
 Nu skal vi konvertere resten.
 
@@ -238,6 +247,92 @@ Nu skal vi konvertere resten.
 \end{equation*}
 
 \end{example}
+
+\section{Pushdown Automater}%
+\label{sec:pushdownautomata}
+
+Pushdown Automata (PDA) er ligesom NFA'er, men med en \textbf{stak} tilføjet. Denne stak tillader at PDA'en kan genkende kontekstfrie sprog. Det vil altså sige at en PDA er ækvivalent i dens kraft med kontekstfrie grammatikker.
+
+\begin{figure}[ht]
+  \centering
+  \begin{tikzpicture}
+    % Define the style for the blocks
+    \tikzset{block/.style={rectangle, draw, minimum height=2em, minimum width=3em}}
+    \tikzset{line/.style={draw, -latex'}}
+
+    % Place the first block
+    \node[block] (state) {state control};
+
+    % Draw the input nodes
+    \node[block, minimum width=0.8cm] (a1) at (2,-1.0) {a};
+    \node[block, minimum width=0.8cm] (a2) at (2.8,-1.0) {a};
+    \node[block, minimum width=0.8cm] (b1) at (3.6,-1.0) {b};
+    \node[block, minimum width=0.8cm] (b2) at (4.4,-1.0) {b};
+
+
+    \node[label] (input) at (5.5, -1.0) {input};
+
+    \node[block, minimum width=0.8cm, minimum height=0.8cm] (x) at (1.5, -2.6) {x};
+    \node[block, minimum width=0.8cm, minimum height=0.8cm] (y) at (1.5, -3.4) {y};
+    \node[block, minimum width=0.8cm, minimum height=0.8cm] (z) at (1.5, -4.2) {z};
+
+    \node[label] (stack) at (2.5, -3.4) {stak};
+
+    \draw[->, thick] (state) -| (a1);
+    \draw[->, thick] (state) |- (x);
+
+
+  \end{tikzpicture}
+  \caption{\label{fig:pda} Skematik af en pushdown automat}
+\end{figure}
+
+I Figur~\ref{fig:pda} ses en skematik af en PDA med en stak, hvor ``state control'' er delen med alle statesne, pile, etc. ``input'' er inputtet til automaten, og ``stak'' er stakken. En PDA kan skrive symboler til stakken og så læse dem tilbage senere. Den fungerer i en last-in-first-out princip. Vi referer i noterne til ``pushing'' som værende at give data til stakken, og ``popping'' som værende at læse data fra stakken.
+
+\begin{example}
+  Sproget $\{0^{n}1^{n} | n \ge 0\}$ kan \textbf{ikke} genkendes af en endelig automat, men det kan den af en PDA. Følgende er en beskrivelse af hvordan automaten fungerer:\\
+  \noindent
+  Læs symbolerne fra input. Hver gang et 0 bliver læst, pushes den til stakken. Hver gang et 1 er læst, pop den fra stakken. Hvis inputet er færdiglæst så snart stakken er tom, accepteres inputtet. Ellers accepteres det ikke (f.eks. hvis der er flere 1'ere når stakken er tom, hvis der er flere 0'ere efter der er fundet en 1'er, hvis stakken stadig har 0'ere.)
+\end{example}
+
+Det er vigtigt at bemærke at de pushdown automater vi arbejder med er nondeterministiske, da deterministiske og nondeterministiske pushdown automater \textbf{ikke} er ævkvivalente i deres kraft.
+
+\subsection{Formel Definition af Pushdown Automat}%
+\label{subsec:formelPDA}
+
+Den formelle definition for en PDA minder meget om den for en FA, dog med et ekstra alfabet: $\Gamma$ som er alfabetet for stakken.
+
+\begin{definition}[Formel Definition af en Pushdown Automat]
+\label{def:pda}
+En \textit{pushdown automat} er en 6-tuple $(Q, \Sigma, \Gamma, \delta, q_{0}, F)$, hvor $Q$, $\Sigma$, $\Gamma$, og $F$ alle er endelige sæt, og
+\begin{enumerate}
+  \item $Q$ er sættet af states
+  \item $\Sigma$ er input alfabetet
+  \item $\Gamma$ er stak alfabetet
+  \item $\delta : Q \times \Sigma_{\varepsilon} \times \Gamma_{\varepsilon} \longrightarrow P(Q \times \Gamma_{\varepsilon})$ er transitionsfunktionen
+  \item $q_{0} \in Q$ er start staten
+  \item $F \subseteq Q$ er sættet af accept states.
+\end{enumerate}
+
+\subsection{Pushdown Automat Komputering}%
+\label{subsec:PDAKomputering}
+
+
+En PDA $M = (Q, \Sigma, \Gamma, \delta, q_{0}, F)$ komputerer som følger. Den accepterer input $w$ hvis $w$ kan skrives $w = w_{1} \cdots w_{m}$, hvor hvert $w_{i} \in \Sigma_{\varepsilon}$ og sekvensen af states $r_{0}, r_{1} \ldots, r_{m} \in Q$ og strenge $s_{0}, s_{1}, \ldots, s_{m} \in \Gamma^{*}$ eksisterer som tilfredsstiller følgene betinglser, hvor $s_{i}$ repreæsenterer sekvensen af stakindhold som $M$ har på den accepterende afdeling af komputering.
+\begin{enumerate}
+  \item $r_{0} = q_{0}$ og $s_{0} = \varepsilon$. Altså starter vi ved start staten og har en tom stak.
+  \item For $i = 0, \ldots, m-1$ har vi $(r_{i+1}, b) \in \delta(r_{i}, w_{i+1}, a)$, hvor $s_{i} = at$ og $s_{i+1} = bt$ for alle $a, b \in \Gamma_{\varepsilon}$ og $t \in \Gamma^{*}$. Altså $M$ bevæger sig ifølge staten, stakken og inputsymbolet.
+  \item $r_{m} \in F$. Den sidste state er en accept state.
+\end{enumerate}
+
+
+%% TODO: Nået til side  114
+
+
+
+
+\end{definition}
+
+
 
 
 
