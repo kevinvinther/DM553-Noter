@@ -315,6 +315,7 @@ Konstruér $N = (Q, \Sigma, \delta, q_{0}, F)$ til at genkende $A_1 \cup A_{2}$.
 
 
 \begin{theorem}
+  \label{the:sipser1.47}
 Klassen af regulære sprog er lukket under sammenkædningsoperationen.
 \end{theorem}
 
@@ -432,6 +433,94 @@ Vi vil nu vise to eksempler til hvordan pumpelemmaet kan bruges til at bevise no
 \end{example}
 
 \newpage
+\section{Hovedpointer}%
+\label{sec:hovedpointer}
+
+Disse hovedpointer er taget fra ugeseddel 2, og indeholder de vigtigste ting om endelige automater.\\
+\noindent
+\textbf{Automater er matematiske modeller af computere.}
+\begin{itemize}
+  \item Automater er teoretiske modeller, brugt til at forstå principperne af komputering.
+  \item Der er simple automater, såsom endelige automater (DFA, NFA, RE), men der er også mere komplicerede automater såsom Turing Maskiner, som kan simulere alle typer komputering.
+  \item Automatteori hjælper med at udforske komputerings kapaciteter og begræsninger gennem flere sammenhæng.
+\end{itemize}
+\noindent
+\textbf{Endelige Automater (FA) bruger en konstant mængde hukommelse og bestemmer om en given streng er en del af et sprog. Bevægelserne af en DFA er bestemt udelukkende af dens start state og input streng. En DFA $M$ accepterer en streng $w$ hvis den (unikke!) \textit{walk}\footnote{Graf-teoretisk for en måde at gå fra A til B} som starter i start staten, og ``staver'' $w$ slutter i en accept state af $M$.}
+\begin{itemize}
+  \item Endelige Automater er designet til at bestemme om en streng tilhører et specifikt sprog.
+  \item FA'en finder ud af dette ved at processere strengen symbol-by-symbol, ved at følge reglerne specificeret i transitionsfunktionen.
+  \item Ved hvert nyt symbol, ved DFA'en \textbf{altid} hvad det næste state skal være.
+  \item Hvis strengen $w, |w| = n$ går igennem en sekvens af states $q_{0} \cdots q_{n}$ og $q_{n} \in F$, så er strengen en del af sproget som DFA'en accepterer. Ellers er den ikke.
+\end{itemize}
+\noindent
+\textbf{En NFA kan vælge imellem flere alternative bevægelser, og har muligheden for at gætte bevægelserne der går til en ønsket state. En NFA $M$ accepterer en string $w$ hvis der eksisterer en walk fra start staten til en af de accepterende states, som ``skriver'' præcis $w$}
+\begin{itemize}
+  \item En NFA har, ikke ligesom en DFA, flere mulige næste states for et givent symbol, inklusiv ingen states.
+  \item Denne nondeterminisme tillader NFA'en at udforske flere veje igennem automaten på samme tid, som om den klonede sig selv til at følge alle mulige transitions til hvert skridt.
+  \item Hvis nogen af disse kopier, eller veje, ender i en accept state, er strengen accepteret.
+\end{itemize}
+\noindent
+\textbf{Dog har NFA'er ikke en større komputationel kraft en DFA'er, da vi kan konvertere en arbitrær NFA $M$ til en ækvivalent DFA $M'$ (hvor $L(M') = L(M)$). Bemærk at denne konversion \textit{ikke} er en polynomiel algoritme, siden $M'$ kan have eksponentielt mange states i forhold til $M$!}
+\begin{itemize}
+  \item En NFA er blot en generalisering af en DFA, og kan derfor konverteres til en DFA med præcis samme deskriptive kraft (altså kan den forstå de samme sprog) som den givne NFA.
+  \item Algoritmen der konverterer en NFA til en DFA er ikke polynomiel, da der kan være eksponentielt mange states i den konverterede DFA.
+\end{itemize}
+\noindent
+\textbf{Et regulært udtryk (RE) er en formel specifikation af et regulært sprog.}\\
+\begin{itemize}
+  \item Et regulært udtryk er en sekvens af karakterer der definerer et søgemønster.
+  \item De kan kun genkende mønstre der er en del af regulære udtryk
+\end{itemize}
+\noindent
+\textbf{Et sprog er accepteret af en endelig automat hvis og kun hvis den er genereret af et regulært udtryk, siden en ækvivalent endelig automat kan blive konstrueret fra et givent regulært udtryk og omvendt.}
+\begin{itemize}
+  \item Ligesom ved en NFA, kan et regulært udtryk blive konvereteret.
+  \item Dermed har et regulært udtryk samme deskriptive kraft som endelige automater.
+\end{itemize}
+\textbf{Klassen af regulære sprog er lukket under sammenkædning, komplement, fællesmængde, stjerne, og snit. Følgende holder:}
+
+\textbf{Lad $L, L'$ være regulære sprog, så er følgende også regulære:}
+\begin{enumerate}
+  \item $L \cup L'$.
+  \item Komplementet $\overline{L}$ af $L$.
+  \item $L \cap L'$
+  \item $L \setminus L'$.
+  \item $LL'$.
+  \item $L^{*}$
+\end{enumerate}
+\textbf{For at forstå at $L \cap L'$ er regulært, er det nok at bemærke at $L \cap L' = \overline{\overline{L} \cup \overline{L'}}$}
+
+\begin{itemize}
+  \item Jeg har ikke så meget at tilføje her. Den vigtigste er nok snittet:
+  \item Hvis vi har $\overline{L} \cup \overline{L'}$ får vi sproget der indeholder hvad der er ens mellem komplementet af de to sprog. Dette kan også beskrives som alt andet, end hvad der er ens for de to sprog (ikke komplementet!) Dermed, hvis vi tager komplementet på dette, får vi hvad der er ens for begge sprog, altså snittet.
+\end{itemize}
+\noindent
+\textbf{Hvert endeligt sprog er regulært. Vi kan sagtens lave en NFA $M(w)$ som accepterer præcis strengen $w$, så hvis $L$ består af strengene $w_{1}, w_{2}, \ldots, w_{k}$ for et endeligt heltal $k$, så lav NFA'erne $M(w_{i}), i = 1, 2, \ldots, k$ og byg (i $k-1$ fællesmængde skridt) en NFA hvis sprog er præcis $L$. Så hvert non-regulært sprog indeholder abritrært lange strenge.}
+\begin{itemize}
+  \item Alle endelige sprog er regulære sprog.
+  \item Vi kan se dette som at et sprog er en liste af (endelige) strenge.
+  \item Hvis vi laver en NFA for hver af disse strenge, skal vi \textit{bare} lave fællesmængde-NFA'en der genkender dem allesammen tilsammen.
+  \item Dermed har vi en NFA der genkender et arbitrært endeligt sprog.
+\end{itemize}
+
+\noindent
+\textbf{At anvende pumpelemmaet er som en 2-personersspil mellem dig og en modstander: For at bevise at en uendeligt sprog $L$ \textit{ikke} er regulært, gør du som følger:}
+
+\begin{itemize}
+  \item \textbf{Antag (for modstrid) at $L = L(M)$ for en DFA $M$, og lad $p$ være antallet af states i $M$. Du kan også tænkte på det som at få $p$ fra modstanderen, som siger at $M$ eksisterer. }
+  \item \textbf{\textit{Du} bestemmer en streng $s \in L$ hvor $|s| \geq p$}
+  \item \textbf{Nu må modstandered vælger strenge $x,y,z$ over $\Sigma$ således at}
+        \begin{enumerate}
+          \item $s = xyz$
+          \item $xy^{i}z \in L$ for alle $i \geq 0$
+          \item $|y| > 0$ og $|xy| \leq p$
+        \end{enumerate}
+        \textbf{Ifølge pumpelemmaet kan de gøre det kun hvis $L$ er regulært.}
+  \item \textbf{Så vælger \textit{du} en $i \geq 0$ og viser at $xy^{i}z \notin L$, som er en modstrid}
+        \item \textbf{Siden modstriden kom fra antagelsen at $L$ var regulært, følger det at $L$ \textit{ikke} er et regulært sprog.}
+\end{itemize}
+
+\newpage
 \section{Opgaver}
 
 \noindent
@@ -448,6 +537,68 @@ Givet at ulven og geden ikke må være alene (ulven spiser geden), og geden og k
 \begin{enumerate}
 \item [(b)] Consider strings over the alphabet $\Sigma = \{m, w, g, c\}$ and interpret these as follows: The symbol $m$ means that the man crosses the river alone, $w$ means that he brings the wolf, etc. \\ Design a finite automaton which accepts precisely those strings over $\Sigma$ which correspond to a transportation sequence where everybody survives and is legal in the sense that the man can only bring an item (e.g. $w$) back across the river if it was actually on the shore where the boat just left from. For example, gmcg is a legal string (it is not a solution) whereas gc is not legal.
 \end{enumerate}
+
+\begin{itemize}
+  \item Sipser 1.9
+\end{itemize}
+\textbf{Use the construction in the proof of Theorem 1.47 to give the state diagrams of NFAs recognizing the concatenation of the languages described in}
+\begin{enumerate}
+  \item[a.] \textbf{Exercises 1.6g and 1.6i}
+\end{enumerate}
+1.6g \[\{w \;| \; \text{ the length of }w \text{ is at most }5\}\]
+1.6i \[\{w\;|\; \text{ every odd position of } w \text{ is a } \mathtt{1} \}\]
+
+Alfabetet i begge sprog er $\{ \mathtt{0,1} \}$
+
+Teorem 1.47 er i disse noter Teorem~\ref{the:sipser1.47}.
+Først laver vi et state diagram af begge NFA'er, og derefter laver vi sammenkædning.
+
+
+\[\{ w \; | \; \text{ the length of } w \text{ is at most }5\}\]
+\begin{center}
+  \begin{tikzpicture}[>=Stealth,shorten >=1pt,node distance=2.0cm,on grid,auto]
+    \node[state, accepting, initial] (q1) {$q_1$};
+    \node[state, accepting, right=of q1] (q2) {$q_2$};
+    \node[state, accepting, right=of q2] (q3) {$q_{3}$};
+    \node[state, accepting, right=of q3] (q4) {$q_4$};
+    \node[state, accepting,right=of q4] (q5) {$q_{5}$};
+    \node[state, right=of q5] (q6) {$q_{6}$};
+
+    \path[->]
+    (q1) edge node {\texttt{0,1}} (q2)
+    (q2) edge node {\texttt{0,1}} (q3)
+    (q3) edge node {\texttt{0,1}} (q4)
+    (q4) edge node {\texttt{0,1}} (q5)
+    (q5) edge node {\texttt{0,1}} (q6)
+    (q6) edge[loop above] node {\texttt{0,1}}
+  \end{tikzpicture}
+\end{center}
+
+\[\{ w \; | \; \text{ every odd position of } w \text{ is a } \mathtt{1} \}\]
+
+\begin{center}
+  \begin{tikzpicture}[>=Stealth,shorten >=1pt,node distance=2.0cm,on grid,auto]
+    \node[state, accepting, initial] (q1) {$q_1$};
+    \node[state, accepting, right=of q1] (q2) {$q_2$};
+    \node[state, above right=1.5cm and 1cm of q1] (q3) {$q_3$};
+
+    \path[->]
+    (q1) edge[bend left] node {\texttt{1}} (q2)
+    (q2) edge[bend left] node {\texttt{0,1}} (q1)
+    (q1) edge[bend left] node {\texttt{0}} (q3)
+    (q3) edge[loop above] node {\texttt{0,1}}
+  \end{tikzpicture}
+\end{center}
+
+
+\begin{enumerate}
+  \item[b.] \textbf{Exercises 1.6b and 1.6m}
+\end{enumerate}
+
+
+
+
+
 
 
 
