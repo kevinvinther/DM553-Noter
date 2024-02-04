@@ -580,7 +580,7 @@ Først laver vi et state diagram af begge NFA'er, og derefter laver vi sammenkæ
     (q3) edge node {\texttt{0,1}} (q4)
     (q4) edge node {\texttt{0,1}} (q5)
     (q5) edge node {\texttt{0,1}} (q6)
-    (q6) edge[loop above] node {\texttt{0,1}}
+    (q6) edge[loop above] node {\texttt{0,1}} (q6);
   \end{tikzpicture}
 \end{center}
 
@@ -596,7 +596,7 @@ Først laver vi et state diagram af begge NFA'er, og derefter laver vi sammenkæ
     (q1) edge[bend left] node {\texttt{1}} (q2)
     (q2) edge[bend left] node {\texttt{0,1}} (q1)
     (q1) edge[bend left] node {\texttt{0}} (q3)
-    (q3) edge[loop above] node {\texttt{0,1}}
+    (q3) edge[loop above] node {\texttt{0,1}} (q3);
   \end{tikzpicture}
 \end{center}
 
@@ -673,7 +673,7 @@ Vi laver det om til et state diagram:
     (q3) edge node {\texttt{0,1}} (q4)
     (q4) edge node {\texttt{0,1}} (q5)
     (q5) edge node {\texttt{0,1}} (q6)
-    (q6) edge[loop above] node {\texttt{0,1}}
+    (q6) edge[loop above] node {\texttt{0,1}} (q6)
 
     %% Nye kanter
     (q1) edge node {$\varepsilon$} (q21)
@@ -685,7 +685,7 @@ Vi laver det om til et state diagram:
     (q21) edge[bend left] node {\texttt{1}} (q22)
     (q22) edge[bend left, above] node {\texttt{0,1}} (q21)
     (q21) edge[bend left] node {\texttt{0}} (q23)
-    (q23) edge[loop above] node {\texttt{0,1}}
+    (q23) edge[loop above] node {\texttt{0,1}} (q23);
   \end{tikzpicture}
 \end{center}
 
@@ -724,7 +724,7 @@ Nu når vi kender rutinen bliver denne langt mindre formel:
 
     % Paths
     \path[->]
-    (q1) edge[loop above] node {\texttt{0,1}} (q1)
+    (q1) edge[loop above] node {\texttt{0,1}} (q1);
   \end{tikzpicture}
 \end{center}
 
@@ -795,7 +795,7 @@ Og her kommer state diagrammet:
     (q3) edge[bend left] node {\texttt{a}} (q4)
     (q3) edge node {\texttt{b}} (q5)
     (q4) edge[bend left] node {\texttt{a}} (q3)
-    (q4) edge[bend left] node {\texttt{b}} (q5)
+    (q4) edge[bend left] node {\texttt{b}} (q5);
   \end{tikzpicture}
 \end{center}
 
@@ -844,7 +844,8 @@ $A_{2} = \{www|w \in \{\mathtt{a,b}\}^{*}\}$
 
 \subsection{Sipser 1.30}%
 \label{subsec:sipser1.30}
-\textbf{Describe the error in the following ``proof'' that \texttt{0$^{*}$1$^{*}$} is not a regular language. (An error must exist because \texttt{0$^{*}$1$^{*}$}) \textit{is} regular.) The proof is by contradiction. Assume that \texttt{0$^{*}$1$^{*}$} is regular. Choose $s$ to be the string \texttt{0^$^p$1$^{p}$}. You know that $s$ is a member of \texttt{0$^{*}$1$^{*}$}, but Example 1.73 shows that $s$ cannot be pumped. Thus you have a contradiction. So \texttt{0$^{*}$1$^{*}$} is not regular.}
+\textbf{Describe the error in the following ``proof'' that \(0^*1^*\) is not a regular language. (An error must exist because \(0^*1^*\) \emph{is} regular.) The proof is by contradiction. Assume that \(0^*1^*\) is regular. Let \(p\) be the pumping length for \(0^*1^*\) given by the pumping lemma. Choose \(s\) to be the string \(0^p1^p\). You know that \(s\) is a member of \(0^*1^*\), but Example 1.73 shows that \(s\) cannot be pumped. Thus you have a contradiction. So \(0^*1^*\) is not regular.}
+
 
 Eksempel 1.73 gælder kun fordi antallet af \texttt{0} og \texttt{1}'ere skal være lige. Dette er ikke eksemplet her. For eksempel er strengen \texttt{000000000} en del af sproget beskrevet her, men det er den ikke i eksemplet. Dog er resten af beviset i eksempel 1.73 god nok med undtagelse af betingelse 3. Grunden til at betingelse 3 ikke fungerer, i eksempel 1.73 er fordi det ville forstyrre ligheden mellem 0 og 1. Dette er jo ikke nødvendigt her, og derfor gælder eksemplet ikke.
 
