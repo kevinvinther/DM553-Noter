@@ -377,6 +377,7 @@ Der findes mange sprog der er regulære, men det er også vigtigt at vide om et 
 Et hovedteorem i at finde ud af om et sprog, som for eksempel sproget beskrevet før, er regulært, er \textit{pumpelemmaet}. Ifølge pumpelemmaet gælder det at alle regulære sprog har en specifik egenskab, og dermed, hvis et sprog ikke har denne egenskab er det ikke et regulært sprog.
 
 \begin{theorem}[Pumpelemmaet]
+  \label{the:pumpelemma}
   Lad $A$ være et regulært sprog, og $p$ (\textbf{pumpelængden}) være et tal, hvor hvis $s$ er en streng i $A$ af længde mindst $p$, så kan $s$ brydes ned i mindre stykker, $s = xyz$, som opfylder de følgende betingelser:
   \begin{enumerate}
     \item $(\forall i \geq 0)(xy^{i}z \in A)$
@@ -538,9 +539,8 @@ Givet at ulven og geden ikke må være alene (ulven spiser geden), og geden og k
 \item [(b)] Consider strings over the alphabet $\Sigma = \{m, w, g, c\}$ and interpret these as follows: The symbol $m$ means that the man crosses the river alone, $w$ means that he brings the wolf, etc. \\ Design a finite automaton which accepts precisely those strings over $\Sigma$ which correspond to a transportation sequence where everybody survives and is legal in the sense that the man can only bring an item (e.g. $w$) back across the river if it was actually on the shore where the boat just left from. For example, gmcg is a legal string (it is not a solution) whereas gc is not legal.
 \end{enumerate}
 
-\begin{itemize}
-  \item Sipser 1.9
-\end{itemize}
+\subsection{Sipser 1.9}
+\label{sub:sipser1.9}
 \textbf{Use the construction in the proof of Theorem 1.47 to give the state diagrams of NFAs recognizing the concatenation of the languages described in}
 \begin{enumerate}
   \item[a.] \textbf{Exercises 1.6g and 1.6i}
@@ -554,7 +554,7 @@ Teorem 1.47 er i disse noter Teorem~\ref{the:sipser1.47}.
 Først laver vi et state diagram af begge NFA'er, og derefter laver vi sammenkædning.
 
 
-\[\{ w \; | \; \text{ the length of } w \text{ is at most }5\}\]
+\[M_{1} = \{ w \; | \; \text{ the length of } w \text{ is at most }5\}\]
 \begin{center}
   \begin{tikzpicture}[>=Stealth,shorten >=1pt,node distance=2.0cm,on grid,auto]
     \node[state, accepting, initial] (q1) {$q_1$};
@@ -574,7 +574,7 @@ Først laver vi et state diagram af begge NFA'er, og derefter laver vi sammenkæ
   \end{tikzpicture}
 \end{center}
 
-\[\{ w \; | \; \text{ every odd position of } w \text{ is a } \mathtt{1} \}\]
+\[M_{2} = \{ w \; | \; \text{ every odd position of } w \text{ is a } \mathtt{1} \}\]
 
 \begin{center}
   \begin{tikzpicture}[>=Stealth,shorten >=1pt,node distance=2.0cm,on grid,auto]
@@ -590,12 +590,287 @@ Først laver vi et state diagram af begge NFA'er, og derefter laver vi sammenkæ
   \end{tikzpicture}
 \end{center}
 
+Lad os nu beskrive begge disse maskiner formelt.
+
+$M_{1} = (Q, \Sigma, \delta, q_{1}, F)$ hvor
+\begin{enumerate}
+  \item $Q = \{q_{1}, q_{2}, q_{3}, q_{4}, q_{5}, q_{6}\}$
+  \item $\Sigma = \{0,1\}$
+  \item $\delta$ =
+\begin{table}[h]
+\centering
+\begin{tabular}{l|ll}
+      & \texttt{0} & \texttt{1} \\ \hline
+$q_1$ & $q_2$      & $q_2$      \\
+$q_2$ & $q_3$      & $q_3$      \\
+$q_3$ & $q_4$      & $q_4$      \\
+$q_4$ & $q_5$      & $q_5$      \\
+$q_5$ & $q_6$      & $q_6$      \\
+$q_6$ & $q_6$      & $q_6$
+\end{tabular}
+\end{table}
+  \item $q_{1}$
+  \item $F = \{q_{1}, q_{2}, q_{3}, q_{4}, q_{5}\}$
+\end{enumerate}
+
+$M_{2} = (Q, \Sigma, \delta, q_{1}, F)$, hvor
+\begin{enumerate}
+  \item $Q = \{q_{1}, q_{2}, q_{3}\}$
+  \item $\Sigma = \{0,1\}$
+  \item $\delta$ =
+
+\begin{table}[h]
+\centering
+\begin{tabular}{l|ll}
+      & \texttt{0} & \texttt{1} \\ \hline
+$q_1$ & $q_3$      & $q_2$      \\
+$q_2$ & $q_1$      & $q_1$      \\
+$q_3$ & $q_3$      & $q_3$      \\
+\end{tabular}
+\end{table}
+
+  \item $q_{1}$
+  \item $F = \{q_{1}, q_{2}\}$
+\end{enumerate}
+
+Vi bruger nu Teorem~\ref{the:sipser1.47} til at lave sammenkædningen. Vi kalder vores nye maskine $M_{3}$. $M_{3} = (Q, \Sigma, \delta, q_{0}, F)$, hvor:
+\begin{enumerate}
+  \item $Q = \{q_{11}, q_{12}, q_{13}, q_{14}, q_{15}, q_{16}\} \cup \{q_{21}, q_{22}, q_{23}\}$
+  \item $\Sigma = \{0,1\}$
+  \item $\delta$ undlades
+  \item $q_{11}$
+  \item $F = \{q_{21}, q_{22}\}$
+\end{enumerate}
+
+Vi laver det om til et state diagram:
+
+
+\begin{center}
+  \begin{tikzpicture}[>=Stealth,shorten >=1pt,node distance=2.0cm,on grid,auto]
+    \node[state, initial] (q1) {$q_{11}$};
+    \node[state, right=of q1] (q2) {$q_{12}$};
+    \node[state, right=of q2] (q3) {$q_{13}$};
+    \node[state, right=of q3] (q4) {$q_{14}$};
+    \node[state, right=of q4] (q5) {$q_{15}$};
+    \node[state, right=of q5] (q6) {$q_{16}$};
+    \node[state, accepting, above=2cm of q3] (q21) {$q_{21}$};
+    \node[state, accepting, right=3cm of q21] (q22) {$q_{22}$};
+    \node[state, above right=1.5cm and 1cm of q21] (q23) {$q_{23}$};
+
+    \path[->]
+    (q1) edge node {\texttt{0,1}} (q2)
+    (q2) edge node {\texttt{0,1}} (q3)
+    (q3) edge node {\texttt{0,1}} (q4)
+    (q4) edge node {\texttt{0,1}} (q5)
+    (q5) edge node {\texttt{0,1}} (q6)
+    (q6) edge[loop above] node {\texttt{0,1}}
+
+    %% Nye kanter
+    (q1) edge node {$\varepsilon$} (q21)
+    (q2) edge node {$\varepsilon$} (q21)
+    (q3) edge node {$\varepsilon$} (q21)
+    (q4) edge node {$\varepsilon$} (q21)
+    (q5) edge node {$\varepsilon$} (q21)
+
+    (q21) edge[bend left] node {\texttt{1}} (q22)
+    (q22) edge[bend left, above] node {\texttt{0,1}} (q21)
+    (q21) edge[bend left] node {\texttt{0}} (q23)
+    (q23) edge[loop above] node {\texttt{0,1}}
+  \end{tikzpicture}
+\end{center}
 
 \begin{enumerate}
   \item[b.] \textbf{Exercises 1.6b and 1.6m}
 \end{enumerate}
 
+Nu når vi kender rutinen bliver denne langt mindre formel:
+\[ M_{1} = \{w \; | \; w \text{ contains at least three } \mathtt{1}s \} \]
 
+\begin{center}
+  \begin{tikzpicture}[>=Stealth,shorten >=1pt,node distance=2.0cm,on grid,auto]
+    % Nodes
+    \node[state, initial] (q1) {$q_{11}$};
+    \node[state, right=of q1] (q2) {$q_{12}$};
+    \node[state, right=of q2] (q3) {$q_{13}$};
+    \node[state,accepting, right=of q3] (q4) {$q_{14}$};
+
+    % Paths
+    \path[->]
+    (q1) edge node {\texttt{1}} (q2)
+    (q1) edge[loop above] node {\texttt{0}} (q1)
+    (q2) edge node {\texttt{1}} (q3)
+    (q2) edge[loop above] node {\texttt{0}} (q2)
+    (q3) edge node {\texttt{1}} (q4)
+    (q3) edge[loop above] node {\texttt{0}} (q3)
+    (q4) edge[loop above] node {\texttt{0,1}} (q4);
+  \end{tikzpicture}
+\end{center}
+
+\[ M_{2} = \text{ the empty set } \]
+\begin{center}
+  \begin{tikzpicture}[>=Stealth,shorten >=1pt,node distance=2.0cm,on grid,auto]
+    % Nodes
+    \node[state, initial] (q1) {$q_{21}$};
+
+    % Paths
+    \path[->]
+    (q1) edge[loop above] node {\texttt{0,1}} (q1)
+  \end{tikzpicture}
+\end{center}
+
+Den var da kedelig, og sammenkædningen bliver endnu kedeligere!
+
+\begin{center}
+  \begin{tikzpicture}[>=Stealth,shorten >=1pt,node distance=2.0cm,on grid,auto]
+    % Nodes
+    \node[state, initial] (q1) {$q_{11}$};
+    \node[state, right=of q1] (q2) {$q_{12}$};
+    \node[state, right=of q2] (q3) {$q_{13}$};
+    \node[state, right=of q3] (q4) {$q_{14}$};
+    \node[state, right=of q4] (q21) {$q_{21}$};
+
+    % Paths
+    \path[->]
+    (q1) edge node {\texttt{1}} (q2)
+    (q1) edge[loop above] node {\texttt{0}} (q1)
+    (q2) edge node {\texttt{1}} (q3)
+    (q2) edge[loop above] node {\texttt{0}} (q2)
+    (q3) edge node {\texttt{1}} (q4)
+    (q3) edge[loop above] node {\texttt{0}} (q3)
+    (q4) edge[loop above] node {\texttt{0,1}} (q4)
+    (q4) edge node {$\varepsilon$} (q21);
+  \end{tikzpicture}
+\end{center}
+
+\subsection{Sipser 1.11}%
+\label{subsec:sipser1.11}
+
+\textbf{Prove that every NFA can be converted to an equivalent one that has a single accept state.}\\
+
+Det her spørgsmål er heldigvis meget simpelt, og jeg gider ikke bruge mere tid på at tegne diagrammer i TikZ. Måden du konverterer er ved at lave en ny accept state. Så skal du tage alle gamle accept states og konvertere dem til ikke accept states. Derefter laver du $\varepsilon$ pile fra alle de gamle accept states til den nye accept state. Der gør bare NFA'en mere kompleks, men hey! Det virker!
+
+\subsection{Sipser 1.12}%
+\label{subsec:sipser1.12}
+
+\textbf{Let}
+\begin{align*}
+  D = \{w\; | \; w \text{ contains an even number of } a \text{'s and}\\ \text{ an odd number of }b \text{'s and does not contain substring }ab\}.
+\end{align*}
+\textbf{Give a DFA with five states that recognizes $D$ and a regular expression that generates $D$. (Suggestion: Describe $D$ more simply)}
+
+Først simplificerer vi. Siden $ab$ er ulovligt, kan vi ændre simplificere og sige at alle $a$'er må komme efter $b$'er.
+Vi starter med det regulære udtryk.
+
+\begin{equation*}
+b(bb)*(aa)*
+\end{equation*}
+
+Og her kommer state diagrammet:
+
+\begin{center}
+  \begin{tikzpicture}[>=Stealth,shorten >=1pt,node distance=2.0cm,on grid,auto]
+    % Nodes
+    \node[state, initial] (q1) {$q_{1}$};
+    \node[state, accepting, right=of q1] (q2) {$q_{2}$};
+    \node[state, right=of q2] (q3) {$q_{3}$};
+    \node[state, accepting, right=of q3] (q4) {$q_{4}$};
+    \node[state, below left=2cm and 1cm of q3] (q5) {$q_{5}$};
+
+    % Paths
+    \path[->]
+    (q1) edge[bend left] node {\texttt{b}} (q2)
+    (q1) edge[bend right] node {\texttt{a}} (q5)
+    (q2) edge[bend left] node {\texttt{b}} (q1)
+    (q2) edge node {\texttt{a}} (q3)
+    (q3) edge[bend left] node {\texttt{a}} (q4)
+    (q3) edge node {\texttt{b}} (q5)
+    (q4) edge[bend left] node {\texttt{a}} (q3)
+    (q4) edge[bend left] node {\texttt{b}} (q5)
+  \end{tikzpicture}
+\end{center}
+
+\subsection{Sipser 1.31}%
+\label{subsec:sipser1.31}
+
+\textbf{For any string $w = w_{1}w_{2} \cdots w_{n}$, the \textit{reverse} of $w$, written $w^{\mathcal{R}}$, is the string $w$ in reverse order, $w_{n} \cdots w_{2}w_{1}$. For any language $A$, let $A^{\mathcal{R}} = \{w^{\mathcal{R}} | w \in A\}$. Show that if $A$ is regular, so is $A^{\mathcal{R}}$}
+
+\textbf{Alle} regulære sprog kan defineres af en FA. Derfor antager vi at det omvendte sprog også kan defineres af en FA. Givet en NFA $M = (Q_{1}, \Sigma_{1}, \delta_{1}, q_{1}, F_{1})$ definerer vi en reverse NFA således $M_{\mathcal{R}} = (Q, \Sigma, \delta, q_{0}, F)$ hvor
+\begin{enumerate}
+  \item $Q = Q_{1} \cup \{q_{0}\}$
+  \item $\Sigma = \Sigma_{1}$
+  \item $q_{0}$ er en nyintroduceret state
+  \item $F = \{q_{1}\}$
+  \item
+        \begin{equation*}
+          \delta =
+\begin{cases}
+  F_{1} & q = q_{0} \text{ og } a = \varepsilon \\
+  \emptyset & q = q_{0} \text{ og } a \neq \varepsilon \\
+  \delta(q,a)^{-1} & \text{ for resten}
+\end{cases}
+        \end{equation*}
+\end{enumerate}
+Hvor $\delta(q,a)^{-1}$ betyder at omvendde pilen fra hvad den var tidligere, i.e., hvis $\delta_{1}(q_{100},a) = q_{101}$, så $\delta(q_{101}, a) = q_{100}$, hvor $\delta_{1}$ er fra den originale automat, og $\delta$ fra reverse. Dette skal fortsætte, så vi får en ``omvendt'' FA, og dermed reverse. QED.
+
+\subsection{Sipser 1.29(b)}%
+\label{subsec:label}
+
+\textbf{Use the pumping lemma to show that the following languages are not regular.}
+
+$A_{2} = \{www|w \in \{\mathtt{a,b}\}^{*}\}$
+
+\begin{proof}
+  Bevis ved modstrid.\\
+  Vi antager at $A_{2}$ er regulært. For at være regulært skal det opfylde følgende kriterier (Fra Teorem~\ref{the:pumpelemma}):
+  \begin{enumerate}
+    \item $(\forall i \geq 0)(xy^{i}z \in A)$
+    \item $|y| > 0$
+    \item $|xy| \leq p$
+  \end{enumerate}
+
+  Vi tager strengen $a^{p}ba^{p}ba^{p}b$, hvor $w = a^{p}b$. Lad \texttt{aabaabaab}$\in A_{2}$. Pumpelængden er 2. $x = a, z = a, y = baabaab$. Dermed har vi $(a)(a)(baabaab)$. Hvis vi pumper midterdelen med $i = 2$ får vi $(a)(aa)(baabaab)$ hvilket ikke er en del af sproget. Dermed er sproget ikke regulært.
+\end{proof}
+
+
+\subsection{Sipser 1.30}%
+\label{subsec:sipser1.30}
+\textbf{Describe the error in the following ``proof'' that \texttt{0$^{*}$1$^{*}$} is not a regular language. (An error must exist because \texttt{0$^{*}$1$^{*}$}) \textit{is} regular.) The proof is by contradiction. Assume that \texttt{0$^{*}$1$^{*}$} is regular. Choose $s$ to be the string \texttt{0^$^p$1$^{p}$}. You know that $s$ is a member of \texttt{0$^{*}$1$^{*}$}, but Example 1.73 shows that $s$ cannot be pumped. Thus you have a contradiction. So \texttt{0$^{*}$1$^{*}$} is not regular.}
+
+Eksempel 1.73 gælder kun fordi antallet af \texttt{0} og \texttt{1}'ere skal være lige. Dette er ikke eksemplet her. For eksempel er strengen \texttt{000000000} en del af sproget beskrevet her, men det er den ikke i eksemplet. Dog er resten af beviset i eksempel 1.73 god nok med undtagelse af betingelse 3. Grunden til at betingelse 3 ikke fungerer, i eksempel 1.73 er fordi det ville forstyrre ligheden mellem 0 og 1. Dette er jo ikke nødvendigt her, og derfor gælder eksemplet ikke.
+
+\subsection{Sipser 1.36}%
+\label{subsec:sipser1.36}
+
+\textbf{Let $B_{n} = \{a^{k} | k \text{ is a multiple of }n\}$. Show that for each $n \ge 1$, the language $B_{n}$ is regular.}
+
+Regulært udtryk:
+\[ \mathtt{a^{n}}^{*}\footnote{Bemærk at det er $(a^{n})^{*}$}\]
+
+Siden det beskrives af at regulært udtryk er det regulært.
+
+\subsection{Sipser 1.43}%
+\label{subsec:sipser1.43}
+
+\textbf{Let $A$ be any language. Define \textit{DROP-OUT(A)} to be the language containing all strings that can be obtained by removing one symbol from a string in $A$. Thus, \textit{DROP-OUT(A)} = $\{xz|xyz\in A \text{ where } x, z \in \Sigma^{*}, y \in \Sigma\}$}. Show that the class of regular languages is closed under \textit{DROP-OUT} operation. Give both a proof by picture and a more formal proof by construction as in Theorem 1.47.
+
+
+\subsection{Sipser 1.49}%
+\label{subsec:sipser1.49}
+
+\begin{enumerate}
+  \item[a.] Let  $B = \{1^{k}y | y \in \{0,1\}^{*} \text{ and } y \text{ contains at least } k \;\mathtt{ 1} \text{s, for } k \ge 1\}$. Show that $B$ is a regular language.
+\end{enumerate}
+
+Bevis af regulært udtryk:
+\[  \mathtt{1(0} \cup \mathtt{1)}^{*} \mathtt{1(0} \cup \mathtt{1)}^{*} \]
+
+\begin{enumerate}
+  \item[b.] Let $C = \{1^{k}y | y \in \{\mathtt{0,1}\}^{*} \text{ and } y \text{ contains at most }k \;\mathtt{1} \text{s, for } k \ge 1\}.$
+        Show that $C$ isn't a regular language.
+\end{enumerate}
+
+Forskellen her er at det er \textbf{højest} $k$ 1'ere, og ikke mindst.
+Vi beviser med modstrid v.h.a. pumpelemmaet.
 
 
 
