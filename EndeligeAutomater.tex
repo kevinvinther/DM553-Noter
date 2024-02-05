@@ -859,6 +859,9 @@ Regulært udtryk:
 
 Siden det beskrives af at regulært udtryk er det regulært.
 
+
+
+
 \subsection{Sipser 1.43}%
 \label{subsec:sipser1.43}
 
@@ -884,6 +887,37 @@ Forskellen her er at det er \textbf{højest} $k$ 1'ere, og ikke mindst.
 Vi beviser med modstrid v.h.a. pumpelemmaet.
 
 
+\subsection{Sipser 1.41}%
+\label{subsec:sipser1.41}
+\textbf{For languages $A$ and $B$, let the \textit{perfect shuffle} of $A$ and $B$ be the language}
+\[ \{w \; | \; w = a_{1}b_{1} \cdots a_{k}b_{k}, \text{ where } a_{1} \cdots a_{k} \in A \text{ and }b_{1} \cdots b_{k} \in B, \text{ each }a_{i}, b_{i} \in \Sigma\} \]
+\textbf{Show that the class of regular languages is closed under shuffle.}
+
+Til at gøre dette laver vi simpelt en NFA hvis start state er start staten af $a$, og accept er accept staten i $b$. Derudover er transitionsfunktionen en funktion der først går fra $a_{1}$ til $b_{1}$, så til $a_{2}$ til $b_{2}$ etc. Siden vi kan lave en sådan automat er perfect shuffle regulært.
+
+\subsection{Sipser 1.38}%
+\label{subsec:sipser1.38}
+
+\textbf{An all-NFA $M$ is a 5-tuple $(Q, \Sigma, \delta, q_{0}, F)$ that accepts $x \in \Sigma^{*}$ if \textit{every} possible state that $M$ could be in after reading input $x$ is a state from $F$. Note, in contrast, that an ordinary   NFA accepts a string if \textit{some} state among these possible states is an accept state. Prove that all-NFAs recognize the class of regular languages.}
+
+En DFA er en NFA, men med nogle ekstra begræsninger, herunder at den kun kan være i én accept state af gangen. En NFA er en generaliseret DFA. Dermed bevist.
+
+\subsection{Sipser 1.54}%
+\label{subsec:sipser1.54}
+\textbf{onsider the language \( F = \{a^i b^j c^k \mid i,j,k \geq 0 \text{ and if } i = 1 \text{ then } j = k\} \).}
+
+\begin{enumerate}
+    \item[a.] Show that \( F \) is not regular.
+\end{enumerate}
+
+I've no clue
+
+\begin{enumerate}
+    \item[b.] Show that \( F \) acts like a regular language in the pumping lemma. In other words, give a pumping length \( p \) and demonstrate that \( F \) satisfies the three conditions of the pumping lemma for this value of \( p \).
+\end{enumerate}
+\begin{enumerate}
+    \item[c.] Explain why parts (a) and (b) do not contradict the pumping lemma.
+\end{enumerate}
 
 
 
