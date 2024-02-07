@@ -81,6 +81,8 @@ Vi vil nu kigge på den formelle definition på en kontekstfri grammatik.
 
 Givet $u, v$ og $w$ er strenge af variabler, og terminale, og $A \rightarrow w$ er en regel af grammatikken, så siger vi at $uAv$ giver (\textit{yields}) $uwv$, skrevet $uAv \Rightarrow uwv$. Vi siger at $u$ udleder $v$, skrevet, $u \stackrel{*}{\Rightarrow} v$, hvis $u = v$, eller hvis en sekvens $u_{1}, u_{2}, \ldots, u_{k}$ eksisterer når $k \geq 0$ og $u \Rightarrow u_{1} \Rightarrow u_{2} \Rightarrow \ldots \Rightarrow u_{k} \Rightarrow v$. Sproget af grammatikken er $\{w \in \Sigma* | S \stackrel{*}{\Rightarrow} w\}$.
 
+Altså betyder det, at hvis $u$ \textit{giver} $v$, så tager det kun ét skridt. Hvis $u$ \textit{udleder} $v$ tager det mere end ét skridt.
+
 \newpage
 \subsection{Tvetydighed}%
 \label{sub:tvetydighed}
