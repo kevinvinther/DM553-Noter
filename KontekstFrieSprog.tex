@@ -90,7 +90,7 @@ En grammatik der kan generere den sammen streng på to eller flere forskellige m
 \langle EXPR \rangle \rightarrow \langle EXPR \rangle + \langle EXPR \rangle | \langle EXPR \rangle + \langle EXPR \rangle | ( \langle EXPR \rangle ) | a
 \]
 
-Strengen $\mathtt{a + a \times a}$ kan generes tvetydigt: enten $$\langle EXPR \rangle \Rightarrow \langle EXPR \rangle + \langle EXPR \rangle \Rightarrow \langle EXPR \rangle + \langle EXPR \rangle \times \langle EXPR \rangle \Rightarrow \cdots \Rightarrow a + a \times a$$ eller $$\langle EXPR \rangle \Rightarrow \langle EXPR \rangle \times \langle EXPR \rangle \Rightarrow \langle EXPR \rangle + \langle EXPR \rangle \times \langle EXPR \rangle \Rightarrow \cdots \Rightarrow a + a \times a$$.
+Strengen $\mathtt{a + a \times a}$ kan genereres tvetydigt, enten: $$\langle EXPR \rangle \Rightarrow \langle EXPR \rangle + \langle EXPR \rangle \Rightarrow \langle EXPR \rangle + \langle EXPR \rangle \times \langle EXPR \rangle \Rightarrow \cdots \Rightarrow a + a \times a$$ eller $$\langle EXPR \rangle \Rightarrow \langle EXPR \rangle \times \langle EXPR \rangle \Rightarrow \langle EXPR \rangle + \langle EXPR \rangle \times \langle EXPR \rangle \Rightarrow \cdots \Rightarrow a + a \times a$$.
 
 \begin{definition}[Tvetydighed]
 En streng $w$ er udledt \textbf{\textit{tvetydigt}} i en kontekstfri grammatik $G$ hvis den har to eller flere venstremest udledninger. Grammatik $G$ er \textit{tvetydig} hvis den genererer en streng tvetydigt.
