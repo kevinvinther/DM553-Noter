@@ -380,6 +380,44 @@ $q_4$                                                                   &       
 %% TODO: Nået til side  114
 
 
+\subsection{Konvertering af CFG til PDA}%
+\label{subsec:pdacfgconvert}
+\begin{theorem}
+  \label{teo:pdacfgconvert}
+Hvis $A$ er et kontekstfrit sprog, findes der en pushdown automat der genkender $A$.
+\end{theorem}
+
+Vi beviser ved at konvertere en kontekstfri grammatik til en pushdown automat. En grammatik genererer strenge, hvor en PDA genkender sprog.
+
+Vi vil gerne have en PDA der begynder med startvariablen og gætter på substitutions. Den gemmer de mellemliggende genereret sterenge på stakken, og når den er færdig sammenligner den med inputtet.
+
+
+\begin{proof}
+  Vi beviser ved konstruktion. Konverter CFG'en for $A$ til den følgende PDA:
+  \begin{enumerate}
+    \item Push startsymbolet på stakken
+    \item Hvis toppen af stakken er en:
+          \begin{enumerate}
+            \item \textbf{Variabel}: erstat med højrehåndssiden af reglen (nondeterminisme tillader flere)
+            \item \textbf{Terminal}: pop den og match med næste input symbol.
+          \end{enumerate}
+    \item Hvis stakken er tom, så accepter.
+  \end{enumerate}
+\end{proof}
+
+
+\subsection{Ækvivalens af CFG og PDA}%
+\label{subsec:cfgpdaequiv}
+
+\begin{theorem}
+$A$ er et kontekst frit sprog hvis og kun hvis\footnote{Ligheden går begge veje, altså $\leftrightarrow$} en PDA genkender $A$
+\end{theorem}
+
+\begin{proof}
+At en CFL kan konverteres til en PDA er blevet vist i Teorem~\ref{teo:pdacfgconvert}. At en PDA kan konverteres til en CFG ... % TODO: Mangler
+\end{proof}
+
+
 
 
 \end{definition}
