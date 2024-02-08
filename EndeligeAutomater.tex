@@ -13,11 +13,13 @@ Endelige automater er en type abstrakt maskine med endelig hukommelse, som kan b
 \section{Deterministiske Endelige Automater}%
 \label{sec:DFA}
 
+\index{Deterministisk Endelig Automat}
 I en deterministisk endelig automat (DFA) vil man altid vide hvilken state er den næste man havner i, efter et givet symbol. Dette bestemmes ud fra \textit{transitionsfunktionen}, som tager en state, et symbol, og giver en ny state som output. Denne nye state er automatens næste state.
 
 Vi kan beskrive en DFA grafisk ved hjælp af \textit{state diagrams}. Et eksempel på et sådan diagram kan ses i Figur~\ref{fig:sipser1.6}. Som kan ses på denne figur består den af nogle cirkler, \texttt{states}, nogle pile, \texttt{transition pile}, og en underlig dobbelt-cirkel, \texttt{accept state}. States er en form for hukommelse som en DFA kan være i på et givet tidspunkt. Efter at have læst tre karakterer af en streng, \textit{kan} den eksempelvis være i $q_{3}$, eller $q_{90}$, eller $q_{fisk}$, eller bare $fisk$. Pointen er at navnet er ligegyldig, og der er ikke en nødvendig rækkefølge for \textit{alle} strenge. Den første pil, som peger ind til $q_{1}$ er startpilen, som indikerer \textit{initial state}, altså den state der startes i når strengen skal læses. $q_{2}$, som er den state med dobbeltcirkler, er den \textit{accepterende state}, og betyder at hvis en DFA ender i denne state når den er færdig med at læse en streng, er strengen accepteret. Hvis den ikke ender i denne state, er strengen ikke accepteret. Det skal siges at det er tilladt at have mere end en accept state.
 
 \begin{figure}[ht]
+  \index{State Diagram!Deterministisk Endelig Automat}
   \centering
   \begin{tikzpicture}
     \node[state, initial] (q1) {$q_1$};
@@ -72,6 +74,7 @@ Læg mærke til at \textbf{hvis en maskine ikke accepterer nogen strenge}, så g
 
 Vi vil gerne have en bedre forståelse af hvordan en DFA egentlig \textit{komputerer}, altså, hvordan den kommer fra $A$ til $B$. Vi introducerer her en formel definition af komputering:
 
+\index{Komputering!Deterministisk Endelig Automat}
 \begin{definition}[Komputering for en DFA]
 \label{def:DFAKomputering}
   Lad $M = (Q, \Sigma, \delta, q_{0}, F)$ være en endelig automat, og lad $w = w_{1}w_{2} \cdots w_{n}$ være en streng hvor alle $w_i$ er et symbol som er medlem af alfabetet $\Sigma$. $M$ accepterer her $w$ hvis en sekvens af states $r_{0}, r_{1}, \ldots, r_{n}$ i $Q$ eksisterer med tre betingelser:
@@ -84,6 +87,7 @@ Vi vil gerne have en bedre forståelse af hvordan en DFA egentlig \textit{komput
 
 Det vil altså sige at \textbf{betingelse 1} siger at maskinen starter i den initielle state. \textbf{Betingelse 2} siger at ud fra reglerne af transitionsfunktionen går maskinen fra state til state. \textbf{Betingelse 3} siger at maskinen accepterer dets input hvis den ender i en accept state.
 
+\index{Regulære Sprog!Defineret}
 \begin{definition}
 Et sprog kaldes et \textbf{regulært sprog} hvis en endelig automat genkender det.
 \end{definition}
@@ -94,6 +98,7 @@ Et sprog kaldes et \textbf{regulært sprog} hvis en endelig automat genkender de
 
 Som beskrevet i sektionen om deterministiske endelige automater, vil man altid vide, givet en state og et symbol, hvad den næste state er. Dette er hvad der gør DFA'er anderledes fra NFA'er. I nondeterministiske endelige automater er der ikke kun én, men flere mulige veje som den kan gå, givet en eller flere symboler. I Figur~\ref{fig:sipser1.27} ses et eksempel på et state diagram af en NFA.
 
+\index{State Diagram!Nondeterministisk Endelig Automat}
 \begin{figure}[ht]
   \centering
   \begin{tikzpicture}[node distance=2.0cm]
@@ -120,6 +125,7 @@ En vigtigt ting med NFA'ere, er at det er en \textit{generalisering} af en DFA. 
 
 Hvis vi kigger på den formelle, matematiske, definition af en NFA vil vi se at forskellen ligger i \textit{transitionsfunktionen}. Den formelle definition beskrives nu.
 
+\index{Nondeterministisk Endelig Automat}
 \begin{definition}
   \label{def:nfa}
   En \textbf{\textit{nondeterministisk endelig automat}} er en $5-$tuple ($Q, \Sigma, \delta, q_{0}, F$), hvor
@@ -160,6 +166,7 @@ Husk på at den tomme streng følges uanset input, trods det måske ikke er bem�
 
 Vi vil nu kigge på definitionen af komputering for en NFA.
 
+\index{Komputering!Nondeterministisk Endelig Automat}
 \begin{definition}[Komputering for en NFA]
   \label{def:NFAKomputering}
   Lad $N = (Q, \Sigma, \delta, q_{0}, F)$ være en NFA og $w$ være en streng over alfabetet $\Sigma$. Vi siger at $N$ \textbf{accepterer} $w$ hvis vi kan skrive $w$ som $w = y_{1}y_{2} \cdots y_{m}$, hvor hvert $y_{i}$ er et medlem af $\Sigma_{\varepsilon}$ og en sekvens af states $r_{0}, r_{1}, \ldots, r_{m}$ eksisterer i $Q$ med tre betingelser:
@@ -178,6 +185,9 @@ Der er tidligere beskrevet at en NFA blot er en generalisering af en DFA. Da det
 \begin{theorem}
 Hver nondeterministisk endelig automat har en ækvivalent deterministisk endelig automat.
 \end{theorem}
+
+  \index{Ækvivalens}
+Vi siger at to maskiner er \textbf{ækvivalente} hvis de genkender samme sprog.
 
 \begin{proof}
   Lad $N = (Q, \Sigma, \delta, q_{0}, F)$ være en NFA der genkender et sprog $A$. Vi konstruerer DFA $M = (Q', \Sigma', \delta', q_{0}', F')$ til at genkende $A$. Først kigger vi på tilfældet hvor der ingen $\varepsilon$ pile er tilstæde, for at simplificere processen. Efter dette udvider vi så $\varepsilon$ pile også tages i betragtning.
@@ -203,6 +213,7 @@ Med denne nye samling af sæt, skal vi erstatte både startstaten og transitions
 
 Frem for at have dette i DFA sektionen som der bliver gjort i Sipser, mener jeg at det giver mere mening at have den til sidst, hvor man kender til alle koncepterne. De regulære operationer er operationer der kan bruges på sprog, som resulterer i et nyt regulært sprog. Vi vil kigge på følgende regulære operationer:
 
+\index{Regulære Operationer}
 \begin{definition}
   Lad $A$ og $B$ være sprog. Vi definerer de regulære operationer \textbf{fællesmængde} (union), \textbf{sammenkædning} (concatenation) og \textbf{stjerne} (star, kleene star), som følger:
   \begin{enumerate}
@@ -228,6 +239,8 @@ Vi kigger på et eksempel for at demonstrere bruget af alle operationer.
 
 Tidligere blev det nævnt at, givet to regulære sprog (eller et, i tilfældet af stjerne-operationen), så vil de producere et nyt, regulært sprog. Dette vil vi gerne for hver af disse operationer, først kigger vi på den eneste vi kan bevise med DFA'er, og efter går vi videre til dem som lettere kan bevises med NFA'er. Vi kalder det lukket, når en operation der tager to argumenter af samme klasse, giver et output i samme klasse. Eksempelvis er multiplikation og addition lukket under positive heltal, men hverken subtraktion eller division er\footnote{Eksempelvis giver $1-100$ et negativt tal, og $1/2$ et rationelt tal.}.
 
+\index{Regulære Sprog!Lukket under fællesmængde}
+\index{Regulære Sprog!Lukket under snit}
 \begin{theorem}
 Klassen af regulære sprog er lukket under fællesmængde operationen.
 \end{theorem}
@@ -321,6 +334,7 @@ Konstruér $N = (Q, \Sigma, \delta, q_{0}, F)$ til at genkende $A_1 \cup A_{2}$.
 \end{proof}
 
 
+\index{Regulære Sprog!Lukket under sammenkædning}
 \begin{theorem}
   \label{the:sipser1.47}
 Klassen af regulære sprog er lukket under sammenkædningsoperationen.
@@ -328,6 +342,7 @@ Klassen af regulære sprog er lukket under sammenkædningsoperationen.
 
 % TODO: Lav visuelt bevis, og vær mere deskriptiv
 Et visuelt bevis er her undladt, trods at det er meget deskriptivt, fordi jeg er for doven. Det kommer på min todo liste. Hvis jeg ender med ikke at inkludere det, kan det ses på side 61 i sipser.
+
 
 \begin{proof}
   Lad $N_{1} =(Q_{1}, \Sigma, \delta_{1}, q_{1}, F_{1})$ genkende $A_{1}$, og $N_{2} = (Q_{2}, \Sigma, \delta_{2}, F_{2})$ genkende $A_{2}$.
@@ -350,6 +365,8 @@ Et visuelt bevis er her undladt, trods at det er meget deskriptivt, fordi jeg er
   \end{enumerate}
 \end{proof}
 
+
+\index{Regulære Sprog!Lukket under stjerne}
 \begin{theorem}
 Klassen af regulære sprog er lukket under stjerneoperationen.
 \end{theorem}
@@ -387,6 +404,7 @@ Der findes mange sprog der er regulære, men det er også vigtigt at vide om et 
 Et hovedteorem i at finde ud af om et sprog, som for eksempel sproget beskrevet før, er regulært, er \textit{pumpelemmaet}. Ifølge pumpelemmaet gælder det at alle regulære sprog har en specifik egenskab, og dermed, hvis et sprog ikke har denne egenskab er det ikke et regulært sprog.
 
 \begin{theorem}[Pumpelemmaet]
+  \index{Pumpelemma!Regulære Sprog}
   \label{the:pumpelemma}
   Lad $A$ være et regulært sprog, og $p$ (\textbf{pumpelængden}) være et tal, hvor hvis $s$ er en streng i $A$ af længde mindst $p$, så kan $s$ brydes ned i mindre stykker, $s = xyz$, som opfylder de følgende betingelser:
   \begin{enumerate}

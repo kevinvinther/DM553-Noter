@@ -7,10 +7,16 @@
 %%%
 \chapter{Kontekstfrie Sprog}
 
+\index{Kontekstfri Grammatik}
+\index{Kontekstfri Sprog!Defineret}
 I det tidligere kapitel om endelige automater, så vi den klasse af sprog som de genkender, regulære sprog, men vi så også eksempler på sprog som ikke er regulære, og hvordan dette kan bevises. I dette kapitel vil vi introducere \textit{kontekstfrie grammatikker} som er stærkere end endelige automater i deres deskriptionskraft. Sprogene der genkendes af kontekstfrie grammatikker kaldes \textit{kontekstfrie sprog}. Ydermere introducerer vi \textit{stakautomater} (pushdown automata på engelsk) som er en klasse af maskiner der genkender kontekstfrie sprog.
 
+Et sprog kaldes \textit{kontekstfri}, fordi dets udledning\footnote{Definition for udledning  er i starten af Sektion~\ref{sec:cfg}} \textit{ikke} afhænger af dens kontekst, e.g., hvis du erstatter $A$ i $uAv$ så er det ikke afhængigt af $u$ eller $v$.
+
 \section{Kontekstfrie Grammatikker}
-En grammatik består af en samling af \textbf{substitueringsregler}, også kaldet \textit{produktioenr}. Hver regel forekommer som en linje i grammatikken,  og består af et symbol efterfulgt af en pil efterfulgt af en streng. Følgende grammatik er et eksempel på en kontekstfri grammatik $G_{1}$:
+\label{sec:cfg}
+\index{Produktioner}
+En grammatik består af en samling af \textbf{substitueringsregler}, også kaldet \textit{produktioner}. Hver regel forekommer som en linje i grammatikken,  og består af et symbol efterfulgt af en pil efterfulgt af en streng. Følgende grammatik er et eksempel på en kontekstfri grammatik $G_{1}$:
 \begin{equation}
   \tag{$G_{1}$}
   \begin{split}
@@ -21,10 +27,13 @@ En grammatik består af en samling af \textbf{substitueringsregler}, også kalde
   \label{eqn:G1}
 \end{equation}
 
-Symbolet på venstresiden kaldes en \textit{variabel}\footnote{Kært barn har mange navne, jeg har også hørt non-terminal og, simpelt, LHS.}. Strengen (højresiden) består af variabler og andre symboler, kaldet \textit{terminale}. Terminale minder om alfabetet fra en endelig automat, da disse er de endelige symboler, der udgør en resulterende streng\footnote{Dette vil vi komme ind på i mere detalje senere.}. Variabler er oftest repræsenteret som store bogstaver, hvor terminale kan være små bogstaver, tal, eller specielle symboler (såsom \#.) En af variablerne (venstrehåndssiden) bliver udpeget til at være \textbf{startvariablen}. Denne variabel skal alle udledninger\footnote{En udledning bliver beskrevet i mere detalje i næste afsnit.} af grammatikken starte på (analogt til en start state i en endelig automat.)
+\index{Variabel}
+\index{Terminal}
+Symbolet på venstresiden kaldes en \textit{variabel}\footnote{Kært barn har mange navne, jeg har også hørt non-terminal og, simpelt, LHS.}. Strengen (højresiden) består af variabler og andre symboler, kaldet \textit{terminale}. Terminale minder om alfabetet fra en endelig automat, da disse er de endelige symboler, der udgør en resulterende streng\footnote{Dette vil vi komme ind på i mere detalje senere.}. Variabler er oftest repræsenteret som store bogstaver, hvor terminale kan være små bogstaver, tal, eller specielle symboler (såsom \#.) En af variablerne (venstrehåndssiden) bliver udpeget til at være \textbf{startvariablen}. Denne variabel skal alle udledninger af grammatikken starte på (analogt til en start state i en endelig automat.)
 
+\index{Udledning}
 For at beskrive et sprog med en grammatik, \textit{udleder} vi strenge fra grammatikken. Dette bliver gjort systematisk ved at \textit{substituere} variabler med andre variabler eller terminale. Eksempeltvis kan gramatikken \ref{eqn:G1} udlede strengen \texttt{000\#111}. En udledning af denne streng i \ref{eqn:G1} er følgende: $A \Rightarrow \mathtt{0}A \mathtt{1} \Rightarrow \mathtt{00}A \mathtt{11} \Rightarrow \mathtt{000}A \mathtt{111} \Rightarrow \mathtt{000}B \mathtt{111} \Rightarrow \mathtt{000\#111}$. En måde hvorpå du kan vise dette grafisk er \textit{parse-træer}. Et eksempel kan ses i Figur~\ref{fig:parsetreeg1}, som viser et parsetræ for strengen \texttt{000\#111} i grammatikken \ref{eqn:G1}.
-
+\index{Træ!Parse}
 \begin{figure}[ht]
   \centering
 \begin{tikzpicture}[>=latex]
@@ -83,10 +92,65 @@ Givet $u, v$ og $w$ er strenge af variabler, og terminale, og $A \rightarrow w$ 
 
 Altså betyder det, at hvis $u$ \textit{giver} $v$, så tager det kun ét skridt. Hvis $u$ \textit{udleder} $v$ tager det mere end ét skridt.
 
+
+\newpage
+
+\subsection{Regularitet}%
+\label{subsec:cflregularity}
+
+Alle regulære sprog er også kontekstfri sprog. Det vil altså sige, at kontekstfri sprog \textit{udvider} på regulære sprog, og kan mere, end et regulært sprog kan.
+
+\begin{theorem}
+  \label{teo:cflregularity}
+Alle regulære sprog er også kontekstfri.
+\end{theorem}
+\begin{proof}
+  Lad $M = (Q, \Sigma, \delta, q_{0}, F)$ være en DFA med $L(M) = L$, $Q = \{q_{0}, q_{1}, \ldots, q_{k}\}$. Vi konsturerer en kontekstfri grammatik $G = (V, \Sigma, R, S)$ hvor,
+  \begin{enumerate}
+    \item $V = \{X_{0}, X_{1}, \ldots, X_{k}\}$
+    \item $R$ konstrueres således:
+          \begin{itemize}
+            \item Hvis $\delta(q_{i},a) = q_{j}$ så $X_{i} \rightarrow a X_{j} \in R$.
+            \item Hvis $q_{l} \in F$ så $X_{l} \rightarrow \varepsilon \in R$.
+          \end{itemize}
+    \item $X_{0}$ er startsymbolet i $G$.
+  \end{enumerate}
+
+  Antag at $w \in L, w = a_{1}a_{2} \cdots a_{n}$:
+  \begin{center}
+
+  \begin{tikzpicture}[node distance=1cm]
+    \node[state, initial] (q0) {$q_0$};
+    \node[state, right=of q0] (q1) {$q_{i_{1}}$};
+    \node[state, right=of q1] (q2) {$q_{i_{2}}$};
+    \node[label, right=of q2] (cdots) {$\cdots$};
+    \node[state, accepting, right=of cdots] (qn) {$q_{i_{n}}$};
+
+    \path[->]
+    (q0) edge node {$a_{1}$} (q1)
+    (q1) edge node {$a_{2}$} (q2)
+    (q2) edge node {} (cdots)
+    (cdots) edge node {$a_{n}$} (qn);
+    % (q1) edge[bend left] node {\texttt{1}} (q2)
+    % (q1) edge[loop above] node {\texttt{0}} ()
+    % (q2) edge[bend left] node {\texttt{0}} (q3)
+    % (q2) edge[loop above] node {\texttt{1}} ()
+    % (q3) edge[bend left] node {\texttt{0,1}} (q2);
+  \end{tikzpicture}
+  \end{center}
+
+  Så \[X_{0} \Rightarrow a_{1}X_{i_{1}} \Rightarrow a_{1}a_{2}X_{i_{2}} \Rightarrow \cdots \Rightarrow a_{1}a_{2} \cdots a_{n}X_{i_{n}} \Rightarrow a_{1}a_{2} \cdots a_{n} = w\]
+
+
+  Dermed bevist at regulære sprog er et subset af kontekstfri sprog.
+\end{proof}
+
+
 \newpage
 \subsection{Tvetydighed}%
 \label{sub:tvetydighed}
 
+\index{Tvetydig}
 En grammatik der kan generere den sammen streng på to eller flere forskellige måder (og dermed have mere end ét parsetræ for én streng), kaldes \textit{tvetydig}. For eksempel er den følgende grammatik tvetydig:
 \[
 \langle EXPR \rangle \rightarrow \langle EXPR \rangle + \langle EXPR \rangle | \langle EXPR \rangle + \langle EXPR \rangle | ( \langle EXPR \rangle ) | a
@@ -104,8 +168,10 @@ Ofte, hvis man har en tvetydig grammatik, er det muligt at konvertere den til en
 \subsection{Chomsky Normal Form}%
 \label{sub:cnf}
 
-Chomsky Normal Form er en simple form af en kontekstfri grammatik.
+Chomsky Normal Form er en form af en kontekstfri grammatik. Bemærk at den også kaldes ``Chomsky Grammar''.
 
+
+\index{Chomsky Normal Form}
 \begin{definition}[Chomsky Normal Form]
   En kontekstfri grammatik er i \textbf{\textit{Chomsky Normal Form}} hvis hver regel har formen
   \begin{equation*}
@@ -253,6 +319,7 @@ Nu skal vi konvertere resten.
 \section{Pushdown Automater}%
 \label{sec:pushdownautomata}
 
+\index{Pushdown Automat}
 Pushdown Automata (PDA) er ligesom NFA'er, men med en \textbf{stak} tilføjet. Denne stak tillader at PDA'en kan genkende kontekstfrie sprog. Det vil altså sige at en PDA er ækvivalent i dens kraft med kontekstfrie grammatikker.
 
 \begin{figure}[ht]
@@ -314,11 +381,13 @@ En \textit{pushdown automat} er en 6-tuple $(Q, \Sigma, \Gamma, \delta, q_{0}, F
   \item $q_{0} \in Q$ er start staten
   \item $F \subseteq Q$ er sættet af accept states.
 \end{enumerate}
+\end{definition}
 
 \subsection{Pushdown Automat Komputering}%
 \label{subsec:PDAKomputering}
 
 
+\index{Komputering!Pushdown Automat}
 En PDA $M = (Q, \Sigma, \Gamma, \delta, q_{0}, F)$ komputerer som følger. Den accepterer input $w$ hvis $w$ kan skrives $w = w_{1} \cdots w_{m}$, hvor hvert $w_{i} \in \Sigma_{\varepsilon}$ og sekvensen af states $r_{0}, r_{1} \ldots, r_{m} \in Q$ og strenge $s_{0}, s_{1}, \ldots, s_{m} \in \Gamma^{*}$ eksisterer som tilfredsstiller følgene betinglser, hvor $s_{i}$ repreæsenterer sekvensen af stakindhold som $M$ har på den accepterende afdeling af komputering.
 \begin{enumerate}
   \item $r_{0} = q_{0}$ og $s_{0} = \varepsilon$. Altså starter vi ved start staten og har en tom stak.
@@ -355,7 +424,9 @@ $q_4$                                                                   &       
   \end{enumerate}
           Altså betyder det at når den er i state 1, og den ser en tom stak, så pusher den \$ som symboliserer enden på strengen skal være nået. Når den er ved state 2, stakken er tom (den tomme streng), og den ser et 0, så skal den forblive ved state 2, og pushe et 0. Dette bliver den ved med for alle 0'er muligt. Hvis den måder et 1 tal når der er et 0 på stakken imens den er i state 2, skifter den til state 3, og popper fra stakken. Sidst, når den er i state 3 og strengen er færdiglæst, og der kun er et \$ tilbage på stakken, så er strengen accepteret.
 
+
           \begin{figure}[ht]
+            \index{State Diagram!Pushdown Automat}
             \centering
             \begin{tikzpicture}[>=Stealth,shorten >=1pt,node distance=2.8cm,on grid,auto]
               \node[state, accepting, initial] (q1) {$q_1$};
@@ -413,14 +484,161 @@ Vi vil gerne have en PDA der begynder med startvariablen og gætter på substitu
 $A$ er et kontekst frit sprog hvis og kun hvis\footnote{Ligheden går begge veje, altså $\leftrightarrow$} en PDA genkender $A$
 \end{theorem}
 
+\begin{lemma}
+Hvis et sprog er kontekstfrit, så er der en PDA som genkender det.
+\end{lemma}
+
+Dette har vi allerede bevist i Teorem~\ref{teo:pdacfgconvert}.
+
+\begin{lemma}
+Hvis en PDA genkender et sprog er det kontekstfrit.
+\end{lemma}
+% Nået til 12:13 i video
+Beviset for dette er mere kompliceret end omvendt. Vi beviser trinvist.
+
 \begin{proof}
-At en CFL kan konverteres til en PDA er blevet vist i Teorem~\ref{teo:pdacfgconvert}. At en PDA kan konverteres til en CFG ... % TODO: Mangler
+  Trin 1:\\
+  \noindent
+  Vi vil gerne modificere PDA'en til hvad der kaldes en \textit{begrænset} PDA. En begrænset PDA opfylder følgende krav:
+  \begin{itemize}
+    \item Den har én accept state (brug epsilon-pile fra de gamle til den nye)
+    \item Stakken skal altid være tømt før en streng accepteres
+    \item Hver transition popper eller pusher et symbol, men ikke begge.
+          \begin{itemize}
+            \item For eksempel, hvis du både popper og så pusher, i stedet lav én transition der popper, og så én der pusher for at få samme effekt.
+            \item Det er heller ikke tilladt at lade være med at gøre noget med stakken; derfor kan man i stedet have to transitions: én der pusher et nyt symbol, og så en epsilon transition der popper samme symbol.
+          \end{itemize}
+  \end{itemize}
+  Trin 2:\\
+  \noindent
+  Vi vil gerne forstå hvordan en PDA fungerer i mere detalje. Hvis vi har en PDA med en stak indeholdende kun slutsymbolet, $\$$, og der så bliver processeret en hel streng, så regner vi med at slutsymbolet er det eneste tilbage på stakken. Vi kan videreføre dette, til hvis stakken allerede har nogle elementer i sig. Hvis dette er tilfældet, og den derefter læser en streng $w$, så vil den have de samme elementer i sig efter, altså \textbf{der bliver ikke rørt ved den del af stakken der ikke er pushet under gennemgang af en streng.}\\\\
+  \noindent
+  Trin 3:\\
+  \noindent
+  Grammatikken $G$. For alle mulige valg af states, $p, q \in Q(m)$, vil $G$ indeholde variablen $A_{pq}$, som vil generere alle strenge $w \in \Sigma^*$ hvor det gælder at den starter på en tom stak, gennemgår strengen, og ender på en tom stak (se trin 2.) Ved disse strenge er der to muligheder. Givet at en stak starter på level $l$, det vil sige, at stakken har $l$ elementer i sig, så kan stakken enten:
+  \begin{itemize}
+    \item konstant være over $l$ indtil strengen $w$ er processeret, \textbf{eller}
+    \item stakken kan gå tilbage til niveau $l$ før den går op igen, og så ned igen.
+  \end{itemize}
+  Husk at det ikke er muligt at gå under niveau $l$, og altså dermed ikke muligt at poppe stakken hvis man er på niveau $l$. Hvis vi i andet tilfælde siger at den state hvor stakken er tilbage på niveau $l$ hedder $r$, start staten hedder $p$, og slut staten hedder $q$, så vil vi gerne lave to regler: $A_{pr} \stackrel{*}{\Rightarrow} u$ og $A_{pr} \stackrel{*}{\Rightarrow}$ hvor det gælder at $w = uv$. I første tilfælde er det lidt nemmere; siden niveau $l$ ikke bliver ramt før state $q$, laver vi bare en regel $A_{rq} \stackrel{*}{\Rightarrow}$ \textit{delen efter første push, og før sidste pop}.
+  Vi vil nu gerne definere gramatikken baseret på mulighederne. Lad gramatikken $G = (V, \Sigma, R, S)$ hvor $V = \{A_{pq} \; |\; p,q \in Q(m)\}$, $S = A_{q_0q_{accept}}$. $R = \forall p,q,r,s \in Q(m)\; \forall t \in \Gamma \; \forall a, b \in \Sigma_\varepsilon :$
+  hvis
+
+  \begin{center}
+
+\begin{tikzpicture}[shorten >=1pt, node distance=2.4cm, on grid, auto]
+    \node[state, initial] (q1) {$p$};
+    \node[state, right=of q1] (q2) {$r$};
+
+    \path[->]
+    (q1) edge node {$a, \varepsilon \rightarrow t$} (q2);
+\end{tikzpicture}
+  \end{center}
+og
+\begin{center}
+
+\begin{tikzpicture}[>=Stealth,shorten >=1pt,node distance=2.4cm,on grid,auto]
+    \node[state, initial] (q1) {$s$};
+    \node[state, right=of q1] (q2) {$q$};
+
+    \path[->]
+    (q1) edge node {$b, t \rightarrow \varepsilon$} (q2);
+\end{tikzpicture}
+\end{center}
+  er transitions af $m$, så tilføj reglen $A_{pq} \rightarrow aA_{rs}b$ til $R$. Ydermere, $\forall p,q,r \in Q(m)$ tilføj $A_{pq} \rightarrow A_{pr}A_{rq}$ til $R$ og $\forall p \in Q$ tilføj $A_{pp} \rightarrow \varepsilon$ til $R$.
+\end{proof}
+
+Vi påstår her, at denne grammatik beskrevet i beviset kun genkender sproget som PDA'en genkender, og ikke mere. Altså, vil stakken forblive samme størrelse efter processering af strengen $x$.
+
+\begin{proof}
+Vi beviser ved induktion over antallet af skridt i udledelsen.
+
+Basis:\\
+\noindent
+1 Skridt: Hvis der kun er ét skridt, så er $p = q$ og $A_{pp} \rightarrow \varepsilon$ så $x \in \Sigma^{*}$.
+Overvej en udledning med $k+1$ skridt og kig på den første regel brugt i udledningerne. Hvis $A_{pq} \rightarrow aA_{rs}b$, så $x = ayb$ når $A_{rs} \mathrel{*}{\Rightarrow} y$ sidste udledning har $k$ skridt, så ved induktion gælder det at stakken forbliver samme størrelsen efter processering af $x$. Fra $a$ til $y$ kan der pushes, og fra $y$ til $b$ kan der poppes.
 \end{proof}
 
 
+\newpage
+\subsection{Non-kontekstfrie Sprog}%
+\label{subsec:noncfl}
+
+Ligesom der findes non-regulære sprog findes der også non-kontekstfrie sprog. Et eksempel på et sprog der ikke er regulært er $\{a^{n}b^{n} \;|\; n \ge 0\}\}$. Vi så dog også at dette sprog var kontekstfrit, men hvilke sprog er så ikke kontekst-frie? Sjovt nok kan vi udvide sproget en lille smule til $\{a^{n}b^{n}c^{n} \;|\; n \ge 0\}$ til at gøre det ikke-kontekst frit. Vi introducerer her \textit{pumpelemmaet for kontekstfrie sprog} til at hjælpe med at bevise at et sprog \textbf{ikke} er kontekst-frit.
+
+\begin{theorem}[Puempelemmaet for kontekstfri sprog]
+  \index{Pumpelemma!Kontekstfri sprog}
+  For hvert kontekstfrit sprog $L$ eksisterer der et $p \in \mathbb{N}$ således at $\forall w \in L$ hvor $|w| \geq p\; \exists u,v,x,y,z \in \Sigma^{*}$ således at $w = uvxyz$ og
+  \begin{enumerate}
+    \item $uv^{i}xy^{i}z \in L, \forall i \ge 0$
+    \item $|vy| > 0$
+    \item $|vxy| \le p$
+  \end{enumerate}
+\end{theorem}
+
+\begin{proof}
+  Da $L$ er et kontekstfrit sprog, så eksisterer der en kontekstfri grammatik $G = (V, \Sigma, R, S)$ i Chomsky Normal Form, således at $L = L(G)$. Lad pumpelængden $p = 2^{|V| + 1}$.
+
+  Antag at $|w| \ge p$ og kig på et parsetræ, $T$, fra en udledning af $w$ i  $G$.\footnote{Jeg undlader at lave parsetræet her, da det sagtens kan forstås uden grafik.} Vi ved at hvert blad i parsetræet korresponderer til en terminal, og dermed må der være $\ge 2^{|V| +1}$ blade i parsetræet. Da du kun kan fordoble antallet af elementerne, må højden af træet ($h(T)$) være \textbf{mindst} $|V| + 2$. Dette betyder at der må være mindst 2 variabler der er gentagne.
+
+\begin{figure}[ht]
+  \centering
+\begin{tikzpicture}[>=latex]
+  % Nodes
+  \node (u1) at (0,0) {};
+  \node (u) at (0.5,-0.5) {$u$};
+  \node (u2) at (1,0) {};
+  \node (v1) at (2,0) {};
+  \node (v) at (2.5,-0.5) {$v$};
+  \node (v2) at (3,0) {};
+  \node (x1) at (4,0) {};
+  \node (x) at (4.5,-0.5) {$x$};
+  \node (x2) at (5,0) {};
+  \node (y1) at (6,0) {};
+  \node (y) at (6.5,-0.5) {$y$};
+  \node (y2) at (7,0) {};
+  \node (z1) at (8,0) {};
+  \node (z) at (8.5,-0.5) {$z$};
+  \node (z2) at (9,0) {};
+
+  % Upper nodes
+  \node (B2) at (4.5,3) {$B$};
+  \node (B1) at (4.5,4) {$B$};
+  \node (S) at (4.5,5) {$S$};
+
+  % Lines going down
+  \draw[-] (B1) to (B2);
+  \draw[-] (S) to (B1);
 
 
-\end{definition}
+  % Lines going to terminals
+  \draw[-] (B2) to[bend right] (x1);
+  \draw[-] (B2) to[bend left] (x2);
+  \draw[-] (x1) to (x2);
+
+  \draw[-] (B1) to[bend right] (v1);
+  \draw[-] (B2) to[bend right] (v2);
+  \draw[-] (v1) to (v2);
+
+  \draw[-] (B1) to[bend left] (y2);
+  \draw[-] (B2) to[bend left] (y1);
+  \draw[-] (y1) to (y2);
+
+  \draw[-] (B1) to[bend right] (u2);
+  \draw[-] (S) to[bend right] (u1);
+  \draw[-] (u1) to (u2);
+
+  \draw[-] (B1) to[bend left] (z1);
+  \draw[-] (S) to[bend left] (z2);
+  \draw[-] (z1) to (z2);
+
+\end{tikzpicture}
+  \caption{\label{fig:pumpelemmacfg} Gentagelse i parsetræ for CFG}
+\end{figure}
+
+I Figur~\ref{fig:pumpelemmacfg} kan man se hvordan gentagelsen i parsetræet fungerer. Dette betyder naturligvis derfor også at \textbf{både} $v$ og $y$ kan gentages 0 eller flere gange.
+\end{proof}
+
 
 
 
