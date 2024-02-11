@@ -481,6 +481,7 @@ Vi vil gerne have en PDA der begynder med startvariablen og gætter på substitu
 \label{subsec:cfgpdaequiv}
 
 \begin{theorem}
+\label{teo:cfgpdaquiv}
 $A$ er et kontekst frit sprog hvis og kun hvis\footnote{Ligheden går begge veje, altså $\leftrightarrow$} en PDA genkender $A$
 \end{theorem}
 
@@ -488,8 +489,91 @@ $A$ er et kontekst frit sprog hvis og kun hvis\footnote{Ligheden går begge veje
 Hvis et sprog er kontekstfrit, så er der en PDA som genkender det.
 \end{lemma}
 
-Dette har vi allerede bevist i Teorem~\ref{teo:pdacfgconvert}.
+Lad $A$ være et kontekstfrit sprog. Fra definitionen af et kontekstfrit sprog, at der findes en kotekstfri grammatik som genkender det. Vi vil så gerne lave en pushdown automat $P$ ud fra en kontekstfri grammatik, $G$. Følgende er en uformel beskrivelse af $P$'s processering.
+\begin{enumerate}
+  \item Placer EOF symbolet \textdollar på toppen af stakken, sammen med startvariablen.
+  \item Gentag de følgende skridt forevigt
+        \begin{enumerate}
+          \item[a.] Hvis toppen af stakken er et variabelsymbol $A$, så vælg nondeterministisk alle mulige regler for $A$, og substituer $A$ med strengen på højrehåndssiden af reglen.
+          \item[b.] Hvis toppen af stakken er en terminal $a$, så læs det næste symbol og sammenlign med $a$. Hvis de matcher, så gentag processen, og ellers reject denne gren.
+          \item[c.] Hvis toppen af stakken er \textdollar, så gå ind i accept staten. Dette accepterer så inputtet hvis det hele er læst.
+        \end{enumerate}
+\end{enumerate}
 
+Vi vil nu komme med det formelle bevis på dette.
+
+\begin{proof}
+  Lad $P = (Q, \Sigma, \Gamma, \delta, q_{\text{start}}, F)$.
+
+  Lad $q, r \in Q$, $a \in \Sigma_{\varepsilon}, s \in \Gamma_{\varepsilon}$. Vi vil gerne have at, når $P$ går fra state $q$ til state $r$, så pusher den $a$ og popper $s$. Her tillader vi pushing og popping af hele strenge, trods det ikke er en mulighede i en præcis definition, vi vil nu se hvordan det kan gøres.
+
+  Vi vil gerne pushe en hel streng $u = u_{1}u_{2} \cdots u_{l}$ til stakken. Dette kan vi implementere ved at introducere de nye states $q_{1} q_{2} \cdots q_{l-1}$, og sætte transitionsfunktionen som følger:
+
+  \begin{equation*}
+    \begin{split}
+      \delta (q,a,s) &\text{ indeholder } (q_{1}, u_{l}), \\
+      \delta (q_{1}, \varepsilon, \varepsilon) &= \{(q_{2}, u_{l-1})\}, \\
+      \delta (q_{2}, \varepsilon, \varepsilon) &= \{(q_{3}, u_{l-2})\}, \\
+                       &\vdots \\
+      \delta (q_{l-1}, \varepsilon, \varepsilon) &= \{(r, u_{1})\}.\\
+    \end{split}
+  \end{equation*}
+
+    Følgende billede klargører hvordan dette fungerer:
+
+    \begin{center}
+
+\begin{tikzpicture}[shorten >=1pt, node distance=2.8cm, on grid, auto]
+    \node[state] (q1) {$q$};
+    \node[state, below=of q1] (q2) {$r$};
+
+    \node[label, below right=1.4cm and 2.4cm of q1] (arrow) {$\Rightarrow$};
+
+    \path[->]
+    (q1) edge node {$a, s \rightarrow xyz$} (q2);
+\end{tikzpicture}
+\begin{tikzpicture}[shorten >=1pt, node distance=2.8cm, on grid, auto]
+    \node[state] (q1) {$q$};
+    \node[state, below right=0.5cm and 2.4cm of q1] (q11) {$q_{1}$};
+    \node[state, above right=0.4cm and 2.4cm of q2] (q12) {$q_{2}$};
+    \node[state, below=of q1] (q2) {$r$};
+
+    \path[->]
+    (q1) edge[bend left] node {$a, s \rightarrow z$} (q11)
+    (q11) edge[bend left] node {$\varepsilon, \varepsilon \rightarrow y$} (q12)
+    (q12) edge[bend left] node {$\varepsilon, \varepsilon \rightarrow x$} (q2);
+\end{tikzpicture}
+    \end{center}
+
+    Statesne i $P$, $Q = \{q_{\text{start}}, q_{\text{loop}}, q_{\text{accept}}\} \cup E$, hvor $E$  er sættet af states nødvendige for at implementere forenklingen vist før. Start staten er $q_{\text{start}}$, og accept staten er $q_{\text{accept}}$.
+
+    Transitionsfunktionen defineres som følger:
+
+    Først vil vi pushe symbolet \textdollar og $S$. Dermed $\delta(q_{\text{start}}, \varepsilon, \varepsilon) = \{ (q_{\text{loop}}, S \mathdollar )\}$. Så putter vi transitionerne for hovedskridtet af skridt 2:
+    Vi kigger på de forskellige tilfælde beskrevet før starten af beviset.
+    \begin{itemize}
+      \item Tilfældet hvor toppen af stakken er en variabel. Lad $\delta(q_{\text{loop}}, \varepsilon, A)  =\{ (q_{\text{loop}}, w \; | \; \text{ hvor } A \rightarrow w \text{ er en regel i }R)\}$
+      \item Tilfældet hvor toppen af stakken er en terminal. Lad $\delta(q_{\text{loop}}, a, a) = \{(q_{\text{loop}}, \varepsilon)\}$.
+      \item Tilfældet hvor toppen af stakken er \textdollar. Lad $\delta(q_{\text{loop}}, \varepsilon, \mathdollar) = \{(q_{\text{accept}}, \varepsilon)\}$.
+    \end{itemize}
+
+
+    Vi kan her se et statediagram for PDA'en $P$:
+
+\begin{tikzpicture}[shorten >=1pt, node distance=2.0cm, on grid, auto]
+    \node[state, initial] (q1) {$q_{\text{start}}$};
+    \node[state, below=of q1] (q2) {$q_{\text{loop}}$};
+    \node[state, accepting, below=of q2] (q3) {$q_{\text{accept}}$};
+
+    \path[->]
+    (q1) edge node {$\varepsilon, \varepsilon \rightarrow S \mathdollar$} (q2)
+    (q2) edge[loop right] node[align=center] {$\varepsilon, A \rightarrow w \; \; \text{ for reglen }A \rightarrow w$\\$a, a \rightarrow \varepsilon \; \;  \text{for terminalen } a$} (q2)
+    (q2) edge node {$\varepsilon, \mathdollar \rightarrow \varepsilon$} (q3);
+\end{tikzpicture}
+QED.
+\end{proof}
+
+Vi vil nu gerne bevise den omvendte del af Teorem~\ref{teo:cfgpdaquiv}.
 \begin{lemma}
 Hvis en PDA genkender et sprog er det kontekstfrit.
 \end{lemma}
@@ -501,8 +585,8 @@ Beviset for dette er mere kompliceret end omvendt. Vi beviser trinvist.
   \noindent
   Vi vil gerne modificere PDA'en til hvad der kaldes en \textit{begrænset} PDA. En begrænset PDA opfylder følgende krav:
   \begin{itemize}
-    \item Den har én accept state (brug epsilon-pile fra de gamle til den nye)
-    \item Stakken skal altid være tømt før en streng accepteres
+    \item Den har én accept state, $q_{\text{accept}}$ (brug epsilon-pile fra de gamle til den nye.)
+    \item Stakken skal altid være tømt før en streng accepteres.
     \item Hver transition popper eller pusher et symbol, men ikke begge.
           \begin{itemize}
             \item For eksempel, hvis du både popper og så pusher, i stedet lav én transition der popper, og så én der pusher for at få samme effekt.
@@ -548,16 +632,25 @@ og
   er transitions af $m$, så tilføj reglen $A_{pq} \rightarrow aA_{rs}b$ til $R$. Ydermere, $\forall p,q,r \in Q(m)$ tilføj $A_{pq} \rightarrow A_{pr}A_{rq}$ til $R$ og $\forall p \in Q$ tilføj $A_{pp} \rightarrow \varepsilon$ til $R$.
 \end{proof}
 
-Vi påstår her, at denne grammatik beskrevet i beviset kun genkender sproget som PDA'en genkender, og ikke mere. Altså, vil stakken forblive samme størrelse efter processering af strengen $x$.
+\begin{claim}
+Denne grammatik beskrevet i beviset kun genkender sproget som PDA'en genkender, og ikke mere. Altså, vil stakken forblive samme størrelse efter processering af strengen $x$.
+\end{claim}
 
 \begin{proof}
 Vi beviser ved induktion over antallet af skridt i udledelsen.
 
-Basis:\\
+Basis:\\ % TODO: Jeg er for træt til at kigge på den nu, men den er i hvert fald ikke færdig.
 \noindent
 1 Skridt: Hvis der kun er ét skridt, så er $p = q$ og $A_{pp} \rightarrow \varepsilon$ så $x \in \Sigma^{*}$.
-Overvej en udledning med $k+1$ skridt og kig på den første regel brugt i udledningerne. Hvis $A_{pq} \rightarrow aA_{rs}b$, så $x = ayb$ når $A_{rs} \mathrel{*}{\Rightarrow} y$ sidste udledning har $k$ skridt, så ved induktion gælder det at stakken forbliver samme størrelsen efter processering af $x$. Fra $a$ til $y$ kan der pushes, og fra $y$ til $b$ kan der poppes.
+Overvej en udledning med $k+1$ skridt og kig på den første regel brugt i udledningerne. Hvis $A_{pq} \rightarrow aA_{rs}b$, så $x = ayb$ når $A_{rs} \stackrel{*}{\Rightarrow} y$ sidste udledning har $k$ skridt, så ved induktion gælder det at stakken forbliver samme størrelsen efter processering af $x$. Fra $a$ til $y$ kan der pushes, og fra $y$ til $b$ kan der poppes.
 \end{proof}
+
+\begin{claim}
+Hvis $x$ kan bringe $P$ fra $p$ med en tom stak til $q$ med en tom stak, så genererer $A_{pq}$ x.
+\end{claim}
+
+% TODO: Mangler bevis.
+
 
 
 \newpage
