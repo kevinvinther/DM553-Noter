@@ -1,0 +1,145 @@
+\chapter{Indtroduktion}
+
+\textit{Deductive Reasoning} (deduktion på dansk) er måden hvorpå vi finder svar i matematik, for eksempel ved at finde $x$ i en ligning. Deduktion bruges også i \textit{beviser}, som er hvad vi kigger på i den her bog.
+
+\begin{definition}[Primtal]
+  Et primtal er et tal der ikke kan blive skrevet som et produkt af to mindre positive tal.
+\end{definition}
+
+\begin{definition}[Sammensat tal]
+Et sammensat tal er det et primtal ikke er, altså et tal som kan findes ved produktet af to andre tal. (\textit{Composite Number} på engelsk.)
+\end{definition}
+
+\begin{definition}[Formodning]
+Formodning, på engelsk \textit{conjecture} er en erklæring som endnu ikke er bevist.
+\end{definition}
+
+Der bliver i bogen givet følgende eksempel med heltal fra 2 til 10, hvorvidt de er primtal, og 2 opløftet i tallet minus 1, og om hvorvidt disse også er primtal:
+
+\begin{table}[]
+\centering
+\begin{tabular}{llll}
+\textit{$n$} & \textit{Er $n$ et primtal?} & \textit{$2^n-1$} & \textit{Er $2^n-1$ et primtal?} \\ \hline
+2            & ja                          & 3                & ja                              \\
+3            & ja                          & 7                & ja                              \\
+4            & nej, $4 = 2 \cdot 2$        & 15               & nej, $15 = 3 \cdot 5$           \\
+5            & ja                          & 31               & ja                              \\
+6            & nej, $6 = 2 \cdot 3$        & 63               & nej, $63 = 7 \cdot 9$           \\
+7            & ja                          & 127              & ja                              \\
+8            & nej, $8 = 2 \cdot 4$        & 255              & nej, $255 = 15 \cdot 17$        \\
+9            & nej, $9 = 3 \cdot 3$        & 511              & nej, $511 = 7 \cdot 73$         \\
+10           & nej, $10 = 2 \cdot 5$       & 1023             & nej, $1023 = 31 \cdot 33$
+\end{tabular}
+  \caption{\label{fig:primtal2n} Primtalssammenhæng mellem positive heltal og $2^{n}-1$}
+\end{table}
+
+Ud fra den her tabel kan man som matematiker lave det man på engelsk kalder \textit{conjectures} (i disse noter, og måske generelt på dansk, formodninger), hvor vi \textit{gætter} på at en erklæring er sand.
+
+\begin{conjecture}
+  \label{conj:nprime2nprime}
+Antag at $n$ er et heltal større end 1 og $n$ er et primtal. Så er $2^{n}-1$ også et primtal.
+\end{conjecture}
+\begin{conjecture}
+  \label{conj:nnotprime2nnotprime}
+Antag at $n$ er et heltal større end 1 og $n$ ikke er et primtal. Så er $2^{n}-1$ ikke et primtal.
+\end{conjecture}
+
+Desværre er disse formodninger forkerte, så snart $n > 10$. Hvis $n = 11$ får vi $11$ som er et primtal, men $2^{11}-1 = 2047 =  23 \cdot 89$, altså er det et sammensat tal. Dermed er $n = 11$ er \textit{modeksempel} til Formodning~\ref{conj:nprime2nprime}. Vi har dog stadig ikke modbevist Formodning~\ref{conj:nnotprime2nnotprime}. Vi kan aldrig være helt sikre på at denne formodning er sand udelukkende ved brug af eksempler. Dog kan vi bevise det ved et \textit{bevis}:
+\begin{proof}
+  Siden $n$ ikke er et primtal, så er der positive heltal $a$ og $b$ således at $a < n$ og $b < n$, og $n = ab$. Lad $x = 2^{b}-1$ og $y = 1+2^{b}+2^{2b} + \cdots + 2^{(a-1)b}$. Så
+
+  \begin{align*}
+    xy &= (2^{b}-1) \cdot (1+2^{b}2^{2b}+ \cdots + 2^{(a-1)b})\\
+       &= 2^{b} \cdot (1 + 2^{b} + 2^{2b} + \cdots + 2^{(a-1}b) - (1+2^{b}+2^{2b}+ \cdots + 2^{(a-1)b})\\
+       &= (2^{b}+ 2^{2b}+ 2^{3b}+ \cdots + 2^{ab}) - (1+2^{b}2^{2b}+ \cdots + 2^{(a-1)b})\\
+       &= 2^{ab}-1\\
+    &= 2^{n}-1
+  \end{align*}
+
+  Fordi $b < n$ kan vi konkludere at $x = 2^{b}-1 < 2^{n}-1$. Og siden $ab = n > a$ gælder det at $b > 1$. Derfor $x = 2^{b}-1>2^{1}-1=1$, så $y < xy = 2^{n}-1$. Dermed har vi vist at $2^{n}-1$ kan skrives som produktet af to positive tal $x$ o $y$, begge som har en værdi mindre end $2^{n}-1$. Dermed er $2^{n}-1$ \textbf{ikke} et primtal.
+\end{proof}
+
+Nu når den her formodning er bevist kalder vi den et \textit{teorem}.
+
+Cirka år 300 f.v.t. beviste Euklid  følgende teorem:
+\begin{theorem}
+Der er uendeligt mange primtal.
+\end{theorem}
+\begin{proof}
+  Antag at der kun er endeligt mange primtal. Lad $p_{1}, p_{2}, \ldots, p_{n}$ være en liste af alle primtal (vi kan have denne liste præcis fordi der er et endeligt antal primtal.) Lad $m = p_{1} \cdot \cdots \cdot p_{n}+1$. Bemærk at $m$ ikke er deleligt med $p_{1}$, da $m$ divideret med $p_{1}$ giver en kvotient af $p_{2}p_{3}\cdots p_n$ og en rest af 1. Af samme grund er $m$ ikke deleligt med nogen af $p_{2}, p_{3} \cdots p_{n}$.
+
+  Siden det nye tal $m$ er større end 1, så er det enten et sammensat tal eller et primtal. Hvis vi tantager at $m$ er et primtal, så har vi fundet et nyt primtal (da det ikke er et af alle hidtil kendte primtal.) Dette går imod vores antagelse at vores liste indeholder alle primtal.
+
+  Hvis vi så antager at $m$ er et produkt af primtal. Lad $q$ være en af de primtal i produktet. Så er $m$ deleligt med $q$. Men vi har allerede set at $m$ ikke er deleligt af nogen af tallene i listen (som vi har antaget er \textit{alle} primtal.) Dermed har vi igen et modstrid mod vores antagelse.
+
+  Dermed må der være uendeligt mange primtal.
+\end{proof}
+
+\begin{definition}[Mersenne Primtal]
+  Mersenne Primtal er primtal af formen $2^{n}-1$, opkaldt efter Fader Marin Mersenne (1588-1648), en Fransk monk og lærd som studerede disse tal.
+\end{definition}
+
+Vi ved ikke om der er uendeligt mange Mersenne primtal, eller om de stopper på et tidspunkt. Mange af de største fundne primtal er Mersenne primtal. Pr. februar 2019 er det størst kendte primtal et Mersenne primtal, $2^{82,589,933}-1$, som er et tal med over 24 millioner cifre.
+
+\begin{definition}[Perfekte Tal]
+Perfekte Tal (\textit{Perfect Numbers} på engelsk) er tal som er lig med summen af alle positive heltal mindre end tallet som er delelige med tallet.
+\end{definition}
+
+Et eksempel på et perfekt tal er 6, da $6 = 1 + 2 + 3$.
+
+Euklid beviste at hvis $2^{n}-1$ er et primtal, så er $2^{n-1}(2^{n}-1)$ et perfekt tal. Leonhard Euler  beviste 2000 år efter Euklid at hvert lige perfekte tal forekommer på denne måde. Se for eksempel at $6 = 2^{1}(2^{2}-1)$. Et andet perfekt tal, $28 = 2^{2}(2^{3}-1)$. Dermed, fordi vi ikke ved om der er uendeligt mange Mersenne primtal, ved vi heller ikke om der er uendeligt mange perfekte tal.
+
+\begin{definition}[Fakultetstal]
+Et fakultetstal er resultatet af en fakultet-funktion. Altså er $120$ et fakultetstal som er resultat af $5!$.
+\end{definition}
+
+\begin{theorem}
+For alle positive heltal $n$, er der en sekvens af $n$ fortløbende positive heltal der indeholder \textit{ingen} primtal.
+\end{theorem}
+
+\begin{proof}
+  Antag at $n$ er et positivt heltal. Lad $x = (n+1)!+2$. Vi vil vise at \textit{ingen} af tallene $x, x+1, x+2, \ldots, x+(n-1)$ er primtal. Siden dette er en sekvens, bevises teoremet.
+
+  Vi ved at $x$ ikke er et primtal da ingen fakultetstal er primtal. Følgende ligning viser hvordan det kan splittes op til 2 tal.
+  \begin{align*}
+    x &=  1 \cdot 2 \cdot 3 \cdot 4 \cdots (n+1)+2 \\
+    &= 2 \cdot (1 \cdot 3 \cdot 4 \cdots (n+1)+1)
+  \end{align*}
+  På samem måde kan vi bevise at $x + 1$ ikke er et primtal:
+  \begin{align*}
+    x+1 &= 1 \cdot 2 \cdot 3 \cdot 4 \cdots (n+1)+3\\
+    &= 3 \cdot (1 \cdot 2 \cdot 4 \cdot (n+1)+1)
+  \end{align*}
+
+  Dette gælder generelt for ethvert tal $x + i$, hvor $0 \le i \le n-1$. Se:
+  \begin{align*}
+    x+i &= 1 \cdot 2 \cdot 3 \cdot 4 \cdots (n+1) + (i+2)\\
+    &= (i+2) \cdot (1 \cdot 2 \cdot 3 \cdots (i+1) \cdots (i+3) \cdots (n+1)+1)
+  \end{align*}
+
+\end{proof}
+
+\subsection{Øvelser}%
+\label{subsec:0exercises}
+
+\begin{enumerate}
+  \item
+        \begin{enumerate}
+          \item[(a)] Factor $2^{15}-1 = 32,767$ into a product of two smaller positive integers.\\
+                \noindent
+                Siden 15 ikke er et primtal, ved vi at dette er muligt, fra Formodning~\ref{conj:nnotprime2nnotprime}. Tallene $7$ og $4681$ fungerer her.
+          \item[(b)] Find an integer $x$ such that $1 < x < 2^{32,767}-1$ and $2^{32,767}-1$ is divisble by $x$.\\
+                \noindent
+                $2^{31}-1$
+        \end{enumerate}
+\end{enumerate}
+
+
+
+
+%%% Local Variables:
+%%% mode: latex
+%%% TeX-engine: xetex
+%%% TeX-command-extra-options: "-shell-escape"
+%%% TeX-master: "main"
+%%% End:
