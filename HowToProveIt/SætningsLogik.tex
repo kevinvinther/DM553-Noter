@@ -1,0 +1,83 @@
+\chapter{Sætningslogik}
+
+Sætningslogik (engelsk \textit{Sentential Logic}) er en gren af logik, også kaldt (på engelsk) \textit{propositional calculus, propositional logic, statement logic, sentential calculus}.\footnote{Dette er fra Wikipediasiden om \href{https://en.wikipedia.org/wiki/Propositional_calculus}{Propositional Calculus}}
+
+\section{Deduktion og Logiske Konnektiver}%
+\label{sec:deduktionoglogiskekonnektiver}
+
+Dedktivt ræsennoment er en måde hvorpå vi kan lave, hvad der i hvert fald ligner, nye påstande ud fra allerede kendte påstande.
+\begin{example}
+  Følgende er 2 eksempler på deduktiv ræsennoment:
+  \begin{enumerate}
+    \item Det kommer enten til at regne eller sne i morgen
+    \item Det er for varmt til at sne
+    \item $\therefore$ kommer det til at regne ($\therefore$ betyder derfor.)
+  \end{enumerate}
+
+  \begin{enumerate}
+    \item Hvis det er Søndag behøver jeg ikke arbejde.
+    \item Det er søndag i dag.
+    \item $\therefore$ behøver jeg ikke arbejde.
+  \end{enumerate}
+\end{example}
+
+Vi siger at et argument er \textit{velbegrundet} hvis premisserne ikke alle kan være sande uden at konklusionen også er sand.
+\begin{example}
+  \label{eks:ikkevelbegrundet}
+Følgende er et eksempel på et argument der \textit{ikke} er velbegrundet:
+  \begin{enumerate}
+    \item Enten er butleren eller stuepigen skyldig
+    \item Enten er stuepigen eller kokken skyldig
+    \item $\therefore$ er enten butleren skyldig eller kokken er skyldig.
+  \end{enumerate}
+\end{example}
+
+Dette argument er ikke velbegrundet, da selv hvis begge præmisser er korrekte, er konklusionen ikke nødvendigvis, for eksempel hvis stuepigen var skyldig men både butleren og kokken var uskyldige, ville begge præmisser være sande men konklusion falsk.
+
+Det kan blive nemmere, at lave de forskellige præmisser om, og nedkoge dem til at være lettere at sluge, som for eksempel i Eksempel~\ref{eks:ikkevelbegrundet}:
+\begin{center}
+  \begin{enumerate}
+    \item Enten $Q$ eller $P$
+    \item Enten $P$ eller $Z$
+    \item $\therefore$ enten $Z$ eller $Q$
+  \end{enumerate}
+\end{center}
+Da er det lidt mere klart at se hvordan argumentet ikke er velbegrundet.
+
+Faktisk kan vi gøre det endnu mere symbol-rigt, ved at bruge symboler til ``eller'', ``og'' og ``ikke'':
+\begin{table}[h]
+\centering
+\begin{tabular}{ll}
+\textit{Symbol} & \textit{Betydning} \\ \hline
+$\lor$          & eller (disjunktion)              \\
+$\land          & og (konjunktion)                 \\
+$\neg$          & ikke (negation)
+\end{tabular}
+\end{table}
+
+Ordene i parenteser er en mere "logisk" måde at navngive disse operationer.
+
+\begin{example}
+  Følgende eksempel vil bruges til analyse:
+  \begin{enumerate}
+    \item Enten er John gået ud for at handle, eller vi har ikke flere æg
+    \item Joe går hjemmefra og kommer ikke tilbage
+    \item Enten er Bill på arbejde og Jane er ikke, eller Jane er på arbejde og Bill er ikke.
+  \end{enumerate}
+Vi analyserer disse i deres logiske form:
+  \begin{enumerate}
+    \item Givet $P$ betyder ``John er gået ud for at handle'' og $Q$ betyder ``Vi har ikke flere æg''; så kan vi skrive denne sætning: $P \lor Q$.
+    \item Givet $P$ betyder ``Joe går hjemmefra'' og $Q$ betyder ``Joe kommer ikke tilbage'', kan vi repræsentere dette som $P \land Q$, \textbf{men} det glemmer at $Q$ er en negation, af at Joe kommer tilbage. I stedet kan vi lade $R$ være ``Joe kommer tilbage'', og dermed er $Q = \neg R$. Så kan vi også få en bedre analyse: $Q \land \neg R$.
+    \item Givet $B$ betyder ``Bill er på arbejde'' og $J$ betyder $Jane er på arbejde$, så er første halvdel $B \land \neg J$, og den anden halvdel $J \land \neg B$. Dermed får vi en stor logisk form $(B \land \neg J) \lor (J \land \neg B)$.
+  \end{enumerate}
+\end{example}
+
+Det er vigtigt at huske at de logiske symboler ikke erstatter ordene ``og'', ``eller'', etc. I stedet er de symboler der udelukkende kan bruges mellem to påstande, eller før en påstand i tilfældet af negation.
+
+
+%%% Local Variables:
+%%% mode: latex
+%%% TeX-engine: xetex
+%%% TeX-command-extra-options: "-shell-escape"
+%%% TeX-master: "main"
+%%% End:
