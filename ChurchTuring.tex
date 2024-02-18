@@ -5,7 +5,7 @@ De maskiner vi har kigget på indtil videre har enten været med endelig hukomme
 \section{Turingmaskiner}%
 \label{sec:turingmachines}
 
-I 1936 introducerede Alan Turing \textit{turingmaskinen}, en model som minder om en endelig automat, men med uendeligt og ubegrænset hukommelse. Denne model af en maskine kan alt det som en normal general purpose computer kan gøre. Dermed kan vi bruge denne model til at finde ud af begrænsninger m.m. om computere.
+I 1936 introducerede Alan Turing \textit{turingmaskinen}, en deterministisk model som minder om en endelig automat, men med uendeligt og ubegrænset hukommelse. Denne model af en maskine kan alt det som en normal general purpose computer kan gøre. Dermed kan vi bruge denne model til at finde ud af begrænsninger m.m. om computere.
 
 En turingmaskine bruger et uendeligt bånd som dets hukommelse. Den har en \textit{båndhoved} som kan læse \textit{og skrive} symboler og flytte sig selv rundt på båndet. Til at starte med indeholder båndet kan input strengen, dog kan den skrive på dette bånd. Til at læse informationen går båndhovedet over de symboler der skal læses. Maskinen bliver ved med at komputere indtil den vælger at producere et output, enten \textit{accept} eller \textit{afvis}. Hvis den ikke kommer til et accept eller afvis state, så kører den for evigt, uden nogensinde at stoppe.
 
@@ -63,6 +63,8 @@ Transitionsfunktionen i en turing maskine har formen $Q \times \Gamma \longright
   \end{enumerate}
 \end{definition}
 
+Bemærk at, på trods af at Sipser ikke skriver det som en mulighed, kan man nemt implementere ``stay'' (her skrevet S) som en mulighed, fromfor kun at vælge left eller right. Du kan gøre dette ved at først skrive, så gå til højre, så gå til venstre uden at gøre noget med symbolet.
+
 \subsection{Turingmaskine Komputering}%
 \label{subsec:turingmaskinekomputering}
 
@@ -87,13 +89,104 @@ Vi kalder samlingen af strenge som $M$ accepterer \textit{sproget af $M$} eller 
 Kald et sprog \textit{Turing-genkendeligt} hvis en Turingmaskine genkender det.
 \end{definition}
 
+Dette kan også beskrives $L(m) = \{w \mid q_{0}w \stackrel{*}{\Rightarrow} uq_{\text{acc}}v \text{ for nogen }u,v \in \Gamma^{*}\}$
+
 Når en turingmaskine startes er tre resultater muligt, enten vil maskinen \textit{acceptere}, \textit{afvise} eller \textit{løkke}\footnote{\textit{loop} på engelsk}, hvor \textit{løkke} betyder at maskinen vil køre forevigt.
+
+
+% TODO: Det hedder nok noget med afgørlighed, og ikke beslutninger.
 
 Vi kalder maskiner der aldrig kommer i en løkke for beslutningstagere\footnote{Måske? Deciders på engelsk.}, fordi de altid beslutter hvorvidt en streng skal accepteres eller afvises. En beslutningstager som genkender et sprog, siges også at \textit{beslutte} det sprog.
 
 \begin{definition}
-Kald et sprog Turing-besluttet eller simpelt besluttet, hvis en turingmaskine genkender det.
+Kald et sprog Turing-afgjort eller simpelt afgjort, hvis en turingmaskine genkender det.
 \end{definition}
+
+Dette kaldes også \textit{recursively enumerable} i litteraturen.
+
+\section{Varianter af Turingmaskiner}%
+\label{sec:turingvariants}
+
+Vi kalde andre versioner af turingmaskinen, herunder maskiner med flere bånd eller nondeterministiske maskiner for \textit{varianter}. Den originale model og alle dens varianter har samme deskriptive kraft. Vi kalder dette \textit{robusthed}, altså, at maskinerne alle beskriver samme klasse af sprog.
+
+\subsection{Multibånds Turingmaskiner}%
+\label{subsec:multitape}
+
+En \textbf{multibånds turingmaskine} er som en normal turingmaskine, men med mere end ét bånd (hvor antallet ikke ændrer sig under kørsel.) Transitionsfunktionen ændres så den kan køre på mere end ét bånd:
+\[ \delta : Q \times \Gamma^{k} \longrightarrow Q \times \Gamma^{k} \times \{L,R,S\}^{k}\] hvor $k$ er antallet af states. Dermed fungerer transitionsfunktionen ved at tage den nuværende state i alle tapes og giver resultatet i alle states, eksempelvis: $\delta(q_{i}, a_{1}, \ldots, a_{k}) = (q_{j}, b_{1}, \ldots, b_{k}, L, R, \ldots, L)$.
+
+\begin{theorem}
+  \label{teo:multitapeequiv}
+  Hver multibånds turingmaskine har en ækvivalent enkeltbånds turingmaskine.
+\end{theorem}
+
+\begin{proof}
+For at bevise dette, skal vi vise at enhver multibånds Turingmaskine $M$ kan konverteres til en enkeltbånds Turingmaskine $S$. Vi siger at $M$ har $k$ bånd. Så bruger $S$ symbolet \# til at indikere at et nyt bånd starter. Derudover skal $S$ også holde styr på lokationen af hovederne fra diverse bånd. Den gør dette ved at skrive en bolle over symbolet: $\mathring{b}$.
+
+Så en maskine med tre bånd som f.eks.:\\
+\begin{center}
+\noindent
+\texttt{\textbf{a}aaaabababbb}\\
+\noindent
+\texttt{bbbbb\textbf{b}bbbbba}\\
+\noindent
+\texttt{a\textbf{b}aaababbaba}\\
+\end{center}
+Hvor \textbf{tyk skrift} indikerer hovedets placering, bliver lavet om til i $S$:
+\begin{center}
+\texttt{$\mathring{a}$aaaabababbb\#bbbbb$\mathring{b}$bbbbba\#a$\mathring{b}$aaababbaba\#}.
+\end{center}
+
+Vi definerer nu $S$.
+
+$S = $ ``På input $w = w_{1} \cdots w_{n}$'':
+\begin{enumerate}
+  \item Først konverterer $S$ til enkeltbånd.
+  \item Til at simulere en enkelt bevægelse, scanner $S$ fra den første \# til $k+1$'e \#, som er slutningen i højresiden, så den kan finde ud af hvad symbolerne under de virtuelle hoveder er. Så laver $S$ en til passthrough til at opdatere ifølge reglerne. Hvis på noget tidpsunkt, at $S$ vil flytte til højre til et $\#$, så rightshifter $S$ alt derfra, da det betyder at båndet normaltvis ville shifte ud i blanke symboler.
+\end{enumerate}
+
+\end{proof}
+
+\begin{corollary}
+Et sprog er Turing-genkendeligt hvis og kun hvis en multibånds Turingmaskine genkender det.
+\end{corollary}
+
+\begin{proof}
+En Turingmaskine er genkendt af en multibåndsmaskine med ét bånd. Den anden vej bevises i Teorem~\ref{teo:multitapeequiv}.
+\end{proof}
+
+
+\subsection{Nondeterministisk Turingmaskine}%
+\label{subsec:nondeterministicturingmachine}
+
+En nondeterministisk turingmaskine fungerer nondeterministisk ligesom PDA og NFA. Den brancher ud for hver mulighed. Transitionsfunktionen beskrives således:
+\[ \delta : Q \times \Gamma \longrightarrow P(Q \times \Gamma \times \{L, R\})\] Hvis en af de her branches ender i en accept state, så accepteres inputtet.
+
+\begin{theorem}
+\label{teo:nondeterminismturingequiv}
+Hver nondeterministisk turingmaskine har en ækvivalent deterministisk Turingmaskine.
+\end{theorem}
+
+Vi vil gerne bevise ved at have en deterministisk turingmaskine $D$ til at simulere alle branches der er mulige v.h.a. nondeterminisme. Vi designer $D$ til at bruge breadth-first-search til at kigge alle branches igennem.
+
+\begin{proof}
+Den simulerende turingmaskine $D$ har tre bånd. Bånd 1 indeholder altid strengen uden at ændre den. Bånd 2 har en kopi af den nondeterministke turingmaskine $N$'s bånd på en gren af dens nondeterministiske komputering. Bånd 3 holder styr på $D$'s lokation i $N'$s nondeterministiske komputationertræ. % TODO: Mangler
+\end{proof}
+
+\begin{corollary}
+Et sprog er turing-genkendeligt hvis og kun hvis en nondeterministisk Turingmaskine genkender det.
+\end{corollary}
+
+\begin{proof}
+Enhver deterministisk Turingmaskine er automatisk også en nondeterministisk turingmaskine. Den anden retning følger fra ~\ref{teo:nondeterminismturingequiv}.
+\end{proof}
+
+Vi kalder en nondeterministisk turingmaskine en \textbf{beslutningstager} hvis den stopper på alle branches.
+
+
+
+
+
 
 %%% Local Variables:
 %%% mode: latex
