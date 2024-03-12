@@ -99,10 +99,26 @@ Når en turingmaskine startes er tre resultater muligt, enten vil maskinen \text
 Vi kalder maskiner der aldrig kommer i en løkke for beslutningstagere\footnote{Måske? Deciders på engelsk.}, fordi de altid beslutter hvorvidt en streng skal accepteres eller afvises. En beslutningstager som genkender et sprog, siges også at \textit{beslutte} det sprog.
 
 \begin{definition}
-Kald et sprog Turing-afgjort eller simpelt afgjort, hvis en turingmaskine genkender det.
+Kald et sprog Turing-afgjort eller simpelt afgjort, hvis en turingmaskine afgører (beslutter) det.
 \end{definition}
 
 Dette kaldes også \textit{recursively enumerable} i litteraturen.
+
+\begin{figure}[ht]
+  \centering
+\begin{tikzpicture}
+  \draw[SchemeLight,fill=SchemeLight,dashed, thick, opacity=0.2] (0.5,0) ellipse (4cm and 2cm);
+  \draw node at (1.7,1) {Genkendelige sprog};
+  \draw[SchemeBlue,fill=SchemeBlue,dashed, thick, opacity=0.5] (-1.0,0) ellipse (2cm and 1.0cm);
+  \draw node at (-1,0) {Afgørlige sprog};
+\end{tikzpicture}
+  \caption{\label{fig:univers} Univers af sprog}
+\end{figure}
+
+I figur~\ref{fig:univers} ses der hvordan de afgørlige sprog kun er en delmængde af alle de genkendelige sprog. Under de afgørlige sprog ligger også kontekstfriie sprog og regulære sprog.
+
+
+
 
 \section{Varianter af Turingmaskiner}%
 \label{sec:turingvariants}
@@ -170,7 +186,17 @@ Hver nondeterministisk turingmaskine har en ækvivalent deterministisk Turingmas
 Vi vil gerne bevise ved at have en deterministisk turingmaskine $D$ til at simulere alle branches der er mulige v.h.a. nondeterminisme. Vi designer $D$ til at bruge breadth-first-search til at kigge alle branches igennem.
 
 \begin{proof}
-Den simulerende turingmaskine $D$ har tre bånd. Bånd 1 indeholder altid strengen uden at ændre den. Bånd 2 har en kopi af den nondeterministke turingmaskine $N$'s bånd på en gren af dens nondeterministiske komputering. Bånd 3 holder styr på $D$'s lokation i $N'$s nondeterministiske komputationertræ. % TODO: Mangler
+  Den simulerende turingmaskine $D$ har tre bånd. Bånd 1 indeholder altid strengen uden at ændre den. Bånd 2 har en kopi af den nondeterministke turingmaskine $N$'s bånd på en gren af dens nondeterministiske komputering. Bånd 3 holder styr på $D$'s lokation i $N'$s nondeterministiske komputationertræ.
+
+  Vi starter med at kigge på det 3. bånd. Hver knude i træet har \textbf{højest} $b$ børn, hvor $b$ er det største sæt af mulige valg givet ud fra $N$'s transitionsfunktion. Vi giver hver knude i træet en addresse, som er en streng over alfabetet $\Gamma_{b} = \{1, 2, \ldots, b\}$. Vi giver addressen $231$ til knuden vi kommer til ved først at være ved roden, så gå til rodens første barn, gå til dennes tredje barn, og sidst til dennes første barn.
+
+  Vi beskriver nu $D$
+
+  \begin{enumerate}
+    \item Bånd $1$ indeholder input $w$. Bånd 2 og 3 er tomme.
+    \item Kopiér bånd 1 til bånd 2, og lad bånd 3 være $\varepsilon$.
+    \item Brug bånd 2 til at simulere $N$ med input $w$ på en gren af den nondeterministiske komputering.  % MANGLER
+  \end{enumerate}
 \end{proof}
 
 \begin{corollary}
@@ -178,7 +204,7 @@ Et sprog er turing-genkendeligt hvis og kun hvis en nondeterministisk Turingmask
 \end{corollary}
 
 \begin{proof}
-Enhver deterministisk Turingmaskine er automatisk også en nondeterministisk turingmaskine. Den anden retning følger fra ~\ref{teo:nondeterminismturingequiv}.
+  Enhver deterministisk Turingmaskine er automatisk også en nondeterministisk turingmaskine. Den anden retning følger fra ~\ref{teo:nondeterminismturingequiv}.
 \end{proof}
 
 Vi kalder en nondeterministisk turingmaskine en \textbf{beslutningstager} hvis den stopper på alle branches.
