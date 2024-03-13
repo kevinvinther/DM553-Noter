@@ -1,6 +1,6 @@
 \chapter{Church-Turing Tese}
 
-De maskiner vi har kigget på indtil videre har enten været med endelig hukommelse (Endelige Automater) eller med en uendelig hukommelse der kun fungerer i en LIFO stak-hukommelse (PDA). Dermed er de for begrænset til at kunne agere som modeller af generelt-formåls computere, da disse har ubegrænset, uendelig hukommelse.
+De maskiner vi har kigget på indtil videre har enten været med endelig hukommelse (Endelige Automater) eller med en uendelig hukommelse der kun fungerer i en LIFO stak-hukommelse (PDA). Dermed er de for begrænset til at kunne agere som modeller af almene computere, da disse har ubegrænset, uendelig hukommelse.
 
 \section{Turingmaskiner}%
 \label{sec:turingmachines}
@@ -147,7 +147,7 @@ Vi kalder maskiner der aldrig kommer i en løkke for beslutningstagere eller afg
 	Kald et sprog Turing-afgjort eller simpelt afgjort, hvis en turingmaskine afgører (beslutter) det.
 \end{definition}
 
-Dette kaldes også \textit{recursively enumerable} i litteraturen.
+Dette kaldes også \textit{rekursivt enumerabelt\footnote{Engelsk: recursively enumerable}} i litteraturen.
 
 \begin{figure}[ht]
 	\centering
@@ -183,7 +183,7 @@ Lad $m$ på input $w$:
 	\item Fjern indhold i bånd 1.
 \end{enumerate}
 
-Dette kan gøres i $O(|w|)$ skridt, imens den kan gøres i $O(|w|^{2})$ skridt i en 1-båndsmaskine.
+Dette kan gøres i $O(|w|)$ skridt, imens den kan gøres i $O(|w|^{2})$ skridt i en 1-båndsmaskine. Altså er det en væsentlig hurtigere måde at gøre det på, men begge kører alligevel i polynomiel tid.
 
 
 \begin{theorem}
@@ -205,18 +205,55 @@ Dette kan gøres i $O(|w|)$ skridt, imens den kan gøres i $O(|w|^{2})$ skridt i
 	\end{center}
 	Hvor \textbf{tyk skrift} indikerer hovedets placering, bliver lavet om til i $S$:
 	\begin{center}
-		\texttt{$\mathring{a}$aaaabababbb\#bbbbb$\mathring{b}$bbbbba\#a$\mathring{b}$aaababbaba\#}.
-	\end{center}
+		\texttt{$\stackrel{\circ}{\text{\texttt{a}}}$aaaabababbb\#bbbbb$\stackrel{\circ}{\text{\texttt{b}}}$bbbbba\#a$\stackrel{\circ}{\text{\texttt{b}}}$aaababbaba\#}.
+	  \end{center}
 
 	Vi definerer nu $S$.
 
 	$S = $ ``På input $w = w_{1} \cdots w_{n}$'':
 	\begin{enumerate}
 		\item Først konverterer $S$ til enkeltbånd.
-		\item Til at simulere en enkelt bevægelse, scanner $S$ fra den første \# til $k+1$'e \#, som er slutningen i højresiden, så den kan finde ud af hvad symbolerne under de virtuelle hoveder er. Så laver $S$ en til passthrough til at opdatere ifølge reglerne. Hvis på noget tidpsunkt, at $S$ vil flytte til højre til et $\#$, så rightshifter $S$ alt derfra, da det betyder at båndet normaltvis ville shifte ud i blanke symboler.
+		\item Til at simulere en enkelt bevægelse, scanner $S$ fra den første \# til $k+1$'e \#, som er slutningen i højresiden, så den kan finde ud af hvad symbolerne under de virtuelle hoveder er. Så laver $S$ en til passthrough til at opdatere ifølge reglerne. Hvis på noget tidpsunkt, $S$ vil flytte til højre til et $\#$ (altså, hvad der i det originale bånd er $\sqcup$), så rightshifter $S$ alt derfra, så vi får ekstra plads, til hvor der ville være et blankt symbol. På samme måde kan vi leftshifte, hvis det er en nødvendighed.
 	\end{enumerate}
 
+	Altså vil alle symboler med en bolle over agere som hovederne på et normalt bånd, hvor hovedet så simulerer hvad reglerne er for hver af båndene.
 \end{proof}
+
+Vi kan i beviset tydeligt se hvordan det kan gøres, men hvordan kan en simulerende Turingmaskine som $S$ huske at den har set de tidligere hoveder? Følgende er en beskrivelse af en algoritme der kan konvertere enhver $k-$bånds Turingmaskine til en $1-$bånds Turingmkasine.
+
+\begin{enumerate}
+  \item Antag at $M$ er en $k-$bånds Turingmaskine.
+  \item For hver state $q_{i}$ i $M$ har vi:
+		\begin{enumerate}
+		  \item\label{enum:ktapealgo:qi} States $q^{i}_{(\alpha_{1}, \alpha_{2}, \ldots, \alpha_{k})}$ når $a_{i} \in \Gamma \cup \{-\}$, hvor $-$ betyder tomme eller endnu ikke kendt, altså, vi ved endnu ikke hvad der skal være der.
+		  \item\label{enum:ktapealgo:pi} States $p^{i}_{(\delta_{1}, \delta_{2}, \ldots, \delta_{k}, b_{1}, b_{2}, \ldots, b_{k}, \gamma_{1}, \gamma_{2}, \ldots, \gamma_{k})}$ hvor $\delta_{i} \in \Gamma \cup \{-\}$, $b_{i} \in \Gamma$, $\gamma_{i} \in \{R, L, S\}$. Så altså, det første (\(\delta\)) er enten båndsymboler eller ukendt, $b$  er båndsymboler,  og $\gamma$ er hovedbevægelser.
+		\end{enumerate}
+\end{enumerate}
+
+For at forklare dybere: \ref{enum:ktapealgo:qi}: Når vi er i $q^{i}_{(\beta_{1}, \beta_{2}, \ldots, \beta_{r},-,-,\ldots,-)}$ har vi indsamlet alle symbolerne under hovederne på de første $r$ bånd. Her betyder symbolerne $-$ igen at det er symboler som vi ikke kender endnu. Altså betyder det at \(\beta_{k}\) har hvad det simulerer bånd nummer $k$'s symbol under hovedet.
+\ref{enum:ktapealgo:pi}: Når vi er i $p^{i}_{(b_{1}, \ldots, b_{q}, -, \ldots, -, b_{1}, b_{2}, \ldots, b_k, \gamma_{1}, \gamma_{2}, \ldots, \gamma_{k})}$ har vi ændret båndcellerne under de første $q$ hoevbder og flyttet den $i'$e hoved $i \le q$ ifølge $\gamma_{i}$ og muligvis rightshifted. Altså, når vi er i den state, har vi allerede erstattet $a_{1}, \ldots, a_{q}$ med $b_{1}, \ldots, b_{q}$ og vi har flyttet hovederne ifølge reglerne $\delta_{1}, \ldots \delta_{k}$.
+
+Vi kan her se at der  er mange af de mulige states beskrevet i \ref{enum:ktapealgo:pi} og \ref{enum:ktapealgo:qi}. Til $q^{i}$ er der $(\Gamma+1)^{k}$ (fordi der er $k$ states, og $\Gamma$ symboler eksklusiv $-$). Til $p^{i}$ er det $(\Gamma+1)^{k} + \Gamma^{k} + 3^{k}$. Altså er der utroligt mange mulige states.
+
+Altså kan man se det totale antal af states som en \textbf{endelig} funktion $f(k, \Gamma, Q)$. Altså er antallet af states polynomielt, og \textbf{ikke} eksponentielt, da $k$ er en konstant.
+
+Lad os nu implementere ét skridt $\delta(q_{i}, a_{1}, a_{2}, \ldots, a_{n}) = (q_{j}, b_{1}, b_{2}, \ldots, b_{k}, \gamma_{1}, \gamma_{2}, \ldots, \gamma_{k})$.
+\begin{enumerate}
+  \item $M'$ starter i state $q^{i}_{(-,-, \ldots, -)}$ på den venstremest position altså uden kendskab til nogen symboler.
+  \item I state $q^{i}(a_{1}, \ldots, a_{r}, -, \ldots, -)$ $r < k$, flytter $m'$ dets hoved fremad til at kopiere indholdet under $m'$s $(r+1)$'e hoved. Vi husker så via. staten, altså, når vi har set symbol $a$ under det $i$'e hoved, så går vi til den state der har symbol $a$ under det $i$'e hoved. Det er måden vores hukommelse fungerer på.
+  \item Når vi når til state $q^{i}_{(a_{1}, a_{2}, \ldots, a_{k})}$ $\beta_{i} \in \Gamma$ har vi samlet alle karakterer under $m'$s hoveder. Så er det tid til at ændre på disse symboler. Jævnfør algoritmen vi har set tidligere gør vi dette ved hjælp af en ``mellem-state'', $p^{j}$ (hvor vi egentlig gerne vil hen til $q_{j}$.) Vi går til state $p^{j}_{(-, \ldots, -, b_{1}, b_{2}, \ldots, b_{k}, \gamma_{1}, \gamma_{2}, \ldots, \gamma_{k})}$ hvor vi endnu ikke ved hvad de første symboler der skal ændres er, men vi ved hvad de skal ændres \textit{til} (fra transitionsfunktionens definition skrevet lige før starten på denne implementation.)
+  \item I state $p^{j}_{(b_{1}, \ldots, b_{s}, -, \ldots, -, b_{1}, b_{2}, \ldots, b_{k}, \gamma_{1}, \gamma_{2}, \ldots, \gamma_{k})}$ hvor $s < k$ gør vi følgende:
+		\begin{enumerate}
+		  \item Flytter til positionen af det $(s+1)$'e hoved.
+		  \item Erstatter $a_{s+1}$ med $b_{s+1}$ og flytter ``hovedet'' $s+1$ ifølge $\gamma_{s+1}$
+		  \item Hvis $s+1<k$ går vi til state $p^{j}_{(b_{1}, \ldots, b_{s+1}, \cdots, b_{1}, b_{2}, \ldots, b_{k}, \gamma_{1}, \ldots, \gamma_{k})}$, og tager skridt 4 om igen. \textbf{Ellers} flytter vi hovedet til den venstremest position og går til state $q^{j}_{(-, \ldots, -)}$
+		\end{enumerate}
+\end{enumerate}
+
+Hvad er \textbf{køretiden} så for denne simulation? Givet en afgørlig Turingmaskine (altså, der stopper), som tager $t$ skridt på input $w, |w| = n$. Båndet i denne Turingmaskine kan have højest længde $n + t$, da den starter med input $n$, og højest kan lave $t$ ændringer til båndet der gør den længere. Lad os forsøge at ræssonere os frem til køretiden. Vi kører frem og tilbage i båndet flere gange, for hvert skridt kører vi frem én gang, så kører vi tilbage, og så kører vi frem (hvor vi udfører transitionsfunktionen); og så tilbage. Altså gør vi det fire gange. Dermed har ét skridt køretid $O(\Sigma \text{ længden af båndet}) = O(n+kt)$, hvor $k$ er antal bånd. Derudover er det muligt, at vi skal lave flere \textit{rightshifts}. I worst case scenariet shifter vi hver gang, hvilket giver os $(k-1)t + (k-2)t + \cdots + t = O(k^{2}t)$. Dermed er det samlede arbejde gjort på ét skidt $O(n+kt)+O(k^{2}t) = O(n+k^{2}t)$. Da vi har $t$ skridt, vil det samlede arbejde for at simulere disse skridt være $O(n \cdot t + k^{2}t^{2})$, hvilket er polynomielt i $n$ og $t$.
+
+
+
 
 \begin{corollary}
 	Et sprog er Turing-genkendeligt hvis og kun hvis en multibånds Turingmaskine genkender det.
@@ -226,13 +263,11 @@ Dette kan gøres i $O(|w|)$ skridt, imens den kan gøres i $O(|w|^{2})$ skridt i
 	En Turingmaskine er genkendt af en multibåndsmaskine med ét bånd. Den anden vej bevises i Teorem~\ref{teo:multitapeequiv}.
 \end{proof}
 
-%%%%%%%%% TODO: MANGLER
-%%%%%%%%% Køretid, bevis, alt muligt. Video nummer 8.
 
 \subsection{2-vejs bånd}
 \label{subsec:2vejsbånd}
 
-Denne variant minder om en normal, deterministisk turingmaskine. Dog har den en ekstra egenskab: nemlig at den også er uendelig på venstresiden, altså vil den så ud således:
+Denne variant minder om en normal, deterministisk turingmaskine. Dog har den en ekstra egenskab: nemlig at den også er uendelig på venstresiden. I Figur~\ref{fig:2vejsbånd} ses en skitse af hvordan en 2-vejs bånds Turingmaskine ser ud.
 
 \begin{figure}[ht]
 	\centering
@@ -270,45 +305,109 @@ Denne variant minder om en normal, deterministisk turingmaskine. Dog har den en 
 
 En nondeterministisk turingmaskine fungerer nondeterministisk ligesom PDA og NFA. Altså kan den gætte fra et state $q$, hvad den skal gøre som det næste. Dette betyder også at der er $B = |Q| \cdot |\Gamma| \cdot 3$ mulige transitioner.
 Den brancher ud for hver mulighed. Transitionsfunktionen beskrives således:
-\[ \delta : Q \times \Gamma \longrightarrow P(Q \times \Gamma \times \{L, R\})\]
-Man kan se komputeringen som en træ-struktur, hvor hver gang den gætter, kommer der en ny gren på. Hvis en af de her grene ender i en accept state, så accepteres inputtet.
+\[ \delta : Q \times \Gamma \longrightarrow P(Q \times \Gamma \times \{L, R, S\})\]\footnote{Sipser bruger ikke $S$ som mulighed for at bevæge sig.}
+Man kan se komputeringen som en træ-struktur, hvor hver gang den gætter, kommer der en ny gren på. Hvis en af de her grene ender i en accept state, så accepteres inputtet. Det er vigtigt at bemærke at hver transition, $\delta(q,a)$ har et endeligt antal, $B$, af mulige transitions, da $B \le |Q| \cdot |\Gamma| \cdot 3$.
 
-Hvordaan kan dette så være brugbart? For eksempel kan en nondeterministisk turingmaskine nemt finde ud af om $n$ er et sammensat tal (altså, ikke et primtal.) Den gør dette ved at have et heltal $n > 1$, og så gætter på alle tal om $m = n_{1} \cdot n_{2}$, ved at udregne deres værdi, og sætte lighed mellem denne og $n$.
+Vi kalder en nondeterministisk turingmaskine en \textbf{afgører} hvis den stopper på alle grene.
+
+Hvordan kan dette så være brugbart? For eksempel kan en nondeterministisk turingmaskine nemt finde ud af om $n$ er et sammensat tal (altså, ikke et primtal.) Den gør dette ved at have et heltal $n > 1$, og så gætter på alle tal om $m = n_{1} \cdot n_{2}$, ved at udregne deres værdi, og sætte lighed mellem denne og $n$.
+
+
+\begin{definition}
+  \label{def:ndtmrecog}
+En nondeterministisk Turingmaskine (NDTM) $m$ \textbf{genkender} $L$ hvis $L = \{w \mid \exists \text{ en komputering for }M \text{ på } w \text{ der leder til } M \text{'s accept state} \}$
+\end{definition}
+
+\begin{definition}
+  \label{def:ndtmdecide}
+  En nondeterministik Turingmaskine $m$ \textbf{afgører} $L$ hvis $\forall w \in \Sigma^{*}$:
+  \begin{enumerate}
+	\item $\exists k = k(m,w)$ således at $m$ aldrig tagere mere end $k$ skridt på $w$, altså alle længder i træet har længde $\leq k$.
+	\item $w \in L \iff m$  har mindst én accepterende beregning på $w$. Altså betyder det ikke at $w$ skal accepteres, men at hvis den accepteres, er den i sproget, og omvendt.
+  \end{enumerate}
+\end{definition}
+
+Forskellen på Definitionerne \ref{def:ndtmrecog} og \ref{def:ndtmdecide} er at en Turingmaskine der genkender \textbf{tillader} uendelige veje, så længe der er en accept state, hvor en afgørende Turingmaskine \textbf{ikke} tillader uendelige veje.
 
 \begin{theorem}
 	\label{teo:nondeterminismturingequiv}
 	Hver nondeterministisk turingmaskine har en ækvivalent deterministisk Turingmaskine.
 \end{theorem}
 
+Givet en deterministisk Turingmaskine $D$ der er ækvivalent til den nondeterministiske Turingmaskine $N$ gælder det at $L(D) = L(M)$ og $D$ afgører $L \iff N$ afgører $L$.
+
 Vi vil gerne bevise ved at have en deterministisk turingmaskine $D$ til at simulere alle grene der er mulige v.h.a. nondeterminisme. Vi designer $D$ til at bruge breadth-first-search til at kigge alle grene igennem.
 
+Vi vil gerne bruge \textit{breadth-first search} til at simulere $N$ på $w$. Vi ved at dette er muligt, fordi der ved hver state er \textbf{højest} $B$ transitions. Til gengæld vil vi ikke kunne gøre det med depth-first, da uendelige veje er mulige i træet.
+
+Vi antager her at hver transition, $\delta(q,a)$ har \textbf{præcis} $B$ transitioner, eller ingen. Vi kan klare dette ved at kopiere den sidste state det antal gange der skal til, for at antallet af transitions bliver til $B$; e.g, hvis $B = 4$, og $\delta(q,a) = \{(q, b, R)\}$ så ændrer vi den til at være $\delta(q,a) = \{(q,b,R),(q,b,R),(q,b,R),(q,b,R)\}$
+
+For en given streng $g_{1}g_{2}\cdots g_{k}$ hvor $g_{i} \in \{1, 2, \ldots, B\}$ kan vi simulere den korresponderende komputering af $N$  ved at tage det $g_{i}$'e valg på skridt $i$. Altså er en mulig streng 274, hvilket betyder at vi i første skridt tager valg nummer 2, i det andet valg nummer 7, og i det tredje valg nummer 4 (her er $B \ge 7$, da 7 er det største tal i strengen.) Hvis vi kan implementere simulationen beskrevet her ved en deterministisk Turingmaskine $D$, så opfylder $D$ Teorem~\ref{teo:nondeterminismturingequiv}.
+
+Måden vi kigger komputeringerne igennem på er ved at gå lexicografisk igennem dem. Altså starter vi med alle strenge af længde én, og derefter længde to etc. Vi kører igennem de ``første'' tal først, så altså først 123, så 124, så 149 etc. Vi bliver ved med at gøre det på denne måde indtil vi finder en accepterende konfiguration.
+
+Vi kan holde styr på tallene ved at bruge båndet i turingmaskinen. For eksempel kan strengen 223 blive repræsenteret således:
+\begin{center}
+\texttt{\#00\#00\#000\#}
+\end{center}
+Hvor den første del har to 0'er, den anden del har også to 0'er, og den tredje har tre 0'er.
+
+Lad os nu kigge på hvordan vi faktisk laver den deterministiske Turingmaskine $D$ som simulerer $N$.
+$D$ vil have 3 bånd:
+\begin{enumerate}
+  \item Input.
+  \item $N$'s udregninger på $w$.
+  \item Tal base $B+1$.
+\end{enumerate}
+
+For eksempel:
+\begin{enumerate}
+  \item $w_{1}w_{2} \cdots w_{n}$
+  \item Simulering i 3 skridt i henhold til skridt 3.
+  \item 235
+\end{enumerate}
+
+Hvis vi når til en komputering der ikke eksisterer (da vi går dem alle igennem), så stopper vi udregningen og går videre til næste mulighed.
+Bemærk her at hvis $N$ er i en accepting state, så vil $D$ også acceptere input. På samme måde, hvis $N$ er en afgører, og $D$ har været \textbf{alle} states igennem, og endnu ikke fundet et accepting state, så bliver input afvist.
+
+Lad os formalisere, og dermed færdiggøre beviset til Teorem~\ref{teo:nondeterminismturingequiv}:
+
 \begin{proof}
-	Den simulerende turingmaskine $D$ har tre bånd. Bånd 1 indeholder altid strengen uden at ændre den. Bånd 2 har en kopi af den nondeterministke turingmaskine $N$'s bånd på en gren af dens nondeterministiske komputering. Bånd 3 holder styr på $D$'s lokation i $N'$s nondeterministiske komputationertræ.
-
-	Vi starter med at kigge på det 3. bånd. Hver knude i træet har \textbf{højest} $b$ børn, hvor $b$ er det største sæt af mulige valg givet ud fra $N$'s transitionsfunktion. Vi giver hver knude i træet en addresse, som er en streng over alfabetet $\Gamma_{b} = \{1, 2, \ldots, b\}$. Vi giver addressen $231$ til knuden vi kommer til ved først at være ved roden, så gå til rodens første barn, gå til dennes tredje barn, og sidst til dennes første barn.
-
-	Vi beskriver nu $D$
-
-	\begin{enumerate}
-		\item Bånd $1$ indeholder input $w$. Bånd 2 og 3 er tomme.
-		\item Kopiér bånd 1 til bånd 2, og lad bånd 3 være $\varepsilon$.
-		\item Brug bånd 2 til at simulere $N$ med input $w$ på en gren af den nondeterministiske komputering.  % MANGLER
-	\end{enumerate}
+\begin{enumerate}
+  \item \begin{enumerate}
+		  \item $w_{1}w_{2}\cdots w_{n}$
+		  \item $\sqcup$
+		  \item $\#0\#$
+		\end{enumerate}
+  \item Kopiér bånd 1 til bånd 2
+  \item Simulér $N$ på bånd 2 ved brug af tallene på bånd 3 til at vælge den næste transition indtil følgende sker:
+		\begin{itemize}
+		  \item Dead end
+		  \item $M$ accepteres, så vil $D$ også acceptere og stoppe udregning
+		  \item $M$ afviser
+		  \item Der ikke er flere tal på bånd 3
+		\end{itemize}
+  \item Erstat $d_{1},d_{2},\ldots, d_{r}$ på bånd 3 med det næste i leksikografisk orden
+  \item Gå til skridt 2.
+\end{enumerate}
 \end{proof}
+
 
 \begin{corollary}
 	Et sprog er turing-genkendeligt hvis og kun hvis en nondeterministisk Turingmaskine genkender det.
 \end{corollary}
 
 \begin{proof}
-	Enhver deterministisk Turingmaskine er automatisk også en nondeterministisk turingmaskine. Den anden retning følger fra ~\ref{teo:nondeterminismturingequiv}.
+	Enhver deterministisk Turingmaskine er automatisk også en nondeterministisk turingmaskine. Den anden retning følger fra~\ref{teo:nondeterminismturingequiv}.
 \end{proof}
 
-Vi kalder en nondeterministisk turingmaskine en \textbf{afgører} hvis den stopper på alle grene.
+Hvor lang tid tager denne simulation af $N$ for $D$? Hvis vi antager at $N$ kører i $r$ skridt (altså, $r$ beregninger), så vil $D$ højest simulere
+\begin{equation}
+B+B^{2}+\cdots +B^{r} \leq B^{r+1}
+\end{equation}
+Altså vil den køre i \textbf{eksponentiel tid}. Dette kommer fra at der kan være $B$ udregninger i strengen af længde 1, $B^{2}$ af strengen af længde 2, etc\footnote{``Strengen'' her betyder den udregning vi er nået til, som brugt i bevisidéen til Teorem~\ref{teo:nondeterminismturingequiv}}.
 
-%%%%%%%%%%% TODO: MANGLER
-%%%%%%%%%%% Nærmest hele video 9.
-
+\textbf{Hvis vi kunne lave en algoritme} der konverterer en nondeterministisk Turingmaskine til en deterministisk Turingmaskine som kører i polynomiel tid, ville vi bevise $P = NP$\footnote{Vi kommer ind på dette senere i kurset.}.
 
 \subsection{Et bånd med flere hoveder}%
 \label{subsec:etbåndflerehoveder}
@@ -349,7 +448,7 @@ Vi kalder en nondeterministisk turingmaskine en \textbf{afgører} hvis den stopp
 	\caption{\label{fig:flerehoveder} Flerhovedet-bånd variant.}
 \end{figure}
 
-I figur ~\ref{fig:flerehoveder} ses en tegning af hvordan en variant af turingmaskinen, hvor der er flere hoveder på et bånd ser ud. Til at starte med starter alle hoveder på samme lokation, til venstre. Denne variant er brugbar til problemer såsom at genkende sproget $L = \{a^{n}b^{n}c^{n} \mid n \ge 0\}$
+I figur~\ref{fig:flerehoveder} ses en tegning af hvordan en variant af turingmaskinen, hvor der er flere hoveder på et bånd ser ud. Til at starte med starter alle hoveder på samme lokation, til venstre. Denne variant er brugbar til problemer såsom at genkende sproget $L = \{a^{n}b^{n}c^{n} \mid n \ge 0\}$
 
 \subsection{To-dimensionelt bånd}%
 \label{subsec:todimensioneltbånd}
