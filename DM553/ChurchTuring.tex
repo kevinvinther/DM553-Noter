@@ -485,6 +485,219 @@ I denne variant af en turingmaskine, er der er to-dimensionelt bånd.
 	\caption{\label{fig:flerehoveder} Flerhovedet-bånd variant.}
 \end{figure}
 
+\subsection{Universel Turingmaskine}%
+\label{subsec:universalturingmachine}
+
+Før vi forklarer hvad en universel Turingmaskine \textit{egentlig }er, kommer vi med nogle termer:
+
+En universel Turingmaskine har et \textit{universelt alfabet}: $A^{*} = \{a_{1}, a_{2}, \cdots\}$  ud i det uendelige, og et \textit{universel mængde af states}: $Q^{*} = \{q_{1}, q_{2}, \cdots\}$ også ud i det uendelige.
+
+Givet en Turingmaskine (hvilken som helst) $M = (Q, \Sigma, \Gamma, \delta, q_{0}, q_{acc}, q_{rej})$, når $|Q| = r$ og $|\Gamma| = t$, redefinér $Q$ til $\{q_{1}, q_{2}, \ldots, q_{r}\}$ og $\Gamma$ til $\{a_{1}, a_{2}, \ldots, a_{t}\}$.
+
+Vi kan konkludere ud fra dette at hver Turingmaskine, $m$ har en ækvivalent Turingmaskine $m'$ hvor $Q(m') \le Q^{*}$ præfiks og $\Gamma(m') \le \Gamma^{*}$ præfiks.
+
+Vi bruger binære tal til at repræsentere heltal, så en state $q_{7}$ vil repræsenteres som $q_{111}$.
+
+Vi vil gerne kunne kode en (deterministisk) Turingmaskine, $m$. Vi kan gøre dette ved at lave transitions til tupler, foreksempel vil $\delta(q_{i}, a_{j}) = (q_{s}, a_{q}, \gamma)$ blive til tuplen $((q_{i}, a_{j}), (q_{s}, a_{q}, \gamma))$, hvor $r = |Q(m)|$ og $t = |\Gamma(m)|$. Vi kan så antage at $q_{1}$ er startstaten, $q_{r-1} = q_{\text{accept}}$  og $q_{r} = q_{\text{afvis}}$ ($r$ for \textit{reject}). Med dette kan vi få en kodet version af $m$, her kaldt \texttt{<m>}, som vil se ud således:
+
+\begin{center}
+\texttt{<m> = }$(((q_{1}, a_{1}), (q_{f}, a_{q}, R)), ((q_{1}, a_{2}), \ldots), \ldots, (q_{r-2}, a_{t}), (q_{b}, a_{l}, L))$
+\end{center}
+
+Vi kan også kode strenge $w \in \Gamma^{*}$ for eksempel $w = a_{1}a_{2}a_{3}$ så \texttt{<w>} $= (a_{1}),(a_{2}),(a_{3})$.
+
+Trods det ikke er gjort i eksemplerne her, så husk at vi bruger binære tal til at repræsentere heltal. Dette betyder at vi kan kode \textbf{alle} Turingmaskiner med følgende alfabet:
+\begin{center}
+$\Sigma =$ \texttt{\{'(', ')', 'a', 'q', '0', '1', ',', 'R', 'L', 'S'\}}
+\end{center}
+
+Lad os nu forklare hvad en universel Turingmaskine egentlig er. En universel Turingmaskine tager input af formen \texttt{<m><w>} og bruger 3 bånd til at simulere $m$ på $w$, til at starte med:
+\begin{enumerate}
+  \item \texttt{<w>}
+  \item \texttt{<m>}
+  \item $q_{1}$
+\end{enumerate}
+
+Følgende algoritme definerer hvordan en universel Turingmaskine $U$ simulerer ét skridt af $m$:
+\begin{enumerate}
+  \item Lad $q$ være den state der ligge på bånd 3.
+  \item Lad $a$ være det symbol der er under hovedet på bånd 1.
+  \item Find indtasting for $(q,a)$ på bånd 2, og udfør ændringer p åbåndene 1 og 3:
+		\begin{enumerate}
+		  \item Hvis indtasting  er $((q,a),(p,b,L))$ så
+		  \item Nyt symbol på bånd 1 er $b$ og hovedet bevæger sig til venstre.
+		  \item Ny state på bånd 3 er $p$.
+		\end{enumerate}
+  \item Hvis $p = q_{r-1}$, så går $U$ ind i sit accept state, og stopper.
+  \item Hvis $p = q_{r}$ så går $U$ ind i sit reject state, og stopper.
+\end{enumerate}
+
+Altså kan en universal Turingmaskine simulere en deterministisk Turingmaskine uden problemer, og udelukkende ved brug af det universelle alfabet, og den universelle mængde af states.
+
+\subsection{Enumerators}%
+\label{subsec:enumerators}
+
+En enumerator er en Turingmaskine med et output bånd tilknyttet. Dette betyder altså at den kan printe.
+
+En enumerator kører for evigt, og kan i sin køretid printe forskellige strenge. Vi definerer sproget af enumeratoren $E$, $L(E)$ til at være $L(E) = \{w \mid w \text{ er printet af }E\}$ i uendelig tid. $L$ er \textit{enumerabelt}  hvis $L = L(E)$ for en enumerator. For eksempel er $L = \{0^{2^{n}} \mid n \ge 0\}$ enumerabelt.
+
+\begin{theorem}
+L er enumerabelt  $\iff$ L er genkendeligt
+\end{theorem}
+
+\begin{proof}
+\begin{figure}[ht]
+	\centering
+	\begin{tikzpicture}
+		\tikzset{block/.style={rectangle, draw, minimum height=2em, minimum width=3em}}
+		\tikzset{line/.style={draw, -latex'}}
+		\node[block, minimum height=1.5cm] (E) at (0, 0){$E$};
+		\node[block, minimum height=1.5cm] (ww) at (4, -2){$W = W'$};
+		\node[fill=none, draw=none] (start) at (-2, -2) {\texttt{<w>}};
+
+		\draw[->] (start) -- (ww.west);
+
+		\node[fill=none, draw=none] (no) at (5.3, -1.8) {Nej};
+		\draw[->, color=SchemeGreen] (ww.east) -- (6, -2) -- (6, -4) -- (0, -4) -- (E.south);
+
+		\node[fill=none, draw=none, color=SchemeGreen] (genstart) at (3, -3.8) {Genstart};
+
+		\draw[->] (E.east) -- (3.5, 0) -- (3.5,-1.25);
+		\node[fill=none, draw=none] (wprime) at (2, 0.2) {\texttt{<w'>}};
+
+
+		\draw[->] (4.5, -1.25) -- (4.5, 0) -- (8, 0);
+		\node[fill=none, draw=none] (yes) at (5.3, 0.2) {Ja};
+		\node[fill=none, draw=none] (accept) at (9, 0.0) {Accepter};
+
+		\draw[color=SchemeBlue, thick] (-1, 1) -- (7, 1) -- (7, -5) -- (-1, -5) -- cycle;
+
+		\node[fill=none, draw=none, color=SchemeBlue] (me) at (7.5, -5) {$M_{E}$};
+
+		\node[fill=none, draw=none, color=SchemeRed] (printed) at (7, 2) {Næste streng printet af $E$};
+
+		\draw[->, color=SchemeRed] (printed) -- (wprime);
+
+		% \node[block, minimum width=0.8cm] (a1) at (2,-1.0) {a};
+		% \node[block, minimum width=0.8cm] (a2) at (2.8,-1.0) {a};
+		% \node[block, minimum width=0.8cm] (b1) at (3.6,-1.0) {b};
+		% \node[block, minimum width=0.8cm] (b2) at (4.4,-1.0) {b};
+		% \node[block, minimum width=0.8cm] (b2) at (5.2,-1.0) {$\sqcup$};
+		% \node[block, minimum width=0.8cm] (b2) at (6.0,-1.0) {$\sqcup$};
+		% \node[block, minimum width=0.8cm] (b2) at (6.8,-1.0) {$\sqcup$};
+		% \node[label, minimum width=0.8cm] (b2) at (7.6,-1.0) {$\cdots$};
+
+		% \draw[->, thick] (control) -| (a1);
+	\end{tikzpicture}
+	\caption{\label{fig:enumeratordtmequiv} Visuelt bevis på ækvivalens mellem Enumeratorer og Turingmaskiner.}
+\end{figure}
+
+I Figur~\ref{fig:enumeratordtmequiv} ses et visuelt bevis på hvorfor en Enumerator er ækvivalent med en Turingmaskine. Algoritmisk kan det ses således:
+\begin{enumerate}
+  \item På input \texttt{<w>} starter Turingmaskinen $M_{E}$ enumeratoren $E$ på den tomme streng.
+  \item Når $E$ printer en streng $w'$, sammenligner $M_{E}$  strengen $w'$ med $w$.
+  \item Hvis $w = w'$, så accepterer $M_{e}$ $w$. \\ \noindent Ellers genstarter den $E$ og venter på den næste streng $w'$ som bliver printet af $E$.
+\end{enumerate}
+Her er det klart at $L(M_{e}) \subseteq L(E)$ siden $M_{E}$  kun kan acceptere $w$ hvis den er printet af $E$. Så, hvis $W$ er i $L(E)$ bliver det eventuelt printet.
+
+Hvordan laver vi så en enumerator som enumererer præcis det samme sprog som $M$?
+
+Lad $\Sigma$ være input alfabetet for $M$ og lad rækkefølgen af strengene i $\Sigma^{*}$ være $S_{1}S_{2}S_{3} \cdots S_{k}S_{k+1} \cdots$ lexikografisk.
+
+Enumeratoren $E_{M}$: For $i = 1$ til $\infty$, ved runde $i$: Simulér $M$  i $i$ skridt på hver af strengene $S_{1}, \ldots, S_{i}$ og \textbf{print} $S_{j}$ hvis $M$ accepterer det i mindre end $i+1$ skridt.
+
+Da vi kan gøre dette gælder det at $L(E_{M}) = L(M)$.
+\end{proof}
+
+\section{Definitionen af Algoritme}%
+\label{sec:definitionofalgorithm}
+
+\subsection{Hilbert's 10'ende Problem}%
+\label{subsec:hilberts10thproblem}
+
+Hilbert's 10'ende problem er at finde en algoritme til at finde ud af om et polynomie har en heltalsrod. Hilbert var sikker på at en sådan algoritme fandtes, han manglede bare at nogen fandt den. Vi ved dog nu at dette er umuligt. For at kunne bevise dette krævede det en præcis definition af hvad en algoritme var; og denne definition kom i 1936 fra Alonzo Church og Alan Turing. Church brugte et notationssystem kaldt $\lambda-$calculus (Lambda calculus) til at definere algoritmer, og Turing gjorde det med maskiner. Disse to definitioner blev vist til at være ækvivalente. Denne sammenhæng mellem den uformelle algoritme og den præcise definition kaldes nu \textit{Church-Turing tesen}.
+
+Lad os omskrive Hilbert's 10'e problem ved brug af vores terminologi. Lad $D = \{p \mid p \text{ er en polynomie med heltalsrødder}\}.$ Hilberts problem spørger altså præcist om sættet $D$ er afgørligt. Vi kan vise at $D$ er genkendeligt, men ikke afgørligt. Hvis vi kigger på Hilbert's problem, men udelukkende med et enkelt variabel, $x$, såsom $4x^{3}-2x^{2}+x-7$ kan vi hurtigt lave en Turingmaskien som genkender denne variation:\\
+\noindent
+$M_{1} = $ ``På input $p$, hvor $p$ er en polynomie over variblen $x$.
+\begin{enumerate}
+  \item Evaluér $p$ med $x$ mængder efter hinanden med værdierne 0, 1, -1, 2, -2, 3, -3, $\ldots$. Hvis på noget tidspunkt polynomiet bliver lig 0, \textit{accepter}.''
+\end{enumerate}
+
+Hvis $p$ har en heltalsrod, så vil $M_{1}$ eventuelt finde denne og acceptere, men hvis ikke kører den forevigt. Algoritmen skal ikke ændres meget for at den fungerer ved 3 variable. Dermed kan vi konkludere at $D$ er genkendeligt men ikke afgørligt.
+
+\subsection{Terminologi til at beskrive Turing maskiner}%
+\label{subsec:terminologiTuringmaskiner}
+
+Trods vi fortsætter med at snakke om Turingmaskiner, vil vores fokus nu være på algoritmer. Turing maskiner er en præcis model for definitionen af en algoritme.
+
+Vi vil herfra bruge mere matematiske måder at snakke om disse algoritmer på, og disse måder kan selvfølgelig også repræsenteres i en Turingmaskine. Følgende eksempel viser hvordan dette kan se ud.
+
+Lad $A$ være sproget bestående af alle strenge der repræsenterer urettet grafer som er forbundne (connected).
+\begin{equation*}
+A = \{\langle G \rangle \mid G \text{ er en forbundet urettet graf}\}
+\end{equation*}
+
+Følgende er en højt-niveaus beskrivelse af en Turingmaskine $M$ som afgører $A$:
+
+$M = $ ``På input $\langle G \rangle$, kodningen af en graph $G$:
+\begin{enumerate}
+  \item Vælg den første knude af $G$ og markér den
+  \item Gentag den følgne fase indtil ingen nye knuder er markeret:
+		\begin{enumerate}
+		  \item For hver knude i $G$, markér den hvis den er knyttet af en kant til en knude som allerede er markeret.
+		\end{enumerate}
+  \item Scan alle knuderne af $G$ til at bestemme hvorvidt de alle er markeret. Hvis de er, \textit{accepter}, ellers \textit{afvis.}
+\end{enumerate}
+
+Der er flere måder hvorpå vi kan kode en graf til at kunne køre denne algoritme, såsom at bruge en liste som følger:
+\begin{verbatim}
+(1,2,3,4)((1,2),(2,3),(3,1),(1,4))
+\end{verbatim}
+Som koder følgende graf:
+\begin{figure}[ht]
+  \centering
+  \begin{tikzpicture}
+    \node[state] (3) {${3}$};
+    \node[state, right=of 3] (2) {$2$};
+    \node[state, above right=of 3] (1) {$1$};
+    \node[state, above right=of 1] (4) {${4}$};
+
+	\draw[-] (1) -- (2);
+	\draw[-] (1) -- (3);
+	\draw[-] (3) -- (2);
+	\draw[-] (1) -- (4);
+  \end{tikzpicture}
+  \caption{\label{fig:label} Graf $G$}
+\end{figure}
+
+\section{Hovedpointer}%
+\label{sec:tmhovedpointer}
+
+\begin{itemize}
+  \item En Turingmaskine (TM) er en automat hvis hoved kan bevæge sig til venstre og højre. Derudover kan den ændre på sit bånd, som er uendeligt.
+  \item Turingmaskiner er langt mere kraftfulde end DFA'er og PDA'er. De er endda accepteret som værende ligeså kraftfulde som moderne computere, hvilket kommer fra CHurch-Turing tesen.
+  \item Turingmaskiner giver indsigt i de teoretiske grænser for komputering, altså hvad en computer kan gøre, og hvor hurtigt den kan gøre det.
+  \item En Turingmaskine $M$ \textbf{genkender} et sprog $L \iff$ hver streng i $L$ leder $M$ til sin accept state. Strenge ikke i $L$ leder enten til en afvis state eller lader $M$ køre i en løkke forevigt. $L(M)$ betegner sproget genkendt af $M$. Bemærk at alle Turingmaskiner genkender præcis ét sprog, nemlig det sæt af strenge som den accepterer.
+  \item Et sprog $L$ kaldes \textbf{genkendeligt} hvis der er en Turingmaskine $M$ som genkender $L$. Klassen af genkendelige sprog er sættet af alle sprog som er genkendt af en Turingmaskine.
+  \item En Turingmaskine $M$ \textbf{afgører} et sprog $L \iff$ hver streng i $L$ leder $M$ til en accept state og hver streng ikke i $L$ leder $M$ til en afvis state. Altså betyder det at $M$ stopper på alle strenge, og ikke kører uendeligt.
+  \item En \textbf{afgører} (decider) er en Turingmaskine som altid stopper (og dermed ender i enten en accept eller afvis state.) Hver Turingmaskine som er en afgører, afgører præcis ét sprog, nemlig sættet af strenge som ender i dens accept state.
+  \item Et sprog $L$ kaldes \textbf{afgørligt} hvis der er en Turingmaskine $M$ som afgører $L$. Klassen af afgørlige sprog er sættet af alle sprog som af afgjort af en Turingmaskine.
+  \item Hvis et sprog er afgørligt, så er det også genkendeligt, men det omvendte gælder ikke altid.
+  \item Der er fortskellige måder at specificere en Turingmaskine på: Transitionstabel, pseudokode, state diagram og højtniveausbeskrivelser (som har været hoveddelen af disse noter.)
+  \item Terminilogi:
+		\begin{itemize}
+		  \item Turing beregneligt (i disse noter ogås kaldt udregneligt, komputeret, indtil jeg får dem alle rettet) = afgørligt = rekursivt
+		  \item Partielt Turing Beregneligt = Semi-afgørligt = Rekursivt Enumerabelt = Turing Enumerabelt = Genkendeligt
+		\end{itemize}
+  \item
+\end{itemize}
+
+
+
+
+
+
 
 
 
