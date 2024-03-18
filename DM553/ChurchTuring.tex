@@ -684,17 +684,18 @@ Som koder følgende graf:
   \item En \textbf{afgører} (decider) er en Turingmaskine som altid stopper (og dermed ender i enten en accept eller afvis state.) Hver Turingmaskine som er en afgører, afgører præcis ét sprog, nemlig sættet af strenge som ender i dens accept state.
   \item Et sprog $L$ kaldes \textbf{afgørligt} hvis der er en Turingmaskine $M$ som afgører $L$. Klassen af afgørlige sprog er sættet af alle sprog som af afgjort af en Turingmaskine.
   \item Hvis et sprog er afgørligt, så er det også genkendeligt, men det omvendte gælder ikke altid.
-  \item Der er fortskellige måder at specificere en Turingmaskine på: Transitionstabel, pseudokode, state diagram og højtniveausbeskrivelser (som har været hoveddelen af disse noter.)
-  \item Terminologi:
-		\begin{itemize}
-		  \item Turing beregneligt (i disse noter ogås kaldt udregneligt, komputeret, indtil jeg får dem alle rettet) = afgørligt = rekursivt
-		  \item Partielt Turing Beregneligt = Semi-afgørligt = Rekursivt Enumerabelt = Turing Enumerabelt = Genkendeligt
-		\end{itemize}
-  \item Der findes mange variationer af Turingmaskiner, som hver har samme komputationelle kraft som en deterministisk Turingmaskine.
-  \item En nondeterministisk Turingmaskine er ikke mere kraftfuld end en standard Turingmaskine, men den er muligvis eksponentielt hurtigere (vi kender ikke svaret til dette, kendt som $P = NP$ problemet.)
-  \item En Turingmaskine siges at enumerere et sprog $L$ hvis det, når det startede på et tomt bånd, printer alle strenge i $L$ med en vedhæftet printer, uden at printe nogen strenge \textbf{ikke} i $L$. En sådan Turingmaskine med en vedhæftet printer kaldes en enumerator. Et sprog $L$ er \textbf{Turing-enumerabelt} hvis $L = L(E)$ ern en enumerator $E$. Vi har bevist at $L$ er turing-acceptabelt hvis og kun hvis $L$ er Turing-enumerabelt.
-  \item Den \textbf{universelle Turingmaskine} $U$. Vi kan kode alle Turingmaskiner således at deres båndalfabet er en delmængde af de såkaldte universelle alfabet $A^{*} = \{a_{1}, a_{2}, \ldots\}$ og deres mængde af sæt er en delmængde af det universelle statemængde $Q^{*} = \{q_{1}, q_{2}, \ldots\}$. Dette giver os mulighed for en kodning \texttt{<M>} af en Turingmaskine, hvor vi kun bruger symboler fra $A^{*}$ og $Q^{*}$ og få ekstra symboler.
+  \item Der er forskellige måder at specificere en Turingmaskine på: Transitionstabel, pseudokode, state diagram og højtniveausbeskrivelser (som har været hoveddelen af disse noter.)
 \end{itemize}
+
+
+
+
+
+
+
+
+
+
 
 %%% Local Variables:
 %%% mode: latex
