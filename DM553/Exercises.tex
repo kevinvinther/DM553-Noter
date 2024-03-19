@@ -8,20 +8,20 @@
 A man is travelling with a wolf ($w$) and a goat ($g$). He also brings along a nice big cabbage ($c$). He encounters a small river which e must cross to continue his travel. Fortunately, there is a small boat at the shore which he can use. However, the boat is so small that the man cannot bring more than himself and exactly one more item along (from $\{w, g, c\}$). The man knows that if left alone with the goat, the wolf will surely eat it and the goat if left alone with the cabbage will also surely eat that. The man's task is hence to device a transportation scheme in which, at any time, at most one item from $\{w,g,c\}$ is on the boat and the result is that they all crossed the river and can continue unharmed.
 
 \begin{enumerate}
-  \item[(a)] Describe a solution to the problem which satisfies the rules of the game. You may use your answer in (b) to find a solution.
+	\item[(a)] Describe a solution to the problem which satisfies the rules of the game. You may use your answer in (b) to find a solution.
 \end{enumerate}
 
 Givet at ulven og geden ikke må være alene (ulven spiser geden), og geden og kålen må ikke være alene (da geden spiser kålen), er der en mulighed tilbage ($\binom{3}{2} = 3$, og vi udelukker 2.) Derfor skal vi først tage geden, da ulven og kålen ingen virkning har på hinanden. Efter dette skal vi tage tilbage, tage kålen, og så skal vi have geden med tilbage, så den ikke spiser kålen. Når vi er tilbage smider vi geden af, og tager ulven med så den er med kålen. Denne gang tager vi ikke noget tilbage, da ulven og kålen er gode venner, så vi henter geden og kommer tilbage til begge to uden der er sket noget.
 
 \begin{enumerate}
-\item [(b)] Consider strings over the alphabet $\Sigma = \{m, w, g, c\}$ and interpret these as follows: The symbol $m$ means that the man crosses the river alone, $w$ means that he brings the wolf, etc. \\ Design a finite automaton which accepts precisely those strings over $\Sigma$ which correspond to a transportation sequence where everybody survives and is legal in the sense that the man can only bring an item (e.g. $w$) back across the river if it was actually on the shore where the boat just left from. For example, gmcg is a legal string (it is not a solution) whereas gc is not legal.
+	\item [(b)] Consider strings over the alphabet $\Sigma = \{m, w, g, c\}$ and interpret these as follows: The symbol $m$ means that the man crosses the river alone, $w$ means that he brings the wolf, etc. \\ Design a finite automaton which accepts precisely those strings over $\Sigma$ which correspond to a transportation sequence where everybody survives and is legal in the sense that the man can only bring an item (e.g. $w$) back across the river if it was actually on the shore where the boat just left from. For example, gmcg is a legal string (it is not a solution) whereas gc is not legal.
 \end{enumerate}
 
 \subsection*{Sipser 1.9}
 \label{sub:sipser1.9}
 \textbf{Use the construction in the proof of Theorem 1.47 to give the state diagrams of NFAs recognizing the concatenation of the languages described in}
 \begin{enumerate}
-  \item[a.] \textbf{Exercises 1.6g and 1.6i}
+	\item[a.] \textbf{Exercises 1.6g and 1.6i}
 \end{enumerate}
 1.6g \[\{w \;| \; \text{ the length of }w \text{ is at most }5\}\]
 1.6i \[\{w\;|\; \text{ every odd position of } w \text{ is a } \mathtt{1} \}\]
@@ -34,190 +34,190 @@ Først laver vi et state diagram af begge NFA'er, og derefter laver vi sammenkæ
 
 \[M_{1} = \{ w \; | \; \text{ the length of } w \text{ is at most }5\}\]
 \begin{center}
-  \begin{tikzpicture}[>=Stealth,shorten >=1pt,node distance=2.0cm,on grid,auto]
-    \node[state, accepting, initial] (q1) {$q_1$};
-    \node[state, accepting, right=of q1] (q2) {$q_2$};
-    \node[state, accepting, right=of q2] (q3) {$q_{3}$};
-    \node[state, accepting, right=of q3] (q4) {$q_4$};
-    \node[state, accepting,right=of q4] (q5) {$q_{5}$};
-    \node[state, right=of q5] (q6) {$q_{6}$};
+	\begin{tikzpicture}[>=Stealth,shorten >=1pt,node distance=2.0cm,on grid,auto]
+		\node[state, accepting, initial] (q1) {$q_1$};
+		\node[state, accepting, right=of q1] (q2) {$q_2$};
+		\node[state, accepting, right=of q2] (q3) {$q_{3}$};
+		\node[state, accepting, right=of q3] (q4) {$q_4$};
+		\node[state, accepting,right=of q4] (q5) {$q_{5}$};
+		\node[state, right=of q5] (q6) {$q_{6}$};
 
-    \path[->]
-    (q1) edge node {\texttt{0,1}} (q2)
-    (q2) edge node {\texttt{0,1}} (q3)
-    (q3) edge node {\texttt{0,1}} (q4)
-    (q4) edge node {\texttt{0,1}} (q5)
-    (q5) edge node {\texttt{0,1}} (q6)
-    (q6) edge[loop above] node {\texttt{0,1}} (q6);
-  \end{tikzpicture}
+		\path[->]
+		(q1) edge node {\texttt{0,1}} (q2)
+		(q2) edge node {\texttt{0,1}} (q3)
+		(q3) edge node {\texttt{0,1}} (q4)
+		(q4) edge node {\texttt{0,1}} (q5)
+		(q5) edge node {\texttt{0,1}} (q6)
+		(q6) edge[loop above] node {\texttt{0,1}} (q6);
+	\end{tikzpicture}
 \end{center}
 
 \[M_{2} = \{ w \; | \; \text{ every odd position of } w \text{ is a } \mathtt{1} \}\]
 
 \begin{center}
-  \begin{tikzpicture}[>=Stealth,shorten >=1pt,node distance=2.0cm,on grid,auto]
-    \node[state, accepting, initial] (q1) {$q_1$};
-    \node[state, accepting, right=of q1] (q2) {$q_2$};
-    \node[state, above right=1.5cm and 1cm of q1] (q3) {$q_3$};
+	\begin{tikzpicture}[>=Stealth,shorten >=1pt,node distance=2.0cm,on grid,auto]
+		\node[state, accepting, initial] (q1) {$q_1$};
+		\node[state, accepting, right=of q1] (q2) {$q_2$};
+		\node[state, above right=1.5cm and 1cm of q1] (q3) {$q_3$};
 
-    \path[->]
-    (q1) edge[bend left] node {\texttt{1}} (q2)
-    (q2) edge[bend left] node {\texttt{0,1}} (q1)
-    (q1) edge[bend left] node {\texttt{0}} (q3)
-    (q3) edge[loop above] node {\texttt{0,1}} (q3);
-  \end{tikzpicture}
+		\path[->]
+		(q1) edge[bend left] node {\texttt{1}} (q2)
+		(q2) edge[bend left] node {\texttt{0,1}} (q1)
+		(q1) edge[bend left] node {\texttt{0}} (q3)
+		(q3) edge[loop above] node {\texttt{0,1}} (q3);
+	\end{tikzpicture}
 \end{center}
 
 Lad os nu beskrive begge disse maskiner formelt.
 
 $M_{1} = (Q, \Sigma, \delta, q_{1}, F)$ hvor
 \begin{enumerate}
-  \item $Q = \{q_{1}, q_{2}, q_{3}, q_{4}, q_{5}, q_{6}\}$
-  \item $\Sigma = \{0,1\}$
-  \item $\delta$ =
-\begin{table}[h]
-\centering
-\begin{tabular}{l|ll}
-      & \texttt{0} & \texttt{1} \\ \hline
-$q_1$ & $q_2$      & $q_2$      \\
-$q_2$ & $q_3$      & $q_3$      \\
-$q_3$ & $q_4$      & $q_4$      \\
-$q_4$ & $q_5$      & $q_5$      \\
-$q_5$ & $q_6$      & $q_6$      \\
-$q_6$ & $q_6$      & $q_6$
-\end{tabular}
-\end{table}
-  \item $q_{1}$
-  \item $F = \{q_{1}, q_{2}, q_{3}, q_{4}, q_{5}\}$
+	\item $Q = \{q_{1}, q_{2}, q_{3}, q_{4}, q_{5}, q_{6}\}$
+	\item $\Sigma = \{0,1\}$
+	\item $\delta$ =
+	      \begin{table}[h]
+		      \centering
+		      \begin{tabular}{l|ll}
+			            & \texttt{0} & \texttt{1} \\ \hline
+			      $q_1$ & $q_2$      & $q_2$      \\
+			      $q_2$ & $q_3$      & $q_3$      \\
+			      $q_3$ & $q_4$      & $q_4$      \\
+			      $q_4$ & $q_5$      & $q_5$      \\
+			      $q_5$ & $q_6$      & $q_6$      \\
+			      $q_6$ & $q_6$      & $q_6$
+		      \end{tabular}
+	      \end{table}
+	\item $q_{1}$
+	\item $F = \{q_{1}, q_{2}, q_{3}, q_{4}, q_{5}\}$
 \end{enumerate}
 
 $M_{2} = (Q, \Sigma, \delta, q_{1}, F)$, hvor
 \begin{enumerate}
-  \item $Q = \{q_{1}, q_{2}, q_{3}\}$
-  \item $\Sigma = \{0,1\}$
-  \item $\delta$ =
+	\item $Q = \{q_{1}, q_{2}, q_{3}\}$
+	\item $\Sigma = \{0,1\}$
+	\item $\delta$ =
 
-\begin{table}[h]
-\centering
-\begin{tabular}{l|ll}
-      & \texttt{0} & \texttt{1} \\ \hline
-$q_1$ & $q_3$      & $q_2$      \\
-$q_2$ & $q_1$      & $q_1$      \\
-$q_3$ & $q_3$      & $q_3$      \\
-\end{tabular}
-\end{table}
+	      \begin{table}[h]
+		      \centering
+		      \begin{tabular}{l|ll}
+			            & \texttt{0} & \texttt{1} \\ \hline
+			      $q_1$ & $q_3$      & $q_2$      \\
+			      $q_2$ & $q_1$      & $q_1$      \\
+			      $q_3$ & $q_3$      & $q_3$      \\
+		      \end{tabular}
+	      \end{table}
 
-  \item $q_{1}$
-  \item $F = \{q_{1}, q_{2}\}$
+	\item $q_{1}$
+	\item $F = \{q_{1}, q_{2}\}$
 \end{enumerate}
 
 Vi bruger nu Teorem~\ref{the:sipser1.47} til at lave sammenkædningen. Vi kalder vores nye maskine $M_{3}$. $M_{3} = (Q, \Sigma, \delta, q_{0}, F)$, hvor:
 \begin{enumerate}
-  \item $Q = \{q_{11}, q_{12}, q_{13}, q_{14}, q_{15}, q_{16}\} \cup \{q_{21}, q_{22}, q_{23}\}$
-  \item $\Sigma = \{0,1\}$
-  \item $\delta$ undlades
-  \item $q_{11}$
-  \item $F = \{q_{21}, q_{22}\}$
+	\item $Q = \{q_{11}, q_{12}, q_{13}, q_{14}, q_{15}, q_{16}\} \cup \{q_{21}, q_{22}, q_{23}\}$
+	\item $\Sigma = \{0,1\}$
+	\item $\delta$ undlades
+	\item $q_{11}$
+	\item $F = \{q_{21}, q_{22}\}$
 \end{enumerate}
 
 Vi laver det om til et state diagram:
 
 
 \begin{center}
-  \begin{tikzpicture}[>=Stealth,shorten >=1pt,node distance=2.0cm,on grid,auto]
-    \node[state, initial] (q1) {$q_{11}$};
-    \node[state, right=of q1] (q2) {$q_{12}$};
-    \node[state, right=of q2] (q3) {$q_{13}$};
-    \node[state, right=of q3] (q4) {$q_{14}$};
-    \node[state, right=of q4] (q5) {$q_{15}$};
-    \node[state, right=of q5] (q6) {$q_{16}$};
-    \node[state, accepting, above=2cm of q3] (q21) {$q_{21}$};
-    \node[state, accepting, right=3cm of q21] (q22) {$q_{22}$};
-    \node[state, above right=1.5cm and 1cm of q21] (q23) {$q_{23}$};
+	\begin{tikzpicture}[>=Stealth,shorten >=1pt,node distance=2.0cm,on grid,auto]
+		\node[state, initial] (q1) {$q_{11}$};
+		\node[state, right=of q1] (q2) {$q_{12}$};
+		\node[state, right=of q2] (q3) {$q_{13}$};
+		\node[state, right=of q3] (q4) {$q_{14}$};
+		\node[state, right=of q4] (q5) {$q_{15}$};
+		\node[state, right=of q5] (q6) {$q_{16}$};
+		\node[state, accepting, above=2cm of q3] (q21) {$q_{21}$};
+		\node[state, accepting, right=3cm of q21] (q22) {$q_{22}$};
+		\node[state, above right=1.5cm and 1cm of q21] (q23) {$q_{23}$};
 
-    \path[->]
-    (q1) edge node {\texttt{0,1}} (q2)
-    (q2) edge node {\texttt{0,1}} (q3)
-    (q3) edge node {\texttt{0,1}} (q4)
-    (q4) edge node {\texttt{0,1}} (q5)
-    (q5) edge node {\texttt{0,1}} (q6)
-    (q6) edge[loop above] node {\texttt{0,1}} (q6)
+		\path[->]
+		(q1) edge node {\texttt{0,1}} (q2)
+		(q2) edge node {\texttt{0,1}} (q3)
+		(q3) edge node {\texttt{0,1}} (q4)
+		(q4) edge node {\texttt{0,1}} (q5)
+		(q5) edge node {\texttt{0,1}} (q6)
+		(q6) edge[loop above] node {\texttt{0,1}} (q6)
 
-    %% Nye kanter
-    (q1) edge node {$\varepsilon$} (q21)
-    (q2) edge node {$\varepsilon$} (q21)
-    (q3) edge node {$\varepsilon$} (q21)
-    (q4) edge node {$\varepsilon$} (q21)
-    (q5) edge node {$\varepsilon$} (q21)
+		%% Nye kanter
+		(q1) edge node {$\varepsilon$} (q21)
+		(q2) edge node {$\varepsilon$} (q21)
+		(q3) edge node {$\varepsilon$} (q21)
+		(q4) edge node {$\varepsilon$} (q21)
+		(q5) edge node {$\varepsilon$} (q21)
 
-    (q21) edge[bend left] node {\texttt{1}} (q22)
-    (q22) edge[bend left, above] node {\texttt{0,1}} (q21)
-    (q21) edge[bend left] node {\texttt{0}} (q23)
-    (q23) edge[loop above] node {\texttt{0,1}} (q23);
-  \end{tikzpicture}
+		(q21) edge[bend left] node {\texttt{1}} (q22)
+		(q22) edge[bend left, above] node {\texttt{0,1}} (q21)
+		(q21) edge[bend left] node {\texttt{0}} (q23)
+		(q23) edge[loop above] node {\texttt{0,1}} (q23);
+	\end{tikzpicture}
 \end{center}
 
 \begin{enumerate}
-  \item[b.] \textbf{Exercises 1.6b and 1.6m}
+	\item[b.] \textbf{Exercises 1.6b and 1.6m}
 \end{enumerate}
 
 Nu når vi kender rutinen bliver denne langt mindre formel:
 \[ M_{1} = \{w \; | \; w \text{ contains at least three } \mathtt{1}s \} \]
 
 \begin{center}
-  \begin{tikzpicture}[>=Stealth,shorten >=1pt,node distance=2.0cm,on grid,auto]
-    % Nodes
-    \node[state, initial] (q1) {$q_{11}$};
-    \node[state, right=of q1] (q2) {$q_{12}$};
-    \node[state, right=of q2] (q3) {$q_{13}$};
-    \node[state,accepting, right=of q3] (q4) {$q_{14}$};
+	\begin{tikzpicture}[>=Stealth,shorten >=1pt,node distance=2.0cm,on grid,auto]
+		% Nodes
+		\node[state, initial] (q1) {$q_{11}$};
+		\node[state, right=of q1] (q2) {$q_{12}$};
+		\node[state, right=of q2] (q3) {$q_{13}$};
+		\node[state,accepting, right=of q3] (q4) {$q_{14}$};
 
-    % Paths
-    \path[->]
-    (q1) edge node {\texttt{1}} (q2)
-    (q1) edge[loop above] node {\texttt{0}} (q1)
-    (q2) edge node {\texttt{1}} (q3)
-    (q2) edge[loop above] node {\texttt{0}} (q2)
-    (q3) edge node {\texttt{1}} (q4)
-    (q3) edge[loop above] node {\texttt{0}} (q3)
-    (q4) edge[loop above] node {\texttt{0,1}} (q4);
-  \end{tikzpicture}
+		% Paths
+		\path[->]
+		(q1) edge node {\texttt{1}} (q2)
+		(q1) edge[loop above] node {\texttt{0}} (q1)
+		(q2) edge node {\texttt{1}} (q3)
+		(q2) edge[loop above] node {\texttt{0}} (q2)
+		(q3) edge node {\texttt{1}} (q4)
+		(q3) edge[loop above] node {\texttt{0}} (q3)
+		(q4) edge[loop above] node {\texttt{0,1}} (q4);
+	\end{tikzpicture}
 \end{center}
 
 \[ M_{2} = \text{ the empty set } \]
 \begin{center}
-  \begin{tikzpicture}[>=Stealth,shorten >=1pt,node distance=2.0cm,on grid,auto]
-    % Nodes
-    \node[state, initial] (q1) {$q_{21}$};
+	\begin{tikzpicture}[>=Stealth,shorten >=1pt,node distance=2.0cm,on grid,auto]
+		% Nodes
+		\node[state, initial] (q1) {$q_{21}$};
 
-    % Paths
-    \path[->]
-    (q1) edge[loop above] node {\texttt{0,1}} (q1);
-  \end{tikzpicture}
+		% Paths
+		\path[->]
+		(q1) edge[loop above] node {\texttt{0,1}} (q1);
+	\end{tikzpicture}
 \end{center}
 
 Den var da kedelig, og sammenkædningen bliver endnu kedeligere!
 
 \begin{center}
-  \begin{tikzpicture}[>=Stealth,shorten >=1pt,node distance=2.0cm,on grid,auto]
-    % Nodes
-    \node[state, initial] (q1) {$q_{11}$};
-    \node[state, right=of q1] (q2) {$q_{12}$};
-    \node[state, right=of q2] (q3) {$q_{13}$};
-    \node[state, right=of q3] (q4) {$q_{14}$};
-    \node[state, right=of q4] (q21) {$q_{21}$};
+	\begin{tikzpicture}[>=Stealth,shorten >=1pt,node distance=2.0cm,on grid,auto]
+		% Nodes
+		\node[state, initial] (q1) {$q_{11}$};
+		\node[state, right=of q1] (q2) {$q_{12}$};
+		\node[state, right=of q2] (q3) {$q_{13}$};
+		\node[state, right=of q3] (q4) {$q_{14}$};
+		\node[state, right=of q4] (q21) {$q_{21}$};
 
-    % Paths
-    \path[->]
-    (q1) edge node {\texttt{1}} (q2)
-    (q1) edge[loop above] node {\texttt{0}} (q1)
-    (q2) edge node {\texttt{1}} (q3)
-    (q2) edge[loop above] node {\texttt{0}} (q2)
-    (q3) edge node {\texttt{1}} (q4)
-    (q3) edge[loop above] node {\texttt{0}} (q3)
-    (q4) edge[loop above] node {\texttt{0,1}} (q4)
-    (q4) edge node {$\varepsilon$} (q21);
-  \end{tikzpicture}
+		% Paths
+		\path[->]
+		(q1) edge node {\texttt{1}} (q2)
+		(q1) edge[loop above] node {\texttt{0}} (q1)
+		(q2) edge node {\texttt{1}} (q3)
+		(q2) edge[loop above] node {\texttt{0}} (q2)
+		(q3) edge node {\texttt{1}} (q4)
+		(q3) edge[loop above] node {\texttt{0}} (q3)
+		(q4) edge[loop above] node {\texttt{0,1}} (q4)
+		(q4) edge node {$\varepsilon$} (q21);
+	\end{tikzpicture}
 \end{center}
 
 \subsection*{Sipser 1.11}%
@@ -232,7 +232,7 @@ Det her spørgsmål er heldigvis meget simpelt, og jeg gider ikke bruge mere tid
 
 \textbf{Let}
 \begin{align*}
-  D = \{w\; | \; w \text{ contains an even number of } a \text{'s and}\\ \text{ an odd number of }b \text{'s and does not contain substring }ab\}.
+	D = \{w\; | \; w \text{ contains an even number of } a \text{'s and} \\ \text{ an odd number of }b \text{'s and does not contain substring }ab\}.
 \end{align*}
 \textbf{Give a DFA with five states that recognizes $D$ and a regular expression that generates $D$. (Suggestion: Describe $D$ more simply)}
 
@@ -240,31 +240,31 @@ Først simplificerer vi. Siden $ab$ er ulovligt, kan vi ændre simplificere og s
 Vi starter med det regulære udtryk.
 
 \begin{equation*}
-b(bb)*(aa)*
+	b(bb)*(aa)*
 \end{equation*}
 
 Og her kommer state diagrammet:
 
 \begin{center}
-  \begin{tikzpicture}[>=Stealth,shorten >=1pt,node distance=2.0cm,on grid,auto]
-    % Nodes
-    \node[state, initial] (q1) {$q_{1}$};
-    \node[state, accepting, right=of q1] (q2) {$q_{2}$};
-    \node[state, right=of q2] (q3) {$q_{3}$};
-    \node[state, accepting, right=of q3] (q4) {$q_{4}$};
-    \node[state, below left=2cm and 1cm of q3] (q5) {$q_{5}$};
+	\begin{tikzpicture}[>=Stealth,shorten >=1pt,node distance=2.0cm,on grid,auto]
+		% Nodes
+		\node[state, initial] (q1) {$q_{1}$};
+		\node[state, accepting, right=of q1] (q2) {$q_{2}$};
+		\node[state, right=of q2] (q3) {$q_{3}$};
+		\node[state, accepting, right=of q3] (q4) {$q_{4}$};
+		\node[state, below left=2cm and 1cm of q3] (q5) {$q_{5}$};
 
-    % Paths
-    \path[->]
-    (q1) edge[bend left] node {\texttt{b}} (q2)
-    (q1) edge[bend right] node {\texttt{a}} (q5)
-    (q2) edge[bend left] node {\texttt{b}} (q1)
-    (q2) edge node {\texttt{a}} (q3)
-    (q3) edge[bend left] node {\texttt{a}} (q4)
-    (q3) edge node {\texttt{b}} (q5)
-    (q4) edge[bend left] node {\texttt{a}} (q3)
-    (q4) edge[bend left] node {\texttt{b}} (q5);
-  \end{tikzpicture}
+		% Paths
+		\path[->]
+		(q1) edge[bend left] node {\texttt{b}} (q2)
+		(q1) edge[bend right] node {\texttt{a}} (q5)
+		(q2) edge[bend left] node {\texttt{b}} (q1)
+		(q2) edge node {\texttt{a}} (q3)
+		(q3) edge[bend left] node {\texttt{a}} (q4)
+		(q3) edge node {\texttt{b}} (q5)
+		(q4) edge[bend left] node {\texttt{a}} (q3)
+		(q4) edge[bend left] node {\texttt{b}} (q5);
+	\end{tikzpicture}
 \end{center}
 
 \subsection*{Sipser 1.31}%
@@ -274,19 +274,19 @@ Og her kommer state diagrammet:
 
 \textbf{Alle} regulære sprog kan defineres af en FA. Derfor antager vi at det omvendte sprog også kan defineres af en FA. Givet en NFA $M = (Q_{1}, \Sigma_{1}, \delta_{1}, q_{1}, F_{1})$ definerer vi en reverse NFA således $M_{\mathcal{R}} = (Q, \Sigma, \delta, q_{0}, F)$ hvor
 \begin{enumerate}
-  \item $Q = Q_{1} \cup \{q_{0}\}$
-  \item $\Sigma = \Sigma_{1}$
-  \item $q_{0}$ er en nyintroduceret state
-  \item $F = \{q_{1}\}$
-  \item
-        \begin{equation*}
-          \delta =
-\begin{cases}
-  F_{1} & q = q_{0} \text{ og } a = \varepsilon \\
-  \emptyset & q = q_{0} \text{ og } a \neq \varepsilon \\
-  \delta(q,a)^{-1} & \text{ for resten}
-\end{cases}
-        \end{equation*}
+	\item $Q = Q_{1} \cup \{q_{0}\}$
+	\item $\Sigma = \Sigma_{1}$
+	\item $q_{0}$ er en nyintroduceret state
+	\item $F = \{q_{1}\}$
+	\item
+	      \begin{equation*}
+		      \delta =
+		      \begin{cases}
+			      F_{1}            & q = q_{0} \text{ og } a = \varepsilon    \\
+			      \emptyset        & q = q_{0} \text{ og } a \neq \varepsilon \\
+			      \delta(q,a)^{-1} & \text{ for resten}
+		      \end{cases}
+	      \end{equation*}
 \end{enumerate}
 Hvor $\delta(q,a)^{-1}$ betyder at omvendde pilen fra hvad den var tidligere, i.e., hvis $\delta_{1}(q_{100},a) = q_{101}$, så $\delta(q_{101}, a) = q_{100}$, hvor $\delta_{1}$ er fra den originale automat, og $\delta$ fra reverse. Dette skal fortsætte, så vi får en ``omvendt'' FA, og dermed reverse. QED.
 
@@ -298,15 +298,15 @@ Hvor $\delta(q,a)^{-1}$ betyder at omvendde pilen fra hvad den var tidligere, i.
 $A_{2} = \{www|w \in \{\mathtt{a,b}\}^{*}\}$
 
 \begin{proof}
-  Bevis ved modstrid.\\
-  Vi antager at $A_{2}$ er regulært. For at være regulært skal det opfylde følgende kriterier (Fra Teorem~\ref{the:pumpelemma}):
-  \begin{enumerate}
-    \item $(\forall i \geq 0)(xy^{i}z \in A)$
-    \item $|y| > 0$
-    \item $|xy| \leq p$
-  \end{enumerate}
+	Bevis ved modstrid.\\
+	Vi antager at $A_{2}$ er regulært. For at være regulært skal det opfylde følgende kriterier (Fra Teorem~\ref{the:pumpelemma}):
+	\begin{enumerate}
+		\item $(\forall i \geq 0)(xy^{i}z \in A)$
+		\item $|y| > 0$
+		\item $|xy| \leq p$
+	\end{enumerate}
 
-  Vi tager strengen $a^{p}ba^{p}ba^{p}b$, hvor $w = a^{p}b$. Lad \texttt{aabaabaab}$\in A_{2}$. Pumpelængden er 2. $x = a, z = a, y = baabaab$. Dermed har vi $(a)(a)(baabaab)$. Hvis vi pumper midterdelen med $i = 2$ får vi $(a)(aa)(baabaab)$ hvilket ikke er en del af sproget. Dermed er sproget ikke regulært.
+	Vi tager strengen $a^{p}ba^{p}ba^{p}b$, hvor $w = a^{p}b$. Lad \texttt{aabaabaab}$\in A_{2}$. Pumpelængden er 2. $x = a, z = a, y = baabaab$. Dermed har vi $(a)(a)(baabaab)$. Hvis vi pumper midterdelen med $i = 2$ får vi $(a)(aa)(baabaab)$ hvilket ikke er en del af sproget. Dermed er sproget ikke regulært.
 \end{proof}
 
 
@@ -340,15 +340,15 @@ Siden det beskrives af at regulært udtryk er det regulært.
 \label{subsec:sipser1.49}
 
 \begin{enumerate}
-  \item[a.] Let  $B = \{1^{k}y | y \in \{0,1\}^{*} \text{ and } y \text{ contains at least } k \;\mathtt{ 1} \text{s, for } k \ge 1\}$. Show that $B$ is a regular language.
+	\item[a.] Let  $B = \{1^{k}y | y \in \{0,1\}^{*} \text{ and } y \text{ contains at least } k \;\mathtt{ 1} \text{s, for } k \ge 1\}$. Show that $B$ is a regular language.
 \end{enumerate}
 
 Bevis af regulært udtryk:
 \[  \mathtt{1(0} \cup \mathtt{1)}^{*} \mathtt{1(0} \cup \mathtt{1)}^{*} \]
 
 \begin{enumerate}
-  \item[b.] Let $C = \{1^{k}y | y \in \{\mathtt{0,1}\}^{*} \text{ and } y \text{ contains at most }k \;\mathtt{1} \text{s, for } k \ge 1\}.$
-        Show that $C$ isn't a regular language.
+	\item[b.] Let $C = \{1^{k}y | y \in \{\mathtt{0,1}\}^{*} \text{ and } y \text{ contains at most }k \;\mathtt{1} \text{s, for } k \ge 1\}.$
+		Show that $C$ isn't a regular language.
 \end{enumerate}
 
 Forskellen her er at det er \textbf{højest} $k$ 1'ere, og ikke mindst.
@@ -375,16 +375,16 @@ En DFA er en NFA, men med nogle ekstra begræsninger, herunder at den kun kan v�
 \textbf{onsider the language \( F = \{a^i b^j c^k \mid i,j,k \geq 0 \text{ and if } i = 1 \text{ then } j = k\} \).}
 
 \begin{enumerate}
-    \item[a.] Show that \( F \) is not regular.
+	\item[a.] Show that \( F \) is not regular.
 \end{enumerate}
 
 I've no clue
 
 \begin{enumerate}
-    \item[b.] Show that \( F \) acts like a regular language in the pumping lemma. In other words, give a pumping length \( p \) and demonstrate that \( F \) satisfies the three conditions of the pumping lemma for this value of \( p \).
+	\item[b.] Show that \( F \) acts like a regular language in the pumping lemma. In other words, give a pumping length \( p \) and demonstrate that \( F \) satisfies the three conditions of the pumping lemma for this value of \( p \).
 \end{enumerate}
 \begin{enumerate}
-    \item[c.] Explain why parts (a) and (b) do not contradict the pumping lemma.
+	\item[c.] Explain why parts (a) and (b) do not contradict the pumping lemma.
 \end{enumerate}
 
 \section{Kontekstfrie Sprog}
@@ -394,17 +394,17 @@ I've no clue
 \subsection*{Sipser 2.2}
 \noindent
 \begin{enumerate}
-  \item[a.] Use the languages $A = \{a^{m}b^{n}c^{n} \; | \; m,n \ge 0\}$ and $B = \{a^{n}b^{n}c^{m} \; | \; m,n \ge 0\}$ together with example 2.36 to show that the class of context-free languages is not closed under intersection.
+	\item[a.] Use the languages $A = \{a^{m}b^{n}c^{n} \; | \; m,n \ge 0\}$ and $B = \{a^{n}b^{n}c^{m} \; | \; m,n \ge 0\}$ together with example 2.36 to show that the class of context-free languages is not closed under intersection.
 \end{enumerate}
 
 Vi har to sprog, hvis snit vi skal finde, og derefter vise at dette sprog ikke er kontekst-frit. Snittet af disse to sprog er $\{a^{n}b^{n}c^{n}\; | \; n \ge 0\}$, som er vist i eksempel 2.36 til ikke at være regulært. (Hvorfor er det snittet?)
 
 \begin{enumerate}
-  \item[b.] Use part (a) and DeMorgan's Law (Theorem 0.20) to show that the class of context-free languages is not closed under complementation.
+	\item[b.] Use part (a) and DeMorgan's Law (Theorem 0.20) to show that the class of context-free languages is not closed under complementation.
 \end{enumerate}
 
 \begin{theorem}[DeMorgan's Law]
-For alle to sæt $A$ og $B$, $\overline{A \cup B} = \overline{A} \cap \overline{B}$
+	For alle to sæt $A$ og $B$, $\overline{A \cup B} = \overline{A} \cap \overline{B}$
 \end{theorem}
 
 Hvis vi vender teoremet om, til at være $\overline{A} \cap \overline{B} = \overline{A \cup B}$ får vi at snittet af komplementet af to sprog er lig komplementet af fællesmængden af de samme to sprog. Vi ved dog at snittet ikke er kontekst-frit, så da der kan sættes lighed mellem disse to kan de ikke være kontekst-fri. Vi kan også fjerne komplementet, så teoremet bliver transformeret til at blive $A \cap B = \overline{\overline{A} \cup \overline{B}}$\\\\
@@ -416,13 +416,13 @@ Give a context-free grammar that generates the language
 \[ A = \{a^{i}b^{j}c^{k}\; | \; i = j \text{ or }j = k \text{ where } i,j,k \ge 0 \}\]
 
 \begin{equation*}
-  \begin{split}
-    S &\rightarrow I\;|\;K \\
-    I &\rightarrow aIbC\;|\; \varepsilon\\
-    C &\rightarrow cC\;|\; \varepsilon\\
-    K &\rightarrow AbKc \;| \; \varepsilon\\
-    A &\rightarrow aA \; | \; \varepsilon
-  \end{split}
+	\begin{split}
+		S &\rightarrow I\;|\;K \\
+		I &\rightarrow aIbC\;|\; \varepsilon\\
+		C &\rightarrow cC\;|\; \varepsilon\\
+		K &\rightarrow AbKc \;| \; \varepsilon\\
+		A &\rightarrow aA \; | \; \varepsilon
+	\end{split}
 \end{equation*}
 \\\\
 
@@ -439,7 +439,7 @@ Hvis $A$ er kontekst-frit og $B$ er regulært, og vi fjerner $B$ har vi noget de
 Use the pumping lemma to show that the following languages are not context-free.
 
 \begin{enumerate}
-  \item[a.] $\{0^{n}1^{n}0^{n}1^{n}\;|\; n \ge 0\}$
+	\item[a.] $\{0^{n}1^{n}0^{n}1^{n}\;|\; n \ge 0\}$
 \end{enumerate}
 
 Pumping lemma er Teorem~\ref{teo:pumpelemmacfg}.
@@ -451,19 +451,19 @@ Vi inddeller således: $u= 0^{p}, v = 1^{p}, x = 0^{p}, y = 1^{p}, z = \varepsil
 Dette er umuligt, da 3. betingelse kræver at $|vxy| \leq p$
 
 \begin{enumerate}
-  \item[b.] $\{0^{n}\# 0^{2n} \# 0^{3n} \; | \; n \ge 0\}$
+	\item[b.] $\{0^{n}\# 0^{2n} \# 0^{3n} \; | \; n \ge 0\}$
 \end{enumerate}
 
 Vi tager strengen $w = 0^{p}\#0^{2p}\#0^{3p}$. Det er nærmest umuligt at vise at det \textbf{er} kontekstfrit.
 
 \begin{enumerate}
-  \item[c.] $\{w\#t \; | \; w \text{ is a substring of }t \text{ where }w,t \in \{a,b\}^{*}\}$
+	\item[c.] $\{w\#t \; | \; w \text{ is a substring of }t \text{ where }w,t \in \{a,b\}^{*}\}$
 \end{enumerate}
 
 Vi tager strengen $a^{p}b^{p}\#a^{p}b^{p}$. Stortset uanset hvordan den opdeles, kan den ikke dække alle strenge, som er en del af sproget, og ender med at gå ud over sproget. F.eks. hvis $uvx = w_{1}, y = \#, z = w_{2}$.
 
 \begin{enumerate}
-  \item[d.] $\{t_{1}\#t_{2}\# \cdots \# t_{k}\;|\; k \ge 2, \text{ each } t_{i} \in \{a,b\}^{*}, \text{ and } t_{i}=t_{j} \text{ for some} i \ne j\}$
+	\item[d.] $\{t_{1}\#t_{2}\# \cdots \# t_{k}\;|\; k \ge 2, \text{ each } t_{i} \in \{a,b\}^{*}, \text{ and } t_{i}=t_{j} \text{ for some} i \ne j\}$
 \end{enumerate}
 Hvis vi tager samme streng som sidste opgave, får vi samme resultat.\\\\
 \noindent
@@ -482,32 +482,32 @@ Givet streng $1^{p}3^{p}2^{p}4^{p}$, er strengen ikke mulig at pumpe.\\\\
 Let $\Sigma = \{0,1\}$ and let $B$ be the collection of strings that contain at least one 1 in their second half. In other words, $B = \{uv \; |\; u \in \Sigma^{*}, v \in \Sigma^{*}1\Sigma^{*} \text{ and } |u| \ge |v|\}$
 
 \begin{enumerate}
-  \item[a.] Give a PDA that recognizes $B$.
+	\item[a.] Give a PDA that recognizes $B$.
 \end{enumerate}
-  \begin{tikzpicture}[node distance=2.0cm]
-    \node[state, initial] (q0) {$q_0$};
-    \node[state, right=of q0] (q1) {$q_{1}$};
-    \node[state, right=of q1] (q2) {$q_{2}$};
-    \node[state, accepting, right=of q2] (q3) {$q_{3}$};
+\begin{tikzpicture}[node distance=2.0cm]
+	\node[state, initial] (q0) {$q_0$};
+	\node[state, right=of q0] (q1) {$q_{1}$};
+	\node[state, right=of q1] (q2) {$q_{2}$};
+	\node[state, accepting, right=of q2] (q3) {$q_{3}$};
 
-    \path[->]
-    (q0) edge node {$\varepsilon, \varepsilon \rightarrow \mathdollar$} (q1)
-    (q1) edge[loop above] node {$\alpha, \varepsilon \rightarrow \#$} (q1)
-    (q1) edge node {$\alpha, \varepsilon \rightarrow \#$} (q2)
-    (q2) edge[loop above] node {0, $\# \rightarrow \varepsilon$} (q2)
-    (q2) edge node {1, $\# \rightarrow \varepsilon$} (q3)
-    (q3) edge[loop above] node {$\alpha, \# \rightarrow \varepsilon$} (q3);
-    % (q1) edge[bend left] node {\texttt{1}} (q2)
-    % (q1) edge[loop above] node {\texttt{0}} ()
-    % (q2) edge[bend left] node {\texttt{0}} (q3)
-    % (q2) edge[loop above] node {\texttt{1}} ()
-    % (q3) edge[bend left] node {\texttt{0,1}} (q2);
-  \end{tikzpicture}
+	\path[->]
+	(q0) edge node {$\varepsilon, \varepsilon \rightarrow \mathdollar$} (q1)
+	(q1) edge[loop above] node {$\alpha, \varepsilon \rightarrow \#$} (q1)
+	(q1) edge node {$\alpha, \varepsilon \rightarrow \#$} (q2)
+	(q2) edge[loop above] node {0, $\# \rightarrow \varepsilon$} (q2)
+	(q2) edge node {1, $\# \rightarrow \varepsilon$} (q3)
+	(q3) edge[loop above] node {$\alpha, \# \rightarrow \varepsilon$} (q3);
+	% (q1) edge[bend left] node {\texttt{1}} (q2)
+	% (q1) edge[loop above] node {\texttt{0}} ()
+	% (q2) edge[bend left] node {\texttt{0}} (q3)
+	% (q2) edge[loop above] node {\texttt{1}} ()
+	% (q3) edge[bend left] node {\texttt{0,1}} (q2);
+\end{tikzpicture}
 
 PDA'en gætter nondeterministisk på hvornår vi er halvvejs.
 
 \begin{enumerate}
-  \item[b.] Give a CFG that generates $B$.
+	\item[b.] Give a CFG that generates $B$.
 \end{enumerate}
 
 Det gider vi faktisk ikke, så i stedet lader vi bare som om vi har kørt algoritmen.\\
@@ -521,10 +521,10 @@ Show that the class of context-free languages is closed under union, that is, if
 Vi beviser ved at have en CFG, $G$:
 
 \begin{equation*}
-\begin{split}
-  S' &\rightarrow S_{1} \; | \; S_{2}\\
- &\vdots
-\end{split}
+	\begin{split}
+		S' &\rightarrow S_{1} \; | \; S_{2}\\
+		&\vdots
+	\end{split}
 \end{equation*}
 
 Hvor $S_{1}$ er startsymbolet for grammatikken der genkender $L$, og $S_{2}$ er startsymbolet for grammatikken der genkender $L'$.\\
@@ -534,92 +534,92 @@ Hvor $S_{1}$ er startsymbolet for grammatikken der genkender $L$, og $S_{2}$ er 
 \subsection*{Problem 4 January 2002}
 \noindent
 \begin{enumerate}
-    \item[a)] Consider the context-free grammar \( G = (V, \Sigma, S, R) \), given by
-    \( V := \{S, A, B, a, b\} \), \( \Sigma := \{a, b\} \) and
-    \[
-    R := \left\{
-    \begin{array}{l}
-    S \to AB, \\
-    S \to Ba, \\
-    A \to a, \\
-    A \to abAS, \\
-    A \to bAa, \\
-    B \to b, \\
-    B \to bSS, \\
-    B \to aSBB
-    \end{array}
-    \right.
-    \]
-    Prove that all words in \( L(G) \) contain the same number of occurrences of the letters \( a \) and \( b \).
+	\item[a)] Consider the context-free grammar \( G = (V, \Sigma, S, R) \), given by
+		\( V := \{S, A, B, a, b\} \), \( \Sigma := \{a, b\} \) and
+		\[
+			R := \left\{
+			\begin{array}{l}
+				S \to AB,   \\
+				S \to Ba,   \\
+				A \to a,    \\
+				A \to abAS, \\
+				A \to bAa,  \\
+				B \to b,    \\
+				B \to bSS,  \\
+				B \to aSBB
+			\end{array}
+			\right.
+		\]
+		Prove that all words in \( L(G) \) contain the same number of occurrences of the letters \( a \) and \( b \).
 \end{enumerate}
 
 Vi beviser dette ved at lave det om til en Chomsky Grammar (Chomsky Normal Form).
 
 Step One: Add new start symbol
 \begin{align*}
-C &\to S \\
-S &\to AB \mid Ba \\
-A &\to a \mid abAS \mid bAa \\
-B &\to b \mid bSS \mid aSBB
+	C & \to S                    \\
+	S & \to AB \mid Ba           \\
+	A & \to a \mid abAS \mid bAa \\
+	B & \to b \mid bSS \mid aSBB
 \end{align*}
 
 Step Two: Remove \(\varepsilon\) rules
 \begin{align*}
-C &\to S \\
-S &\to AB \mid Ba \\
-A &\to a \mid abAS \mid bAa \\
-B &\to b \mid bSS \mid aSBB
+	C & \to S                    \\
+	S & \to AB \mid Ba           \\
+	A & \to a \mid abAS \mid bAa \\
+	B & \to b \mid bSS \mid aSBB
 \end{align*}
 
 Step Three: Remove unit rules
 \begin{align*}
-C &\to AB \mid Ba \\
-S &\to AB \mid Ba \\
-A &\to a \mid abAS \mid bAa \\
-B &\to b \mid bSS \mid aSBB
+	C & \to AB \mid Ba           \\
+	S & \to AB \mid Ba           \\
+	A & \to a \mid abAS \mid bAa \\
+	B & \to b \mid bSS \mid aSBB
 \end{align*}
 
 Step Four: Split rules into parts
 \begin{align*}
-C &\to AB \mid Ba \\
-S &\to AB \mid Ba \\
-A &\to a \mid aE \mid bF \\
-B &\to b \mid bG \mid aI \\
-D &\to AS \\
-E &\to bD \\
-F &\to Aa \\
-G &\to SS \\
-H &\to BB \\
-I &\to SH
+	C & \to AB \mid Ba        \\
+	S & \to AB \mid Ba        \\
+	A & \to a \mid aE \mid bF \\
+	B & \to b \mid bG \mid aI \\
+	D & \to AS                \\
+	E & \to bD                \\
+	F & \to Aa                \\
+	G & \to SS                \\
+	H & \to BB                \\
+	I & \to SH
 \end{align*}
 
 Step Five: Replace terminals with variables
 \begin{align*}
-C &\to AB \mid BJ \\
-S &\to AB \mid BJ \\
-A &\to J \mid JE \mid KF \\
-B &\to K \mid KG \mid JI \\
-D &\to AS \\
-E &\to KD \\
-F &\to AJ \\
-G &\to SS \\
-H &\to BB \\
-I &\to SH \\
-J &\to a \\
-K &\to b
+	C & \to AB \mid BJ        \\
+	S & \to AB \mid BJ        \\
+	A & \to J \mid JE \mid KF \\
+	B & \to K \mid KG \mid JI \\
+	D & \to AS                \\
+	E & \to KD                \\
+	F & \to AJ                \\
+	G & \to SS                \\
+	H & \to BB                \\
+	I & \to SH                \\
+	J & \to a                 \\
+	K & \to b
 \end{align*}
 
 Vi kan her se at der er lige mange occurences af $J$ og $K$ og dermed må den altid være sådan bum.
 
 \begin{enumerate}
-    \item[b)] Consider the context-free language
-    \[
-    L := \{a^n b^n | n \geq 1\} \cup \{a^n b^{2n} | n \geq 1\}
-    \]
-    over \( \Sigma = \{a, b\} \).
-    Write down a Pushdown automaton \( M \) which precisely accepts \( L \). This includes the definition of a transition table. Explain the way your PDA works.
+	\item[b)] Consider the context-free language
+		\[
+			L := \{a^n b^n | n \geq 1\} \cup \{a^n b^{2n} | n \geq 1\}
+		\]
+		over \( \Sigma = \{a, b\} \).
+		Write down a Pushdown automaton \( M \) which precisely accepts \( L \). This includes the definition of a transition table. Explain the way your PDA works.
 
-    \textbf{Hint for b):} To simplify the task your PDA is allowed to write in a single step several symbols onto the stack (but it can read only one at a time).
+		\textbf{Hint for b):} To simplify the task your PDA is allowed to write in a single step several symbols onto the stack (but it can read only one at a time).
 \end{enumerate}
 
 Jeg skriver i stedet for at lave den, fordi jeg ikke gider. Relativt simpelt, vi starter med at pushe 2 a'er, for hvert a. Så branhcer vi nondeterministisk ud, og popper hhv. et a og 2 a'er, indtil vi ikke kan mere, når vi ser et b. Hvis ingen af disse bliver genkendt er de ikke en del af sproget.\\\\
@@ -629,8 +629,8 @@ Jeg skriver i stedet for at lave den, fordi jeg ikke gider. Relativt simpelt, vi
 \noindent
 
 \begin{enumerate}
-  \item[a.] Konstruer en kontekstfri grammatik $G$ for følgende sprog
-        \[L := \{a^{i}b^{j}a^{k} \mid i+k \ge j; i,j,k \in \mathbb{N} \cup \{0\}\}\]
+	\item[a.] Konstruer en kontekstfri grammatik $G$ for følgende sprog
+		\[L := \{a^{i}b^{j}a^{k} \mid i+k \ge j; i,j,k \in \mathbb{N} \cup \{0\}\}\]
 \end{enumerate}
 
 % \begin{equation*}
@@ -642,15 +642,15 @@ Jeg skriver i stedet for at lave den, fordi jeg ikke gider. Relativt simpelt, vi
 % \end{split}
 % \end{equation*}
 \begin{equation*}
-\begin{split}
-  S &\rightarrow AB\\
-  A &\rightarrow aA \mid aAb \mid a \\
-  B &\rightarrow Ba \mid bBa | a \\
-\end{split}
+	\begin{split}
+		S &\rightarrow AB\\
+		A &\rightarrow aA \mid aAb \mid a \\
+		B &\rightarrow Ba \mid bBa | a \\
+	\end{split}
 \end{equation*}
 
 \begin{enumerate}
-  \item[b.] Betragt Sproget \[L := \{a^{i}b^{j} \mid i=j^{2}, i, j \in \mathbb{N}\}\] Er $L$ kontekstfrit? Bevis dit svar.
+	\item[b.] Betragt Sproget \[L := \{a^{i}b^{j} \mid i=j^{2}, i, j \in \mathbb{N}\}\] Er $L$ kontekstfrit? Bevis dit svar.
 \end{enumerate}
 
 Vi bruger pumpelemmaet (Teorem~\ref{teo:pumpelemmacfg}) til at bevise nonkontekstfrihed.
@@ -664,33 +664,33 @@ Vi bruger strengen $a^{p^{2}}b^{p}$ hvis længde er $p^{3}$ hvilket tydeligt er 
 Lad $L = \{a^{n}b^{k}c^{m} \mid n,k,m \ge 0 \text{ og } n+k = m\}$
 
 \begin{enumerate}
-  \item[a.] Gør rede for at $L$ ikke er regulært.
+	\item[a.] Gør rede for at $L$ ikke er regulært.
 \end{enumerate}
 
 Vi beviser nonregulæritet vha. pumpelemmaet, i teorem~\ref{the:pumpelemma}. Vi tager strengen $a^{p}b^{p}c^{2p}$, hvilket er klart over $p$ og er en del af sproget. Hvis vi så deler sproget op således at $x = a^{p}, y = b^{p}, z = c^{2p}$, ser vi at vi ikke kan pumpe på nogen som helst måde uden at det forlader sproget. Dermed er sproget ikke regulært.
 
 \begin{enumerate}
-  \item[b.] Er $L$ kontekstfrit?
+	\item[b.] Er $L$ kontekstfrit?
 \end{enumerate}
 
 
 \begin{tikzpicture}[node distance=2.0cm]
-  \node[state, initial] (q0) {$q_0$};
-  \node[state, right=of q0] (q1) {$q_{1}$};
-  \node[state, right=of q1] (q2) {$q_{2}$};
-  \node[state, right=of q2] (q3) {$q_{3}$};
-  \node[state, accepting, below=of q3] (q4) {$q_{4}$};
-  \node[state, left=of q4] (q5) {$q_{5}$};
+	\node[state, initial] (q0) {$q_0$};
+	\node[state, right=of q0] (q1) {$q_{1}$};
+	\node[state, right=of q1] (q2) {$q_{2}$};
+	\node[state, right=of q2] (q3) {$q_{3}$};
+	\node[state, accepting, below=of q3] (q4) {$q_{4}$};
+	\node[state, left=of q4] (q5) {$q_{5}$};
 
-  \path[->]
-  (q0) edge node {$\varepsilon, \varepsilon \rightarrow \mathdollar$} (q1)
-  (q1) edge[loop above] node {$a, \varepsilon \rightarrow x$} (q1)
-  (q1) edge node {\(\varepsilon, \varepsilon \rightarrow \varepsilon\)} (q2)
-  (q2) edge[loop above] node {$b, \varepsilon \rightarrow x$} (q2)
-  (q2) edge node {$\varepsilon, \varepsilon \rightarrow \varepsilon$} (q3)
-  (q3) edge[loop above] node {$c, x \rightarrow \varepsilon$} (q3)
-  (q3) edge node {$\varepsilon, \mathdollar \rightarrow \varepsilon$} (q4)
-  (q4)  edge node {$c, \varepsilon \rightarrow \varepsilon$} (q5);
+	\path[->]
+	(q0) edge node {$\varepsilon, \varepsilon \rightarrow \mathdollar$} (q1)
+	(q1) edge[loop above] node {$a, \varepsilon \rightarrow x$} (q1)
+	(q1) edge node {\(\varepsilon, \varepsilon \rightarrow \varepsilon\)} (q2)
+	(q2) edge[loop above] node {$b, \varepsilon \rightarrow x$} (q2)
+	(q2) edge node {$\varepsilon, \varepsilon \rightarrow \varepsilon$} (q3)
+	(q3) edge[loop above] node {$c, x \rightarrow \varepsilon$} (q3)
+	(q3) edge node {$\varepsilon, \mathdollar \rightarrow \varepsilon$} (q4)
+	(q4)  edge node {$c, \varepsilon \rightarrow \varepsilon$} (q5);
 \end{tikzpicture}
 
 Ja!\\\\

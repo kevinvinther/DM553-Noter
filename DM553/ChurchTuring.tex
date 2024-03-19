@@ -206,7 +206,7 @@ Dette kan gøres i $O(|w|)$ skridt, imens den kan gøres i $O(|w|^{2})$ skridt i
 	Hvor \textbf{tyk skrift} indikerer hovedets placering, bliver lavet om til i $S$:
 	\begin{center}
 		\texttt{$\stackrel{\circ}{\text{\texttt{a}}}$aaaabababbb\#bbbbb$\stackrel{\circ}{\text{\texttt{b}}}$bbbbba\#a$\stackrel{\circ}{\text{\texttt{b}}}$aaababbaba\#}.
-	  \end{center}
+	\end{center}
 
 	Vi definerer nu $S$.
 
@@ -222,12 +222,12 @@ Dette kan gøres i $O(|w|)$ skridt, imens den kan gøres i $O(|w|^{2})$ skridt i
 Vi kan i beviset tydeligt se hvordan det kan gøres, men hvordan kan en simulerende Turingmaskine som $S$ huske at den har set de tidligere hoveder? Følgende er en beskrivelse af en algoritme der kan konvertere enhver $k-$bånds Turingmaskine til en $1-$bånds Turingmkasine.
 
 \begin{enumerate}
-  \item Antag at $M$ er en $k-$bånds Turingmaskine.
-  \item For hver state $q_{i}$ i $M$ har vi:
-		\begin{enumerate}
-		  \item\label{enum:ktapealgo:qi} States $q^{i}_{(\alpha_{1}, \alpha_{2}, \ldots, \alpha_{k})}$ når $a_{i} \in \Gamma \cup \{-\}$, hvor $-$ betyder tomme eller endnu ikke kendt, altså, vi ved endnu ikke hvad der skal være der.
-		  \item\label{enum:ktapealgo:pi} States $p^{i}_{(\delta_{1}, \delta_{2}, \ldots, \delta_{k}, b_{1}, b_{2}, \ldots, b_{k}, \gamma_{1}, \gamma_{2}, \ldots, \gamma_{k})}$ hvor $\delta_{i} \in \Gamma \cup \{-\}$, $b_{i} \in \Gamma$, $\gamma_{i} \in \{R, L, S\}$. Så altså, det første (\(\delta\)) er enten båndsymboler eller ukendt, $b$  er båndsymboler,  og $\gamma$ er hovedbevægelser.
-		\end{enumerate}
+	\item Antag at $M$ er en $k-$bånds Turingmaskine.
+	\item For hver state $q_{i}$ i $M$ har vi:
+	      \begin{enumerate}
+		      \item\label{enum:ktapealgo:qi} States $q^{i}_{(\alpha_{1}, \alpha_{2}, \ldots, \alpha_{k})}$ når $a_{i} \in \Gamma \cup \{-\}$, hvor $-$ betyder tomme eller endnu ikke kendt, altså, vi ved endnu ikke hvad der skal være der.
+		      \item\label{enum:ktapealgo:pi} States $p^{i}_{(\delta_{1}, \delta_{2}, \ldots, \delta_{k}, b_{1}, b_{2}, \ldots, b_{k}, \gamma_{1}, \gamma_{2}, \ldots, \gamma_{k})}$ hvor $\delta_{i} \in \Gamma \cup \{-\}$, $b_{i} \in \Gamma$, $\gamma_{i} \in \{R, L, S\}$. Så altså, det første (\(\delta\)) er enten båndsymboler eller ukendt, $b$  er båndsymboler,  og $\gamma$ er hovedbevægelser.
+	      \end{enumerate}
 \end{enumerate}
 
 For at forklare dybere: \ref{enum:ktapealgo:qi}: Når vi er i $q^{i}_{(\beta_{1}, \beta_{2}, \ldots, \beta_{r},-,-,\ldots,-)}$ har vi indsamlet alle symbolerne under hovederne på de første $r$ bånd. Her betyder symbolerne $-$ igen at det er symboler som vi ikke kender endnu. Altså betyder det at \(\beta_{k}\) har hvad det simulerer bånd nummer $k$'s symbol under hovedet.
@@ -239,15 +239,15 @@ Altså kan man se det totale antal af states som en \textbf{endelig} funktion $f
 
 Lad os nu implementere ét skridt $\delta(q_{i}, a_{1}, a_{2}, \ldots, a_{n}) = (q_{j}, b_{1}, b_{2}, \ldots, b_{k}, \gamma_{1}, \gamma_{2}, \ldots, \gamma_{k})$.
 \begin{enumerate}
-  \item $M'$ starter i state $q^{i}_{(-,-, \ldots, -)}$ på den venstremest position altså uden kendskab til nogen symboler.
-  \item I state $q^{i}(a_{1}, \ldots, a_{r}, -, \ldots, -)$ $r < k$, flytter $m'$ dets hoved fremad til at kopiere indholdet under $m'$s $(r+1)$'e hoved. Vi husker så via. staten, altså, når vi har set symbol $a$ under det $i$'e hoved, så går vi til den state der har symbol $a$ under det $i$'e hoved. Det er måden vores hukommelse fungerer på.
-  \item Når vi når til state $q^{i}_{(a_{1}, a_{2}, \ldots, a_{k})}$ $\beta_{i} \in \Gamma$ har vi samlet alle karakterer under $m'$s hoveder. Så er det tid til at ændre på disse symboler. Jævnfør algoritmen vi har set tidligere gør vi dette ved hjælp af en ``mellem-state'', $p^{j}$ (hvor vi egentlig gerne vil hen til $q_{j}$.) Vi går til state $p^{j}_{(-, \ldots, -, b_{1}, b_{2}, \ldots, b_{k}, \gamma_{1}, \gamma_{2}, \ldots, \gamma_{k})}$ hvor vi endnu ikke ved hvad de første symboler der skal ændres er, men vi ved hvad de skal ændres \textit{til} (fra transitionsfunktionens definition skrevet lige før starten på denne implementation.)
-  \item I state $p^{j}_{(b_{1}, \ldots, b_{s}, -, \ldots, -, b_{1}, b_{2}, \ldots, b_{k}, \gamma_{1}, \gamma_{2}, \ldots, \gamma_{k})}$ hvor $s < k$ gør vi følgende:
-		\begin{enumerate}
-		  \item Flytter til positionen af det $(s+1)$'e hoved.
-		  \item Erstatter $a_{s+1}$ med $b_{s+1}$ og flytter ``hovedet'' $s+1$ ifølge $\gamma_{s+1}$
-		  \item Hvis $s+1<k$ går vi til state $p^{j}_{(b_{1}, \ldots, b_{s+1}, \cdots, b_{1}, b_{2}, \ldots, b_{k}, \gamma_{1}, \ldots, \gamma_{k})}$, og tager skridt 4 om igen. \textbf{Ellers} flytter vi hovedet til den venstremest position og går til state $q^{j}_{(-, \ldots, -)}$
-		\end{enumerate}
+	\item $M'$ starter i state $q^{i}_{(-,-, \ldots, -)}$ på den venstremest position altså uden kendskab til nogen symboler.
+	\item I state $q^{i}(a_{1}, \ldots, a_{r}, -, \ldots, -)$ $r < k$, flytter $m'$ dets hoved fremad til at kopiere indholdet under $m'$s $(r+1)$'e hoved. Vi husker så via. staten, altså, når vi har set symbol $a$ under det $i$'e hoved, så går vi til den state der har symbol $a$ under det $i$'e hoved. Det er måden vores hukommelse fungerer på.
+	\item Når vi når til state $q^{i}_{(a_{1}, a_{2}, \ldots, a_{k})}$ $\beta_{i} \in \Gamma$ har vi samlet alle karakterer under $m'$s hoveder. Så er det tid til at ændre på disse symboler. Jævnfør algoritmen vi har set tidligere gør vi dette ved hjælp af en ``mellem-state'', $p^{j}$ (hvor vi egentlig gerne vil hen til $q_{j}$.) Vi går til state $p^{j}_{(-, \ldots, -, b_{1}, b_{2}, \ldots, b_{k}, \gamma_{1}, \gamma_{2}, \ldots, \gamma_{k})}$ hvor vi endnu ikke ved hvad de første symboler der skal ændres er, men vi ved hvad de skal ændres \textit{til} (fra transitionsfunktionens definition skrevet lige før starten på denne implementation.)
+	\item I state $p^{j}_{(b_{1}, \ldots, b_{s}, -, \ldots, -, b_{1}, b_{2}, \ldots, b_{k}, \gamma_{1}, \gamma_{2}, \ldots, \gamma_{k})}$ hvor $s < k$ gør vi følgende:
+	      \begin{enumerate}
+		      \item Flytter til positionen af det $(s+1)$'e hoved.
+		      \item Erstatter $a_{s+1}$ med $b_{s+1}$ og flytter ``hovedet'' $s+1$ ifølge $\gamma_{s+1}$
+		      \item Hvis $s+1<k$ går vi til state $p^{j}_{(b_{1}, \ldots, b_{s+1}, \cdots, b_{1}, b_{2}, \ldots, b_{k}, \gamma_{1}, \ldots, \gamma_{k})}$, og tager skridt 4 om igen. \textbf{Ellers} flytter vi hovedet til den venstremest position og går til state $q^{j}_{(-, \ldots, -)}$
+	      \end{enumerate}
 \end{enumerate}
 
 Hvad er \textbf{køretiden} så for denne simulation? Givet en afgørlig Turingmaskine (altså, der stopper), som tager $t$ skridt på input $w, |w| = n$. Båndet i denne Turingmaskine kan have højest længde $n + t$, da den starter med input $n$, og højest kan lave $t$ ændringer til båndet der gør den længere. Lad os forsøge at ræssonere os frem til køretiden. Vi kører frem og tilbage i båndet flere gange, for hvert skridt kører vi frem én gang, så kører vi tilbage, og så kører vi frem (hvor vi udfører transitionsfunktionen); og så tilbage. Altså gør vi det fire gange. Dermed har ét skridt køretid $O(\Sigma \text{ længden af båndet}) = O(n+kt)$, hvor $k$ er antal bånd. Derudover er det muligt, at vi skal lave flere \textit{rightshifts}. I worst case scenariet shifter vi hver gang, hvilket giver os $(k-1)t + (k-2)t + \cdots + t = O(k^{2}t)$. Dermed er det samlede arbejde gjort på ét skidt $O(n+kt)+O(k^{2}t) = O(n+k^{2}t)$. Da vi har $t$ skridt, vil det samlede arbejde for at simulere disse skridt være $O(n \cdot t + k^{2}t^{2})$, hvilket er polynomielt i $n$ og $t$.
@@ -314,17 +314,17 @@ Hvordan kan dette så være brugbart? For eksempel kan en nondeterministisk turi
 
 
 \begin{definition}
-  \label{def:ndtmrecog}
-En nondeterministisk Turingmaskine (NDTM) $m$ \textbf{genkender} $L$ hvis $L = \{w \mid \exists \text{ en komputering for }M \text{ på } w \text{ der leder til } M \text{'s accept state} \}$
+	\label{def:ndtmrecog}
+	En nondeterministisk Turingmaskine (NDTM) $m$ \textbf{genkender} $L$ hvis $L = \{w \mid \exists \text{ en komputering for }M \text{ på } w \text{ der leder til } M \text{'s accept state} \}$
 \end{definition}
 
 \begin{definition}
-  \label{def:ndtmdecide}
-  En nondeterministik Turingmaskine $m$ \textbf{afgører} $L$ hvis $\forall w \in \Sigma^{*}$:
-  \begin{enumerate}
-	\item $\exists k = k(m,w)$ således at $m$ aldrig tagere mere end $k$ skridt på $w$, altså alle længder i træet har længde $\leq k$.
-	\item $w \in L \iff m$  har mindst én accepterende beregning på $w$. Altså betyder det ikke at $w$ skal accepteres, men at hvis den accepteres, er den i sproget, og omvendt.
-  \end{enumerate}
+	\label{def:ndtmdecide}
+	En nondeterministik Turingmaskine $m$ \textbf{afgører} $L$ hvis $\forall w \in \Sigma^{*}$:
+	\begin{enumerate}
+		\item $\exists k = k(m,w)$ således at $m$ aldrig tagere mere end $k$ skridt på $w$, altså alle længder i træet har længde $\leq k$.
+		\item $w \in L \iff m$  har mindst én accepterende beregning på $w$. Altså betyder det ikke at $w$ skal accepteres, men at hvis den accepteres, er den i sproget, og omvendt.
+	\end{enumerate}
 \end{definition}
 
 Forskellen på Definitionerne \ref{def:ndtmrecog} og \ref{def:ndtmdecide} er at en Turingmaskine der genkender \textbf{tillader} uendelige veje, så længe der er en accept state, hvor en afgørende Turingmaskine \textbf{ikke} tillader uendelige veje.
@@ -348,23 +348,23 @@ Måden vi kigger komputeringerne igennem på er ved at gå lexicografisk igennem
 
 Vi kan holde styr på tallene ved at bruge båndet i turingmaskinen. For eksempel kan strengen 223 blive repræsenteret således:
 \begin{center}
-\texttt{\#00\#00\#000\#}
+	\texttt{\#00\#00\#000\#}
 \end{center}
 Hvor den første del har to 0'er, den anden del har også to 0'er, og den tredje har tre 0'er.
 
 Lad os nu kigge på hvordan vi faktisk laver den deterministiske Turingmaskine $D$ som simulerer $N$.
 $D$ vil have 3 bånd:
 \begin{enumerate}
-  \item Input.
-  \item $N$'s udregninger på $w$.
-  \item Tal base $B+1$.
+	\item Input.
+	\item $N$'s udregninger på $w$.
+	\item Tal base $B+1$.
 \end{enumerate}
 
 For eksempel:
 \begin{enumerate}
-  \item $w_{1}w_{2} \cdots w_{n}$
-  \item Simulering i 3 skridt i henhold til skridt 3.
-  \item 235
+	\item $w_{1}w_{2} \cdots w_{n}$
+	\item Simulering i 3 skridt i henhold til skridt 3.
+	\item 235
 \end{enumerate}
 
 Hvis vi når til en komputering der ikke eksisterer (da vi går dem alle igennem), så stopper vi udregningen og går videre til næste mulighed.
@@ -373,23 +373,23 @@ Bemærk her at hvis $N$ er i en accepting state, så vil $D$ også acceptere inp
 Lad os formalisere, og dermed færdiggøre beviset til Teorem~\ref{teo:nondeterminismturingequiv}:
 
 \begin{proof}
-\begin{enumerate}
-  \item \begin{enumerate}
-		  \item $w_{1}w_{2}\cdots w_{n}$
-		  \item $\sqcup$
-		  \item $\#0\#$
-		\end{enumerate}
-  \item Kopiér bånd 1 til bånd 2
-  \item Simulér $N$ på bånd 2 ved brug af tallene på bånd 3 til at vælge den næste transition indtil følgende sker:
-		\begin{itemize}
-		  \item Dead end
-		  \item $M$ accepteres, så vil $D$ også acceptere og stoppe udregning
-		  \item $M$ afviser
-		  \item Der ikke er flere tal på bånd 3
-		\end{itemize}
-  \item Erstat $d_{1},d_{2},\ldots, d_{r}$ på bånd 3 med det næste i leksikografisk orden
-  \item Gå til skridt 2.
-\end{enumerate}
+	\begin{enumerate}
+		\item \begin{enumerate}
+			      \item $w_{1}w_{2}\cdots w_{n}$
+			      \item $\sqcup$
+			      \item $\#0\#$
+		      \end{enumerate}
+		\item Kopiér bånd 1 til bånd 2
+		\item Simulér $N$ på bånd 2 ved brug af tallene på bånd 3 til at vælge den næste transition indtil følgende sker:
+		      \begin{itemize}
+			      \item Dead end
+			      \item $M$ accepteres, så vil $D$ også acceptere og stoppe udregning
+			      \item $M$ afviser
+			      \item Der ikke er flere tal på bånd 3
+		      \end{itemize}
+		\item Erstat $d_{1},d_{2},\ldots, d_{r}$ på bånd 3 med det næste i leksikografisk orden
+		\item Gå til skridt 2.
+	\end{enumerate}
 \end{proof}
 
 
@@ -403,7 +403,7 @@ Lad os formalisere, og dermed færdiggøre beviset til Teorem~\ref{teo:nondeterm
 
 Hvor lang tid tager denne simulation af $N$ for $D$? Hvis vi antager at $N$ kører i $r$ skridt (altså, $r$ beregninger), så vil $D$ højest simulere
 \begin{equation}
-B+B^{2}+\cdots +B^{r} \leq B^{r+1}
+	B+B^{2}+\cdots +B^{r} \leq B^{r+1}
 \end{equation}
 Altså vil den køre i \textbf{eksponentiel tid}. Dette kommer fra at der kan være $B$ udregninger i strengen af længde 1, $B^{2}$ af strengen af længde 2, etc\footnote{``Strengen'' her betyder den udregning vi er nået til, som brugt i bevisidéen til Teorem~\ref{teo:nondeterminismturingequiv}}.
 
@@ -501,35 +501,35 @@ Vi bruger binære tal til at repræsentere heltal, så en state $q_{7}$ vil repr
 Vi vil gerne kunne kode en (deterministisk) Turingmaskine, $m$. Vi kan gøre dette ved at lave transitions til tupler, foreksempel vil $\delta(q_{i}, a_{j}) = (q_{s}, a_{q}, \gamma)$ blive til tuplen $((q_{i}, a_{j}), (q_{s}, a_{q}, \gamma))$, hvor $r = |Q(m)|$ og $t = |\Gamma(m)|$. Vi kan så antage at $q_{1}$ er startstaten, $q_{r-1} = q_{\text{accept}}$  og $q_{r} = q_{\text{afvis}}$ ($r$ for \textit{reject}). Med dette kan vi få en kodet version af $m$, her kaldt \texttt{<m>}, som vil se ud således:
 
 \begin{center}
-\texttt{<m> = }$(((q_{1}, a_{1}), (q_{f}, a_{q}, R)), ((q_{1}, a_{2}), \ldots), \ldots, (q_{r-2}, a_{t}), (q_{b}, a_{l}, L))$
+	\texttt{<m> = }$(((q_{1}, a_{1}), (q_{f}, a_{q}, R)), ((q_{1}, a_{2}), \ldots), \ldots, (q_{r-2}, a_{t}), (q_{b}, a_{l}, L))$
 \end{center}
 
 Vi kan også kode strenge $w \in \Gamma^{*}$ for eksempel $w = a_{1}a_{2}a_{3}$ så \texttt{<w>} $= (a_{1}),(a_{2}),(a_{3})$.
 
 Trods det ikke er gjort i eksemplerne her, så husk at vi bruger binære tal til at repræsentere heltal. Dette betyder at vi kan kode \textbf{alle} Turingmaskiner med følgende alfabet:
 \begin{center}
-$\Sigma =$ \texttt{\{'(', ')', 'a', 'q', '0', '1', ',', 'R', 'L', 'S'\}}
+	$\Sigma =$ \texttt{\{'(', ')', 'a', 'q', '0', '1', ',', 'R', 'L', 'S'\}}
 \end{center}
 
 Lad os nu forklare hvad en universel Turingmaskine egentlig er. En universel Turingmaskine tager input af formen \texttt{<m><w>} og bruger 3 bånd til at simulere $m$ på $w$, til at starte med:
 \begin{enumerate}
-  \item \texttt{<w>}
-  \item \texttt{<m>}
-  \item $q_{1}$
+	\item \texttt{<w>}
+	\item \texttt{<m>}
+	\item $q_{1}$
 \end{enumerate}
 
 Følgende algoritme definerer hvordan en universel Turingmaskine $U$ simulerer ét skridt af $m$:
 \begin{enumerate}
-  \item Lad $q$ være den state der ligge på bånd 3.
-  \item Lad $a$ være det symbol der er under hovedet på bånd 1.
-  \item Find indtasting for $(q,a)$ på bånd 2, og udfør ændringer p åbåndene 1 og 3:
-		\begin{enumerate}
-		  \item Hvis indtasting  er $((q,a),(p,b,L))$ så
-		  \item Nyt symbol på bånd 1 er $b$ og hovedet bevæger sig til venstre.
-		  \item Ny state på bånd 3 er $p$.
-		\end{enumerate}
-  \item Hvis $p = q_{r-1}$, så går $U$ ind i sit accept state, og stopper.
-  \item Hvis $p = q_{r}$ så går $U$ ind i sit reject state, og stopper.
+	\item Lad $q$ være den state der ligge på bånd 3.
+	\item Lad $a$ være det symbol der er under hovedet på bånd 1.
+	\item Find indtasting for $(q,a)$ på bånd 2, og udfør ændringer p åbåndene 1 og 3:
+	      \begin{enumerate}
+		      \item Hvis indtasting  er $((q,a),(p,b,L))$ så
+		      \item Nyt symbol på bånd 1 er $b$ og hovedet bevæger sig til venstre.
+		      \item Ny state på bånd 3 er $p$.
+	      \end{enumerate}
+	\item Hvis $p = q_{r-1}$, så går $U$ ind i sit accept state, og stopper.
+	\item Hvis $p = q_{r}$ så går $U$ ind i sit reject state, og stopper.
 \end{enumerate}
 
 Altså kan en universal Turingmaskine simulere en deterministisk Turingmaskine uden problemer, og udelukkende ved brug af det universelle alfabet, og den universelle mængde af states.
@@ -542,71 +542,71 @@ En enumerator er en Turingmaskine med et output bånd tilknyttet. Dette betyder 
 En enumerator kører for evigt, og kan i sin køretid printe forskellige strenge. Vi definerer sproget af enumeratoren $E$, $L(E)$ til at være $L(E) = \{w \mid w \text{ er printet af }E\}$ i uendelig tid. $L$ er \textit{enumerabelt}  hvis $L = L(E)$ for en enumerator. For eksempel er $L = \{0^{2^{n}} \mid n \ge 0\}$ enumerabelt.
 
 \begin{theorem}
-L er enumerabelt  $\iff$ L er genkendeligt
+	L er enumerabelt  $\iff$ L er genkendeligt
 \end{theorem}
 
 \begin{proof}
-\begin{figure}[ht]
-	\centering
-	\begin{tikzpicture}
-		\tikzset{block/.style={rectangle, draw, minimum height=2em, minimum width=3em}}
-		\tikzset{line/.style={draw, -latex'}}
-		\node[block, minimum height=1.5cm] (E) at (0, 0){$E$};
-		\node[block, minimum height=1.5cm] (ww) at (4, -2){$W = W'$};
-		\node[fill=none, draw=none] (start) at (-2, -2) {\texttt{<w>}};
+	\begin{figure}[ht]
+		\centering
+		\begin{tikzpicture}
+			\tikzset{block/.style={rectangle, draw, minimum height=2em, minimum width=3em}}
+			\tikzset{line/.style={draw, -latex'}}
+			\node[block, minimum height=1.5cm] (E) at (0, 0){$E$};
+			\node[block, minimum height=1.5cm] (ww) at (4, -2){$W = W'$};
+			\node[fill=none, draw=none] (start) at (-2, -2) {\texttt{<w>}};
 
-		\draw[->] (start) -- (ww.west);
+			\draw[->] (start) -- (ww.west);
 
-		\node[fill=none, draw=none] (no) at (5.3, -1.8) {Nej};
-		\draw[->, color=SchemeGreen] (ww.east) -- (6, -2) -- (6, -4) -- (0, -4) -- (E.south);
+			\node[fill=none, draw=none] (no) at (5.3, -1.8) {Nej};
+			\draw[->, color=SchemeGreen] (ww.east) -- (6, -2) -- (6, -4) -- (0, -4) -- (E.south);
 
-		\node[fill=none, draw=none, color=SchemeGreen] (genstart) at (3, -3.8) {Genstart};
+			\node[fill=none, draw=none, color=SchemeGreen] (genstart) at (3, -3.8) {Genstart};
 
-		\draw[->] (E.east) -- (3.5, 0) -- (3.5,-1.25);
-		\node[fill=none, draw=none] (wprime) at (2, 0.2) {\texttt{<w'>}};
+			\draw[->] (E.east) -- (3.5, 0) -- (3.5,-1.25);
+			\node[fill=none, draw=none] (wprime) at (2, 0.2) {\texttt{<w'>}};
 
 
-		\draw[->] (4.5, -1.25) -- (4.5, 0) -- (8, 0);
-		\node[fill=none, draw=none] (yes) at (5.3, 0.2) {Ja};
-		\node[fill=none, draw=none] (accept) at (9, 0.0) {Accepter};
+			\draw[->] (4.5, -1.25) -- (4.5, 0) -- (8, 0);
+			\node[fill=none, draw=none] (yes) at (5.3, 0.2) {Ja};
+			\node[fill=none, draw=none] (accept) at (9, 0.0) {Accepter};
 
-		\draw[color=SchemeBlue, thick] (-1, 1) -- (7, 1) -- (7, -5) -- (-1, -5) -- cycle;
+			\draw[color=SchemeBlue, thick] (-1, 1) -- (7, 1) -- (7, -5) -- (-1, -5) -- cycle;
 
-		\node[fill=none, draw=none, color=SchemeBlue] (me) at (7.5, -5) {$M_{E}$};
+			\node[fill=none, draw=none, color=SchemeBlue] (me) at (7.5, -5) {$M_{E}$};
 
-		\node[fill=none, draw=none, color=SchemeRed] (printed) at (7, 2) {Næste streng printet af $E$};
+			\node[fill=none, draw=none, color=SchemeRed] (printed) at (7, 2) {Næste streng printet af $E$};
 
-		\draw[->, color=SchemeRed] (printed) -- (wprime);
+			\draw[->, color=SchemeRed] (printed) -- (wprime);
 
-		% \node[block, minimum width=0.8cm] (a1) at (2,-1.0) {a};
-		% \node[block, minimum width=0.8cm] (a2) at (2.8,-1.0) {a};
-		% \node[block, minimum width=0.8cm] (b1) at (3.6,-1.0) {b};
-		% \node[block, minimum width=0.8cm] (b2) at (4.4,-1.0) {b};
-		% \node[block, minimum width=0.8cm] (b2) at (5.2,-1.0) {$\sqcup$};
-		% \node[block, minimum width=0.8cm] (b2) at (6.0,-1.0) {$\sqcup$};
-		% \node[block, minimum width=0.8cm] (b2) at (6.8,-1.0) {$\sqcup$};
-		% \node[label, minimum width=0.8cm] (b2) at (7.6,-1.0) {$\cdots$};
+			% \node[block, minimum width=0.8cm] (a1) at (2,-1.0) {a};
+			% \node[block, minimum width=0.8cm] (a2) at (2.8,-1.0) {a};
+			% \node[block, minimum width=0.8cm] (b1) at (3.6,-1.0) {b};
+			% \node[block, minimum width=0.8cm] (b2) at (4.4,-1.0) {b};
+			% \node[block, minimum width=0.8cm] (b2) at (5.2,-1.0) {$\sqcup$};
+			% \node[block, minimum width=0.8cm] (b2) at (6.0,-1.0) {$\sqcup$};
+			% \node[block, minimum width=0.8cm] (b2) at (6.8,-1.0) {$\sqcup$};
+			% \node[label, minimum width=0.8cm] (b2) at (7.6,-1.0) {$\cdots$};
 
-		% \draw[->, thick] (control) -| (a1);
-	\end{tikzpicture}
-	\caption{\label{fig:enumeratordtmequiv} Visuelt bevis på ækvivalens mellem Enumeratorer og Turingmaskiner.}
-\end{figure}
+			% \draw[->, thick] (control) -| (a1);
+		\end{tikzpicture}
+		\caption{\label{fig:enumeratordtmequiv} Visuelt bevis på ækvivalens mellem Enumeratorer og Turingmaskiner.}
+	\end{figure}
 
-I Figur~\ref{fig:enumeratordtmequiv} ses et visuelt bevis på hvorfor en Enumerator er ækvivalent med en Turingmaskine. Algoritmisk kan det ses således:
-\begin{enumerate}
-  \item På input \texttt{<w>} starter Turingmaskinen $M_{E}$ enumeratoren $E$ på den tomme streng.
-  \item Når $E$ printer en streng $w'$, sammenligner $M_{E}$  strengen $w'$ med $w$.
-  \item Hvis $w = w'$, så accepterer $M_{e}$ $w$. \\ \noindent Ellers genstarter den $E$ og venter på den næste streng $w'$ som bliver printet af $E$.
-\end{enumerate}
-Her er det klart at $L(M_{e}) \subseteq L(E)$ siden $M_{E}$  kun kan acceptere $w$ hvis den er printet af $E$. Så, hvis $W$ er i $L(E)$ bliver det eventuelt printet.
+	I Figur~\ref{fig:enumeratordtmequiv} ses et visuelt bevis på hvorfor en Enumerator er ækvivalent med en Turingmaskine. Algoritmisk kan det ses således:
+	\begin{enumerate}
+		\item På input \texttt{<w>} starter Turingmaskinen $M_{E}$ enumeratoren $E$ på den tomme streng.
+		\item Når $E$ printer en streng $w'$, sammenligner $M_{E}$  strengen $w'$ med $w$.
+		\item Hvis $w = w'$, så accepterer $M_{e}$ $w$. \\ \noindent Ellers genstarter den $E$ og venter på den næste streng $w'$ som bliver printet af $E$.
+	\end{enumerate}
+	Her er det klart at $L(M_{e}) \subseteq L(E)$ siden $M_{E}$  kun kan acceptere $w$ hvis den er printet af $E$. Så, hvis $W$ er i $L(E)$ bliver det eventuelt printet.
 
-Hvordan laver vi så en enumerator som enumererer præcis det samme sprog som $M$?
+	Hvordan laver vi så en enumerator som enumererer præcis det samme sprog som $M$?
 
-Lad $\Sigma$ være input alfabetet for $M$ og lad rækkefølgen af strengene i $\Sigma^{*}$ være $S_{1}S_{2}S_{3} \cdots S_{k}S_{k+1} \cdots$ lexikografisk.
+	Lad $\Sigma$ være input alfabetet for $M$ og lad rækkefølgen af strengene i $\Sigma^{*}$ være $S_{1}S_{2}S_{3} \cdots S_{k}S_{k+1} \cdots$ lexikografisk.
 
-Enumeratoren $E_{M}$: For $i = 1$ til $\infty$, ved runde $i$: Simulér $M$  i $i$ skridt på hver af strengene $S_{1}, \ldots, S_{i}$ og \textbf{print} $S_{j}$ hvis $M$ accepterer det i mindre end $i+1$ skridt.
+	Enumeratoren $E_{M}$: For $i = 1$ til $\infty$, ved runde $i$: Simulér $M$  i $i$ skridt på hver af strengene $S_{1}, \ldots, S_{i}$ og \textbf{print} $S_{j}$ hvis $M$ accepterer det i mindre end $i+1$ skridt.
 
-Da vi kan gøre dette gælder det at $L(E_{M}) = L(M)$.
+	Da vi kan gøre dette gælder det at $L(E_{M}) = L(M)$.
 \end{proof}
 
 \section{Definitionen af Algoritme}%
@@ -621,7 +621,7 @@ Lad os omskrive Hilbert's 10'e problem ved brug af vores terminologi. Lad $D = \
 \noindent
 $M_{1} = $ ``På input $p$, hvor $p$ er en polynomie over variblen $x$.
 \begin{enumerate}
-  \item Evaluér $p$ med $x$ mængder efter hinanden med værdierne 0, 1, -1, 2, -2, 3, -3, $\ldots$. Hvis på noget tidspunkt polynomiet bliver lig 0, \textit{accepter}.''
+	\item Evaluér $p$ med $x$ mængder efter hinanden med værdierne 0, 1, -1, 2, -2, 3, -3, $\ldots$. Hvis på noget tidspunkt polynomiet bliver lig 0, \textit{accepter}.''
 \end{enumerate}
 
 Hvis $p$ har en heltalsrod, så vil $M_{1}$ eventuelt finde denne og acceptere, men hvis ikke kører den forevigt. Algoritmen skal ikke ændres meget for at den fungerer ved 3 variable. Dermed kan vi konkludere at $D$ er genkendeligt men ikke afgørligt.
@@ -635,19 +635,19 @@ Vi vil herfra bruge mere matematiske måder at snakke om disse algoritmer på, o
 
 Lad $A$ være sproget bestående af alle strenge der repræsenterer urettet grafer som er forbundne (connected).
 \begin{equation*}
-A = \{\langle G \rangle \mid G \text{ er en forbundet urettet graf}\}
+	A = \{\langle G \rangle \mid G \text{ er en forbundet urettet graf}\}
 \end{equation*}
 
 Følgende er en højt-niveaus beskrivelse af en Turingmaskine $M$ som afgører $A$:
 
 $M = $ ``På input $\langle G \rangle$, kodningen af en graph $G$:
 \begin{enumerate}
-  \item Vælg den første knude af $G$ og markér den
-  \item Gentag den følgne fase indtil ingen nye knuder er markeret:
-		\begin{enumerate}
-		  \item For hver knude i $G$, markér den hvis den er knyttet af en kant til en knude som allerede er markeret.
-		\end{enumerate}
-  \item Scan alle knuderne af $G$ til at bestemme hvorvidt de alle er markeret. Hvis de er, \textit{accepter}, ellers \textit{afvis.}
+	\item Vælg den første knude af $G$ og markér den
+	\item Gentag den følgne fase indtil ingen nye knuder er markeret:
+	      \begin{enumerate}
+		      \item For hver knude i $G$, markér den hvis den er knyttet af en kant til en knude som allerede er markeret.
+	      \end{enumerate}
+	\item Scan alle knuderne af $G$ til at bestemme hvorvidt de alle er markeret. Hvis de er, \textit{accepter}, ellers \textit{afvis.}
 \end{enumerate}
 
 Der er flere måder hvorpå vi kan kode en graf til at kunne køre denne algoritme, såsom at bruge en liste som følger:
@@ -656,35 +656,35 @@ Der er flere måder hvorpå vi kan kode en graf til at kunne køre denne algorit
 \end{verbatim}
 Som koder følgende graf:
 \begin{figure}[ht]
-  \centering
-  \begin{tikzpicture}
-    \node[state] (3) {${3}$};
-    \node[state, right=of 3] (2) {$2$};
-    \node[state, above right=of 3] (1) {$1$};
-    \node[state, above right=of 1] (4) {${4}$};
+	\centering
+	\begin{tikzpicture}
+		\node[state] (3) {${3}$};
+		\node[state, right=of 3] (2) {$2$};
+		\node[state, above right=of 3] (1) {$1$};
+		\node[state, above right=of 1] (4) {${4}$};
 
-	\draw[-] (1) -- (2);
-	\draw[-] (1) -- (3);
-	\draw[-] (3) -- (2);
-	\draw[-] (1) -- (4);
-  \end{tikzpicture}
-  \caption{\label{fig:label} Graf $G$}
+		\draw[-] (1) -- (2);
+		\draw[-] (1) -- (3);
+		\draw[-] (3) -- (2);
+		\draw[-] (1) -- (4);
+	\end{tikzpicture}
+	\caption{\label{fig:label} Graf $G$}
 \end{figure}
 
 \section{Hovedpointer}%
 \label{sec:tmhovedpointer}
 
 \begin{itemize}
-  \item En Turingmaskine (TM) er en automat hvis hoved kan bevæge sig til venstre og højre. Derudover kan den ændre på sit bånd, som er uendeligt.
-  \item Turingmaskiner er langt mere kraftfulde end DFA'er og PDA'er. De er endda accepteret som værende ligeså kraftfulde som moderne computere, hvilket kommer fra CHurch-Turing tesen.
-  \item Turingmaskiner giver indsigt i de teoretiske grænser for komputering, altså hvad en computer kan gøre, og hvor hurtigt den kan gøre det.
-  \item En Turingmaskine $M$ \textbf{genkender} et sprog $L \iff$ hver streng i $L$ leder $M$ til sin accept state. Strenge ikke i $L$ leder enten til en afvis state eller lader $M$ køre i en løkke forevigt. $L(M)$ betegner sproget genkendt af $M$. Bemærk at alle Turingmaskiner genkender præcis ét sprog, nemlig det sæt af strenge som den accepterer.
-  \item Et sprog $L$ kaldes \textbf{genkendeligt} hvis der er en Turingmaskine $M$ som genkender $L$. Klassen af genkendelige sprog er sættet af alle sprog som er genkendt af en Turingmaskine.
-  \item En Turingmaskine $M$ \textbf{afgører} et sprog $L \iff$ hver streng i $L$ leder $M$ til en accept state og hver streng ikke i $L$ leder $M$ til en afvis state. Altså betyder det at $M$ stopper på alle strenge, og ikke kører uendeligt.
-  \item En \textbf{afgører} (decider) er en Turingmaskine som altid stopper (og dermed ender i enten en accept eller afvis state.) Hver Turingmaskine som er en afgører, afgører præcis ét sprog, nemlig sættet af strenge som ender i dens accept state.
-  \item Et sprog $L$ kaldes \textbf{afgørligt} hvis der er en Turingmaskine $M$ som afgører $L$. Klassen af afgørlige sprog er sættet af alle sprog som af afgjort af en Turingmaskine.
-  \item Hvis et sprog er afgørligt, så er det også genkendeligt, men det omvendte gælder ikke altid.
-  \item Der er forskellige måder at specificere en Turingmaskine på: Transitionstabel, pseudokode, state diagram og højtniveausbeskrivelser (som har været hoveddelen af disse noter.)
+	\item En Turingmaskine (TM) er en automat hvis hoved kan bevæge sig til venstre og højre. Derudover kan den ændre på sit bånd, som er uendeligt.
+	\item Turingmaskiner er langt mere kraftfulde end DFA'er og PDA'er. De er endda accepteret som værende ligeså kraftfulde som moderne computere, hvilket kommer fra CHurch-Turing tesen.
+	\item Turingmaskiner giver indsigt i de teoretiske grænser for komputering, altså hvad en computer kan gøre, og hvor hurtigt den kan gøre det.
+	\item En Turingmaskine $M$ \textbf{genkender} et sprog $L \iff$ hver streng i $L$ leder $M$ til sin accept state. Strenge ikke i $L$ leder enten til en afvis state eller lader $M$ køre i en løkke forevigt. $L(M)$ betegner sproget genkendt af $M$. Bemærk at alle Turingmaskiner genkender præcis ét sprog, nemlig det sæt af strenge som den accepterer.
+	\item Et sprog $L$ kaldes \textbf{genkendeligt} hvis der er en Turingmaskine $M$ som genkender $L$. Klassen af genkendelige sprog er sættet af alle sprog som er genkendt af en Turingmaskine.
+	\item En Turingmaskine $M$ \textbf{afgører} et sprog $L \iff$ hver streng i $L$ leder $M$ til en accept state og hver streng ikke i $L$ leder $M$ til en afvis state. Altså betyder det at $M$ stopper på alle strenge, og ikke kører uendeligt.
+	\item En \textbf{afgører} (decider) er en Turingmaskine som altid stopper (og dermed ender i enten en accept eller afvis state.) Hver Turingmaskine som er en afgører, afgører præcis ét sprog, nemlig sættet af strenge som ender i dens accept state.
+	\item Et sprog $L$ kaldes \textbf{afgørligt} hvis der er en Turingmaskine $M$ som afgører $L$. Klassen af afgørlige sprog er sættet af alle sprog som af afgjort af en Turingmaskine.
+	\item Hvis et sprog er afgørligt, så er det også genkendeligt, men det omvendte gælder ikke altid.
+	\item Der er forskellige måder at specificere en Turingmaskine på: Transitionstabel, pseudokode, state diagram og højtniveausbeskrivelser (som har været hoveddelen af disse noter.)
 \end{itemize}
 
 

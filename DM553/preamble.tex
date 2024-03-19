@@ -14,14 +14,14 @@
 % Font settings
 \usepackage[no-math]{fontspec} %-----------------------%  This exact order
 \defaultfontfeatures{%                                 %  of declarations
-  Scale=MatchLowercase, % needed here ...              %  is important for
+	Scale=MatchLowercase, % needed here ...              %  is important for
 }                                                      %  single quotes not
 \setmonofont{Inconsolata LGC Nerd Font}                          %  to turn out curly
-                                                       %  ("typographic")
+%  ("typographic")
 \defaultfontfeatures{%                                 %  in verbatim blocks
-  Scale=MatchLowercase, % ... and here again           %  of Scheme code.
-  Mapping=tex-text,                                    %  Now the quote is
-  SmallCapsFeatures={LetterSpace=2.5,WordSpace=1.05},  %  upright and safely
+	Scale=MatchLowercase, % ... and here again           %  of Scheme code.
+	Mapping=tex-text,                                    %  Now the quote is
+	SmallCapsFeatures={LetterSpace=2.5,WordSpace=1.05},  %  upright and safely
 }                                                      %  copy-pasteable to
 \setmainfont{Linux Libertine O}                        %  the REPL without
 \setsansfont{Linux Biolinum O} %-----------------------%  giving errors.
@@ -54,19 +54,19 @@
 \usetikzlibrary{positioning} % Positionering af knuder
 \usetikzlibrary{arrows.meta, arrows} % arrows til at ændre kanter
 \tikzset{
-  node distance=2.5cm, % minimumsdistancen mellem to knuderj
-  every state/.style={
-    semithick,
-    fill=gray!10
-  },
-  initial text={}, % Ingen tekst, bare kanter
-  double distance=2pt, % Udseende på accept states
-  every edge/.style={ % Egenskaber for hver transition
-    draw,
-    ->, >=stealth', % bold arrowheads
-    auto,
-    semithick
-  }
+	node distance=2.5cm, % minimumsdistancen mellem to knuderj
+	every state/.style={
+			semithick,
+			fill=gray!10
+		},
+	initial text={}, % Ingen tekst, bare kanter
+	double distance=2pt, % Udseende på accept states
+	every edge/.style={ % Egenskaber for hver transition
+			draw,
+			->, >=stealth', % bold arrowheads
+			auto,
+			semithick
+		}
 }
 % Tak til: https://www3.nd.edu/~dchiang/teaching/theory/2018/www/tikz_tutorial.pdf
 
@@ -93,10 +93,10 @@
 
 % Page geometry for 10-inch tablets:
 \usepackage[papersize={148mm,197mm},
-            top=21mm,
-            textwidth=111mm,  % increase one or both of these by 1mm or so to
-            textheight=148mm, % make the source compile with TeX Live 2013
-            hcentering,       % if you get "Too many unprocessed floats" error
+	top=21mm,
+	textwidth=111mm,  % increase one or both of these by 1mm or so to
+	textheight=148mm, % make the source compile with TeX Live 2013
+	hcentering,       % if you get "Too many unprocessed floats" error
 ]{geometry}
 
 \usepackage{titlesec}  % to change the appearance of section titles
@@ -106,12 +106,12 @@
 \usepackage{hyperref}  % makes cross references and URLs clickable
 \definecolor{LinkRed}{HTML}{80171F}
 \hypersetup{
-  pdfauthor={Harold Abelson, Gerald Jay Sussman, Julie Sussman},
-  pdftitle={Structure and Interpretation of Computer Programs, 2nd ed.},
-  pdfsubject={computer science, programming, abstraction},
-  colorlinks=true,
-  linkcolor=LinkRed,
-  urlcolor=LinkRed,
+	pdfauthor={Harold Abelson, Gerald Jay Sussman, Julie Sussman},
+	pdftitle={Structure and Interpretation of Computer Programs, 2nd ed.},
+	pdfsubject={computer science, programming, abstraction},
+	colorlinks=true,
+	linkcolor=LinkRed,
+	urlcolor=LinkRed,
 }
 
 
@@ -139,77 +139,77 @@
 \setlength{\DefaultNindent}{0em}
 
 \lstset{%
-  % Scheme syntax highlighter
-    columns=fixed,
-    extendedchars=true,
-    upquote=true,
-    showstringspaces=false,
-    sensitive=false,
-    mathescape=true,
-    escapechar=~,
-    alsodigit={>,<,/,-,=,!,?,*},
-    alsoletter=',
-    morestring=[b]",
-    morecomment=[l];,
-    % Keyword list taken form functional.py in Pygments package:
-    morekeywords={lambda, define, if, else, cond, and, or, case,%
-      let, let*, letrec, begin, do, delay, set!, =>, quote,%
-      quasiquote, unquote, unquote-splicing, define-syntax, let-syntax,%
-      letrec-syntax, syntax-rules},
-    % If keywords are quoted, they must not be highlighted:
-    emph={'lambda, 'define, 'if, 'else, 'cond, 'and, 'or, 'case,%
-      'let, 'let*, 'letrec, 'begin, 'do, 'delay, 'set!, '=>, 'quote,%
-      'quasiquote, 'unquote, 'unquote-splicing, 'define-syntax, 'let-syntax,%
-      'letrec-syntax, 'syntax-rules},
-    emphstyle=\color{SchemeDark},
-    % Paint error red:
-    emph={[2]error},emphstyle=[2]\color{SchemeRed},%
-    % Builtins taken from functional.py:
-    emph={[3]*, +, -, /, <, <=, =, >, >=, abs, acos, angle,
-        append, apply, asin, assoc, assq, assv, atan,
-        boolean?, caaaar, caaadr, caaar, caadar, caaddr, caadr,
-        caar, cadaar, cadadr, cadar, caddar, cadddr, caddr,
-        cadr, call-with-current-continuation, call-with-input-file,
-        call-with-output-file, call-with-values, call/cc, car,
-        cdaaar, cdaadr, cdaar, cdadar, cdaddr, cdadr, cdar,
-        cddaar, cddadr, cddar, cdddar, cddddr, cdddr, cddr,
-        cdr, ceiling, char->integer, char-alphabetic?, char-ci<=?,
-        char-ci<?, char-ci=?, char-ci>=?, char-ci>?, char-downcase,
-        char-lower-case?, char-numeric?, char-ready?, char-upcase,
-        char-upper-case?, char-whitespace?, char<=?, char<?, char=?,
-        char>=?, char>?, char?, close-input-port, close-output-port,
-        complex?, cons, cos, current-input-port, current-output-port,
-        denominator, display, dynamic-wind, eof-object?, eq?,
-        equal?, eqv?, eval, even?, exact->inexact, exact?, exp,
-        expt, floor, for-each, force, gcd, imag-part,
-        inexact->exact, inexact?, input-port?, integer->char,
-        integer?, interaction-environment, lcm, length, list,
-        list->string, list->vector, list-ref, list-tail, list?,
-        load, log, magnitude, make-polar, make-rectangular,
-        make-string, make-vector, map, max, member, memq, memv,
-        min, modulo, negative?, newline, not, null-environment,
-        null?, number->string, number?, numerator, odd?,
-        open-input-file, open-output-file, output-port?, pair?,
-        peek-char, port?, positive?, procedure?, quotient,
-        rational?, rationalize, read, read-char, real-part, real?,
-        remainder, reverse, round, scheme-report-environment,
-        set-car!, set-cdr!, sin, sqrt, string, string->list,
-        string->number, string->symbol, string-append, string-ci<=?,
-        string-ci<?, string-ci=?, string-ci>=?, string-ci>?,
-        string-copy, string-fill!, string-length, string-ref,
-        string-set!, string<=?, string<?, string=?, string>=?,
-        string>?, string?, substring, symbol->string, symbol?,
-        tan, transcript-off, transcript-on, truncate, values,
-        vector, vector->list, vector-fill!, vector-length,
-        vector-ref, vector-set!, vector?, with-input-from-file,
-        with-output-to-file, write, write-char, zero?},
-    emphstyle=[3]\color{SchemeViolet},%
-    %
-    basicstyle=\color{SchemeLight}\ttfamily,
-    keywordstyle=\color{SchemeBlue}\bfseries,
-    identifierstyle=\color{SchemeDark},
-    stringstyle=\color{SchemeGreen},
-    commentstyle=\color{SchemeLight}\itshape,
+	% Scheme syntax highlighter
+	columns=fixed,
+	extendedchars=true,
+	upquote=true,
+	showstringspaces=false,
+	sensitive=false,
+	mathescape=true,
+	escapechar=~,
+	alsodigit={>,<,/,-,=,!,?,*},
+	alsoletter=',
+	morestring=[b]",
+	morecomment=[l];,
+	% Keyword list taken form functional.py in Pygments package:
+	morekeywords={lambda, define, if, else, cond, and, or, case,%
+			let, let*, letrec, begin, do, delay, set!, =>, quote,%
+			quasiquote, unquote, unquote-splicing, define-syntax, let-syntax,%
+			letrec-syntax, syntax-rules},
+	% If keywords are quoted, they must not be highlighted:
+	emph={'lambda, 'define, 'if, 'else, 'cond, 'and, 'or, 'case,%
+			'let, 'let*, 'letrec, 'begin, 'do, 'delay, 'set!, '=>, 'quote,%
+			'quasiquote, 'unquote, 'unquote-splicing, 'define-syntax, 'let-syntax,%
+			'letrec-syntax, 'syntax-rules},
+	emphstyle=\color{SchemeDark},
+	% Paint error red:
+	emph={[2]error},emphstyle=[2]\color{SchemeRed},%
+	% Builtins taken from functional.py:
+	emph={[3]*, +, -, /, <, <=, =, >, >=, abs, acos, angle,
+			append, apply, asin, assoc, assq, assv, atan,
+			boolean?, caaaar, caaadr, caaar, caadar, caaddr, caadr,
+			caar, cadaar, cadadr, cadar, caddar, cadddr, caddr,
+			cadr, call-with-current-continuation, call-with-input-file,
+			call-with-output-file, call-with-values, call/cc, car,
+			cdaaar, cdaadr, cdaar, cdadar, cdaddr, cdadr, cdar,
+			cddaar, cddadr, cddar, cdddar, cddddr, cdddr, cddr,
+			cdr, ceiling, char->integer, char-alphabetic?, char-ci<=?,
+			char-ci<?, char-ci=?, char-ci>=?, char-ci>?, char-downcase,
+			char-lower-case?, char-numeric?, char-ready?, char-upcase,
+			char-upper-case?, char-whitespace?, char<=?, char<?, char=?,
+			char>=?, char>?, char?, close-input-port, close-output-port,
+			complex?, cons, cos, current-input-port, current-output-port,
+			denominator, display, dynamic-wind, eof-object?, eq?,
+			equal?, eqv?, eval, even?, exact->inexact, exact?, exp,
+			expt, floor, for-each, force, gcd, imag-part,
+			inexact->exact, inexact?, input-port?, integer->char,
+			integer?, interaction-environment, lcm, length, list,
+			list->string, list->vector, list-ref, list-tail, list?,
+			load, log, magnitude, make-polar, make-rectangular,
+			make-string, make-vector, map, max, member, memq, memv,
+			min, modulo, negative?, newline, not, null-environment,
+			null?, number->string, number?, numerator, odd?,
+			open-input-file, open-output-file, output-port?, pair?,
+			peek-char, port?, positive?, procedure?, quotient,
+			rational?, rationalize, read, read-char, real-part, real?,
+			remainder, reverse, round, scheme-report-environment,
+			set-car!, set-cdr!, sin, sqrt, string, string->list,
+			string->number, string->symbol, string-append, string-ci<=?,
+			string-ci<?, string-ci=?, string-ci>=?, string-ci>?,
+			string-copy, string-fill!, string-length, string-ref,
+			string-set!, string<=?, string<?, string=?, string>=?,
+			string>?, string?, substring, symbol->string, symbol?,
+			tan, transcript-off, transcript-on, truncate, values,
+			vector, vector->list, vector-fill!, vector-length,
+			vector-ref, vector-set!, vector?, with-input-from-file,
+			with-output-to-file, write, write-char, zero?},
+	emphstyle=[3]\color{SchemeViolet},%
+	%
+	basicstyle=\color{SchemeLight}\ttfamily,
+	keywordstyle=\color{SchemeBlue}\bfseries,
+	identifierstyle=\color{SchemeDark},
+	stringstyle=\color{SchemeGreen},
+	commentstyle=\color{SchemeLight}\itshape,
 }
 
 \newcommand{\acronym}[1]{\textsc{\fontspec[Numbers={OldStyle}]{Linux Libertine O}\MakeLowercase{#1}}}
@@ -232,12 +232,12 @@
 {}
 
 \titleformat{\chapter}[display]
-  {\color{SchemeDark}\normalfont\sffamily\bfseries\LARGE}
-  {\filright \color{ChapterViolet}\sffamily\mdseries
-    \fontsize{6em}{0em}\selectfont
-    \oldstylenums{\thechapter}}
-  {1em}
-  {\filright}
+{\color{SchemeDark}\normalfont\sffamily\bfseries\LARGE}
+{\filright \color{ChapterViolet}\sffamily\mdseries
+	\fontsize{6em}{0em}\selectfont
+	\oldstylenums{\thechapter}}
+{1em}
+{\filright}
 
 \titleformat{\section}
 {\color{SchemeDark}\normalfont\Large\sffamily\bfseries}
