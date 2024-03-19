@@ -4,360 +4,454 @@
 \label{sec:decideablelanguages}
 
 \begin{equation*}
-A_{DFA} = \{<B><w> \mid B \text{ er en DFA og } w \in L(B) \}
+	A_{DFA} = \{<B><w> \mid B \text{ er en DFA og } w \in L(B) \}
 \end{equation*}
 
 Her bruger vi den ``nye'' notation fra det tidligere kapitel, hvor \texttt{<B>} og \texttt{<w>} bliver indkoded ved hjælp af det universelle alfabet og den universelle statemængde. Notationen kan også se ud således \texttt{<B,w>} og er ækvivalent med \texttt{<B><w>}. Dermed, når vi skriver \texttt{<B,w>} $\in A_{DFA}$ betyder det at $B$ er en DFA og $w$ er en streng der accepteres af $B$.
 
 \begin{theorem}
-  \label{teo:dfadecidable}
-$A_{DFA}$ er afgørligt.
+	\label{teo:dfadecidable}
+	$A_{DFA}$ er afgørligt.
 \end{theorem}
 
 \begin{proof}
-  Lad $M_{1}$ være en deterministisk Turingmaskine, som fungerer som følger:
+	Lad $M_{1}$ være en deterministisk Turingmaskine, som fungerer som følger:
 
-  $M_{1} = $ ``på input \texttt{<B,w> = <B><w>}
-\begin{enumerate}
-  \item Tjek om $B$ er en DFA og \textbf{afvis} hvis ikke.
-  \item Smiulér $B$ på $w$.
-  \item Hvis $B$ er i en accept state efter den har læst $w$, så \textbf{accepter} \texttt{<B,w>}, hvis ikke, så \textbf{afvis} \texttt{<B,w>}''
-\end{enumerate}
+	$M_{1} = $ ``på input \texttt{<B,w> = <B><w>}
+	\begin{enumerate}
+		\item Tjek om $B$ er en DFA og \textbf{afvis} hvis ikke.
+		\item Smiulér $B$ på $w$.
+		\item Hvis $B$ er i en accept state efter den har læst $w$, så \textbf{accepter} \texttt{<B,w>}, hvis ikke, så \textbf{afvis} \texttt{<B,w>}''
+	\end{enumerate}
 \end{proof}
 
 Vi vil nu gerne vise det samme, men med en NFA fremfor en DFA.
 
 \begin{equation*}
-  A_{NFA} = \{<B,w> \mid B \text{ er en NFA og }w \in \L(B)\}
+	A_{NFA} = \{<B,w> \mid B \text{ er en NFA og }w \in \L(B)\}
 \end{equation*}
 
 \begin{theorem}
-$A_{NFA}$ er afgørlig.
+	$A_{NFA}$ er afgørlig.
 \end{theorem}
 
 \begin{proof}
-  Lad $A$ være en deterministisk Turingmaskine som, givet et input $B$, først tjekker om \texttt{<B>} er en indkodning af en NFA
-  \begin{itemize}
-    \item Hvis $B$ \textit{ikke} er en NFA, vil $A$ outputte indkodningen \texttt{<B'> = <B>} (hvilket \textbf{ikke} er en DFA.) Det vigtige her er at bemærke at det blot \textbf{ikke} er en DFA.
-    \item Hvis $B$ \textit{er} en NFA, vil $A$ outputte \texttt{<B'>} når $B'$ er en DFA hvor $L(B') = L(B)$
-  \end{itemize}
-  Altså:
-  \begin{center}
-    \begin{tikzpicture}
-      \tikzset{block/.style={rectangle, draw, minimum height=2em, minimum width=3em}}
-      \tikzset{line/.style={draw, -latex'}}
+	Lad $A$ være en deterministisk Turingmaskine som, givet et input $B$, først tjekker om \texttt{<B>} er en indkodning af en NFA
+	\begin{itemize}
+		\item Hvis $B$ \textit{ikke} er en NFA, vil $A$ outputte indkodningen \texttt{<B'> = <B>} (hvilket \textbf{ikke} er en DFA.) Det vigtige her er at bemærke at det blot \textbf{ikke} er en DFA.
+		\item Hvis $B$ \textit{er} en NFA, vil $A$ outputte \texttt{<B'>} når $B'$ er en DFA hvor $L(B') = L(B)$
+	\end{itemize}
+	Altså:
+	\begin{center}
+		\begin{tikzpicture}
+			\tikzset{block/.style={rectangle, draw, minimum height=2em, minimum width=3em}}
+			\tikzset{line/.style={draw, -latex'}}
 
-      \node[block, minimum height=1.5cm, fill=SchemeBlue!50, draw=SchemeBlue] (E) at (0, 0){$A$};
-      \node[fill=none, draw=none] (end) at (2,0) {};
-      \node[fill=none, draw=none] (start) at (-2,0) {};
+			\node[block, minimum height=1.5cm, fill=SchemeBlue!50, draw=SchemeBlue] (E) at (0, 0){$A$};
+			\node[fill=none, draw=none] (end) at (2,0) {};
+			\node[fill=none, draw=none] (start) at (-2,0) {};
 
-      \node[fill=none, draw=none] (b) at (-1.3, 0.2) {\texttt{<B>}};
-      \node[fill=none, draw=none] (bs) at (1.3, 0.2) {\texttt{<B'>}};
+			\node[fill=none, draw=none] (b) at (-1.3, 0.2) {\texttt{<B>}};
+			\node[fill=none, draw=none] (bs) at (1.3, 0.2) {\texttt{<B'>}};
 
-      \draw[->] (start) -- (E.west);
+			\draw[->] (start) -- (E.west);
 
-      \draw[->] (E.east) -- (end.west);
-    \end{tikzpicture}
-  \end{center}
+			\draw[->] (E.east) -- (end.west);
+		\end{tikzpicture}
+	\end{center}
 
-  Vi definerer nu maskinen $M_{2}$.\\
-  \noindent
-  $M_{2} = $ ``på input \texttt{<B><w>}
-  \begin{enumerate}
-    \item Brug $A$ til at konvertere \texttt{<B>} til \texttt{<B'>}
-    \item Kør $M_{1}$\footnote{Fra Teorem~\ref{teo:dfadecidable}} på \texttt{<B'><w>} og:
-          \begin{itemize}
-            \item Accepter hvis $M_{1}$ accepterer
-            \item Afvis hvis $M_{1}$ afviser.''
-          \end{itemize}
-  \end{enumerate}
+	Vi definerer nu maskinen $M_{2}$.\\
+	\noindent
+	$M_{2} = $ ``på input \texttt{<B><w>}
+	\begin{enumerate}
+		\item Brug $A$ til at konvertere \texttt{<B>} til \texttt{<B'>}
+		\item Kør $M_{1}$\footnote{Fra Teorem~\ref{teo:dfadecidable}} på \texttt{<B'><w>} og:
+		      \begin{itemize}
+			      \item Accepter hvis $M_{1}$ accepterer
+			      \item Afvis hvis $M_{1}$ afviser.''
+		      \end{itemize}
+	\end{enumerate}
 
-  Altså får vi noget der ligner følgende:
-  \begin{center}
+	Altså får vi noget der ligner følgende:
+	\begin{center}
 
-    \begin{tikzpicture}
-      \tikzset{block/.style={rectangle, draw, minimum height=2em, minimum width=3em}}
-      \tikzset{line/.style={draw, -latex'}}
+		\begin{tikzpicture}
+			\tikzset{block/.style={rectangle, draw, minimum height=2em, minimum width=3em}}
+			\tikzset{line/.style={draw, -latex'}}
 
 
-%% M_2
-\node[fill=SchemeRed!20, draw=SchemeRed, minimum height=5cm, minimum width=4cm] (m2) at (1.3,-1) {};
-      %% A
-      \node[block, minimum height=1.5cm, fill=SchemeBlue!50, draw=SchemeBlue] (E) at (0, 0){$A$};
-      \node[fill=none, draw=none] (start) at (-2,0) {};
+			%% M_2
+			\node[fill=SchemeRed!20, draw=SchemeRed, minimum height=5cm, minimum width=4cm] (m2) at (1.3,-1) {};
+			%% A
+			\node[block, minimum height=1.5cm, fill=SchemeBlue!50, draw=SchemeBlue] (E) at (0, 0){$A$};
+			\node[fill=none, draw=none] (start) at (-2,0) {};
 
-      \node[fill=none, draw=none] (b) at (-1.3, 0.2) {\texttt{<B>}};
-      \node[fill=none, draw=none] (bs) at (1.3, 0.2) {\texttt{<B'>}};
+			\node[fill=none, draw=none] (b) at (-1.3, 0.2) {\texttt{<B>}};
+			\node[fill=none, draw=none] (bs) at (1.3, 0.2) {\texttt{<B'>}};
 
-      \draw[->] (start) -- (E.west);
+			\draw[->] (start) -- (E.west);
 
-      \draw[->] (E.east) -- (1.9, 0);
+			\draw[->] (E.east) -- (1.9, 0);
 
-      %% M_1
-      \node[block, minimum height=3cm, fill=SchemeGreen!50, draw=SchemeGreen] (m1) at (2.5,-1) {$M_{1}$};
+			%% M_1
+			\node[block, minimum height=3cm, fill=SchemeGreen!50, draw=SchemeGreen] (m1) at (2.5,-1) {$M_{1}$};
 
-      %% W
-      \node[fill=none, draw=none] (wstart) at (-2,-2) {};
-      \node[fill=none, draw=none] (w) at (-1.3,-1.7) {\texttt{<w>}};
+			%% W
+			\node[fill=none, draw=none] (wstart) at (-2,-2) {};
+			\node[fill=none, draw=none] (w) at (-1.3,-1.7) {\texttt{<w>}};
 
-\draw[->] (wstart.east) -- (1.9, -2);
+			\draw[->] (wstart.east) -- (1.9, -2);
 
-%% Acccept og afvis
+			%% Acccept og afvis
 
-\draw[->] (3.09, 0)  -- (3.9, 0);
-\node[fill=none, draw=none] (accept) at (4.8, 0) {Accepter};
+			\draw[->] (3.09, 0)  -- (3.9, 0);
+			\node[fill=none, draw=none] (accept) at (4.8, 0) {Accepter};
 
-\draw[->] (3.09, -2)  -- (3.9, -2);
-\node[fill=none, draw=none] (afvis) at (4.5, -2) {Afvis};
+			\draw[->] (3.09, -2)  -- (3.9, -2);
+			\node[fill=none, draw=none] (afvis) at (4.5, -2) {Afvis};
 
-\node[fill=none, draw=none, text=SchemeRed] (m2) at (1.5, -4) {$M_{2}$};
-    \end{tikzpicture}
-  \end{center}
+			\node[fill=none, draw=none, text=SchemeRed] (m2) at (1.5, -4) {$M_{2}$};
+		\end{tikzpicture}
+	\end{center}
 \end{proof}
 
 Vi vil gerne vise det samme for regulære udtryk:
 \begin{equation*}
-A_{REX} = \{ <R><w> \mid R \text{ er et regulært udtryk og } w \in L(R)\}
+	A_{REX} = \{ <R><w> \mid R \text{ er et regulært udtryk og } w \in L(R)\}
 \end{equation*}
 
 \begin{theorem}
-$A_{REX}$ er afgørligt.
+	$A_{REX}$ er afgørligt.
 \end{theorem}
 
 \begin{proof}
-  Vi beskriver en deterministisk Turingmaskine $B$.
+	Vi beskriver en deterministisk Turingmaskine $B$.
 
-  $B = $ ``på input $R$
+	$B = $ ``på input $R$
 
-  \begin{enumerate}
-    \item Først tjekkes om $R$ er et lovligt regulært udtryk
-    \item Hvis det ikke er, outputter $B$ \texttt{<B$_{R}$>} som er en \textit{ikke-NFA}.
-    \item Hvis $R$ er et regulært udtryk så genererer $B$ koden til en NFA $B_{R}$ hvor $L(B_{R}) = L(R)$.''
-  \end{enumerate}
+	\begin{enumerate}
+		\item Først tjekkes om $R$ er et lovligt regulært udtryk
+		\item Hvis det ikke er, outputter $B$ \texttt{<B$_{R}$>} som er en \textit{ikke-NFA}.
+		\item Hvis $R$ er et regulært udtryk så genererer $B$ koden til en NFA $B_{R}$ hvor $L(B_{R}) = L(R)$.''
+	\end{enumerate}
 
-  Givet $B$ kan vi konsturere $M_{3}$ som følger:
-  \begin{center}
+	Givet $B$ kan vi konsturere $M_{3}$ som følger:
+	\begin{center}
 
-    \begin{tikzpicture}
-      \tikzset{block/.style={rectangle, draw, minimum height=2em, minimum width=3em}}
-      \tikzset{line/.style={draw, -latex'}}
+		\begin{tikzpicture}
+			\tikzset{block/.style={rectangle, draw, minimum height=2em, minimum width=3em}}
+			\tikzset{line/.style={draw, -latex'}}
 
 
-%% M_2
-\node[fill=SchemeSteel!20, draw=SchemeSteel, minimum height=5cm, minimum width=4cm] (m2) at (1.3,-1) {};
-      %% A
-      \node[block, minimum height=1.5cm, fill=SchemeBlue!50, draw=SchemeBlue] (E) at (0, 0){$B$};
-      \node[fill=none, draw=none] (start) at (-2,0) {};
+			%% M_2
+			\node[fill=SchemeSteel!20, draw=SchemeSteel, minimum height=5cm, minimum width=4cm] (m2) at (1.3,-1) {};
+			%% A
+			\node[block, minimum height=1.5cm, fill=SchemeBlue!50, draw=SchemeBlue] (E) at (0, 0){$B$};
+			\node[fill=none, draw=none] (start) at (-2,0) {};
 
-      \node[fill=none, draw=none] (b) at (-1.3, 0.2) {\texttt{<R>}};
-      \node[fill=none, draw=none] (bs) at (1.3, 0.2) {\texttt{<B$_{R}$>}};
+			\node[fill=none, draw=none] (b) at (-1.3, 0.2) {\texttt{<R>}};
+			\node[fill=none, draw=none] (bs) at (1.3, 0.2) {\texttt{<B$_{R}$>}};
 
-      \draw[->] (start) -- (E.west);
+			\draw[->] (start) -- (E.west);
 
-      \draw[->] (E.east) -- (1.9, 0);
+			\draw[->] (E.east) -- (1.9, 0);
 
-      %% M_1
-      \node[block, minimum height=3cm, fill=SchemeRed!50, draw=SchemeRed] (m1) at (2.5,-1) {$M_{2}$};
+			%% M_1
+			\node[block, minimum height=3cm, fill=SchemeRed!50, draw=SchemeRed] (m1) at (2.5,-1) {$M_{2}$};
 
-      %% W
-      \node[fill=none, draw=none] (wstart) at (-2,-2) {};
-      \node[fill=none, draw=none] (w) at (-1.3,-1.7) {\texttt{<w>}};
+			%% W
+			\node[fill=none, draw=none] (wstart) at (-2,-2) {};
+			\node[fill=none, draw=none] (w) at (-1.3,-1.7) {\texttt{<w>}};
 
-\draw[->] (wstart.east) -- (1.9, -2);
+			\draw[->] (wstart.east) -- (1.9, -2);
 
-%% Acccept og afvis
+			%% Acccept og afvis
 
-\draw[->] (3.09, 0)  -- (3.9, 0);
-\node[fill=none, draw=none] (accept) at (4.8, 0) {Accepter};
+			\draw[->] (3.09, 0)  -- (3.9, 0);
+			\node[fill=none, draw=none] (accept) at (4.8, 0) {Accepter};
 
-\draw[->] (3.09, -2)  -- (3.9, -2);
-\node[fill=none, draw=none] (afvis) at (4.5, -2) {Afvis};
+			\draw[->] (3.09, -2)  -- (3.9, -2);
+			\node[fill=none, draw=none] (afvis) at (4.5, -2) {Afvis};
 
-\node[fill=none, draw=none, text=SchemeSteel] (m2) at (1.5, -4) {$M_{3}$};
-    \end{tikzpicture}
-  \end{center}
+			\node[fill=none, draw=none, text=SchemeSteel] (m2) at (1.5, -4) {$M_{3}$};
+		\end{tikzpicture}
+	\end{center}
 \end{proof}
 
 Vi vil nu gerne vise at en DFA der genkender udelukkende det tomme sprog også er afgørligt.
 \begin{equation*}
-E_{DFA} = \{<A> \mid A \text{ er en DFA og } L(A) = \emptyset\}
+	E_{DFA} = \{<A> \mid A \text{ er en DFA og } L(A) = \emptyset\}
 \end{equation*}
 
 \begin{theorem}
-$E_{DFA}$ er afgørligt.
+	$E_{DFA}$ er afgørligt.
 \end{theorem}
 
 \begin{proof}
-  Vi beskriver en deterministisk Turingmaskine $M_{4}$ der afgører $E_{DFA}$:
+	Vi beskriver en deterministisk Turingmaskine $M_{4}$ der afgører $E_{DFA}$:
 
-  $M_{4} = $ ``På input \texttt{<A>}
-  \begin{enumerate}
-    \item Tjek om \texttt{<A>} indkoder en DFA. Hvis ikke, så \textbf{afvis} \texttt{<A>}.
-    \item Lad $D_{A}$ være den underliggende rettet graf af $A$
-    \item Hvis $D_{A}$ har en rettet vej fra knuden $v_{0}$  tilsvarende til en initielle state $q_{0}$ af $A$ til en knude $v_{i}$ tilsvarende til en state $q_{i} \in F(A)$, så \textbf{accepter}, hvis en sådan vej \textit{ikke} eksisterer, så \textbf{afvis}.''
-  \end{enumerate}
+	$M_{4} = $ ``På input \texttt{<A>}
+	\begin{enumerate}
+		\item Tjek om \texttt{<A>} indkoder en DFA. Hvis ikke, så \textbf{afvis} \texttt{<A>}.
+		\item Lad $D_{A}$ være den underliggende rettet graf af $A$
+		\item Hvis $D_{A}$ har en rettet vej fra knuden $v_{0}$  tilsvarende til en initielle state $q_{0}$ af $A$ til en knude $v_{i}$ tilsvarende til en state $q_{i} \in F(A)$, så \textbf{accepter}, hvis en sådan vej \textit{ikke} eksisterer, så \textbf{afvis}.''
+	\end{enumerate}
 \end{proof}
 
 Vi går nu videre til ækvivalens mellem to DFA'er:
 \begin{equation*}
-EQ_{DFA} = \{{<A><B>} \mid A \text{ og } B \text{ er DFA'er og } L(A) = L(B)\}
+	EQ_{DFA} = \{{<A><B>} \mid A \text{ og } B \text{ er DFA'er og } L(A) = L(B)\}
 \end{equation*}
 
 \begin{theorem}
-$EQ_{DFA}$ er afgørligt.
+	$EQ_{DFA}$ er afgørligt.
 \end{theorem}
 
 \begin{proof}
-$L(A) = L(B) \iff (L(A) \setminus L(B))  \cup (L(B) \setminus L(A)) = \emptyset$
+	$L(A) = L(B) \iff (L(A) \setminus L(B))  \cup (L(B) \setminus L(A)) = \emptyset$
 
-Bemærk at $(L(A) \setminus L(B) \cup (L(B) \setminus L(A)) = (L(A) \cap \overline{L(B)}) \cup (\overline{L(A)} \cap L(B)) = \emptyset$
+	Bemærk at $(L(A) \setminus L(B) \cup (L(B) \setminus L(A)) = (L(A) \cap \overline{L(B)}) \cup (\overline{L(A)} \cap L(B)) = \emptyset$
 
-Hvis \texttt{<A>} og \texttt{<B>} er DFA'er, så output DFA \texttt{<C>} med $L(X) = (L(A) \cap \overline{L(B)}) \cup (\overline{L(A)} \cap L(B))$. Ellers output en DFA \texttt{<C>} hvor $L(C) = \Sigma^{*}$
+	Hvis \texttt{<A>} og \texttt{<B>} er DFA'er, så output DFA \texttt{<C>} med $L(X) = (L(A) \cap \overline{L(B)}) \cup (\overline{L(A)} \cap L(B))$. Ellers output en DFA \texttt{<C>} hvor $L(C) = \Sigma^{*}$
 
-  \begin{center}
+	\begin{center}
 
-    \begin{tikzpicture}
-      \tikzset{block/.style={rectangle, draw, minimum height=2em, minimum width=3em}}
-      \tikzset{line/.style={draw, -latex'}}
+		\begin{tikzpicture}
+			\tikzset{block/.style={rectangle, draw, minimum height=2em, minimum width=3em}}
+			\tikzset{line/.style={draw, -latex'}}
 
 
-      %% M_2
-      \node[fill=SchemeGreen!20, draw=SchemeGreen, minimum height=5cm, minimum width=4cm] (m2) at (1.3,-1) {};
+			%% M_2
+			\node[fill=SchemeGreen!20, draw=SchemeGreen, minimum height=5cm, minimum width=4cm] (m2) at (1.3,-1) {};
 
-      %% A
-      \node[block, minimum height=1.5cm, fill=SchemeSteel!50, draw=SchemeSteel] (E) at (0, -1){$C$};
-      \node[fill=none, draw=none] (start) at (-2,-0.5) {};
+			%% A
+			\node[block, minimum height=1.5cm, fill=SchemeSteel!50, draw=SchemeSteel] (E) at (0, -1){$C$};
+			\node[fill=none, draw=none] (start) at (-2,-0.5) {};
 
-      \node[fill=none, draw=none] (b) at (-1.3, -0.2) {\texttt{<A>}};
-      \node[fill=none, draw=none] (bs) at (1.3, -0.8) {\texttt{<C>}};
+			\node[fill=none, draw=none] (b) at (-1.3, -0.2) {\texttt{<A>}};
+			\node[fill=none, draw=none] (bs) at (1.3, -0.8) {\texttt{<C>}};
 
-      \draw[->] (start) -- (-0.6, -0.5);
+			\draw[->] (start) -- (-0.6, -0.5);
 
-      \draw[->] (0.6, -1.0) -- (1.9, -1.0);
+			\draw[->] (0.6, -1.0) -- (1.9, -1.0);
 
-      %% M_1
-      \node[block, minimum height=3cm, fill=SchemeSteel!50, draw=SchemeSteel] (m1) at (2.5,-1) {$M_{4}$};
+			%% M_1
+			\node[block, minimum height=3cm, fill=SchemeSteel!50, draw=SchemeSteel] (m1) at (2.5,-1) {$M_{4}$};
 
-      %% W
-      \node[fill=none, draw=none] (wstart) at (-2,-1.3) {};
-      \node[fill=none, draw=none] (w) at (-1.3,-1.0) {\texttt{<B>}};
+			%% W
+			\node[fill=none, draw=none] (wstart) at (-2,-1.3) {};
+			\node[fill=none, draw=none] (w) at (-1.3,-1.0) {\texttt{<B>}};
 
-\draw[->] (wstart.east) -- (-0.6, -1.3);
+			\draw[->] (wstart.east) -- (-0.6, -1.3);
 
-%% Acccept og afvis
+			%% Acccept og afvis
 
-\draw[->] (3.09, 0)  -- (3.9, 0);
-\node[fill=none, draw=none] (accept) at (4.8, 0) {Accepter};
+			\draw[->] (3.09, 0)  -- (3.9, 0);
+			\node[fill=none, draw=none] (accept) at (4.8, 0) {Accepter};
 
-\draw[->] (3.09, -2)  -- (3.9, -2);
-\node[fill=none, draw=none] (afvis) at (4.5, -2) {Afvis};
+			\draw[->] (3.09, -2)  -- (3.9, -2);
+			\node[fill=none, draw=none] (afvis) at (4.5, -2) {Afvis};
 
-\node[fill=none, draw=none, text=SchemeSteel] (m2) at (1.5, -4) {$M_{5}$};
-    \end{tikzpicture}
-  \end{center}
-$M_{5}$ afgører $EQ_{DFA}$.
+			\node[fill=none, draw=none, text=SchemeSteel] (m2) at (1.5, -4) {$M_{5}$};
+		\end{tikzpicture}
+	\end{center}
+	$M_{5}$ afgører $EQ_{DFA}$.
 \end{proof}
 
 Vi vil nu gerne vise at kontekstfrie grammatikker også er afgørlige:
 \begin{equation*}
-A_{CFG} = \{<G><w> \mid G \text{ er en kontesktfri grammatik og }w \in L(G)\}
+	A_{CFG} = \{<G><w> \mid G \text{ er en kontesktfri grammatik og }w \in L(G)\}
 \end{equation*}
 
 \begin{theorem}
-$A_{CFG}$ er afgørligt.
+	$A_{CFG}$ er afgørligt.
 \end{theorem}
 
 \begin{proof}
-  Lad $M_{CFG}$ være en deterministisk Turingmaskine.
+	Lad $M_{CFG}$ være en deterministisk Turingmaskine.
 
-  $M_{CFG} = $ ``på input \texttt{<w>}
-  \begin{enumerate}
-    \item Tjek om \texttt{<G>} inkoder en CFG. Hvis ikke, afvis \texttt{<G><w>}.
-    \item Konvertér $G$ til $G'$, hvilket en er grammatik i Chomsky Normal Form, hvor $L(G') = L(G)$.
-    \item Tjek alle mulige udledninger af længde $2|w| -1$ og accepter \texttt{<G><w>} hvis en af dem er strengen $w$\footnote{Fordi det er en Chomsky grammatik er det muligt at kigge alle udledningerne igennem}.
-    \item Hvis ingen udledning giver $w$ \textit{afvis} \texttt{<G><w>}''
-  \end{enumerate}
+	$M_{CFG} = $ ``på input \texttt{<w>}
+	\begin{enumerate}
+		\item Tjek om \texttt{<G>} inkoder en CFG. Hvis ikke, afvis \texttt{<G><w>}.
+		\item Konvertér $G$ til $G'$, hvilket en er grammatik i Chomsky Normal Form, hvor $L(G') = L(G)$.
+		\item Tjek alle mulige udledninger af længde $2|w| -1$ og accepter \texttt{<G><w>} hvis en af dem er strengen $w$\footnote{Fordi det er en Chomsky grammatik er det muligt at kigge alle udledningerne igennem}.
+		\item Hvis ingen udledning giver $w$ \textit{afvis} \texttt{<G><w>}''
+	\end{enumerate}
 \end{proof}
 
 Vi går nu videre til at tjekke om en kontekstfri grammatik genkender det tomme sprog (udelukkende.) Altså:
 \begin{equation*}
-E_{CFG} = \{<G> \mid G \text{ er en CFG og }L(G) = \emptyset\}
+	E_{CFG} = \{<G> \mid G \text{ er en CFG og }L(G) = \emptyset\}
 \end{equation*}
 
 \begin{theorem}
-$E_{CFG}$ er afgørligt.
+	$E_{CFG}$ er afgørligt.
 \end{theorem}
 
 \begin{proof}
-  Vi vil gerne tjekke om $\exists \beta \in \Sigma^{*}$ således at $S \stackrel{*}{\Rightarrow} \beta$.
-  \begin{enumerate}
-    \item Markér alle terminalsymboler
-    \item Løkke
-          \begin{enumerate}
-            \item Hvis $A \rightarrow u_{1}u_{2} \cdots u_{n}$ er en regel hvor alle $u_i$ er markeret, så markér A
-            \item Hvis $S$ markeres, \textit{afvis} $<G>$
-          \end{enumerate}
-          Indtil der ingen ændringer forekommer.
+	Vi vil gerne tjekke om $\exists \beta \in \Sigma^{*}$ således at $S \stackrel{*}{\Rightarrow} \beta$.
+	\begin{enumerate}
+		\item Markér alle terminalsymboler
+		\item Løkke
+		      \begin{enumerate}
+			      \item Hvis $A \rightarrow u_{1}u_{2} \cdots u_{n}$ er en regel hvor alle $u_i$ er markeret, så markér A
+			      \item Hvis $S$ markeres, \textit{afvis} $<G>$
+		      \end{enumerate}
+		      Indtil der ingen ændringer forekommer.
 
-    \item Accepter \texttt{<G>}
-  \end{enumerate}
+		\item Accepter \texttt{<G>}
+	\end{enumerate}
 \end{proof}
 
 \begin{theorem}
-Hvert kontekst-frit sprog er afgørligt.
+	Hvert kontekst-frit sprog er afgørligt.
 \end{theorem}
 
 \begin{proof}
-Vi bruger $M_{CFG}$ til at tjekke om \texttt{<G>} er en valid grammatik, og derefter simulere inputtet \texttt{<w>}, og acceptere eller afvise baseret på simuleringen.
+	Vi bruger $M_{CFG}$ til at tjekke om \texttt{<G>} er en valid grammatik, og derefter simulere inputtet \texttt{<w>}, og acceptere eller afvise baseret på simuleringen.
 \end{proof}
 
 \begin{figure}[ht]
-  \centering
-  \scalebox{0.6}{ % Scale down to 70% of original size
-  \begin{tikzpicture}
-    % Outermost ellipse (gray, recognizable)
-    \draw[SchemeSteel!50,fill=SchemeSteel!50,dashed, thick, opacity=0.2] (0.5,0) ellipse (10cm and 5cm);
-    \draw node at (0.5,-4.5) {Genkendelige Sprog};  % Text below the ellipse
+	\centering
+	\scalebox{0.6}{ % Scale down to 70% of original size
+		\begin{tikzpicture}
+			% Outermost ellipse (gray, recognizable)
+			\draw[SchemeSteel!50,fill=SchemeSteel!50,dashed, thick, opacity=0.2] (0.5,0) ellipse (10cm and 5cm);
+			\draw node at (0.5,-4.5) {Genkendelige Sprog};  % Text below the ellipse
 
-    % Second ellipse (red, decidable) - slightly smaller
-    \draw[SchemeRed!60,fill=SchemeRed!60,dashed, thick] (0.5,0) ellipse (8cm and 4.0cm);
-    \draw node[below, yshift=-3.0cm] at (0.5,0) {Afgørlige $ \{a^nb^nc^n \mid n \ge 0\}$};
+			% Second ellipse (red, decidable) - slightly smaller
+			\draw[SchemeRed!60,fill=SchemeRed!60,dashed, thick] (0.5,0) ellipse (8cm and 4.0cm);
+			\draw node[below, yshift=-3.0cm] at (0.5,0) {Afgørlige $ \{a^nb^nc^n \mid n \ge 0\}$};
 
-    % Third ellipse (blue, context-free) - even smaller
-    \draw[SchemeBlue!70,fill=SchemeBlue!70,dashed, thick] (0.5,0) ellipse (6cm and 3.0cm);
-    \draw node[above, yshift=-2.6cm] at (0.5,0) {Kontekst-fri $\{a^nb^n \mid n \ge 0\}$};
+			% Third ellipse (blue, context-free) - even smaller
+			\draw[SchemeBlue!70,fill=SchemeBlue!70,dashed, thick] (0.5,0) ellipse (6cm and 3.0cm);
+			\draw node[above, yshift=-2.6cm] at (0.5,0) {Kontekst-fri $\{a^nb^n \mid n \ge 0\}$};
 
-    % Innermost ellipse (gray, regular) - smallest
-    \draw[SchemeLight!90,fill=SchemeLight!90,dashed, thick, opacity=0.3] (0.5,0) ellipse (4cm and 2.0cm);
-    \draw node at (0.5,0) {Regulær $\{a^ib^j \mid i, j \ge 0\}$};
-  \end{tikzpicture}
-  }
-  \caption{\label{fig:univers2} Univers af sprog}
+			% Innermost ellipse (gray, regular) - smallest
+			\draw[SchemeLight!90,fill=SchemeLight!90,dashed, thick, opacity=0.3] (0.5,0) ellipse (4cm and 2.0cm);
+			\draw node at (0.5,0) {Regulær $\{a^ib^j \mid i, j \ge 0\}$};
+		\end{tikzpicture}
+	}
+	\caption{\label{fig:univers2} Univers af sprog}
 \end{figure}
 
 Lad os nu bevise at en deterministisk Turingmaskine er genkendelig (men ikke afgørlig!):
 \begin{equation*}
-A_{TM} = \{<m><w> \mid m \text{ er en deterministisk Turingmaskine og } w \in L(M)\}
+	A_{TM} = \{<m><w> \mid m \text{ er en deterministisk Turingmaskine og } w \in L(M)\}
 \end{equation*}
 
 \begin{theorem}
-$A_{TM}$ er Turing-genkendeligt.
+	$A_{TM}$ er Turing-genkendeligt.
 \end{theorem}
 
 \begin{proof}
-\begin{enumerate}
-  \item Tjek om \texttt{<m>} indkoder en deterministisk Turingmaskine, hvis ikke, så \textit{afvis} \texttt{<m><w>}
-  \item Giv \texttt{<m>} og \texttt{<w>} til den universelle turingmaskine. Hvis den acccepterer, så accepterer \texttt{m} \texttt{w}, hvis den ikke accepterer, så afviser \texttt{m} \texttt{w}. Hvis den løkker\footnote{loops} på \texttt{<m><w>} så løkker \texttt{m} på \texttt{w}.
-\end{enumerate}
+	Vi konstruerer en Turingmaskine der fungerer som følger:
+	\begin{enumerate}
+		\item Tjek om \texttt{<m>} indkoder en deterministisk Turingmaskine, hvis ikke, så \textit{afvis} \texttt{<m><w>}
+		\item Giv \texttt{<m>} og \texttt{<w>} til den universelle turingmaskine. Hvis den acccepterer, så accepterer \texttt{m} \texttt{w}, hvis den ikke accepterer, så afviser \texttt{m} \texttt{w}. Hvis den løkker\footnote{loops} på \texttt{<m><w>} så løkker \texttt{m} på \texttt{w}.
+	\end{enumerate}
 
-Vi kan lave en maskine, $M^{*}$ som  genkender $A_{TM}$ ved at bruge en hjælpemaskine, $A$ som tager \texttt{<m>} ind, og spytter \texttt{<m>} ud hvis det er en valid Turingmaskine, og ellers løkker den. Dette output er så videregivet til $u$ (den universelle Turingmaskine), som enten accepterer eller afviser på $w$.
+	Vi kan lave en maskine, $M^{*}$ som  genkender $A_{TM}$ ved at bruge en hjælpemaskine, $A$ som tager \texttt{<m>} ind, og spytter \texttt{<m>} ud hvis det er en valid Turingmaskine, og ellers løkker den. Dette output er så videregivet til $u$ (den universelle Turingmaskine), som enten accepterer eller afviser på $w$.
 
 \end{proof}
 
 \section{Uafgørlighed}%
 \label{sec:undecidability}
 
+Vi kommer i denne sektion til at snakke om hvordan der eksisterer problemer som \textbf{ikke} er afgørlige af en Turingmaskine, og dermed er der også problemer hvortil ingen algoritme eksisterer som løser disse\footnote{Dette kommer fra Church-Turing tesen, der medgiver at Turingmaskine = Algoritme}.
 
+Vi vil nu argumentere ved brug af tælning, for at der findes sprog som \textbf{ikke} er afgørlige.
+
+\begin{definition}
+	\label{def:countable}
+	Et sæt $S$ er tælleligt (countable) hvis enten
+	\begin{enumerate}
+		\item $S$ er endeligt, eller
+		\item $\exists f : S \rightarrow \mathbb{N}$ således at $f$ er en-til-en og onto (injektiv og surjektiv.)
+	\end{enumerate}
+\end{definition}
+
+Ved punkt 2 i Definition~\ref{def:countable} menes det at vi kan strukturere et sæt således at det har en injektiv og surjektiv korrespondance med naturlige heltal. Eksempelvis i sættet $\{2k \mid k \in \mathbb{N}\}$ kan $2k$ ``mappes'' til $k$, og dermed have en korrespondance med naturlige heltal.
+
+% MANGLER FORKLARING TIL COROLLARY
+
+\begin{corollary}
+	Sættet af alle sprog over et alfabet $\Sigma$ hvor $|\Sigma| \ge 1$ er utælleligt.
+\end{corollary}
+
+%% MAngler at der er tælleligt mange TUringmaskienr
+
+Der er tælleligt mange Turingmaskiner, men man et utælleligt antal af sprog. Dermed må alle sprog ikke kunne genkendes af en Turingmaskine.
+
+\begin{theorem}
+	$A_{TM}$ er uafgørligt.
+\end{theorem}
+
+Husk at $A_{TM} = \{<m><w> \mid m \text{ er en Turingmaskine og } w \in L(M)\}$. Hvis man kigger på dette som en algoritme, kan spørgsmålet omskrives til hvorvidt, givet et program, kan et andet program bestemme og dette program vil accepteres eller ej?
+
+\begin{proof}
+	Antag at $H$ er en Turingmaskine som afgører $A_{TM}$. Det vil altså sige at hvis en streng $w$ er en del af $L(A_{TM})$ så accepteres den, \textbf{og} hvis $w$ \textit{ikke} er en del af $L(A_{TM})$, så vil strengen \textbf{afvises}.
+
+	Antag nu at vi konstruerer en ny Turingmaskine, $D$. $D$ tager ét input, \texttt{<m>} og ingen streng. \texttt{<m>} bliver splittet op til at blive begge inputs til $H$ og negerer så outputtet, altså, hvis det originalt havde været accept, vil det nu være en afvisning, og omvendt.
+
+	Lad \begin{equation*}
+		D(\text{\texttt{<D>}}) =
+		\begin{cases}
+			\text{ accept } & \text{ hvis \texttt{<m>} } \notin L(M) \\
+			\text{ afvis}   & \text{ hvis \texttt{<m>}}  \in L(M)
+		\end{cases}
+	\end{equation*}
+
+	Dermed vil det også gælde at:
+	\begin{equation*}
+		D(\text{\texttt{<D>}}) = \begin{cases}
+			\text{ accept } & \text{ hvis \texttt{<m>}}  \notin L(M) \\
+			\text{ afvis }  & \text{ hvis \texttt{<m>}} \in L(M)
+		\end{cases}
+	\end{equation*}
+
+	Altså \texttt{<D>} $\in L(D) \iff \text{\texttt{<D>}} \notin L(D)$.
+	Dermed vil det være umuligt for $D$ at eksistere.
+\end{proof}
+
+\begin{theorem}
+	$L$ er Turing-afgørligt $\iff$ $L$ og $\overline{L}$ er Turing-genkendelige.
+\end{theorem}
+
+\begin{proof}
+	Lad $M^{*}$ afgøre $L$. $M^{*}$ stoppet altid og $L(M^{*}) = L$, så $M^{*}$ genkender $L$ og $\overline{M^{*}}$ genkender $\overline{L}$. Altså vil en streng der accepteres af $M^{*}$ afvises af $\overline{M^{*}}$ og omvendt. For at bevise den anden side, lad $M_{L}$ og $M_{\overline{L}}$ genkende henholdsvist $L$ og $\overline{L}$. Med disse Turingmaskine kan vi lave en tredje maskine, $M$ som tager et input, \texttt{<w>} som bliver fodret til begge maskiner. Hvis dette input accepteres af $M_{L}$ eller afvises $M_{\overline{L}}$, så accepeters strengen af $M$. $M$ afviser strengen, hvis den afvises af $M_{L}$ eller accepteres af $M_{\overline{L}}$. Den gør dette ved at simulere ét skridt ad gangen på forskellige bånd.
+\end{proof}
+
+\begin{theorem}
+	For hvert sprog $L$ over det universelle alpfabet gælder præcis en af de følgende:
+	\begin{enumerate}
+		\item $L$ og $\overline{L}$ er afgørlige
+		\item Ingen af $L$, $\overline{L}$ er genkendelige
+		\item L er genkendelig, men $\overline{L}$ er ikke genkendelig, eller $\overline{L}$ er genkendelig, men $L$ er ikke genkendelig.
+	\end{enumerate}
+	\begin{table}[ht]
+		\centering
+		\begin{tabular}{|l|l|l|l|}
+			\hline
+			$\overline{L} / L$ & D & R & NR \\ \hline
+			D                  & * & - & -  \\ \hline
+			R                  & - & - & *  \\ \hline
+			NR                 & - & * & *  \\ \hline
+		\end{tabular}
+	\end{table}
+	Hvor $D = $ afgørlig (decidable), $R$ = genkendelig (recognizable) men ikke afgørlig, $NR$ = ikke genkendelig (not recognizable), $*$ = muligt, $-$ = umuligt.
+\end{theorem}
+
+\begin{corollary}
+	$\overline{A_{TM}}$ er ikke genkendeligt.
+\end{corollary}
+
+\begin{align*}
+	\overline{A_{TM}} = \{\text{\texttt{<w'>}} \mid
+	 & \text{ 1. Ingen præfiks af \texttt{<w'>} indkoder en Turingmaskine, eller }   \\
+	 & \text{ 2. For hvert \texttt{<m>} således at \texttt{<w'>} = \texttt{<m><w>},} \\ &\;\;\; \text{           gælder det at } w \notin L(M)
+	\}
+\end{align*}
 
 
 
