@@ -1,6 +1,175 @@
 \chapter{Reducérbarhed}
 
+Standsproblemet (halting problem) $$HALT = \{\text{\texttt{<m><w>}} \mid m \text{ er en Turingmaskine og m stopper på }w\}$$
 
+\begin{theorem}
+	$HALT$ er uafgørligt.
+\end{theorem}
+
+\begin{proof}
+	Antag at Turingmaskinen $R$ afgører HALT. Vi vil nu vise at dette indebærer at $A_{TM}$ er afgørligt (som vi så i sidste kapitel, ikke passede.)
+
+	Vi konstruerer en ny Turingmaskine, $A$. Vi definerer $A$ til at være en maskine der tager en kodning af en maskine som input, og giver en kodning til output. Vi definerer $A$ til at gøre følgende:
+	\begin{enumerate}
+		\item Hvis \texttt{<m>} ikke er en Turingmaskine, så \texttt{<m'> = <m>}
+		\item Ellers er \texttt{<m>} en Turingmaskine hvor det gælder at $L(m') = L(
+			      m)$ hvor $m'$ løkker uendeligt på alle strenge der ikke er en del af $L(m')$.
+	\end{enumerate}
+
+	Det vil altså sige at $A$ kun stopper på strenge som er \textbf{accepteret}, og løkker uendeligt på strenge der ikke accepteres.
+
+	Lad os nu konsturere en ny Turingmaskine, $R$ som tager en maskine \texttt{<m>} og en streng \texttt{<w>} som input. $R$ fungerer meget simpelt, hvis \texttt{<m>} accepterer \texttt{<w>}, så accepterer $R$ kombinationen, og omvendt, hvis \texttt{<m>} afviser \texttt{<w>}, så afviser $R$ kombinationen. Det vil altså sige, at hvis vi kan konstrurere en sådan maskine, så vil $HALT$ være afgørligt.
+
+	Vi konsturerer nu en ny maskine, $M_{R}$ som tager som input \texttt{<m>} og \texttt{<w>}. \texttt{<m>} bliver fodret til $A$ som giver sit output som input til $R$, og \texttt{<w>} går direkte til input i $R$. $R$ vil så enten give en accept eller afvisning baseret på disse inputs. Men som vi så før, hvis en streng ikke er en del af sproget i $A$ så kører den i en uendelig løkke, hvilket betyder at $R$ ud fra en uendelig løkke skal kunne afvise, hvilket naturligvis ikke er muligt.
+
+\end{proof}
+
+\begin{equation*}
+	E_{TM} = \{\text{\texttt{<m>}} \mid m \text{ er en Turingmaskine og } L(M) = \emptyset\}
+\end{equation*}
+
+\begin{theorem}
+	\label{teo:etmundecidable}
+	$E_{TM}$ er uafgørligt.
+\end{theorem}
+
+\begin{proof}
+	Antag at $S$ er en Turingmaskine som afgører $E_{TM}$. Vi bruger $S$ til at konsturere en afgører for $A_{TM}$ og kommer til et modstrid.
+
+	Til at gøre dette bruger vi en maskine, $B$ som fungerer således: $B$ tager to input, \texttt{<m>} og \texttt{<w>}. Ouputtet fra $B$  er \texttt{<$m_{w}$>}. Den fungerer som følger:
+	\begin{enumerate}
+		\item Først tjekkes om \texttt{<m>} er en kodning til en Turingmaskine. Hvis ikke, så outputter den $m_{w}$, som er en Turingmaskine hvor $L(m_{w}) = \emptyset$.
+		\item Hvis \texttt{<m>} er en Turingmaskine, så output Turingmaskine $m_{w}$ hvor
+		      \begin{equation*}
+			      L(m_{w}) =\begin{cases}
+				      \{w\}     & \text{ hvis } w \in L(M)    \\
+				      \emptyset & \text{ hvis } w \notin L(M) \\
+			      \end{cases}
+		      \end{equation*}
+	\end{enumerate}
+	Altså vil det sige at hvis det ikke er en Turingmaskine, outputter $m_{w}$ en turingmaskine hvis sprog er det tomme sprog, altså $\emptyset$. Derimod, hvis det er en Turingmaskine, så beholder den $w$ til at være en accepteret streng hvis det er en accepteret streng i \texttt{<m>}, men hvis \textbf{ikke} det er en accepteret streng, så bliver $L(M_{w}) = \emptyset$, altså vil \textbf{ingen} strenge accepteres.
+
+	Maskinen $m_{w}$ fungerer således:
+	\begin{enumerate}
+		\item Tjek om input $x$ er lig $w$.
+		\item Hvis $x \neq w$ så afvis
+		\item Ellers, så simulér $m$ på $w$ og accepter hvis og kun hvis $m$ accepterer $w$.
+	\end{enumerate}
+
+	Husk nu $S$, som er en Turingmaskine der afgører $E_{TM}$. Hvis $S$ får $m_{w}$ som input, og kan afgøre om $L(m_{w}) = \emptyset$ eller ej.
+
+	Lad os nu ``indkapsulere'' disse maskine i en ny maskine, $S^{*}$. $S^{*}$ tager to inputs, \texttt{<m>} og \texttt{<w>}. Disse går til maskinen $B$, som giver output \texttt{<$m_{w}$>} som går til $S$. $S$ afgører så om \texttt{<$m_{w}$>} er en Turingmaskine og $L(M) = \emptyset$. $S^{*}$ tager så dette input og gør det omvendt, så en accept vil være en afvisning og en afvisning vil være en accept.
+
+	Vi kan nu se at $S^{*}$ afgører $A_{TM}$ som er umuligt pr. Teorem \ref{teo:atmundecidable}.
+\end{proof}
+
+Trods at $E_{TM}$ ikke er afgørligt, så er $\overline{E_{TM}}$ genkendeligt. Bemærk at
+\begin{align*}
+	\overline{E_{TM}} = \{  \text{\texttt{<m>}} \mid & \text{  enten er \texttt{<w>}  ikke en Turingmaskine, eller \texttt{<w> = <m>}} \\
+	                                                 & \text{for en Turingmaskine hvor } L(M) \ne \emptyset\}
+\end{align*}
+
+Følgende er en beskrivelse af en Turingmaskine der genkender $\overline{E_{TM}}$:
+\begin{enumerate}
+	\item Tjek om \texttt{<m>} koder en Turingmaskine, hvis ikke så \textit{accepter} \texttt{<w>}
+	\item Lad $M$ være en Turingmaskine kodet af \texttt{<w>}
+	\item Simulér $M$ på strengene over $\Sigma^{*}$ in lexikografisk order i parallel.
+\end{enumerate}
+
+Altså, for $i = 1, 2, \ldots$ simulér $M$ i $i$ skridt på strengene $w_{1}, w_{2} , \ldots, w_{i}$ ifølge den lexikografiske rækkefølge. Stop når en streng accepteres.
+
+Bemærk at hvis $L(M) \neq \emptyset$ så stopper den beskrevne algoritme efter højest $p$ skridt hvor $p = \max (t,q)$ og $m$ accepterer $w$ på $t$ skridt og $w = w_{q}$.
+
+\begin{corollary}
+	$E_{TM}$ er \textbf{ikke} Turing-genkendeligt.
+\end{corollary}
+
+Vi vil nu kigge på to specielle Turingmaskine, $M_{\emptyset}$ og $M_{\Sigma^{*}}$.
+
+$M_{\emptyset}$ går direkte til afvisstaten uanset hvad inputtet er (inklusiv tomt input!) Så $\delta(q_{0}, a) = q_{reject} \;\; \forall a \in \Gamma$, $L(M_{\emptyset}) = \emptyset$.
+$M_{\Sigma^{*}}$ går direkte til dens accept state uanset hvad input er, altså $\delta(q_{i}, a) = q_{accept} \;\; i = 0, 1, \ldots, \; \; \forall a \in \Gamma$.
+
+Vi vil nu gerne vise at følgende Turingmaskine er uafgørlig:
+
+\begin{equation*}
+	EQ_{TM} = \{\text{\texttt{<m$_1$><m$_2$>}} \mid m_{1} \text{ og } m_{2} \text{ er Turingmaskiner hvor } L(m_{1}) = L(m_{2})\}
+\end{equation*}
+
+\begin{theorem}
+	$EQ_{TM}$ er uafgørligt.
+\end{theorem}
+
+\begin{proof}
+	Vi vil vise dette ved at bruge $E_{TM}$ (fra Teorem \ref{teo:etmundecidable}) ved at reducere til den $EQ_{TM}$.
+
+	Antag at $m_{EQ}$ afgører $EQ_{TM}$, så kan vi lave Turingmaskinen $m^{*}$ der givet et input \texttt{<m>} og \texttt{<m$_{\emptyset}$>} enten accepterer eller afviser baseret på om de to maskiner er lig hinande (altså om $L(m) = L(m_{\emptyset}) = \emptyset$.) Vi ved at dette ikke er afgørligt (fra Teorem \ref{teo:etmundecidable}.)
+\end{proof}
+
+Vi har nu set et eksempel på et bevis hvor vi siger at et sprog er uafgørligt, fordi hvis det kan afgøres, vil et andet bevist uafgørligt sprog ikke være afgørligt. Vi vil gerne se om det er muligt at formalisere denne process, så vi ikke ``bare'' laver en hypotetisk Turingmaskine der beviser ved at reducerer. Til dette bruger vi Sipser kapitel 5.3.
+\begin{definition}
+	$f : \Sigma^{*} \rightarrow \Sigma^{*}$ er \textbf{beregnbar}\footnote{Computable på engelsk} hvis $\exists TM \;M_{f}$ som starter med $w$ og ender med $f(w)$ på dets bånd: $q_{0}w \stackrel{*}{\Rightarrow} q_{acc}f(w)$.
+\end{definition}
+
+Et eksempel på dette er $f : \mathbb{N} \rightarrow \mathbb{N}$, $f(x) = x^{2}$.
+
+\begin{definition}
+	Lad $A, B$ være sprog. Vi siger at $A$ er reducérbart\footnote{Mapping reducible} til $B$ hvis $\exists$ en beregnbar funktion $f : \Sigma^{*} \rightarrow \Sigma^{*}$ således at $w \in A \iff f(w) \in B$. Vi skriver $A \le _{m}B$ og kalder $f$ en reduktion af $A$ til $B$.
+\end{definition}
+
+\begin{theorem}
+	Hvis $A \leq _{M}B$ og $B$ er afgørligt, så er $A$ afgørlig.
+\end{theorem}
+
+\begin{corollary}
+	Hvis $A \leq _{M}B$ er uafgørligt, så er $B$ også uafgørligt.
+\end{corollary}
+
+\begin{theorem}
+	$A \leq_{M} B$ og $B$ er genkendeligt, så er $A$ genkendeligt.
+\end{theorem}
+
+\begin{corollary}
+	$A \leq_M B$ og $A$ er \textbf{ikke} genkendeligt, så er $B$ ikke genkendeligt.
+\end{corollary}
+
+\begin{equation*}
+	H_{\varepsilon} = \{\text{\texttt{<m>}} \mid m \text{ er en Turingmaskine og } \varepsilon \in L(M)\}
+\end{equation*}
+
+\begin{theorem}
+	$H_{\varepsilon}$ er uafgørligt.
+\end{theorem}
+
+\begin{theorem}
+	Vi giver en reduktion fra $A_{TM}$ til $H_{\varepsilon}$. $f : \text{\texttt{<m><w>}} \rightarrow \text{\texttt{<m$_{w}$>}}$.
+
+	\begin{equation*}
+		L(m_{W}) = \begin{cases}
+			\emptyset  & \text{ hvis } w \notin L(m) \\
+			\Sigma^{*} & \text{ hvis } w \in L(m)
+		\end{cases}
+	\end{equation*}
+
+	VI kan se allerede nu at dette er en reduktion af $A_{TM}$, og dermed $A_{TM} \leq_{m} H_{\varepsilon}$. Dermed er $m_{\varepsilon}$ uafgørlig.
+\end{theorem}
+
+\begin{equation*}
+	Regular_{TM} = \{\text{\texttt{<m>}} \mid m \text{ er en Turingmaskine og }L(m) \text{ er regulær}\}
+\end{equation*}
+
+\begin{theorem}
+	$Regular_{TM}$ er uafgørlig.
+\end{theorem}
+
+\begin{proof}
+	Vi giver en reduktion fra $A_{TM}$ til $Regular_{TM}$ ved at vise hvordan man laver en TM $m^{w}$ således at:
+	\begin{equation*}
+		L(m^{w}) = \begin{cases}
+			L' = \{a^{n}b^{n} \mid n \ge 0\} & \text{ hvis } w \notin L(m) \\
+			\Sigma^{*}                       & \text{ hvis } w \in L(m)
+		\end{cases}
+	\end{equation*}
+\end{proof}
 
 %%% Local Variables:
 %%% mode: latex

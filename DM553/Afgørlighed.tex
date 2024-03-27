@@ -384,10 +384,11 @@ Ved punkt 2 i Definition~\ref{def:countable} menes det at vi kan strukturere et 
 Der er tælleligt mange Turingmaskiner, men man et utælleligt antal af sprog. Dermed må alle sprog ikke kunne genkendes af en Turingmaskine.
 
 \begin{theorem}
+  \label{teo:atmundecidable}
 	$A_{TM}$ er uafgørligt.
 \end{theorem}
 
-Husk at $A_{TM} = \{<m><w> \mid m \text{ er en Turingmaskine og } w \in L(M)\}$. Hvis man kigger på dette som en algoritme, kan spørgsmålet omskrives til hvorvidt, givet et program, kan et andet program bestemme og dette program vil accepteres eller ej?
+Husk at $A_{TM} = \{\text{\texttt{<m><w>}} \mid m \text{ er en Turingmaskine og } w \in L(M)\}$. Hvis man kigger på dette som en algoritme, kan spørgsmålet omskrives til hvorvidt, givet et program, kan et andet program bestemme og dette program vil accepteres eller ej?
 
 \begin{proof}
 	Antag at $H$ er en Turingmaskine som afgører $A_{TM}$. Det vil altså sige at hvis en streng $w$ er en del af $L(A_{TM})$ så accepteres den, \textbf{og} hvis $w$ \textit{ikke} er en del af $L(A_{TM})$, så vil strengen \textbf{afvises}.
