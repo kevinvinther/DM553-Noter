@@ -216,9 +216,7 @@ $KLIKKE$ er i $NP$.
 \end{theorem}
 
 \begin{proof}
-  Følgende er en verifikator $V$ for $KLIKKE$.
-
-  \\\\
+  Følgende er en verifikator $V$ for $KLIKKE$.\\\\
   \noindent
   $V = $ `` På input \texttt{<<G><k>><c>}:
   \begin{enumerate}
@@ -303,9 +301,7 @@ Hvis $A \le_{P} B$ og $B \in P$, så $A \in P$
 \end{theorem}
 
 \begin{proof}
-  Lad $M$ være polynomiel tids algoritmen der afgører $B$ og $f$ være polynomiel tids reduktionen fra $A$ til $B$. Vi beskrive en polynomieltids algoritme $N$ som afgører $A$ som følger:
-
-  \\
+  Lad $M$ være polynomiel tids algoritmen der afgører $B$ og $f$ være polynomiel tids reduktionen fra $A$ til $B$. Vi beskrive en polynomieltids algoritme $N$ som afgører $A$ som følger:\\
   \noindent
   $N = $ ``På input $w$:
   \begin{enumerate}
@@ -328,6 +324,23 @@ Det følgende teorem præsenterer en polynomieltidsreduktion fra $3SAT$ til $KLI
 \begin{theorem}
 $3SAT$ er polynomielt tidsreducérbart til KLIKKE.
 \end{theorem}
+
+Reduktionen $f$ konverterer formler til grafer. I de konstruerede grafer, svarer klikker af en specifik størrelse til satisfying assignment af formlen.
+
+\begin{proof}
+  Lad $\phi$ være en formel med $k$ klausuler såsom:
+  \begin{equation*}
+\phi = (a_{1} \lor b_{1} \lor c_{1}) \land (a_{2} \lor b_{2} \lor c_{2}) \land \cdots \land (a_{k} \lor b_{k} \land c_{k})
+  \end{equation*}
+  Reduktionen $f$ genererer strengen \texttt{<G><k>}, hvor $G$ er en urettet graf defineret som følger.
+  Knuderne i $G$ organiseres i $k$ grupper af tre knuder, hver kaldet tripler, $t_{1}, \ldots, t_{k}$. Hver triple svarer til en af de klausuler i $\phi$, og hver knude i en triple svarer til en literal i den associeret klausul.
+
+  Kanterne i $G$ forbinder alle undtagen to typer af par af knuder i $G$. Ingen kant mellem to knuder er den samme triple, og ingen kant findes mellem to knuder med modstridige labels, såsom $x_{2}$ og $\overline{x_{2}}$.
+
+  Vi viser nu hvorfor dette virker. Vi viser at $\phi$ er satisfiable $\iff$ $G$ har en $k-$klikke.
+
+  %% NÅÊT HERTIL.
+\end{proof}
 
 
 %%% Local Variables:
