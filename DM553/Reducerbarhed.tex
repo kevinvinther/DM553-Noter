@@ -138,15 +138,15 @@ Et eksempel på dette er $f : \mathbb{N} \rightarrow \mathbb{N}$, $f(x) = x^{2}$
 \end{theorem}
 
 \begin{proof}
-  Lad $M$ være en afgører for $B$ og $f$ være reduktionen fra $A$ til $B$. Vi beskriver en afgører $N$ for $A$ som følger:
+	Lad $M$ være en afgører for $B$ og $f$ være reduktionen fra $A$ til $B$. Vi beskriver en afgører $N$ for $A$ som følger:
 
-  $N = $ ``På input $w$
-  \begin{enumerate}
-	\item Beregn $f(w)$
-	\item Kør $M$ på input $f(w)$ og output hvad $M$ outputter''
-  \end{enumerate}
+	$N = $ ``På input $w$
+	\begin{enumerate}
+		\item Beregn $f(w)$
+		\item Kør $M$ på input $f(w)$ og output hvad $M$ outputter''
+	\end{enumerate}
 
-Hermed, hvis $w \in A$, så $f(w) \in B$ fordi $f$ er en reduktion fra $A$ til $B$. Dermed accepterer $M$ $f(w)$ når $w \in A$.
+	Hermed, hvis $w \in A$, så $f(w) \in B$ fordi $f$ er en reduktion fra $A$ til $B$. Dermed accepterer $M$ $f(w)$ når $w \in A$.
 \end{proof}
 
 \begin{corollary}
@@ -158,7 +158,7 @@ Hermed, hvis $w \in A$, så $f(w) \in B$ fordi $f$ er en reduktion fra $A$ til $
 \end{theorem}
 
 \begin{proof}
-Beviset her er det samme som i beviset med afgørlighed, undtagen her bruges genkendelighed.
+	Beviset her er det samme som i beviset med afgørlighed, undtagen her bruges genkendelighed.
 \end{proof}
 
 \begin{corollary}
@@ -170,11 +170,11 @@ Generelt set kan vi følge en opskrift på et uafgørlighedsbevis ved hjælp af 
 Lad $K$ være et sprog du ønsker at vise til at være uafgørligt.
 \begin{enumerate}
 
-  \item Vælg et passende sprog, $R$ som vi allerede ved er uafgørligt.
-  \item Beskriv en reduktion fra $R$ til $K$ ved hjælp af en beregnelig funktion. Lad $A$ være en Turingmaskine der beregner denne reduktion. Altså givet $x$ udregner $A$ værdien $f(x)$ (hvis funktionen er $f$.)
-  \item Lad $M_{K}$ være en hypotetisk Turingmkasine der afgører $K$ (vores mål er at vise at denne ikke eksisterer.)
-  \item Brug $A$ og $M_{K}$ til at lave en ny Turingmaskine $M^{*}$ som afgører $R$.
-  \item Konkludér fra ovenstående et modstrid, og at $K$ dermed er uafgørlig.
+	\item Vælg et passende sprog, $R$ som vi allerede ved er uafgørligt.
+	\item Beskriv en reduktion fra $R$ til $K$ ved hjælp af en beregnelig funktion. Lad $A$ være en Turingmaskine der beregner denne reduktion. Altså givet $x$ udregner $A$ værdien $f(x)$ (hvis funktionen er $f$.)
+	\item Lad $M_{K}$ være en hypotetisk Turingmkasine der afgører $K$ (vores mål er at vise at denne ikke eksisterer.)
+	\item Brug $A$ og $M_{K}$ til at lave en ny Turingmaskine $M^{*}$ som afgører $R$.
+	\item Konkludér fra ovenstående et modstrid, og at $K$ dermed er uafgørlig.
 \end{enumerate}
 
 
@@ -188,14 +188,14 @@ Lad $K$ være et sprog du ønsker at vise til at være uafgørligt.
 \end{theorem}
 
 \begin{proof}
-  Vi bruger opskriften beskrevet tidligere.
-  \begin{enumerate}
-	\item Lad $R$ være sproget $HALT_{TM}$ som vi ved er uafgørligt.
-	\item Lad $A$ være en Turingmaskine der givet kodningen \texttt{<m>} for en Turingmaskine og \texttt{<w>} for en streng outputter \texttt{<m$_{w}$>}. Denne Turingmaskine kører på et tomt input, og accepterer hvis $M$ accepterer $w$. Den gør dette ved at kopiere $w$ til båndet, og så køre $M$, ved hjælp af den universelle Turingmaskine \texttt{<U>}. Hvis \texttt{<m>} stopper og accepterer \texttt{<w>} så vil \texttt{<m$_{w}$>} også stoppe og acceptere. Hvis ikke, kører den forevigt. Det vil altså sige at \texttt{<m$_{w}$>} stopper på den tomme streng hvis og kun hvis $M$ stopper på $w$.
-	\item Antag at $M_{H_{\varepsilon}}$ afgører $H_{\varepsilon}$
-	\item Brug $A$ og \texttt{<m$_{H_{\varepsilon}}$>} til at lave en Turingmaskine $M^{HALT}$ der afgør $HALT_{TM}$.
-	\item Da $HALT_{TM}$ er uafgørligt er $H_{\varepsilon}$ uafgørligt.
-  \end{enumerate}
+	Vi bruger opskriften beskrevet tidligere.
+	\begin{enumerate}
+		\item Lad $R$ være sproget $HALT_{TM}$ som vi ved er uafgørligt.
+		\item Lad $A$ være en Turingmaskine der givet kodningen \texttt{<m>} for en Turingmaskine og \texttt{<w>} for en streng outputter \texttt{<m$_{w}$>}. Denne Turingmaskine kører på et tomt input, og accepterer hvis $M$ accepterer $w$. Den gør dette ved at kopiere $w$ til båndet, og så køre $M$, ved hjælp af den universelle Turingmaskine \texttt{<U>}. Hvis \texttt{<m>} stopper og accepterer \texttt{<w>} så vil \texttt{<m$_{w}$>} også stoppe og acceptere. Hvis ikke, kører den forevigt. Det vil altså sige at \texttt{<m$_{w}$>} stopper på den tomme streng hvis og kun hvis $M$ stopper på $w$.
+		\item Antag at $M_{H_{\varepsilon}}$ afgører $H_{\varepsilon}$
+		\item Brug $A$ og \texttt{<m$_{H_{\varepsilon}}$>} til at lave en Turingmaskine $M^{HALT}$ der afgør $HALT_{TM}$.
+		\item Da $HALT_{TM}$ er uafgørligt er $H_{\varepsilon}$ uafgørligt.
+	\end{enumerate}
 
 \end{proof}
 
@@ -208,13 +208,77 @@ Lad $K$ være et sprog du ønsker at vise til at være uafgørligt.
 \end{theorem}
 
 \begin{proof}
-  Vi giver en reduktion fra $A_{TM}$ til $Regular_{TM}$. Vi gør dette ved at vise hvordan man konstruerer en Turingmaskine $m^{w}$ således at
-  \begin{equation*}
-L(m^{w}) = \begin{cases}
-L' = \{a^{n}b^{n} \mid n \ge 0\} & \text{ hvis } w \notin L(m)\\
-\Sigma^{*} & \text{ hvis } w \in L(m)
-\end{cases}
-  \end{equation*}
+	Vi reducerer fra $A_{TM}$. Vi antager at $Regular_{TM}$ er afgørligt af en Turingmaskine, $R$ og bruger dette til at konsturere en Turingmaskine $S$, som afgører $A_{TM}$. Så altså:
+	\begin{enumerate}
+		\item $R$ afgører $Regular_{TM}$
+		\item $A$ afgører $A_{TM}$ og bruger $R$ til at gøre dette.
+	\end{enumerate}
+
+	Vores idé er at $S$ tager inputtet \texttt{<m><w>} og ændrer på \texttt{<m>} så den resulterende Turingmaskine genkender et regulært sprog hvis og kun hvis \texttt{<m>} accepterer \texttt{<w>}. Denne ændring af \texttt{<m>} kalder vi \texttt{<m$_{2}$>}.
+
+	Vi konstruerer \texttt{<m$_{2}$>} til at genkende sproget $\{0^{n}1^{n} \mid n \ge 0\}$ (altså et ikke-regulært sprog) hvis \texttt{<m>} ikke accepterer \texttt{<w>}, og genkender det regulære sprog $\Sigma^{*}$ hvis \texttt{<m>} accepterer \texttt{<w>}. Altså:
+
+	\begin{equation*}
+		L(\text{\texttt{<m$_{2}$>}}) = \begin{cases}
+			\{0^{n}1^{n} \mid n \ge 0\} & \text{ hvis } w \notin L(\text{\texttt{<m>}}) \\
+			\Sigma^{*}                  & \text{ hvis } w \in L(\text{\texttt{<m>}})
+		\end{cases}
+	\end{equation*}
+
+	Hvor vi må huske at $L(m)$ er et regulært sprog, så hvis $w$ er regulært, så er $L(m_{2}) = \Sigma^{*}$.
+	Bemærk at $m_{2}$ ikke er konstrueret til faktisk at blive kørt på et input, men for at kunne ``fodre'' dens beskrivelse i en afgører for $Regular_{TM}$, som vi antaget eksisterer.
+
+	Vi lader $R$ være en Turingmaskine der afgører $Regular_{TM}$ og vi konstruerer Turingmaskinen $S$ til at afgøre $A_{TM}$. Så fungerer $S$ på følgende måde:\\\\
+	\noindent
+	$S =$ ``På input \texttt{<m><w>}, hvor $m$ er en Turingmaskine og $w$ en streng:
+	\begin{enumerate}
+		\item Konstruér den følgende Turingmaskine $m_{2}$.
+		      $m_{2} = $ ``på input $x$
+		      \begin{enumerate}
+			      \item Hvis $x$ er af formen $0^{n}1^{n}$, \textit{accepter}.
+			      \item Hvis $x$ ikke har denne form, så kør $M$ på input $w$ og \textit{accepter} hvis $M$ accepterer $w$.
+		      \end{enumerate}
+		\item Kør $R$ på input \texttt{<m$_{2}$>}
+		\item Hvis $R$ accepterer, så \textit{accepter}, hvis $R$ afviser, så \textit{afvis.}''
+	\end{enumerate}
+
+
+	Hvis vi følger den ``opskrift'' vi har fundet tidligere kan vi bevise som følger:
+	\begin{enumerate}
+		\item Vælg et passende sprog, $R$, som vi allerede ved er uafgørligt.
+		      \begin{itemize}
+			      \item Her vælger vi $A_{TM}$. $A_{TM}$ spørger, givet en Turingmaskine $m$ og en streng $w$, accepterer $M$ så $w$?
+		      \end{itemize}
+		\item Beskriv en reduktion fra $R$ til $K$ ved hjælp af en beregnelig funktion. Lad $A$ være en Turingmaskine der begeregner denne reduktion.
+		      \begin{itemize}
+			      \item Lad $K = Regular_{TM}$
+			      \item Vi konstruerer en beregnelig funktion v.h.a. Tuiringmaskinen $A$, som transformere enhver instans \texttt{<m><w>} af $A_{TM}$ til en Turingmaskine \texttt{<m$_{2}$>} hvor \texttt{<m$_{2}$>}s sprog er regulært hvis og kun hvis $M$ accepterer $w$.
+			      \item $A$ fungerer som følger:
+			            \begin{itemize}
+				            \item Givet \texttt{<m><w>} kører $m_{2}$, og tjekker på input $x$ om det har formen $0^{n}1^{n}$, hvis ja, så accepterer $m_{2}$ $x$.
+				            \item Uanset $x$'s form, så simuleres $M$ på $w$. $M_{2}$ er designet til at acceptere alle strenge, hvilket gør dens sprog til $\Sigma^{*}$ (et regulært sprog.)
+			            \end{itemize}
+		      \end{itemize}
+		\item Lad $M_{K}$ være en hypotetisk Turingmaskine der afgører $K$ (vore smål er at vise at denne ikke eksisterer.)
+		      \begin{itemize}
+			      \item $M_{K}$ er en hypotetisk maskine der afgører $REGULAR_{TM}$, som bestemmer om en givet Turingmaskine genkender et regulært sprog.
+		      \end{itemize}
+
+		\item Brug $A$ og $M_{K}$ til at lave en ny Turingmaskine $M^{*}$ der afgører $R$.
+		      \begin{itemize}
+			      \item $M^{*}$ bruger $A$ til at transformere en instans \texttt{<m><w>} af $A_{TM}$ til $M_{2}$.
+			      \item $M^{*}$ kører så $M_{K}$ på $M_{2}$. Hvis $M_{K}$ bestemmer $M_{2}$'s sprog er regulært, så konkluderer $M^{*}$ at $M$ accepterer $w$, og ellers konkluderer den at $M$ \textbf{ikke} accepterer $w$.
+			      \item Essentielt afgørerer $M^{*}$ sproget $A_{TM}$ ved brug af $M_{K}$ som er en modstrid, fordi $A_{TM}$ er uafgørligt.
+		      \end{itemize}
+		\item Konkludér fra ovenstående et modstrid, og at $K$ dermed er uafgørlig.
+		      \begin{itemize}
+			      \item Eksistensen af $M^{*}$ leder til en modstrid da $A_{TM}$ er afgørlig.
+			      \item Siden vores konstruktion af $M^{*}$ var baseret på vores antagelse at $REGULAR_{TM}$ (vores $K$) er afgørlig, så indebærer modstriden at vores antagelse er falsk.
+			      \item Derfor er $REGULAR_{TM}$ uafgørlig.
+		      \end{itemize}
+	\end{enumerate}
+
+
 \end{proof}
 
 \subsection{Rice's Teorem}%
@@ -222,31 +286,50 @@ L' = \{a^{n}b^{n} \mid n \ge 0\} & \text{ hvis } w \notin L(m)\\
 
 En egenskab $P$ vedrører sproget for en Turingmaskine $M$ hvis $P$ handler om sproget $M$. Følgende er eksempler på sådanne egenskaber:
 \begin{enumerate}
-  \item $L(m)$ er regulært
-  \item $L(m) = \emptyset$
-  \item $L(m)$ indeholder strengene $x,y$ således at $|x| = |y|$
-  \item $L(m)$ indeholder en streng $x$ hvor $|x| = 22$
+	\item $L(m)$ er regulært
+	\item $L(m) = \emptyset$
+	\item $L(m)$ indeholder strengene $x,y$ således at $|x| = |y|$
+	\item $L(m)$ indeholder en streng $x$ hvor $|x| = 22$
 \end{enumerate}
 Følgende egenskab er \textbf{ikke} om sproget af en Turingmaskine: $\exists w \in \Sigma^{*}$ således at når $m$ er startet på $w$ vil den besøge alle states undtagen $q_{acc}$ og $q_{reject}$.
 
 \begin{definition}
-  En egenskab $P$ om sproget af en Turingmaskine er \textbf{ikke-trivielt}, hvis
-  \begin{itemize}
+	En egenskab $P$ om sproget af en Turingmaskine er \textbf{ikke-trivielt}, hvis
+	\begin{itemize}
 
 
-	\item $\exists$ En Turingmaskine $m_{1}$ således at $L(m_{1})$ har egenskaben $P$
-	\item $\exists$ En Turingmaskine $m_{2}$ således at $L(m_{2})$ \textbf{ikke} har egenskaben $P$
-  \end{itemize}
+		\item $\exists$ En Turingmaskine $m_{1}$ således at $L(m_{1})$ har egenskaben $P$
+		\item $\exists$ En Turingmaskine $m_{2}$ således at $L(m_{2})$ \textbf{ikke} har egenskaben $P$
+	\end{itemize}
 
 \end{definition}
 
-  Altså er en egenskab ikke-triviel hvis der eksisterer en Turingmaskine hvis sprog har egenskaben $P$, og der eksisterer en seperat Turingmaskine hvis sprog \textbf{ikke} har egenskaben $P$.
+Altså er en egenskab ikke-triviel hvis der eksisterer en Turingmaskine hvis sprog har egenskaben $P$, og der eksisterer en seperat Turingmaskine hvis sprog \textbf{ikke} har egenskaben $P$.
 
-  Hvis vi kigger på eksemplerne før kan alle deles op i at der eksisterer en Turingmaskine der har disse egenskaber i deres sprog, og på samme måde findes der en hvor det ikke gælder. For eksempel ved det første, er der en Turingmaskine hvor sproget er regulært, men på samme tid er der også en Turingmaskine hvor sproget \textbf{ikke} er regulært.
+Hvis vi kigger på eksemplerne før kan alle deles op i at der eksisterer en Turingmaskine der har disse egenskaber i deres sprog, og på samme måde findes der en hvor det ikke gælder. For eksempel ved det første, er der en Turingmaskine hvor sproget er regulært, men på samme tid er der også en Turingmaskine hvor sproget \textbf{ikke} er regulært.
 
 \begin{theorem}[Rice's Theorem]
-Hver ikke-triviel egenskab $P$ om sproget af Turingmaskiner er uafgørlig.
+	Hver ikke-triviel egenskab $P$ om sproget af Turingmaskiner er uafgørlig.
 \end{theorem}
+
+\begin{proof}
+	Vi antager at det tomme sprog $L(M) = \emptyset$ \textbf{ikke} har egenskaben $P$, ellers overvej egenskaben $\overline{P}$. Hvis $P$ er ikke-triviel, så er $\overline{P}$ naturligvis også ikke-triviel, ud fra definitionen af ikke-trivielle egenskaber.
+	Antag at Turingmaskinen $M_{P}$ kan afgøre for en givet kodning \texttt{<m>} af en Turingmaskine, om $L(M)$ har egenskaben $P$. Så, givet en Turingmaskine $m_{p}$ der tager som input kodningen af en Turingmaskine, \texttt{<m>}, vil den enten:
+	\begin{itemize}
+		\item Acceptere $\iff$  $m$ er en Turingmaskine og $L(m)$ har egenskaben $P$
+		\item Afvise $\iff$ $m$ \textbf{ikke} er en Turingmaskine eller $L(m)$ ikke har egenskaben $P$.
+	\end{itemize}
+
+	Vi vil nu lave en Turingmaskien der giver os et modstrid. Lad $M_{1}$ være en Turingmaskine hvor $L(M_{1})$ har egenskaben $P$. Husk at  vi antager af $L(M_{\emptyset})$ ikke har egenskaben $P$. Vi vil vise hvordan man kosntruerer en sådan Turingmaskine, hvilket givet \texttt{<m><w>} konstruerer en Turingmaskine $m(w)$ hvor
+	\begin{equation*}
+		L(M(w)) = \begin{cases}
+			\emptyset & \text{ hvis } w \notin L(m) \text{ eller } m \text{ ikke er en Turingmaskine} \\
+			L(M_{1})  & \text{ hvis } w \in L(m)
+		\end{cases}
+	\end{equation*}
+
+	$L(m(w))$ har egenskaben $P$ $\iff$ \texttt{<m><w>} $\in A_{TM}$. Så \texttt{<m><w>} $\rightarrow$ $m(w)$ er en reduktion.
+\end{proof}
 
 
 

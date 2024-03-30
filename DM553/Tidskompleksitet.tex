@@ -1,0 +1,338 @@
+\chapter{Tidskompleksitet}
+
+\section{Klassen P}%
+\label{sec:p}
+
+\subsection{Polynomiel Tid}%
+\label{subsec:polynomialtime}
+
+Vi ser på polynomielle forskelle i køretid som værende små, og eksponentielle som værende store. Vi gør dette grundet væksten af polynomielle funktioner versus eksponentielle funktioner. Et polynomie som $n^{3}$ og en eksponent som $2^{n}$ har meget forskellige værdier når $n$ bliver større og større, f.eks., hvis $n = 1000$ er $n^{3}$ 1 milliard, hvor $2^{n}$ er langt større end antallet af atomer i universet.
+
+Eksponentielle algoritmer fremkommer ofte i \textbf{brute-force søgninger}, altså hvor vi ``bare leder efter en løsning'' på et problem, fremfor en effektiv løsning. Hvis man har en dybere forståelse af et problem, kan man ofte finde en polynomiel løsning.
+
+Alle rimelige komputationelle modeller er \textbf{polynomielt ækvivalente}; altså kan de simulere hinanden med kun en eksponentiel stigning i køretid. Eksempelvis er multibånds og enkeltbånds Turingmaskine polynomielt ækvivalente, da man kan simulere en multibånds Turingmaskine med en enkeltbånd via en polynomiel algoritme.
+
+\begin{definition}
+	$P$ er klassen af sprog som er afgørlige i Polynomiel tid på en deterministisk enkeltbånds Turingmaskine. I andre ord:
+	\begin{equation*}
+		P = \bigcup_{k} TIME(n^{k})
+	\end{equation*}
+\end{definition}
+
+$P$ er en vigtig klasse fordi det er en invariant af alle modeller for komputering som er polynomielt ækvivalente til en deterministisk enkeltbånds Turingmaskine, og $P$ svarer nogenlunde til klassen af problemer som man realistisk kan løse på en computer.
+
+\subsection{Eksempler på problemer i klassen P}%
+\label{subsec:examplesinp}
+
+Når vi beskriver en algoritme der kører i polynomiel tid er der to ting der er vigtige. Først er det vigtigt at der er en polynomiel upper bound, normalvist i store-$O$ notation, på antallet af ``stadier'' som algoritmen bruger når den kører på en input af længde $n$. Så skal vi undersøge de individuelle stadier i beskrivelsen af algoritmen, for at sikre at hvert stadie kan implementeres i polynomiel tid på en rimelig deterministisk model. Når disse to ting er gjort, kan vi konkludere at algoritmen kører i polynomiel tid, fordi vi har demonstreret at den køre i en polynomiel antal af stadier, hvor hver af disse stadier også kan køres i polynomiel tid.
+
+Det første problem vi kigger på omhandler rettede grafer. En rettet graf $G$ indeholder knuder $s$ og $t$. $PATH$ problemet er at bestemme om en rettet vej eksisterer fra $s$ til $t$. Lad
+\begin{equation*}
+	PATH = \{\text{\texttt{<G><s><t>}} \mid G \text{ er en rettet graf som har en direkte vej fra } s \text{ til } t\}
+\end{equation*}
+
+\begin{theorem}
+	$PATH \in P$
+\end{theorem}
+
+Før vi beskriver en algoritme der løser $PATH$ i polynomiel tid, vil vi vise at en brute-force algoritme ikke er hurtig nok. En brute-force algoritme undersøger alle mulige veje i $G$ og bestemmer hvorvidt en er en rettet vej fra $s$ til $t$. En potentiel vej er en sekvens af knuder i $G$ af længde højest $m$; hvor $m$ er antallet af knuder i $G$. Bemærk at en vej ikke kan have længde større end $m$, da der ville være repetition, hvilket aldrig er nødvendigt. Antallet af sådanne veje er cirka $m^{m}$, hvilket er eksponentielt for antallet af knuder i $G$. Derfor bruger en brute-force algoritme som denne eksponentielt tid.
+
+En måde hvorpå vi så kan gøre dette uden at bruge brute-force er \textit{breadth-first-search} som markerer alle knuder i $G$ som man kan komme til fra $s$ ved rettede veje af længde 1, så længde 2, så længde 3, hele vejen til længde $m$.
+
+\begin{proof}
+	En polynomiel tidsalgoritme $M$ for $PATH$ fungerer som følger:
+
+	$M =$ ``På input \texttt{<G><s><t>}, hvor $G$ er en erttet graf med knuder $s$ og $t$:
+	\begin{enumerate}
+		\item Placer en markering på knude $s$
+		\item Løkke følgende indtil der ikke markeres flere knuder:
+		      \begin{enumerate}
+			      \item Scan alle kanterne af $G$. Hvis en kant $(a,b)$ er fundet ved at gå fra en markeret knude $a$ til en umarkeret knude $b$, så markér $b$.
+		      \end{enumerate}
+		\item Hvis $t$ er markeret, \textit{accepter}, ellers, \textit{afvis}.
+	\end{enumerate}
+
+	Vi analyserer nu algoritmen til at vise at den kører i polynomiel tid. Stadie 1 og 3 eksekveres tydeligvis kun én gang. Stadie 3 kører højest $m$ gange, fordi den højest kan markere $m$ knuder. Dermed er det endelige antal af stadier brugt højest $1 + 1 + m$, hvilket er polynomielt i størrelsen af $G$.
+\end{proof}
+
+Vi vil nu kigge på eksemplet af relative primtal. To tal er relative primtal hvis $1$ er det største heltal som ligeligt deler dem begge. For eksempel er $10$ og $21$ relative primtal, selvom ingen af dem er primtal. Dog er $10$ og $22$ ikke relative primtal, da begge er delelige med $2$. Lad $RELPRIME$ være problemet om at teste hvorledes to tal er relative primtal.
+
+\begin{equation*}
+	RELTPRIMTE = \{\text{\texttt{<x><y>}} \mid x \text{ og } y \text{ er relative primtal}\}
+\end{equation*}
+
+\begin{theorem}
+	$RELPRIME \in P$
+\end{theorem}
+
+En mulig algoritme til at løse dette problem søger igennem alle mulige divisorer (tal der deler) af begge tal, og accepterer kun hvis ingen af dem er større end 1. Dette er dog eksponentielt. I stedet løser vi problemet med en gammel numerisk procedure, \textbf{Euklids Algoritme}. Den \textbf{største fælles divisor}\footnote{Trods det lyder afsindigt grimt, er det åbenbart det rigtigt navn på dansk: \href{https://denstoredanske.lex.dk/st\%C3\%B8rste_f\%C3\%A6lles_divisor}{Største Fælles Divisor - Den Store Danske}} af naturlige tal $x$ og $y$, skrevet $gcd(x,y)$ er det største heltal som ligeligt deler både $x$ og $y$. For eksempel, $gcd(18,24) = 6$, da $6$ er det største tal der både går op i 18 og 24. Dermed er to tal relative primtal hvis $gcd(x,y) = 1$.
+
+\begin{proof}
+	Lad Euklids algoritme $E$ være følgende: \\
+	\noindent
+	$E = $ ``På input \texttt{<x><y>}, hvor $x$ og $y$ er naturlige tal i binær repræsentation:
+	\begin{enumerate}
+		\item Løkke indtil $y = 0$:
+		      \begin{enumerate}
+			      \item Lad $x \leftarrow x \mod y$
+			      \item Byt $x$ og $y$
+		      \end{enumerate}
+		\item Output $x$.''
+	\end{enumerate}
+
+	Algoritmen $R$ løser $RELPRIME$, ved brug af $E$.\\
+	\noindent
+	$R = $ ``På input \texttt{<x><y>}, hvor $x$ og $y$ er naturlige tal i binær repræsentation:
+	\begin{enumerate}
+		\item Kør $E$ på \texttt{<x><y>}
+		\item Hvis resultatet er $1$, så \textit{accepter}, ellers \textit{afvis}.''
+	\end{enumerate}
+
+	Det er her klart at se at hvis $E$  kører polynomielt, så gør $R$ også. Hver udførelse af stadie $2$  i $E$ skærer værdien i halv. Efter stadie 2 er udført er $x < y$ givet hvordan modulus funktionen fungerer. Efter stadie $3$ er $x > y$ fordi de er byttet. Dermed når stadie 3 er udført efterfølgende, $x > y$. Hvis $x/2 \ge y$, så $x \mod y < y < x / 2$ og $x$ bliver skåret med mindst halvdelen. Hvis $x / 2 < y$ så $x \mod y = x - y < x / 2$ og $x$ skæres med mindst halvdelen.
+
+	Værdierne af $x$ og $y$ bliver byttet hver gang stadie $3$ udføres, så hver af de originale værdier af $x$ og $y$ reduceres til mindst halvdelen hver anden gang igennem løkken. Dermed er maksimum antallet af gangene stadie 2 og 3 udføres den mindste af $2 \log_{2} x$ og $2 \log_{2} y$. Disse logaritme er proportionelle til længden af repræsentationerne, hvilker giver antallet af stadier der uføres til $O(n)$. Dermed er den endelige køretid polynomiel.
+\end{proof}
+
+Vores sidste eksempel viser at hvert CFL er afgørligt i polynomiel tid.
+
+\begin{theorem}
+	Hvert kontekst-frit sprog er medlem af $P$.
+\end{theorem}
+
+Vi har tidligere bevist at alle kontekstfrie sprog er afgørlige, men algoritmen vi brugte der er ikke polynomiel\footnote{Se Sipser pp. 290 ed. 3 for flere detaljer}. For at fåen polynomiel algoritme bruger vi dynamisk programmering.
+% MANGLER
+\begin{proof}
+
+\end{proof}
+
+\section{Klassen NP}%
+\label{sec:np}
+
+Der er mange problemer hvor vi endnu ikke har fundet en måde at undgå at bruge brute-force løsninger til problemer på, resulterende i eksponentielle algoritmer.
+
+Kompleksiteten af mange problemer hænger sammen - en polynomiel tids algoritme for et problem kan bruges til at løse en hel klasse af problemer. For at forstå dette bruger vi et eksempel.
+
+En \textit{Hamiltonian vej} i en rettet graf $G$ er en rettet vej som går igennem hver knude præcis én gang. Lad
+\begin{equation*}
+	HAMPATH = \{\text{\texttt{<G><s><t>}} \mid G \text{ er en rettet graf med en Hamiltonien vej fra } s \text{ til } t\}
+\end{equation*}
+
+Vi kan sagtens finde en algoritme der kører i eksponentiel tid ved at ændre lidt i brute-force algoritmen fra $PATH$. Ingen ved endnu om $HAMPATH$ er løselig i polynomiel tid. $HAMPATH$ problemet har en funktion (feature) kaldet \textit{polynomiel verificerbarhed} som er vigtig for at forstå dens kompleksitet. Selvom vi ikke kender en polynomiel måde at bestemme om en graf indeholder en Hamiltionen vej, hvis en sådan vej findes, kan vi meget hurtigt se om vejen er korrekt eller ej. I andre ord kan vi nemt \textit{verficiere} en Hamiltonian vej, og dette er muligvis langt nemmere end at bestemme dens eksistens.
+
+Et andet polynomielt verificérbart problem er sammensathed\footnote{Compositeness på engelsk.}. Husk at et naturligt tal er sammensat hvis det er produktet af to heltal større end 1,
+\begin{equation*}
+	SAMMENSATTE = \{x \mid x = pq, \text{ for heltal } p, q > 1\}
+\end{equation*}
+
+Vi kan nemt verificere at et tal er sammensat. Alt der er nødvendigt for dette er en divisor for tallet. For nyligt blev en polynomiel algoritme for at teste hvorledes et tal er primtal eller sammensat fundet. Nogle problemer er muligvis ikke polynomielt verificérbare. For eksempel komplementet af $HAMPATH$ problemet, $\overline{HAMPATH}$.
+
+\begin{definition}
+	En \textbf{verifikator} for et sprog $A$ er en algoritme, $V$,hvor
+	\begin{equation*}
+		A = \{w \mid V \text{ accepterer \texttt{<w><c>} for en streng }c \}
+	\end{equation*}
+
+	Vi måler tiden af en verifikator kun i form af længden af $w$, så en \textit{polynomiel tids verifikator} kører i polynomiel tid på længden af $w$. Et sprog $A$ er \textit{polynomielt verificérbart} hvis det har en polynomiel tids verifikator.
+\end{definition}
+
+En verifikator bruger et \textit{certifikat} eller et \textit{bevis} af medlemskab i $A$ til at verificere at en streng $w$ er et medlem af $A$. Dette repræsenteres af $c$ i definitionen.
+
+For $HAMPATH$ problemet, er certifikatet af en streng \texttt{<g><s><t>} $\in HAMPATH$ er, simpelt, en Hamiltionion vej fra $s$ til $t$. For $SAMMENSATTE$ problemet er certifikatet bare en af dets divisorer. I begge tilfælde kan verifikatoren tjekke i polynomiel tid at inputtet er i sproget når den er givet certifikatet.
+
+\begin{definition}
+	\textbf{NP} er klassen af sprog som har polynomielle tidsverifikatorer.
+\end{definition}
+
+Både $HAMPATH$ og $SAMMENSATTE$ er medlemmer af $NP$. $NP$ kommer simpelt fra \textbf{nondeterministisk polynomiel tid}; og kommer fra en alternativ karakterisering ved at bruge nondeterministiske polynomielttids Turingmaskiner. Problemer i NP kaldes nogle gange $NP$-problemer.
+
+Følgende er en Nondeterministk Turingmaskine som afgører $HAMPATH$ i nondeterministisk polynomiel tid.\\\\
+\noindent
+$N_{1} = $ ``På input \texttt{<G><s><t>}, hvor $G$ er en rettet graf med knuder $s$ og $t$:
+\begin{enumerate}
+	\item Skriv en liste af $m$ tal, $p_{1}, \ldots, p_{m}$ hvor $m$ er antallet af knuder i $G$. Hvert tal i listen af nondeterministisk valgt til at være mellem $1$ og $m$.
+	\item Tjek for repetitioner i listen, hvis nogen findes, \textit{afvis}.
+	\item Tjek om $s = p_{1}$ og $t = p_{m}$. Hvis nogen fejler, \textit{afvis}.
+	\item For hvert $i$ mellem $1$ og $m-1$, tjek om $(p_{i}, p_{i+1})$ er en kant af $G$. Hvis ikke, \textit{afvis}, ellers \textit{accepter}.''
+\end{enumerate}
+
+Hvert stadie her kører i polynomiel tid, og derfor kører algoritmen altså i nondeterministisk polynomiel tid.
+
+\begin{theorem}
+	Et sprog er i NP $\iff$ det er afgjort af en nondeterministisk polynomiel tids Turingmaskine.
+\end{theorem}
+
+Vi viser først hvordan man konverterer en polynomieltids verifikator til en ækvivalent polynomieltids nondeterministisk Turingmaskine, og så omvendt. Den nondeterministiske Turingmaskine simulerer verifikatoren ved at gætte på certifikatet. Verifikatoren simulerer den Nondeterministiske Turingmaskine ved at bruge den accepterende gren som certifikatet.
+
+\begin{proof}
+	For den fremadgående vej af teoremet, lad $A \in NP$ og vis at $A$ er afgjort af en polynomieltids nondeterministisk Turingmaskine $N$. Lad $V$ være polynomieltidsverifikatoren for $A$ som eksisterer fra definition af $NP$. Antag at $V$ er en Turingmaskine som kører i $n^{k}$ tid, og konstruér $N$ som følger:
+
+	$N = $ ``På input $w$ af længde $n$:
+	\begin{enumerate}
+		\item Nondeterministk vælg streng $c$ af længde højest $n^{k}$
+		\item Kør $V$ på input \texttt{<w><c>}
+		\item Hvis $V$ accepterer, så \textit{accepter}, ellers \textit{afvis}.''
+	\end{enumerate}
+
+	For at bevise den omvendte vej, antag at $A$ er afgjort af en polynomieltids nondeterministisk Turingmaskine $N$ og konstruér en Polynomieltids Verifikator $V$ som følger:
+
+	$V = $ ``På input \texttt{<w><c>}, hvor $w$ og $c$ er strenge:
+	\begin{enumerate}
+		\item Simulér $N$ på input $w$ og behandl hvert symbol i $c$ som en beskrivelse af det nondeterministiske valg der skal foretages på hvert trin.
+		\item Hvis denne gren af $N'$s komputering accepterer, så \textit{accepter}, ellers \textit{afvis}.''
+	\end{enumerate}
+
+
+\end{proof}
+
+Vi definerer den nodneterministiske tidskompleksitetsklasse $NTIME(t(n))$ som analog til den deterministiske tidskompleksitetsklasse $TIME(t(n))$.
+
+\begin{definition}
+	\begin{align*}
+		NTIME(t(n)) = \{ L \mid & L \text{ er et sprog afgjort af en } O(t(n)) \text{tids} \\
+		                        & \text{nondeterministisk Turingmaskine}\}
+	\end{align*}
+\end{definition}
+
+
+\begin{corollary}
+	\begin{equation*}
+		NP = \bigcup_{k} NTIME(n^{k})
+	\end{equation*}
+\end{corollary}
+
+
+\subsection{Eksempler af problemer i NP}%
+\label{subsec:NPexamples}
+
+En \textbf{klikke} i en urettet graf er en subgraf, hvori hver to knuder er sammensat af en kandt. En $k-klikke$ er en klikke som indeholder $k$ knuder.
+
+Klikkeproblemet omhandler at finde ud af om en graf indeholder en klikke af en specifik størrelse, lad
+\begin{equation*}
+KLIKKE = \{\text{\texttt{<G><k>}} \mid G \text{ er en urettet graf med en } k-\text{klikke}\}
+\end{equation*}
+
+\begin{theorem}
+$KLIKKE$ er i $NP$.
+\end{theorem}
+
+\begin{proof}
+  Følgende er en verifikator $V$ for $KLIKKE$.
+
+  \\\\
+  \noindent
+  $V = $ `` På input \texttt{<<G><k>><c>}:
+  \begin{enumerate}
+    \item Tjek om $c$ er en subgraf med $k$ knuder i $G$.
+    \item Tjek om $G$ indeholder alle knuder der forbinder knuder i $c$.
+    \item Hvis begge består, \textit{accepter}, ellers \textit{afvis}.''
+  \end{enumerate}
+\end{proof}
+
+Man kan også bevise det ved at lave en nondeterministisk polynomiel algoritme:
+
+\begin{proof}
+  $N = $ ``På input \texttt{<G><k>} hvor $G$ er en graf:
+  \begin{enumerate}
+    \item Nondeterministisk vælg en delmængde $c$ af $k$ knuder af $G$.
+    \item Tjek om $G$ indeholder alle kanter der forbinder knuder i $c$.
+    \item Hvis ja, \textit{accepter}, ellers \textit{afvis}.''
+  \end{enumerate}
+\end{proof}
+
+\subsection{P versus NP spørgsmålet}%
+\label{subsec:pvsnp}
+
+Vi opsummerer $P$ og $NP$ som følger:
+\begin{align*}
+\text{P} &= \text{ klassen af sprog hvor medlemskabet kan blive \textit{afgjort} hurtigt.} \\
+  \text{NP} &= \text{ klassen af sprog hvor medlemskabet kan blive \textit{verificeret} hurtigt.}
+\end{align*}
+
+Vi kan ikke bevise eksistensen af et enkelt sprog i $NP$ som ikke er i $P$, så det er muligt at $P = NP$. Dette er en af de største uløste problemer i datalogi, og moderne matematik. Hvis disse klasser var lige, ville ethver polynomielt verificérbart problem være polynomielt afgørligt. De fleste forskere tror ikke at de to klasser er ens, fordi folk har brugt rigtig meget indsats  på at finde polynomieltidsalgoritme for nogle af problemer i $NP$ uden succes. Forskere har også prøvbet at bevise at klasserne er ulige men uden succes. For at bevise uligheden ville det kræve at man skulle vise at der ikke findes en hurtig algoritme til at erstatte brute-forcing.
+
+Den bedste derministiske metode vi kender til at afgøre sprog i $NP$ bruger eksponentiel tid, i andre ord kan vi bevise at
+\begin{equation*}
+NP \subseteq EXPTIME = \bigcup_{k} TIME (2^{n^{k}})
+\end{equation*}
+Men vi ved ikke om $NP$ er en del af en mindre, deterministisk kompleksitetsklasse.
+
+\section{NP-Fuldstændighed}%
+\label{sec:npcompleteness}
+
+\textbf{NP-Fuldstændige} problemer er problemer hvis individuelle kompleksitet er relateret til en hel klasses kompleksitet. Altså, hvis der findes en polynomiel algoritme til en af disse problemer, vil alle problemer i $NP$ være polynomielt løslige.
+
+Det første $NP$-fuldstændige problem vi kigger på er \textit{satisfiability problemet}.
+
+En boolsk formel er satisfiable hvis en tildeling af 0'er og 1'er til variablerne gør at formlen evaluerer til 1. Eksempelvis er følgende formel satisfiable når $x = 0, y = 1, z = 0$:
+\begin{equation*}
+\phi = (\overline{x} \land y) \lor (x \land \overline{z})
+\end{equation*}
+
+Satisfiability problemet er at teste hvorledes en boolsk formel er satisfiable:
+\begin{equation*}
+SAT = \{\text{\texttt{<$\phi$>}} \mid \phi \text{ er en satisfiable boolsk formel}\}
+\end{equation*}
+
+Følgende teorem siger at kompleksitetsklassen af SAT problemet er ens til kompleksiteten af alle problemer i $NP$.
+
+\begin{theorem}
+$SAT \in P \iff P = NP$
+\end{theorem}
+
+\subsection{Polynomieltids Reducérbarhed}%
+\label{subsec:polynomialreducibility}
+
+Her viser vi hvordan et problem $A$ kan reduceres til et problem $B$, der så kan bruges til at løse $A$. Når problem $A$ er effektivt reducérbart til problem $B$, kan en effektiv løsning til $B$ bruges til at løse $A$ effektivt.
+
+\begin{definition}
+En funktion $f : \Sigma^{*} \longrightarrow \Sigma^{*}$ er en polynomieltids beregnelig funktion hvis en polynomieltids Turingmaskine $M$ eksisterer som stopper med $f(w)$ p åsit bånd, når den er startet på et input $w$.
+\end{definition}
+
+\begin{definition}
+  Sprog $A$ er polynomielttids reducerbart til sprog $B$, skrevet $A \leq_{P} B$, hvis en polynomieltids beregnlig funktion $f : \Sigma^{*} \longrightarrow \Sigma^{*}$ eksisterer, hvor for hvert $w$,
+  \begin{equation*}
+w \in A \iff f(w) \in B
+\end{equation*}
+Funktionen $f$ kaldes polynomielt tids reduktionen af $A$ til $B$.
+\end{definition}
+
+Hvis et sprog er polynomielt tids reducérbart til et sprog som allerede er kendt til at have en polynomiel tids løsning, får vi en polynomiel tids løsning til det originale sprog, pr det følgende teorem:
+
+\begin{theorem}
+Hvis $A \le_{P} B$ og $B \in P$, så $A \in P$
+\end{theorem}
+
+\begin{proof}
+  Lad $M$ være polynomiel tids algoritmen der afgører $B$ og $f$ være polynomiel tids reduktionen fra $A$ til $B$. Vi beskrive en polynomieltids algoritme $N$ som afgører $A$ som følger:
+
+  \\
+  \noindent
+  $N = $ ``På input $w$:
+  \begin{enumerate}
+    \item Beregn $f(w)$.
+    \item Kør $M$ på input $f(w)$ og output hvadend $M$ outputter.''
+  \end{enumerate}
+
+Vi har $w \in A$ når $f(w) \in B$ fordi $f$ er en reduktion fra $A$ til $B$. Dermed accepterer $M$ $f(w)$ når $w \in A$. $N$ kører i polynomiel tid fordi hver af dens to stadier kører i polynomiel tid. Stadie 2 kører i polynomiel tid fordi kompositionen af to polynomier er polynomiel.
+\end{proof}
+
+Husk $3-SAT$ problemet fra DM551,
+\begin{equation*}
+  3SAT = \{\text{\texttt{<$\phi$>}} \mid \phi \text{ er en satisfiable }3cnf-formel\}
+\end{equation*}
+
+Hvor $3cnf$ blot betyder at hver clause har 3 literals i sig.
+
+Det følgende teorem præsenterer en polynomieltidsreduktion fra $3SAT$ til $KLIKKE$ problemet.
+
+\begin{theorem}
+$3SAT$ er polynomielt tidsreducérbart til KLIKKE.
+\end{theorem}
+
+
+%%% Local Variables:
+%%% mode: latex
+%%% TeX-engine: xetex
+%%% TeX-command-extra-options: "-shell-escape"
+%%% TeX-master: "main"
+%%% End:
