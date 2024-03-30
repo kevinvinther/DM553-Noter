@@ -1,13 +1,26 @@
 \chapter{Reducérbarhed}
 
+I dette kapitel kommer vi til at kigge på problemer der ikke kan løses. Et eksempel på et sådan problem er $A_{TM}$ som vi så i Sektion~\ref{sec:undecidability}. Vi introducerer også i dette kapitel den primære metode hvorpå vi beviser uafgørlighed, nemlig reducérbarhed. En rekution er en måde hvorpå man kan konvertere ét problem til et andet problem på en måde hvorpå det andet problem kan bruges til at løse det første problem.
+
+Givet problemet at du er i en ny by og du vil gerne finde vej, men det kan du ikke. I stedet får du målet at du gerne vil have et kort, så du kan finde vej med det kort. På den måde reduceres problemet fra at du skal finde vej til at du skal have et kort.
+
+Reducérbarhed involverer to problemer, $A$ og $B$. Hvis $A$ reduceres til $B$, kan vi bruge en løsning til $B$ til at løse $A$.
+
+Vi kan bruge dette til at bevise uafgørlighed. Hvis $A$ reduceres til $B$, kan det ikke være sværere at løse $A$ end det kan at løse $B$. Dermed, hvis $A$ er uafgørligt er $B$ også uafgørligt.
+
+\section{Uafgørlige problemer fra Sprogteori}%
+\label{sec:uafgørligsprogteri}
+
 Standsproblemet (halting problem) $$HALT = \{\text{\texttt{<m><w>}} \mid m \text{ er en Turingmaskine og m stopper på }w\}$$
 
+Vi bruger uafgørligheden fra $A_{TM}$ til at vises at den kan reduceres til $HALT_{TM}$ hvilket gør $HALT_{TM}$ uafgørligt også.
+
 \begin{theorem}
-	$HALT$ er uafgørligt.
+	$HALT_{TM}$ er uafgørligt.
 \end{theorem}
 
 \begin{proof}
-	Antag at Turingmaskinen $R$ afgører HALT. Vi vil nu vise at dette indebærer at $A_{TM}$ er afgørligt (som vi så i sidste kapitel, ikke passede.)
+	Antag at Turingmaskinen $R$ afgører HALT. Vi vil nu vise at dette indebærer at $A_{TM}$ er afgørligt (som vi så ikke passede i sidste kapitel.)
 
 	Vi konstruerer en ny Turingmaskine, $A$. Vi definerer $A$ til at være en maskine der tager en kodning af en maskine som input, og giver en kodning til output. Vi definerer $A$ til at gøre følgende:
 	\begin{enumerate}
@@ -61,6 +74,10 @@ Standsproblemet (halting problem) $$HALT = \{\text{\texttt{<m><w>}} \mid m \text
 	Lad os nu ``indkapsulere'' disse maskine i en ny maskine, $S^{*}$. $S^{*}$ tager to inputs, \texttt{<m>} og \texttt{<w>}. Disse går til maskinen $B$, som giver output \texttt{<$m_{w}$>} som går til $S$. $S$ afgører så om \texttt{<$m_{w}$>} er en Turingmaskine og $L(M) = \emptyset$. $S^{*}$ tager så dette input og gør det omvendt, så en accept vil være en afvisning og en afvisning vil være en accept.
 
 	Vi kan nu se at $S^{*}$ afgører $A_{TM}$ som er umuligt pr. Teorem \ref{teo:atmundecidable}.
+
+
+	%% Hvis dette ikke giver mening (jeg har ikke overskud til at forsøge at finde ud af det nu), så brug en blanding af bogen og denne video: https://www.youtube.com/watch?v=4tbCR10QGTI
+	%% begge ressurser tilsammen giver en meget god forståelse af dette problem.
 \end{proof}
 
 Trods at $E_{TM}$ ikke er afgørligt, så er $\overline{E_{TM}}$ genkendeligt. Bemærk at
@@ -107,7 +124,7 @@ Vi vil nu gerne vise at følgende Turingmaskine er uafgørlig:
 
 Vi har nu set et eksempel på et bevis hvor vi siger at et sprog er uafgørligt, fordi hvis det kan afgøres, vil et andet bevist uafgørligt sprog ikke være afgørligt. Vi vil gerne se om det er muligt at formalisere denne process, så vi ikke ``bare'' laver en hypotetisk Turingmaskine der beviser ved at reducerer. Til dette bruger vi Sipser kapitel 5.3.
 \begin{definition}
-	$f : \Sigma^{*} \rightarrow \Sigma^{*}$ er \textbf{beregnbar}\footnote{Computable på engelsk} hvis $\exists TM \;M_{f}$ som starter med $w$ og ender med $f(w)$ på dets bånd: $q_{0}w \stackrel{*}{\Rightarrow} q_{acc}f(w)$.
+	$f : \Sigma^{*} \rightarrow \Sigma^{*}$ er \textbf{beregneligt}\footnote{Computable på engelsk} hvis $\exists TM \;M_{f}$ som starter med $w$ og altid stopper med $f(w)$ på sit bånd: $q_{0}w \stackrel{*}{\Rightarrow} q_{acc}f(w)$.
 \end{definition}
 
 Et eksempel på dette er $f : \mathbb{N} \rightarrow \mathbb{N}$, $f(x) = x^{2}$.
@@ -117,20 +134,50 @@ Et eksempel på dette er $f : \mathbb{N} \rightarrow \mathbb{N}$, $f(x) = x^{2}$
 \end{definition}
 
 \begin{theorem}
-	Hvis $A \leq _{M}B$ og $B$ er afgørligt, så er $A$ afgørlig.
+	Hvis $A \leq _{m}B$ og $B$ er afgørligt, så er $A$ afgørlig.
 \end{theorem}
 
+\begin{proof}
+  Lad $M$ være en afgører for $B$ og $f$ være reduktionen fra $A$ til $B$. Vi beskriver en afgører $N$ for $A$ som følger:
+
+  $N = $ ``På input $w$
+  \begin{enumerate}
+	\item Beregn $f(w)$
+	\item Kør $M$ på input $f(w)$ og output hvad $M$ outputter''
+  \end{enumerate}
+
+Hermed, hvis $w \in A$, så $f(w) \in B$ fordi $f$ er en reduktion fra $A$ til $B$. Dermed accepterer $M$ $f(w)$ når $w \in A$.
+\end{proof}
+
 \begin{corollary}
-	Hvis $A \leq _{M}B$ er uafgørligt, så er $B$ også uafgørligt.
+	Hvis $A \leq _{m}B$ er uafgørligt, så er $B$ også uafgørligt.
 \end{corollary}
 
 \begin{theorem}
-	$A \leq_{M} B$ og $B$ er genkendeligt, så er $A$ genkendeligt.
+	$A \leq_{m} B$ og $B$ er genkendeligt, så er $A$ genkendeligt.
 \end{theorem}
 
+\begin{proof}
+Beviset her er det samme som i beviset med afgørlighed, undtagen her bruges genkendelighed.
+\end{proof}
+
 \begin{corollary}
-	$A \leq_M B$ og $A$ er \textbf{ikke} genkendeligt, så er $B$ ikke genkendeligt.
+	$A \leq_m B$ og $A$ er \textbf{ikke} genkendeligt, så er $B$ ikke genkendeligt.
 \end{corollary}
+
+
+Generelt set kan vi følge en opskrift på et uafgørlighedsbevis ved hjælp af reducering:
+Lad $K$ være et sprog du ønsker at vise til at være uafgørligt.
+\begin{enumerate}
+
+  \item Vælg et passende sprog, $R$ som vi allerede ved er uafgørligt.
+  \item Beskriv en reduktion fra $R$ til $K$ ved hjælp af en beregnelig funktion. Lad $A$ være en Turingmaskine der beregner denne reduktion. Altså givet $x$ udregner $A$ værdien $f(x)$ (hvis funktionen er $f$.)
+  \item Lad $M_{K}$ være en hypotetisk Turingmkasine der afgører $K$ (vores mål er at vise at denne ikke eksisterer.)
+  \item Brug $A$ og $M_{K}$ til at lave en ny Turingmaskine $M^{*}$ som afgører $R$.
+  \item Konkludér fra ovenstående et modstrid, og at $K$ dermed er uafgørlig.
+\end{enumerate}
+
+
 
 \begin{equation*}
 	H_{\varepsilon} = \{\text{\texttt{<m>}} \mid m \text{ er en Turingmaskine og } \varepsilon \in L(M)\}
@@ -140,18 +187,17 @@ Et eksempel på dette er $f : \mathbb{N} \rightarrow \mathbb{N}$, $f(x) = x^{2}$
 	$H_{\varepsilon}$ er uafgørligt.
 \end{theorem}
 
-\begin{theorem}
-	Vi giver en reduktion fra $A_{TM}$ til $H_{\varepsilon}$. $f : \text{\texttt{<m><w>}} \rightarrow \text{\texttt{<m$_{w}$>}}$.
+\begin{proof}
+  Vi bruger opskriften beskrevet tidligere.
+  \begin{enumerate}
+	\item Lad $R$ være sproget $HALT_{TM}$ som vi ved er uafgørligt.
+	\item Lad $A$ være en Turingmaskine der givet kodningen \texttt{<m>} for en Turingmaskine og \texttt{<w>} for en streng outputter \texttt{<m$_{w}$>}. Denne Turingmaskine kører på et tomt input, og accepterer hvis $M$ accepterer $w$. Den gør dette ved at kopiere $w$ til båndet, og så køre $M$, ved hjælp af den universelle Turingmaskine \texttt{<U>}. Hvis \texttt{<m>} stopper og accepterer \texttt{<w>} så vil \texttt{<m$_{w}$>} også stoppe og acceptere. Hvis ikke, kører den forevigt. Det vil altså sige at \texttt{<m$_{w}$>} stopper på den tomme streng hvis og kun hvis $M$ stopper på $w$.
+	\item Antag at $M_{H_{\varepsilon}}$ afgører $H_{\varepsilon}$
+	\item Brug $A$ og \texttt{<m$_{H_{\varepsilon}}$>} til at lave en Turingmaskine $M^{HALT}$ der afgør $HALT_{TM}$.
+	\item Da $HALT_{TM}$ er uafgørligt er $H_{\varepsilon}$ uafgørligt.
+  \end{enumerate}
 
-	\begin{equation*}
-		L(m_{W}) = \begin{cases}
-			\emptyset  & \text{ hvis } w \notin L(m) \\
-			\Sigma^{*} & \text{ hvis } w \in L(m)
-		\end{cases}
-	\end{equation*}
-
-	VI kan se allerede nu at dette er en reduktion af $A_{TM}$, og dermed $A_{TM} \leq_{m} H_{\varepsilon}$. Dermed er $m_{\varepsilon}$ uafgørlig.
-\end{theorem}
+\end{proof}
 
 \begin{equation*}
 	Regular_{TM} = \{\text{\texttt{<m>}} \mid m \text{ er en Turingmaskine og }L(m) \text{ er regulær}\}
@@ -162,14 +208,47 @@ Et eksempel på dette er $f : \mathbb{N} \rightarrow \mathbb{N}$, $f(x) = x^{2}$
 \end{theorem}
 
 \begin{proof}
-	Vi giver en reduktion fra $A_{TM}$ til $Regular_{TM}$ ved at vise hvordan man laver en TM $m^{w}$ således at:
-	\begin{equation*}
-		L(m^{w}) = \begin{cases}
-			L' = \{a^{n}b^{n} \mid n \ge 0\} & \text{ hvis } w \notin L(m) \\
-			\Sigma^{*}                       & \text{ hvis } w \in L(m)
-		\end{cases}
-	\end{equation*}
+  Vi giver en reduktion fra $A_{TM}$ til $Regular_{TM}$. Vi gør dette ved at vise hvordan man konstruerer en Turingmaskine $m^{w}$ således at
+  \begin{equation*}
+L(m^{w}) = \begin{cases}
+L' = \{a^{n}b^{n} \mid n \ge 0\} & \text{ hvis } w \notin L(m)\\
+\Sigma^{*} & \text{ hvis } w \in L(m)
+\end{cases}
+  \end{equation*}
 \end{proof}
+
+\subsection{Rice's Teorem}%
+\label{subsec:ricetheorem}
+
+En egenskab $P$ vedrører sproget for en Turingmaskine $M$ hvis $P$ handler om sproget $M$. Følgende er eksempler på sådanne egenskaber:
+\begin{enumerate}
+  \item $L(m)$ er regulært
+  \item $L(m) = \emptyset$
+  \item $L(m)$ indeholder strengene $x,y$ således at $|x| = |y|$
+  \item $L(m)$ indeholder en streng $x$ hvor $|x| = 22$
+\end{enumerate}
+Følgende egenskab er \textbf{ikke} om sproget af en Turingmaskine: $\exists w \in \Sigma^{*}$ således at når $m$ er startet på $w$ vil den besøge alle states undtagen $q_{acc}$ og $q_{reject}$.
+
+\begin{definition}
+  En egenskab $P$ om sproget af en Turingmaskine er \textbf{ikke-trivielt}, hvis
+  \begin{itemize}
+
+
+	\item $\exists$ En Turingmaskine $m_{1}$ således at $L(m_{1})$ har egenskaben $P$
+	\item $\exists$ En Turingmaskine $m_{2}$ således at $L(m_{2})$ \textbf{ikke} har egenskaben $P$
+  \end{itemize}
+
+\end{definition}
+
+  Altså er en egenskab ikke-triviel hvis der eksisterer en Turingmaskine hvis sprog har egenskaben $P$, og der eksisterer en seperat Turingmaskine hvis sprog \textbf{ikke} har egenskaben $P$.
+
+  Hvis vi kigger på eksemplerne før kan alle deles op i at der eksisterer en Turingmaskine der har disse egenskaber i deres sprog, og på samme måde findes der en hvor det ikke gælder. For eksempel ved det første, er der en Turingmaskine hvor sproget er regulært, men på samme tid er der også en Turingmaskine hvor sproget \textbf{ikke} er regulært.
+
+\begin{theorem}[Rice's Theorem]
+Hver ikke-triviel egenskab $P$ om sproget af Turingmaskiner er uafgørlig.
+\end{theorem}
+
+
 
 %%% Local Variables:
 %%% mode: latex

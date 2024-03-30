@@ -1,13 +1,22 @@
 \chapter{Afgørlighed}
 
+Det er vigtigt at vide om et problem er løseligt eller ej. Vi kan gøre dette ved at finde afgørligheden af algoritmer. I ``den virkelige verden'' kan dette bruges til at finde ud af om et problem i sig selv kan løses, eller om man er nødt til at simplificere problemet for at finde en løsning.
+
 \section{Afgørlige Sprog}%
 \label{sec:decideablelanguages}
 
+\subsection{Afgørlige problemer angående Regulære Sprog}%
+\label{subsec:afgørlighedregulære}
+
+
+
 \begin{equation*}
-	A_{DFA} = \{<B><w> \mid B \text{ er en DFA og } w \in L(B) \}
+	A_{DFA} = \{\text{\texttt{<B><w>}} \mid B \text{ er en DFA og } w \in L(B) \}
 \end{equation*}
 
-Her bruger vi den ``nye'' notation fra det tidligere kapitel, hvor \texttt{<B>} og \texttt{<w>} bliver indkoded ved hjælp af det universelle alfabet og den universelle statemængde. Notationen kan også se ud således \texttt{<B,w>} og er ækvivalent med \texttt{<B><w>}. Dermed, når vi skriver \texttt{<B,w>} $\in A_{DFA}$ betyder det at $B$ er en DFA og $w$ er en streng der accepteres af $B$.
+Her bruger vi den ``nye'' notation fra det tidligere kapitel, hvor \texttt{<B>} og \texttt{<w>} bliver indkoded ved hjælp af det universelle alfabet og den universelle statemængde. Notationen kan også se ud således \texttt{<B,w>} og er ækvivalent med \texttt{<B><w>}. Dermed, når vi skriver \texttt{<B,w>} $\in A_{DFA}$ betyder det at $B$ er en DFA og $w$ er en streng der accepteres af $B$. Den sidstnævne notation er den som bruges i Sipser.
+
+Sproget $A_{DFA}$ er et sprog der indeholder alle DFA'er som en specifik DFA accepterer. Vi kalder dette problem for \textbf{accepteringsproblemet}\footnote{Acceptance problem på engelsk.}
 
 \begin{theorem}
 	\label{teo:dfadecidable}
@@ -23,12 +32,14 @@ Her bruger vi den ``nye'' notation fra det tidligere kapitel, hvor \texttt{<B>} 
 		\item Smiulér $B$ på $w$.
 		\item Hvis $B$ er i en accept state efter den har læst $w$, så \textbf{accepter} \texttt{<B,w>}, hvis ikke, så \textbf{afvis} \texttt{<B,w>}''
 	\end{enumerate}
+
+	Der er flere måder hvorpå du kan simulere en DFA. Du kan for eksempel gøre det ved at simulere hver af de fem dele der tilsammen udgør tuplen som er en DFA, $Q, \Sigma, \delta, q_{0}, F$. På den måde, kan man også hurtigt se hvis \texttt{<B>} ikke er en DFA, eller noget der minder om en DFA.
 \end{proof}
 
 Vi vil nu gerne vise det samme, men med en NFA fremfor en DFA.
 
 \begin{equation*}
-	A_{NFA} = \{<B,w> \mid B \text{ er en NFA og }w \in \L(B)\}
+	A_{NFA} = \{\text{\texttt{<B><w>}} \mid B \text{ er en NFA og }w \in \L(B)\}
 \end{equation*}
 
 \begin{theorem}
@@ -113,11 +124,13 @@ Vi vil nu gerne vise det samme, men med en NFA fremfor en DFA.
 			\node[fill=none, draw=none, text=SchemeRed] (m2) at (1.5, -4) {$M_{2}$};
 		\end{tikzpicture}
 	\end{center}
+
+	Denne tegning (samt efterfølgende tegninger) er udelukkende til for at hjælpe med forståelsen på hvordan vi kan bevise afgørlighed ved hjælp af mere end én maskine.
 \end{proof}
 
 Vi vil gerne vise det samme for regulære udtryk:
 \begin{equation*}
-	A_{REX} = \{ <R><w> \mid R \text{ er et regulært udtryk og } w \in L(R)\}
+	A_{REX} = \{ \text{\texttt{<R><w>}} \mid R \text{ er et regulært udtryk og } w \in L(R)\}
 \end{equation*}
 
 \begin{theorem}
@@ -180,7 +193,7 @@ Vi vil gerne vise det samme for regulære udtryk:
 
 Vi vil nu gerne vise at en DFA der genkender udelukkende det tomme sprog også er afgørligt.
 \begin{equation*}
-	E_{DFA} = \{<A> \mid A \text{ er en DFA og } L(A) = \emptyset\}
+	E_{DFA} = \{\text{\texttt{<A>}} \mid A \text{ er en DFA og } L(A) = \emptyset\}
 \end{equation*}
 
 \begin{theorem}
@@ -200,7 +213,7 @@ Vi vil nu gerne vise at en DFA der genkender udelukkende det tomme sprog også e
 
 Vi går nu videre til ækvivalens mellem to DFA'er:
 \begin{equation*}
-	EQ_{DFA} = \{{<A><B>} \mid A \text{ og } B \text{ er DFA'er og } L(A) = L(B)\}
+	EQ_{DFA} = \{\text{\texttt{<A><B>}} \mid A \text{ og } B \text{ er DFA'er og } L(A) = L(B)\}
 \end{equation*}
 
 \begin{theorem}
@@ -210,7 +223,7 @@ Vi går nu videre til ækvivalens mellem to DFA'er:
 \begin{proof}
 	$L(A) = L(B) \iff (L(A) \setminus L(B))  \cup (L(B) \setminus L(A)) = \emptyset$
 
-	Bemærk at $(L(A) \setminus L(B) \cup (L(B) \setminus L(A)) = (L(A) \cap \overline{L(B)}) \cup (\overline{L(A)} \cap L(B)) = \emptyset$
+	Bemærk at $(L(A) \setminus L(B) \cup (L(B) \setminus L(A)) = (L(A) \cap \overline{L(B)}) \cup (\overline{L(A)} \cap L(B)) = \emptyset$. Dette kaldes \textit{the symmetric difference}\footnote{Jeg kunne ikke finde en dansk oversættelse, men det er nok noget i retningen af \textit{symmetrisk forskel} eller \textit{symmetrisk difference}.} af $L(A)$ og $L(B)$.
 
 	Hvis \texttt{<A>} og \texttt{<B>} er DFA'er, så output DFA \texttt{<C>} med $L(X) = (L(A) \cap \overline{L(B)}) \cup (\overline{L(A)} \cap L(B))$. Ellers output en DFA \texttt{<C>} hvor $L(C) = \Sigma^{*}$
 
@@ -258,9 +271,14 @@ Vi går nu videre til ækvivalens mellem to DFA'er:
 	$M_{5}$ afgører $EQ_{DFA}$.
 \end{proof}
 
+\subsection{Afgørlige problemer angående Kontesktfri sprog}%
+\label{subsec:afgørlighedkontekstfri}
+
+
+
 Vi vil nu gerne vise at kontekstfrie grammatikker også er afgørlige:
 \begin{equation*}
-	A_{CFG} = \{<G><w> \mid G \text{ er en kontesktfri grammatik og }w \in L(G)\}
+	A_{CFG} = \{\text{\texttt{<G><w>}} \mid G \text{ er en kontesktfri grammatik og }w \in L(G)\}
 \end{equation*}
 
 \begin{theorem}
@@ -268,20 +286,21 @@ Vi vil nu gerne vise at kontekstfrie grammatikker også er afgørlige:
 \end{theorem}
 
 \begin{proof}
-	Lad $M_{CFG}$ være en deterministisk Turingmaskine.
+	Lad $M_{CFG}$ være en deterministisk Turingmaskine. En idé kan være at kigge alle udledninger igennem, men dette dur ikke, da uendelige udledninger er mulige (A -> B -> A -> B etc.) Derfor konverterer vi grammatikken til en Chomsky grammatik (altså, Chomsky Normal Form, CNF) da vi ved at alle udledninger har en endelig længde (højest $2n-1$, hvor $n$ er længden af $w$.) En algoritme til denne er givet i beviset til Teorem~\ref{teo:cnf}.
 
 	$M_{CFG} = $ ``på input \texttt{<w>}
 	\begin{enumerate}
 		\item Tjek om \texttt{<G>} inkoder en CFG. Hvis ikke, afvis \texttt{<G><w>}.
 		\item Konvertér $G$ til $G'$, hvilket en er grammatik i Chomsky Normal Form, hvor $L(G') = L(G)$.
-		\item Tjek alle mulige udledninger af længde $2|w| -1$ og accepter \texttt{<G><w>} hvis en af dem er strengen $w$\footnote{Fordi det er en Chomsky grammatik er det muligt at kigge alle udledningerne igennem}.
+		\item Tjek alle mulige udledninger af længde $2|w| -1$ og accepter \texttt{<G><w>} hvis en af dem er strengen $w$
 		\item Hvis ingen udledning giver $w$ \textit{afvis} \texttt{<G><w>}''
 	\end{enumerate}
 \end{proof}
 
+Bemærk at vi i Subsektion~\ref{subsec:cfgpdaequiv} snakker om ækvivalensen mellem PDA'er og CFG'er, og dermed gælder alt vi snakker om i forhold til CFG'er også med PDA'er.
 Vi går nu videre til at tjekke om en kontekstfri grammatik genkender det tomme sprog (udelukkende.) Altså:
 \begin{equation*}
-	E_{CFG} = \{<G> \mid G \text{ er en CFG og }L(G) = \emptyset\}
+	E_{CFG} = \{\text{\texttt{<G>}} \mid G \text{ er en CFG og }L(G) = \emptyset\}
 \end{equation*}
 
 \begin{theorem}
@@ -289,7 +308,7 @@ Vi går nu videre til at tjekke om en kontekstfri grammatik genkender det tomme 
 \end{theorem}
 
 \begin{proof}
-	Vi vil gerne tjekke om $\exists \beta \in \Sigma^{*}$ således at $S \stackrel{*}{\Rightarrow} \beta$.
+	Vi vil gerne tjekke om $\exists \beta \in \Sigma^{*}$ således at $S \stackrel{*}{\Rightarrow} \beta$. Vi kan ikke bare gå alle igennem, da dette kan give en uendelig gang. I stedet tjekker vi, for \textbf{alle} terminaler, om de kan udledes af startnon-terminalen.
 	\begin{enumerate}
 		\item Markér alle terminalsymboler
 		\item Løkke
@@ -337,7 +356,7 @@ Vi går nu videre til at tjekke om en kontekstfri grammatik genkender det tomme 
 
 Lad os nu bevise at en deterministisk Turingmaskine er genkendelig (men ikke afgørlig!):
 \begin{equation*}
-	A_{TM} = \{<m><w> \mid m \text{ er en deterministisk Turingmaskine og } w \in L(M)\}
+	A_{TM} = \{\text{\texttt{<M><w>}} \mid m \text{ er en deterministisk Turingmaskine og } w \in L(M)\}
 \end{equation*}
 
 \begin{theorem}
@@ -348,10 +367,10 @@ Lad os nu bevise at en deterministisk Turingmaskine er genkendelig (men ikke afg
 	Vi konstruerer en Turingmaskine der fungerer som følger:
 	\begin{enumerate}
 		\item Tjek om \texttt{<m>} indkoder en deterministisk Turingmaskine, hvis ikke, så \textit{afvis} \texttt{<m><w>}
-		\item Giv \texttt{<m>} og \texttt{<w>} til den universelle turingmaskine. Hvis den acccepterer, så accepterer \texttt{m} \texttt{w}, hvis den ikke accepterer, så afviser \texttt{m} \texttt{w}. Hvis den løkker\footnote{loops} på \texttt{<m><w>} så løkker \texttt{m} på \texttt{w}.
+		\item Giv \texttt{<m>} og \texttt{<w>} til den universelle turingmaskine. Hvis den acccepterer, så accepterer \texttt{m} strengen \texttt{w}, hvis den ikke accepterer, så afviser \texttt{m} strengen \texttt{w}. Hvis den løkker\footnote{loops} på \texttt{<m><w>} så løkker \texttt{m} på \texttt{w}.
 	\end{enumerate}
 
-	Vi kan lave en maskine, $M^{*}$ som  genkender $A_{TM}$ ved at bruge en hjælpemaskine, $A$ som tager \texttt{<m>} ind, og spytter \texttt{<m>} ud hvis det er en valid Turingmaskine, og ellers løkker den. Dette output er så videregivet til $u$ (den universelle Turingmaskine), som enten accepterer eller afviser på $w$.
+	Vi kan lave en maskine, $M^{*}$ som  genkender $A_{TM}$ ved at bruge en hjælpemaskine, $A$ som tager \texttt{<m>} ind, og spytter \texttt{<m>} ud hvis det er en valid Turingmaskine, og ellers løkker den. Dette output er så videregivet til $u$ (den universelle Turingmaskine), som enten accepterer eller afviser på $w$. Da $A$ går i uendelig løkke betyder det at (dette bevis siger at) $A_{TM}$ \textbf{ikke} er afgørligt.
 
 \end{proof}
 
@@ -373,13 +392,13 @@ Vi vil nu argumentere ved brug af tælning, for at der findes sprog som \textbf{
 
 Ved punkt 2 i Definition~\ref{def:countable} menes det at vi kan strukturere et sæt således at det har en injektiv og surjektiv korrespondance med naturlige heltal. Eksempelvis i sættet $\{2k \mid k \in \mathbb{N}\}$ kan $2k$ ``mappes'' til $k$, og dermed have en korrespondance med naturlige heltal.
 
-% MANGLER FORKLARING TIL COROLLARY
+% TODO: MANGLER FORKLARING TIL COROLLARY
 
 \begin{corollary}
 	Sættet af alle sprog over et alfabet $\Sigma$ hvor $|\Sigma| \ge 1$ er utælleligt.
 \end{corollary}
 
-%% MAngler at der er tælleligt mange TUringmaskienr
+%% TODO: MAngler at der er tælleligt mange TUringmaskienr
 
 Der er tælleligt mange Turingmaskiner, men man et utælleligt antal af sprog. Dermed må alle sprog ikke kunne genkendes af en Turingmaskine.
 
@@ -388,7 +407,7 @@ Der er tælleligt mange Turingmaskiner, men man et utælleligt antal af sprog. D
 	$A_{TM}$ er uafgørligt.
 \end{theorem}
 
-Husk at $A_{TM} = \{\text{\texttt{<m><w>}} \mid m \text{ er en Turingmaskine og } w \in L(M)\}$. Hvis man kigger på dette som en algoritme, kan spørgsmålet omskrives til hvorvidt, givet et program, kan et andet program bestemme og dette program vil accepteres eller ej?
+Husk at $A_{TM} = \{\text{\texttt{<M><w>}} \mid m \text{ er en Turingmaskine og } w \in L(M)\}$. Hvis man kigger på dette som en algoritme, kan spørgsmålet omskrives til hvorvidt, givet et program, kan et andet program bestemme og dette program vil accepteres eller ej?
 
 \begin{proof}
 	Antag at $H$ er en Turingmaskine som afgører $A_{TM}$. Det vil altså sige at hvis en streng $w$ er en del af $L(A_{TM})$ så accepteres den, \textbf{og} hvis $w$ \textit{ikke} er en del af $L(A_{TM})$, så vil strengen \textbf{afvises}.
@@ -415,16 +434,21 @@ Husk at $A_{TM} = \{\text{\texttt{<m><w>}} \mid m \text{ er en Turingmaskine og 
 	Dermed vil det være umuligt for $D$ at eksistere.
 \end{proof}
 
+I det følgende teorem beskriver vi hvordan et sprog $L$ er afgørligt hvis og kun hvis $L$ og dets komplement $\overline{L}$ er Turing-genkendelige. I Sipser beskrives $\overline{L}$ som \textit{Ko-Turing Genkendelig}\footnote{Co-Turing Recognizable på engelsk.}. Dermed, hvis $L$ er ko-Turing genkendeligt, så er det komplementet af et Turing genkendeligt sprog.
+
 \begin{theorem}
+  \label{teo:decideablecoturing}
 	$L$ er Turing-afgørligt $\iff$ $L$ og $\overline{L}$ er Turing-genkendelige.
 \end{theorem}
+
+Fra vores tidligere beskrivelse af Ko-Turing genkendelighed, betyder det altså at de forudgående teorem også kan skrives ``Et sprog er afgørligt $\iff$ det er Turing genkendeligt og Ko-Turing  genkendeligt.''
 
 \begin{proof}
 	Lad $M^{*}$ afgøre $L$. $M^{*}$ stoppet altid og $L(M^{*}) = L$, så $M^{*}$ genkender $L$ og $\overline{M^{*}}$ genkender $\overline{L}$. Altså vil en streng der accepteres af $M^{*}$ afvises af $\overline{M^{*}}$ og omvendt. For at bevise den anden side, lad $M_{L}$ og $M_{\overline{L}}$ genkende henholdsvist $L$ og $\overline{L}$. Med disse Turingmaskine kan vi lave en tredje maskine, $M$ som tager et input, \texttt{<w>} som bliver fodret til begge maskiner. Hvis dette input accepteres af $M_{L}$ eller afvises $M_{\overline{L}}$, så accepeters strengen af $M$. $M$ afviser strengen, hvis den afvises af $M_{L}$ eller accepteres af $M_{\overline{L}}$. Den gør dette ved at simulere ét skridt ad gangen på forskellige bånd.
 \end{proof}
 
 \begin{theorem}
-	For hvert sprog $L$ over det universelle alpfabet gælder præcis en af de følgende:
+	For hvert sprog $L$ over det universelle alfabet gælder præcis en af de følgende:
 	\begin{enumerate}
 		\item $L$ og $\overline{L}$ er afgørlige
 		\item Ingen af $L$, $\overline{L}$ er genkendelige
@@ -454,6 +478,10 @@ Husk at $A_{TM} = \{\text{\texttt{<m><w>}} \mid m \text{ er en Turingmaskine og 
 	\}
 \end{align*}
 
+\begin{proof}
+
+Vi ved at $A_{TM}$ er Turing-genkendeligt, så hvis $\overline{A_{TM}}$ også er Turing-genkendeligt så ville $A_{TM}$ være Turing-afgørligt. (Fra Teorem~\ref{teo:decideablecoturing}.)
+\end{proof}
 
 
 %%% Local Variables:
