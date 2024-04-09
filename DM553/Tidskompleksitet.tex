@@ -1,4 +1,65 @@
 \chapter{Tidskompleksitet}
+Beregnelighedsteori, som er den teori vi har kigget på indtil videre om hvorvidt et sprog er afgørligt eller ej, genkendeligt eller ej, osv. har været et stort emne i 1930'erne til 1950'erne, hvor matematikere forsøgte at finder metoder hvorpå de kunne formalisere matematisk ræsonnement. Dette emne er ikke et der er kigget på meget længere, men det er det næste emne som vi vil kigge på nu, nemlig \textbf{kompleksitetsteori}, som kan reduceres til sprøgsmålet om ``Er $A$ afgørligt med begrænset ressurser?'' Disse ressurser kan være mange ting, tid, hukommelse, etc.
+
+\section{Måling af kompleksitet}%
+\label{sec:measuringcomplexity}
+
+Da dette ikke er et delkapitel som er en del af pensum, kommer alle mine noter fra forfatterens Youtube video om delkapitlet: \href{https://www.youtube.com/watch?v=asjAc90L8rE&list=PLidiQIHRzpXIFFbyGrWkqXXVj0BztDcTF&index=12}{12. Time Complexity}.
+
+Vi starter med at kigge på eksemplet $A = \{a^{n}b^{n} \mid n \ge 0\}$. Vi stiller nu spørgsmålet: \textit{hvor mange skridt er nødvændige for at afgøre $A$}? Svaret på dette kommer naturligvis an på længden af det input vi er givet, og vi er derfor nødt til at give et svar ved en \textit{upper bound}. Det er altså det vi kalder \textit{worst-case}.
+
+\begin{definition}[Store $O$]
+$f(n)$ er $O(g(n))$ hvis $f(n) \le cg(n)$ for en konstant $c$ uafhængig af $n$.
+\end{definition}
+
+\begin{definition}[Lille $o$]
+$f(n)$ er $o(g(n))$ hvis $f(n) \le \varepsilon g(n)$ for alle $\varepsilon > 0$ og et stort $n$.
+\end{definition}
+
+Lad os kigge på et eksempel hvor vi bruger store $O$ notation.
+
+\begin{theorem}
+En 1-bånds deterministisk Turingmaskine $M$ kan afgøre $A$ på input længde $n$, hvor $M$ bruger højest $cn^{2}$ skridt for en konstant $c$.
+\end{theorem}
+
+Det vil altså sige at $M$ har køretid $O(n^{2})$.
+
+\begin{proof}
+  "M = på input $w$
+  \begin{enumerate}
+    \item Scan input til at tjekke at det er i den rigtige rækkefølge, altså $w \in a^{*}b^{*}$. \textit{Afvis} hvis ikke.
+
+    \item Løkke indtil alle er krydset af
+          \begin{enumerate}
+            \item Scan båndet, kryds én $a$ og én $b$
+            \item \textit{Afvis} hvis kun $a$ eller $b$ er tilbage
+          \end{enumerate}
+    \item \textit{Accepter} hvis alle er krdyset af.''
+  \end{enumerate}
+
+  Første punkt tager $O(n)$ tid.
+  Næste skridt tager $O(n)$ tid $O(n)$ gange, altså $O(n \times n) = O(n^{2})$. Det vil altså sige at algoritemn tager tid $O(n + n^{2}) = O(n^{2})$.
+\end{proof}
+
+Vi kan faktisk lave en algoritme der kører i $O(n \log n)$ tid, og en på 2 bånd der kører i $O(n)$ tid, men det gider vi ikke til at kigge på nu.
+
+Læg dog mærke til at der er forskel på den laveste upper-bound pr model. I beregnlighedsteori er hvilken model vi vælger lige gyldig, hver model er altså ækvivalent i hvilket sprog den genkender/afgører etc. Dette gælder \textbf{ikke} i kompleksitetsteori. Her er det forskelligt fra model til model hvor mange skridtr en maskine tager.
+
+\begin{definition}
+Lad $t: \mathbb{N} \longrightarrow \mathbb{N}$. Vi siger at en Turingmaskine $M$ kører i tid $t(n)$ hvis $M$ altid stopper indenfor $t(n)$ skridt på alle input af længde $n$.
+\end{definition}
+
+Det betyder for eksempel, at hvis vi har en maskine der kører på tid $t(n^{2})$, og vi giver den et input på $10$, så er det \textbf{garanteret} at den stopper indenfor 100 skridt.
+
+\begin{definition}
+  \begin{align*}
+    TIME(t(n)) = \{B \mid &\text{ en deterministisk 1-bånds Turingmaskine }\\
+    &M \text{ afgører } B \text{ og } M \text{ kører i tid } O(t(n))\}
+  \end{align*}
+\end{definition}
+
+Altså er $TIME(t(n))$ en \textbf{klase af sprog} som kører i tid $O(t(n))$, hvis $t(n) = n^{2}$, så er $TIME(n^{2})$ klassen af sprog der kører i $O(n^{2})$. Det betyder også at der er klasser der er delmængder af andre klasser. For eksempel $TIME(n) \subset TIME(n \log n) \subset TIME(n^{2}) \subset \cdots$.
+
 
 \section{Klassen P}%
 \label{sec:p}
@@ -10,9 +71,20 @@ Vi ser på polynomielle forskelle i køretid som værende små, og eksponentiell
 
 Eksponentielle algoritmer fremkommer ofte i \textbf{brute-force søgninger}, altså hvor vi ``bare leder efter en løsning'' på et problem, fremfor en effektiv løsning. Hvis man har en dybere forståelse af et problem, kan man ofte finde en polynomiel løsning.
 
-Alle rimelige komputationelle modeller er \textbf{polynomielt ækvivalente}; altså kan de simulere hinanden med kun en eksponentiel stigning i køretid. Eksempelvis er multibånds og enkeltbånds Turingmaskine polynomielt ækvivalente, da man kan simulere en multibånds Turingmaskine med en enkeltbånd via en polynomiel algoritme.
-
 \begin{definition}
+To komputeringsmodeller er \textbf{polynomielt relateret} hvis de kan simulere hinanden i polynomiel tid.
+\end{definition}
+
+Alle ``reasonable'' (ifølge Sipser) deterministiske modeller er polynomielt relateret:
+\begin{itemize}
+  \item 1 bånds DTM
+  \item Flerbånds DTM
+  \item Multi-dimensionelle DTM
+  \item Random Access Machines
+  \item Cellular Automata
+\end{itemize}
+
+\begin{definition}[Klassen $P$]
 	$P$ er klassen af sprog som er afgørlige i Polynomiel tid på en deterministisk enkeltbånds Turingmaskine. I andre ord:
 	\begin{equation*}
 		P = \bigcup_{k} TIME(n^{k})
@@ -20,6 +92,8 @@ Alle rimelige komputationelle modeller er \textbf{polynomielt ækvivalente}; alt
 \end{definition}
 
 $P$ er en vigtig klasse fordi det er en invariant af alle modeller for komputering som er polynomielt ækvivalente til en deterministisk enkeltbånds Turingmaskine, og $P$ svarer nogenlunde til klassen af problemer som man realistisk kan løse på en computer.
+
+Bemærk at vi her kun er interesseret i beslutningsproblemer, altså om hvorvidt strengen $w$ er en del af et sprog.
 
 \subsection{Eksempler på problemer i klassen P}%
 \label{subsec:examplesinp}

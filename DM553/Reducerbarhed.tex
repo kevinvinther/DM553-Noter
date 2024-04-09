@@ -1,19 +1,20 @@
 \chapter{Reducérbarhed}
 
-I dette kapitel kommer vi til at kigge på problemer der ikke kan løses. Et eksempel på et sådan problem er $A_{TM}$ som vi så i Sektion~\ref{sec:undecidability}. Vi introducerer også i dette kapitel den primære metode hvorpå vi beviser uafgørlighed, nemlig reducérbarhed. En rekution er en måde hvorpå man kan konvertere ét problem til et andet problem på en måde hvorpå det andet problem kan bruges til at løse det første problem.
+I dette kapitel kommer vi til at kigge på problemer der ikke kan løses. Et eksempel på et sådan problem er $A_{TM}$ som vi så i Sektion~\ref{sec:undecidability}. Vi introducerer også i dette kapitel den primære metode hvorpå vi beviser uafgørlighed, nemlig reducérbarhed. En reduktion er en måde hvorpå man kan konvertere ét problem til et andet problem på en måde hvorpå det andet problem kan bruges til at løse det første problem.
 
 Givet problemet at du er i en ny by og du vil gerne finde vej, men det kan du ikke. I stedet får du målet at du gerne vil have et kort, så du kan finde vej med det kort. På den måde reduceres problemet fra at du skal finde vej til at du skal have et kort.
 
-Reducérbarhed involverer to problemer, $A$ og $B$. Hvis $A$ reduceres til $B$, kan vi bruge en løsning til $B$ til at løse $A$.
+Reducérbarhed involverer to problemer, $A$ og $B$. Hvis $A$ reduceres til $B$, kan vi bruge en løsning til $B$ til at løse $A$. I eksemplet fra før, vil problem $A$ være at finde vej, og $B$ være at finde et kort.
 
-Vi kan bruge dette til at bevise uafgørlighed. Hvis $A$ reduceres til $B$, kan det ikke være sværere at løse $A$ end det kan at løse $B$. Dermed, hvis $A$ er uafgørligt er $B$ også uafgørligt.
+Vi kan bruge dette til at bevise uafgørlighed. Hvis $A$ reduceres til $B$, kan det ikke være sværere at løse $A$ end det kan at løse $B$. Dermed, hvis $A$ er uafgørligt er $B$ også uafgørligt. Dette går også den anden vej, altså hvis $B$ er uafgørligt, så er $A$ også (hvis du ikke kan finde vej, hjælper et kort ikke, hvis du ikke kan finde et kort, kan du ikke finde vej.)
 
 \section{Uafgørlige problemer fra Sprogteori}%
 \label{sec:uafgørligsprogteri}
 
-Standsproblemet (halting problem) $$HALT = \{\text{\texttt{<m><w>}} \mid m \text{ er en Turingmaskine og m stopper på }w\}$$
+Standseproblemet (halting problem) $$HALT = \{\text{\texttt{<m><w>}} \mid m \text{ er en Turingmaskine og m stopper på }w\}$$
+Standsproblemet er et meget vigtigt problem i datalogi, da det viser at vi ikke kan bestemme om en maskine stopper på sit input, eller om det kører i en uendelig løkke.
 
-Vi bruger uafgørligheden fra $A_{TM}$ til at vises at den kan reduceres til $HALT_{TM}$ hvilket gør $HALT_{TM}$ uafgørligt også.
+Vi bruger uafgørligheden fra $A_{TM}$ til at vises at den kan reduceres til $HALT_{TM}$, som vi så fra introduktionen til kapitlet, altså også betyder at $HALT_{TM}$ er uafgørligt. Måden vi gør dette på, er ved et modstridsbevis. Vi antager altså at $HALT_{TM}$ er afgørligt, men viser at det kan reduceres fra $A_{TM}$.
 
 \begin{theorem}
 	$HALT_{TM}$ er uafgørligt.
@@ -47,6 +48,8 @@ Vi bruger uafgørligheden fra $A_{TM}$ til at vises at den kan reduceres til $HA
 \end{theorem}
 
 \begin{proof}
+Måden vi beviser dette på, er ved at konstruere en ny Turingmaskine, som vi giver som input til en Turingmaskine som afgører $E_{TM}$, og hvis den accepterer, så \textit{afviser} vi, og ellers \textit{accepterer} vi.
+
 	Antag at $S$ er en Turingmaskine som afgører $E_{TM}$. Vi bruger $S$ til at konsturere en afgører for $A_{TM}$ og kommer til et modstrid.
 
 	Til at gøre dette bruger vi en maskine, $B$ som fungerer således: $B$ tager to input, \texttt{<m>} og \texttt{<w>}. Ouputtet fra $B$  er \texttt{<$m_{w}$>}. Den fungerer som følger:
@@ -69,15 +72,11 @@ Vi bruger uafgørligheden fra $A_{TM}$ til at vises at den kan reduceres til $HA
 		\item Ellers, så simulér $m$ på $w$ og accepter hvis og kun hvis $m$ accepterer $w$.
 	\end{enumerate}
 
-	Husk nu $S$, som er en Turingmaskine der afgører $E_{TM}$. Hvis $S$ får $m_{w}$ som input, og kan afgøre om $L(m_{w}) = \emptyset$ eller ej.
+	Husk nu $S$, som er en Turingmaskine der afgører $E_{TM}$. Hvis $S$ får $m_{w}$ som input, og kan afgøre om $L(m_{w}) = \emptyset$ eller ej. Det betyder altså, at hvis $S$ accepterer, og dermed $L(m_{w}) = \emptyset$, så accepterer $M$ \textbf{ikke} $w$ (da sproget så ville være $w$!) Dermed betyder det også at hvis $M$ accepterer $w$, så er $L(m_{w}) = w$, og $S$ afgører $A_{TM}$.
 
 	Lad os nu ``indkapsulere'' disse maskine i en ny maskine, $S^{*}$. $S^{*}$ tager to inputs, \texttt{<m>} og \texttt{<w>}. Disse går til maskinen $B$, som giver output \texttt{<$m_{w}$>} som går til $S$. $S$ afgører så om \texttt{<$m_{w}$>} er en Turingmaskine og $L(M) = \emptyset$. $S^{*}$ tager så dette input og gør det omvendt, så en accept vil være en afvisning og en afvisning vil være en accept.
 
 	Vi kan nu se at $S^{*}$ afgører $A_{TM}$ som er umuligt pr. Teorem \ref{teo:atmundecidable}.
-
-
-	%% Hvis dette ikke giver mening (jeg har ikke overskud til at forsøge at finde ud af det nu), så brug en blanding af bogen og denne video: https://www.youtube.com/watch?v=4tbCR10QGTI
-	%% begge ressurser tilsammen giver en meget god forståelse af dette problem.
 \end{proof}
 
 Trods at $E_{TM}$ ikke er afgørligt, så er $\overline{E_{TM}}$ genkendeligt. Bemærk at
@@ -281,6 +280,28 @@ Lad $K$ være et sprog du ønsker at vise til at være uafgørligt.
 
 \end{proof}
 
+\subsection{Praktiske Noter}%
+\label{subsec:uafgørlighedpraktik}
+
+De her noter kommer fra ChatGPT, hvor jeg har spurgt hvordan disse problemer har en effekt på softwareudvikling, og generelt praktisk arbejde. Jeg har selvfølgelig omskrevet noterne til mit eget sprog. Jeg har kun to eksempler her, standseproblemet (Halting problemet) og tomhedsproblemet:
+
+
+\subsubsection{Standseproblemet}
+Standseproblemet siger at vi aldrig kan vide om et program vil stoppe eller ej. To implikationer på dette i praktik er:
+\begin{itemize}
+  \item I \textbf{debugging} og \textbf{verifikation}. Hvis vi vidste om et program stoppede, ville vi også kunne debugge det en del nemmere, da vi kunne finde ud af præcis hvad fejlen var når programmet stoppede, og finde præcis denne fejl. På samme måde ville problemet om verifikation (er en algoritme korrekt?) kunne løses, da det ville tillade at køre alle muligheder igennem, hvor de ville stoppe på et tidspunkt (hvori problemet nu er at verifikationsmuligheder ikke nødvendigvis stopper. Der findes dog værktøj såsom TLA, der forsøger at fikse dette (som jeg skrev bachelor i, hehe.))
+  \item I \textbf{Cybersikkerhed}: Hvis vi kunne finde ud af om et program ville stoppe, ville vi også kunne finde ud af om kode indeholder \textit{malware}. Da vi ikke kan garantere at et program stopper, kan vi heller ikke garantere at vi har fundet eksisterende malware i kode.
+\end{itemize}
+
+\subsubsection{Tomhedsproblemet ($L(M) = \emptyset$)}
+Her kan vi også primært se det i to felter:
+\begin{itemize}
+  \item I \textit{compiler design}: Hvis vi ved at et substykke af kode er dødt (altså $L(M) = \emptyset$ hvor $M$ er den døde stykke kode), så vil vi kunne optimere et program langt mere.
+  \item I \textit{verifikation} (igen): Hvis dette problem var afgørligt, ville vi vide om der var nogen muligheder (e.g., kan givet et input $x$, ved vi at algoritmen ikke vil acceptere noget $x$?)
+\end{itemize}
+
+
+
 \subsection{Rice's Teorem}%
 \label{subsec:ricetheorem}
 
@@ -308,19 +329,32 @@ Altså er en egenskab ikke-triviel hvis der eksisterer en Turingmaskine hvis spr
 
 Hvis vi kigger på eksemplerne før kan alle deles op i at der eksisterer en Turingmaskine der har disse egenskaber i deres sprog, og på samme måde findes der en hvor det ikke gælder. For eksempel ved det første, er der en Turingmaskine hvor sproget er regulært, men på samme tid er der også en Turingmaskine hvor sproget \textbf{ikke} er regulært.
 
+Det vil altså sige at \textbf{trivielle egenskaber} er egenskaber som gælder for alle eller for ingen Turingmaskiner. Eksempler på disse:
+\begin{itemize}
+  \item Egenskaben at en Turingmaskine eksisterer (gælder for alle Turingmaskiner.)
+  \item Egenskaben at TM'en har et alfabet (gælder for alle Turingmaskiner.)
+  \item Egenskaben at en TM er en TM (gælder for alle Turingmaskiner.)
+\end{itemize}
+
 \begin{theorem}[Rice's Theorem]
 	Hver ikke-triviel egenskab $P$ om sproget af Turingmaskiner er uafgørlig.
 \end{theorem}
 
+Bemærk at sættet af ikke-trivielle egenskaber er uendeligt\footnote{Du kan altid tilføje mere til en ikke triviel egenskab, såsom at gøre længden længere, etc.}. Det vil altså sige at dette teorem siger at der eksisterer et uendeligt antal af sprog der er uafgørlige.
+
 \begin{proof}
+Modstridsbevis.
+
 	Vi antager at det tomme sprog $L(M) = \emptyset$ \textbf{ikke} har egenskaben $P$, ellers overvej egenskaben $\overline{P}$. Hvis $P$ er ikke-triviel, så er $\overline{P}$ naturligvis også ikke-triviel, ud fra definitionen af ikke-trivielle egenskaber.
+
+
 	Antag at Turingmaskinen $M_{P}$ kan afgøre for en givet kodning \texttt{<m>} af en Turingmaskine, om $L(M)$ har egenskaben $P$. Så, givet en Turingmaskine $m_{p}$ der tager som input kodningen af en Turingmaskine, \texttt{<m>}, vil den enten:
 	\begin{itemize}
 		\item Acceptere $\iff$  $m$ er en Turingmaskine og $L(m)$ har egenskaben $P$
 		\item Afvise $\iff$ $m$ \textbf{ikke} er en Turingmaskine eller $L(m)$ ikke har egenskaben $P$.
 	\end{itemize}
 
-	Vi vil nu lave en Turingmaskien der giver os et modstrid. Lad $M_{1}$ være en Turingmaskine hvor $L(M_{1})$ har egenskaben $P$. Husk at  vi antager af $L(M_{\emptyset})$ ikke har egenskaben $P$. Vi vil vise hvordan man kosntruerer en sådan Turingmaskine, hvilket givet \texttt{<m><w>} konstruerer en Turingmaskine $m(w)$ hvor
+	Vi vil nu lave en Turingmaskinen der giver os et modstrid. Lad $M_{1}$ være en Turingmaskine hvor $L(M_{1})$ har egenskaben $P$. Husk at  vi antager af $L(M_{\emptyset})$ \textit{ikke} har egenskaben $P$. Vi vil vise hvordan man konstruerer en sådan Turingmaskine, hvilket givet \texttt{<m><w>} konstruerer en Turingmaskine $m(w)$ hvor
 	\begin{equation*}
 		L(M(w)) = \begin{cases}
 			\emptyset & \text{ hvis } w \notin L(m) \text{ eller } m \text{ ikke er en Turingmaskine} \\
