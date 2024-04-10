@@ -1,11 +1,51 @@
 \begin{center}
 	\noindent
-	{\huge \bfseries \sffamily \color{ChapterViolet} DM553 - Kompleksitet og Beregnlighed}\\
+	{\huge \bfseries \sffamily \color{TurquoiseGreen} DM553 - Kompleksitet og Beregnlighed}\\
 	\vspace{0.2cm}
-	{\large \sffamily \color{SchemeDark} Grundige noter til kursets indhold og opgaver}\\
-	\vspace{11.8cm}
-	{\large \sffamily \color{SchemeDark} Kevin Vinther}\\
-	{\large \sffamily \color{SchemeDark} 2024}
+	{\large \sffamily Grundige noter til kursets indhold og opgaver}\\
+\vspace{1.0cm}
+
+	\begin{center}
+
+		\begin{tikzpicture}
+			\tikzset{block/.style={rectangle, draw, minimum height=2em, minimum width=3em}}
+			\tikzset{line/.style={draw, -latex'}}
+
+
+			%% M_2
+			\node[fill=gray!10, draw=gray, minimum height=5cm, minimum width=4cm] (m2) at (1.3,-1) {};
+			%% A
+			\node[block, minimum height=1.5cm, fill=DeepSeaBlue!50, draw=DeepSeaBlue] (E) at (0, 0){$B$};
+			\node[fill=none, draw=none] (start) at (-2,0) {};
+
+			\node[fill=none, draw=none] (b) at (-1.3, 0.2) {\texttt{<R>}};
+			\node[fill=none, draw=none] (bs) at (1.3, 0.2) {\texttt{<B$_{R}$>}};
+
+			\draw[->] (start) -- (E.west);
+
+			\draw[->] (E.east) -- (1.9, 0);
+
+			%% M_1
+			\node[block, minimum height=3cm, fill=CoralRed!50, draw=CoralRed] (m1) at (2.5,-1) {$M_{2}$};
+
+			%% W
+			\node[fill=none, draw=none] (wstart) at (-2,-2) {};
+			\node[fill=none, draw=none] (w) at (-1.3,-1.7) {\texttt{<w>}};
+
+			\draw[->] (wstart.east) -- (1.9, -2);
+
+			%% Acccept og afvis
+
+			\draw[->] (3.09, 0)  -- (3.9, 0);
+			\node[fill=none, draw=none] (accept) at (4.8, 0) {Accepter};
+
+			\draw[->] (3.09, -2)  -- (3.9, -2);
+			\node[fill=none, draw=none] (afvis) at (4.5, -2) {Afvis};
+		\end{tikzpicture}
+	\end{center}
+	\vspace{3.8cm}
+	{\large \sffamily \color{gray} Kevin Vinther}\\
+	{\large \sffamily \color{gray} 2024}
 \end{center}
 
 \thispagestyle{empty}

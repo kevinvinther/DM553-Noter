@@ -268,7 +268,27 @@ Vi vil nu se på et bevis på at fællesmængden er lukket under regulære sprog
 \begin{proof}
 	Hvis vi har to sprog, $A_{1}$ og $A_{2}$, som hver har en NFA der genkender deres sprog, vil vi konstruere en ny NFA, $N$, som genkender fællesmængden af disse to sprog. En simpel måde at gøre dette på er ved at introducere en ny start state, som har en epsilonpil pegende til hver af de to NFA'ers gamle start states. Med dette har vi en NFA der genkender fællesmængden af de to sprog. En visual idé af dette kan ses i Figur~\ref{fig:sipser1.46}.
 
-	\newpage
+
+	Lad os nu få det beskrevet formelt. Lad $N_{1} = (Q_{1}, \Sigma, \delta_{1}, q_{1}, F_{1})$ genkende $A_{1}$ og lad $N_{2} = (Q_{2}, \Sigma, \delta_{2}, q_{2}, F_{2})$ genkende $A_{2}$.
+
+	Konstruér $N = (Q, \Sigma, \delta, q_{0}, F)$ til at genkende $A_1 \cup A_{2}$.
+	\begin{enumerate}
+		\item $Q = \{q_{0}\} \cup Q_{1} \cup Q_{2}$.\\ Vi tilføjer her den nye start state, $q_{0}$.
+		\item $q_{0}$
+		\item $F = F_{1} \cup F_{2}$
+		\item For en $q \in Q$ og en $a \in \Sigma_{\varepsilon}$:
+		      \begin{equation*}
+			      \delta(q,a) = \begin{cases}
+				      \delta_{1}(q,a)  & q \in Q_{1}                              \\
+				      \delta_{2}(q,a)  & q \in Q_{2}                              \\
+				      \{q_{1}, q_{2}\} & q = q_{0} \text{ og } a = \varepsilon    \\
+				      \emptyset        & q = q_{0} \text{ og } a \neq \varepsilon
+			      \end{cases}
+		      \end{equation*}
+	\end{enumerate}
+
+\end{proof}
+
 	\begin{figure}[ht]
 		\centering
 		\begin{tikzpicture}[node distance=1.5cm]
@@ -311,28 +331,6 @@ Vi vil nu se på et bevis på at fællesmængden er lukket under regulære sprog
 		\end{tikzpicture}
 		\caption{\label{fig:sipser1.46} NFA $N$ der genkender $A_{1} \cup A_{2}$}
 	\end{figure}
-	\newpage
-
-	Lad os nu få det beskrevet formelt. Lad $N_{1} = (Q_{1}, \Sigma, \delta_{1}, q_{1}, F_{1})$ genkende $A_{1}$ og lad $N_{2} = (Q_{2}, \Sigma, \delta_{2}, q_{2}, F_{2})$ genkende $A_{2}$.
-
-	Konstruér $N = (Q, \Sigma, \delta, q_{0}, F)$ til at genkende $A_1 \cup A_{2}$.
-	\begin{enumerate}
-		\item $Q = \{q_{0}\} \cup Q_{1} \cup Q_{2}$.\\ Vi tilføjer her den nye start state, $q_{0}$.
-		\item $q_{0}$
-		\item $F = F_{1} \cup F_{2}$
-		\item For en $q \in Q$ og en $a \in \Sigma_{\varepsilon}$:
-		      \begin{equation*}
-			      \delta(q,a) = \begin{cases}
-				      \delta_{1}(q,a)  & q \in Q_{1}                              \\
-				      \delta_{2}(q,a)  & q \in Q_{2}                              \\
-				      \{q_{1}, q_{2}\} & q = q_{0} \text{ og } a = \varepsilon    \\
-				      \emptyset        & q = q_{0} \text{ og } a \neq \varepsilon
-			      \end{cases}
-		      \end{equation*}
-	\end{enumerate}
-
-\end{proof}
-
 
 \index{Regulære Sprog!Lukket under sammenkædning}
 \begin{theorem}

@@ -1,31 +1,15 @@
 % !TEX TS-program = xelatex
 % !TEX encoding = UTF-8 Unicode
+\documentclass[oneside, a4paper]{book}
 
-%===========================================%
-%  Preamble of the LaTeX version of SICP.   %
-%  It will be read in by texi-to-latex.pl.  %
-%===========================================%
+\usepackage[utf8]{inputenc} % Tillader utf-8 kodning
+\usepackage[T1]{fontenc} % Kodning der fungerer bedre til europæiske sprog
 
-\documentclass[11pt,oneside]{book}
+\usepackage{float} % Tillader [H]
 
-% New line height: 1.05 * 1.2 = 1.26
-\renewcommand{\baselinestretch}{1.05}
 
-% Font settings
-\usepackage[no-math]{fontspec} %-----------------------%  This exact order
-\defaultfontfeatures{%                                 %  of declarations
-	Scale=MatchLowercase, % needed here ...              %  is important for
-}                                                      %  single quotes not
-\setmonofont{Inconsolata LGC Nerd Font}                          %  to turn out curly
-%  ("typographic")
-\defaultfontfeatures{%                                 %  in verbatim blocks
-	Scale=MatchLowercase, % ... and here again           %  of Scheme code.
-	Mapping=tex-text,                                    %  Now the quote is
-	SmallCapsFeatures={LetterSpace=2.5,WordSpace=1.05},  %  upright and safely
-}                                                      %  copy-pasteable to
-\setmainfont{Linux Libertine O}                        %  the REPL without
-\setsansfont{Linux Biolinum O} %-----------------------%  giving errors.
 
+% Sæt sproget til dansk
 \usepackage{polyglossia}
 \setdefaultlanguage{danish}
 \setotherlanguages{english}
@@ -33,23 +17,21 @@
 % Til ordbogen
 \usepackage{longtable}
 
-% To be able to use '\-/' in place of '-' inside \code{}
-% so that long function names containing hyphens
-% can be broken up after the hyphen:
-\usepackage[shortcuts]{extdash}
+% For bedre tabeller
+\usepackage{multirow}
+
 
 % So that file names with multiple dots don't confuse
 % graphicx package when using \includegraphics command:
 \usepackage[multidot]{grffile}
 \usepackage{graphicx}
 
-\usepackage[usenames,dvipsnames,x11names]{xcolor}
-\usepackage{amsmath}
-\usepackage{amsthm}
+\usepackage{xcolor}
+\usepackage{amsmath, amsfonts, mathtools, amsthm, amssymb}
 
-% To use Libertine letters and numbers,
-% but tx-style operators in math environment:
-\usepackage[libertine]{newtxmath}
+
+% Font
+\usepackage{newpxtext,newpxmath}  % Palatino
 
 
 \usepackage{tikz} % Til grafer
@@ -73,221 +55,214 @@
 }
 % Tak til: https://www3.nd.edu/~dchiang/teaching/theory/2018/www/tikz_tutorial.pdf
 
-% Workaround to fix mismatched left and right math delimiters. Taken from:
-% http://tex.stackexchange.com/questions/63410/parentheses-differ-xelatex-fontspec-newtxmath-libertine
-\DeclareSymbolFont{parenthesis}{T1}{fxl}{m}{n}
-\DeclareMathDelimiter{(}{\mathopen}{parenthesis}{"28}{largesymbols}{"00}
-\DeclareMathDelimiter{)}{\mathclose}{parenthesis}{"29}{largesymbols}{"01}
-\DeclareMathDelimiter{[}{\mathopen}{parenthesis}{"5B}{largesymbols}{"02}
-\DeclareMathDelimiter{]}{\mathclose}{parenthesis}{"5D}{largesymbols}{"03}
-\DeclareMathDelimiter{\lbrace}{\mathopen}{parenthesis}{"7B}{largesymbols}{"08}
-\DeclareMathDelimiter{\rbrace}{\mathclose}{parenthesis}{"7D}{largesymbols}{"09}
-
-\usepackage{fancyvrb}
-\usepackage{imakeidx}
-\usepackage[totoc,font=footnotesize]{idxlayout}
-\usepackage{fancyhdr}
-\pagestyle{plain}
-\usepackage[final]{pdfpages} % inserts pages from a pdf file
 
 
-\usepackage{multirow}
 
 
-% Page geometry for 10-inch tablets:
-\usepackage[papersize={148mm,197mm},
-	top=21mm,
-	textwidth=111mm,  % increase one or both of these by 1mm or so to
-	textheight=148mm, % make the source compile with TeX Live 2013
-	hcentering,       % if you get "Too many unprocessed floats" error
-]{geometry}
-
-\usepackage{titlesec}  % to change the appearance of section titles
-\usepackage{listings}  % for syntax highlighted code listings
-\usepackage{verbatim}  % for simple verbatim and comment environments
 \usepackage{enumerate} % allows customized labels in enumerations
 \usepackage{hyperref}  % makes cross references and URLs clickable
-\definecolor{LinkRed}{HTML}{80171F}
+
+
+% Til at customize titler
+\usepackage{titlesec}
+
+
+
+
+% Colors
+\definecolor{DeepSeaBlue}{HTML}{264653}
+\definecolor{TurquoiseGreen}{HTML}{2a9d8f}
+\definecolor{SunnyYellow}{HTML}{e9c46a}
+\definecolor{SunsetOrange}{HTML}{f4a261}
+\definecolor{CoralRed}{HTML}{e76f51}
+\definecolor{Light}{HTML}{686868}
+\definecolor{Steel}{HTML}{888888}
+\definecolor{Dark}{HTML}{262626}
+
+\definecolor{DeepSeaBlueLighter}{HTML}{2d5363}
+\definecolor{DeepSeaBlueDarker}{HTML}{1e3742}
+\definecolor{DeepSeaBlueMuted}{HTML}{2c434c}
+
+\definecolor{TurquoiseGreenLighter}{HTML}{32bcab}
+\definecolor{TurquoiseGreenDarker}{HTML}{217d72}
+\definecolor{TurquoiseGreenMuted}{HTML}{3b8b81}
+
+\definecolor{SunnyYellowLighter}{HTML}{f1dba5}
+\definecolor{SunnyYellowDarker}{HTML}{e0ac2e}
+\definecolor{SunnyYellowMuted}{HTML}{d5bc7d}
+
+\definecolor{SunsetOrangeLighter}{HTML}{f8c7a0}
+\definecolor{SunsetOrangeDarker}{HTML}{ef7c21}
+\definecolor{SunsetOrangeMuted}{HTML}{dda477}
+
+\definecolor{CoralRedLighter}{HTML}{ee9c87}
+\definecolor{CoralRedDarker}{HTML}{db441e}
+\definecolor{CoralRedMuted}{HTML}{d07c67}
+
 \hypersetup{
-	pdfauthor={Harold Abelson, Gerald Jay Sussman, Julie Sussman},
-	pdftitle={Structure and Interpretation of Computer Programs, 2nd ed.},
-	pdfsubject={computer science, programming, abstraction},
+	pdfauthor={Kevin Vinther},
+	pdftitle={DM553 Noter},
+	pdfsubject={computer science, complexity, computability},
 	colorlinks=true,
-	linkcolor=LinkRed,
-	urlcolor=LinkRed,
+	linkcolor=DeepSeaBlue,
+	urlcolor=DeepSeaBlue,
 }
 
+% Define color for headings
+\definecolor{HeadingColor}{HTML}{264653}
 
+% Chapter title formatting
+\titleformat{\chapter}[block] % 'block' for inline display
+  {\normalfont\sffamily\huge\bfseries\color{HeadingColor}} % Chapter title styling
+  {\thechapter. } % Prefix for the title, such as "1. "
+  {0pt} % Space between the number and title
+  {} % Additional formatting for the title
 
-% Document colors
-\definecolor{SchemeLight}   {HTML} {686868}
-\definecolor{SchemeSteel}   {HTML} {888888}
-\definecolor{SchemeDark}    {HTML} {262626}
-\definecolor{SchemeBlue}    {HTML} {4172A3}
-\definecolor{SchemeGreen}   {HTML} {487818}
-\definecolor{SchemeBrown}   {HTML} {A07040}
-\definecolor{SchemeRed}     {HTML} {AD4D3A}
-\definecolor{SchemeViolet}  {HTML} {7040A0}
-\definecolor{DropCapGray}   {HTML} {B8B8B8}
-\definecolor{ChapterGray}   {HTML} {C8C8C8}
-\definecolor{ChapterViolet} {HTML} {AEAECE}
-\definecolor{DropCapViolet} {HTML} {9090C0}
-
-\usepackage{lettrine}  % adds commands that make drop capitals
-\renewcommand{\LettrineFontHook}{\rmfamily\mdseries\color{DropCapViolet}}
-\renewcommand{\DefaultLraise}{0.00}
-\renewcommand{\DefaultLoversize}{0.02}
-\renewcommand{\DefaultLhang}{0.12}
-\setlength{\DefaultFindent}{1pt}
-\setlength{\DefaultNindent}{0em}
-
-\lstset{%
-	% Scheme syntax highlighter
-	columns=fixed,
-	extendedchars=true,
-	upquote=true,
-	showstringspaces=false,
-	sensitive=false,
-	mathescape=true,
-	escapechar=~,
-	alsodigit={>,<,/,-,=,!,?,*},
-	alsoletter=',
-	morestring=[b]",
-	morecomment=[l];,
-	% Keyword list taken form functional.py in Pygments package:
-	morekeywords={lambda, define, if, else, cond, and, or, case,%
-			let, let*, letrec, begin, do, delay, set!, =>, quote,%
-			quasiquote, unquote, unquote-splicing, define-syntax, let-syntax,%
-			letrec-syntax, syntax-rules},
-	% If keywords are quoted, they must not be highlighted:
-	emph={'lambda, 'define, 'if, 'else, 'cond, 'and, 'or, 'case,%
-			'let, 'let*, 'letrec, 'begin, 'do, 'delay, 'set!, '=>, 'quote,%
-			'quasiquote, 'unquote, 'unquote-splicing, 'define-syntax, 'let-syntax,%
-			'letrec-syntax, 'syntax-rules},
-	emphstyle=\color{SchemeDark},
-	% Paint error red:
-	emph={[2]error},emphstyle=[2]\color{SchemeRed},%
-	% Builtins taken from functional.py:
-	emph={[3]*, +, -, /, <, <=, =, >, >=, abs, acos, angle,
-			append, apply, asin, assoc, assq, assv, atan,
-			boolean?, caaaar, caaadr, caaar, caadar, caaddr, caadr,
-			caar, cadaar, cadadr, cadar, caddar, cadddr, caddr,
-			cadr, call-with-current-continuation, call-with-input-file,
-			call-with-output-file, call-with-values, call/cc, car,
-			cdaaar, cdaadr, cdaar, cdadar, cdaddr, cdadr, cdar,
-			cddaar, cddadr, cddar, cdddar, cddddr, cdddr, cddr,
-			cdr, ceiling, char->integer, char-alphabetic?, char-ci<=?,
-			char-ci<?, char-ci=?, char-ci>=?, char-ci>?, char-downcase,
-			char-lower-case?, char-numeric?, char-ready?, char-upcase,
-			char-upper-case?, char-whitespace?, char<=?, char<?, char=?,
-			char>=?, char>?, char?, close-input-port, close-output-port,
-			complex?, cons, cos, current-input-port, current-output-port,
-			denominator, display, dynamic-wind, eof-object?, eq?,
-			equal?, eqv?, eval, even?, exact->inexact, exact?, exp,
-			expt, floor, for-each, force, gcd, imag-part,
-			inexact->exact, inexact?, input-port?, integer->char,
-			integer?, interaction-environment, lcm, length, list,
-			list->string, list->vector, list-ref, list-tail, list?,
-			load, log, magnitude, make-polar, make-rectangular,
-			make-string, make-vector, map, max, member, memq, memv,
-			min, modulo, negative?, newline, not, null-environment,
-			null?, number->string, number?, numerator, odd?,
-			open-input-file, open-output-file, output-port?, pair?,
-			peek-char, port?, positive?, procedure?, quotient,
-			rational?, rationalize, read, read-char, real-part, real?,
-			remainder, reverse, round, scheme-report-environment,
-			set-car!, set-cdr!, sin, sqrt, string, string->list,
-			string->number, string->symbol, string-append, string-ci<=?,
-			string-ci<?, string-ci=?, string-ci>=?, string-ci>?,
-			string-copy, string-fill!, string-length, string-ref,
-			string-set!, string<=?, string<?, string=?, string>=?,
-			string>?, string?, substring, symbol->string, symbol?,
-			tan, transcript-off, transcript-on, truncate, values,
-			vector, vector->list, vector-fill!, vector-length,
-			vector-ref, vector-set!, vector?, with-input-from-file,
-			with-output-to-file, write, write-char, zero?},
-	emphstyle=[3]\color{SchemeViolet},%
-	%
-	basicstyle=\color{SchemeLight}\ttfamily,
-	keywordstyle=\color{SchemeBlue}\bfseries,
-	identifierstyle=\color{SchemeDark},
-	stringstyle=\color{SchemeGreen},
-	commentstyle=\color{SchemeLight}\itshape,
-}
-
-\newcommand{\acronym}[1]{\textsc{\fontspec[Numbers={OldStyle}]{Linux Libertine O}\MakeLowercase{#1}}}
-\newcommand{\uppersc}[1]{{\fontspec[Letters=UppercaseSmallCaps]{Linux Libertine O}#1}}
-\newcommand{\newterm}[1]{\index{#1}\emph{#1}}
-\newcommand{\var}[1]{\textsl{#1}}
-\newcommand{\code}[1]{\texttt{#1}}
-\newcommand{\link}[1]{\hyperref[#1]{#1}}
-\newcommand{\heading}[1]{{\sffamily\bfseries #1}}
-\newcommand{\dark}{\color{SchemeDark}}
-\newcommand{\mono}[1]{\hbox{\ttfamily\scriptsize #1}}
-\newcommand{\monoit}[1]{\hbox{\ttfamily\itshape\scriptsize #1}}
-
-\lstnewenvironment{scheme}[1][]
-{\lstset{basicstyle=\ttfamily\small\color{SchemeLight},#1}}
-{}
-
-\lstnewenvironment{smallscheme}[1][]
-{\lstset{basicstyle=\ttfamily\footnotesize\color{SchemeLight},#1}}
-{}
-
-\titleformat{\chapter}[display]
-{\color{SchemeDark}\normalfont\sffamily\bfseries\LARGE}
-{\filright \color{ChapterViolet}\sffamily\mdseries
-	\fontsize{6em}{0em}\selectfont
-	\oldstylenums{\thechapter}}
-{1em}
-{\filright}
-
+% Section title formatting
 \titleformat{\section}
-{\color{SchemeDark}\normalfont\Large\sffamily\bfseries}
-{\color{DropCapViolet}\thesection}{0.8em}{}
+  {\normalfont\sffamily\Large\bfseries\color{HeadingColor}}
+  {\thesection} % Section number
+  {1em} % Space between number and section title
+  {}
 
+% Subsection title formatting
 \titleformat{\subsection}
-{\color{SchemeDark}\normalfont\large\sffamily\bfseries}
-{\color{DropCapViolet}\thesubsection}{0.8em}{}
+  {\normalfont\sffamily\large\bfseries\color{HeadingColor}}
+  {\thesubsection} % Subsection number
+  {1em} % Space between number and subsection title
+  {}
 
+% Subsubsection title formatting
 \titleformat{\subsubsection}
-{\color{black}\normalfont\normalsize\sffamily\bfseries}
-{\color{DropCapViolet}\thesubsubsection}{0.8em}{}
+  {\normalfont\sffamily\normalsize\bfseries\color{HeadingColor}}
+  {\thesubsubsection} % Subsubsection number
+  {1em} % Space between number and subsubsection title
+  {}
+
+% For subsubsections, if needed, you can define a \paragraph formatting
+\titleformat{\paragraph}[runin]
+  {\normalfont\sffamily\normalsize\bfseries\color{HeadingColor}}
+  {\theparagraph} % Paragraph number
+  {1em} % Space between number and paragraph title
+  {}
+
+% Adjust spacing around sectional units
+\titlespacing*{\chapter}{0pt}{50pt}{40pt}
+\titlespacing*{\section}{0pt}{20pt}{10pt}
+\titlespacing*{\subsection}{0pt}{15pt}{10pt}
+\titlespacing*{\subsubsection}{0pt}{10pt}{5pt}
+\titlespacing*{\paragraph}{0pt}{10pt}{5pt}
+
 
 \setcounter{secnumdepth}{3}
 \setcounter{tocdepth}{3}
 
 
-% Define a new style for theorems, definitions, lemmas, etc.
-\newtheoremstyle{customstyle} % Name of the style
-{10pt}                        % Space above
-{10pt}                        % Space below
-{}                    % Body font
-{}                            % Indent amount
-{\large\bfseries\sffamily\color{SchemeDark}} % Theorem head font
-{\\}                            % Punctuation after theorem head
-{.5em}                        % Space after theorem head
-{} % Theorem head spec
 
 
 % Now apply the custom style
 \theoremstyle{customstyle}
 
-% Define theorem, definition, lemma environments
-\newtheorem{theorem}{Teorem}[chapter]
-\newtheorem{definition}[theorem]{Definition}
-\newtheorem{lemma}[theorem]{Lemma}
-\newtheorem{corollary}[theorem]{Corollary}
-\newtheorem{proposition}[theorem]{Proposition}
-\newtheorem{example}[theorem]{Eksempel}
-\newtheorem{claim}[theorem]{Påstand}
 
-% Optionally, create a custom command for proof environment
-\renewenvironment{proof}{\vspace{10pt}{\large\noindent\bfseries\sffamily Bevis:\\}}{\qed \vspace{10pt}}
+% Pænere teoremdefinitioner, etc.
+% theorems
+\usepackage{thmtools}
+\usepackage[framemethod=TikZ]{mdframed}
+
+\mdfsetup{skipabove=1em,skipbelow=0em}
+
+\newcounter{mycounter}
+\numberwithin{mycounter}{chapter}
 
 
-\frenchspacing
-\makeindex
+% Green Box
+\declaretheoremstyle[
+    headfont=\bfseries\sffamily\color{TurquoiseGreen!70!black},
+    notefont=\bfseries\sffamily\color{TurquoiseGreen!70!black}, % same style for the note
+    notebraces={}{}, % to remove parentheses around the note
+    bodyfont=\normalfont,
+    postheadspace=\newline, % adds a new line after the theorem head
+    headformat={\NAME\ \NUMBER\ \NOTE \vspace{0.2cm}}, % Custom head format
+    mdframed={
+        linewidth=2pt,
+        rightline=false, topline=false, bottomline=false,
+        linecolor=TurquoiseGreen, backgroundcolor=TurquoiseGreen!5,
+        nobreak=false,
+		innerbottommargin=10pt, % Adjust the inner bottom margin within the frame
+    skipbelow=10pt,         % Adjust the space after the frame
+    }
+]{thmgreenbox}
+
+% Red Box
+\declaretheoremstyle[
+    headfont=\bfseries\sffamily\color{CoralRed!70!black},
+    notefont=\bfseries\sffamily\color{CoralRed!70!black}, % same style for the note
+    notebraces={}{}, % to remove parentheses around the note
+    bodyfont=\normalfont,
+    postheadspace=\newline, % adds a new line after the theorem head
+    headformat={\NAME\ \NUMBER\ \NOTE \vspace{0.2cm}}, % Custom head format
+    mdframed={
+        linewidth=2pt,
+        rightline=false, topline=false, bottomline=false,
+        linecolor=CoralRed, backgroundcolor=CoralRed!5,
+        nobreak=false,
+		innerbottommargin=10pt, % Adjust the inner bottom margin within the frame
+    skipbelow=10pt,         % Adjust the space after the frame
+    }
+]{thmredbox}
+
+% Blue Box
+\declaretheoremstyle[
+    headfont=\bfseries\sffamily\color{DeepSeaBlue!70!black},
+    notefont=\bfseries\sffamily\color{DeepSeaBlue!70!black}, % same style for the note
+    notebraces={}{}, % to remove parentheses around the note
+    bodyfont=\normalfont,
+    postheadspace=\newline, % adds a new line after the theorem head
+    headformat={\NAME\ \NUMBER\ \NOTE \vspace{0.2cm}}, % Custom head format
+    mdframed={
+        linewidth=2pt,
+        rightline=false, topline=false, bottomline=false,
+        linecolor=DeepSeaBlue, backgroundcolor=DeepSeaBlue!5,
+        nobreak=false,
+		innerbottommargin=10pt, % Adjust the inner bottom margin within the frame
+    skipbelow=10pt,         % Adjust the space after the frame
+    }
+]{thmbluebox}
+
+\declaretheorem[style=thmredbox, name=Teorem, numberlike=mycounter]{theorem}
+\declaretheorem[style=thmgreenbox, name=Definition, numberlike=mycounter]{definition}
+\declaretheorem[style=thmredbox, name=Lemma, numberlike=mycounter]{lemma}
+\declaretheorem[style=thmredbox, name=Proposition, numberlike=mycounter]{proposition}
+\declaretheorem[style=thmredbox, name=Corollary, numberlike=mycounter]{corollary}
+\declaretheorem[style=thmbluebox, name=Påstand, numberlike=mycounter]{claim}
+\declaretheorem[style=thmbluebox, name=Eksempel, numberlike=mycounter]{example}
+
+\let\oldproof\proof
+\let\endoldproof\endproof
+\let\proof\undefined
+\let\endproof\undefined
+
+\declaretheoremstyle[
+    headfont=\bfseries\sffamily\color{CoralRed!70!black},
+    notefont=\bfseries\sffamily,
+    notebraces={}{},
+    bodyfont=\normalfont,
+    postheadspace=\newline,
+    headformat={\NAME\ \NOTE},
+    mdframed={
+        linewidth=2pt,
+        rightline=false,
+        topline=false,
+        bottomline=false,
+        linecolor=CoralRed,
+        backgroundcolor=CoralRed!5
+    },
+    qed=\qedsymbol,
+    spacebelow=\parsep,
+    spaceabove=\parsep
+]{proofstyle}
+
+\declaretheorem[style=proofstyle, name=Bevis, numbered=no]{proof}
 
 %====================%
 %  End of preamble.  %
@@ -296,7 +271,9 @@
 
 \begin{document}
 
-\VerbatimFootnotes
+\pagestyle{empty}
+
+\emergencystretch 3em
 
 %%% Local Variables:
 %%% mode: latex

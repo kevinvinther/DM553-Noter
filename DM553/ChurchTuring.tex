@@ -96,10 +96,10 @@ I Figur~\ref{fig:turingcomputation} ses hvordan båndindholdet, hovedet, og stat
 			\node[block, minimum width=0.8cm, minimum height=0.8cm] (block\i) at (\startx + \gap*\i - \gap,0.0) {\label};
 		}
 
-		\node[block, minimum width=1.0cm, minimum height=1.0cm, draw=SchemeRed, line width=0.40mm] (reading) at (2.4, 0.0) {};
-		\node[draw=none, fill=none, text=SchemeRed] at (2.4, -0.7) { Hovedet };
+		\node[block, minimum width=1.0cm, minimum height=1.0cm, draw=CoralRed, line width=0.40mm] (reading) at (2.4, 0.0) {};
+		\node[draw=none, fill=none, text=CoralRed] at (2.4, -0.7) { Hovedet };
 		\node[draw=none, fill=none] at (8.0, 0.0) {$\rightarrow \infty$};
-		\node[draw=none, fill=none, text=SchemeBlue] at (5.4, -0.7) { State $q_{i}$ };
+		\node[draw=none, fill=none, text=DeepSeaBlue] at (5.4, -0.7) { State $q_{i}$ };
 		\node[draw=none, fill=none] at (5.4, -1.7) { $\Downarrow$ \hspace{1cm} $\delta(q_{i},c) = (q_{j}, x, L)$ };
 
 
@@ -109,10 +109,10 @@ I Figur~\ref{fig:turingcomputation} ses hvordan båndindholdet, hovedet, og stat
 		\foreach \label [count=\y] in \labelstwo {
 			\node[block, minimum width=0.8cm, minimum height=0.8cm] (block\y) at (\startx + \gap*\y - \gap,-3.0) {\label};
 		}
-		\node[block, minimum width=1.0cm, minimum height=1.0cm, draw=SchemeRed, line width=0.40mm] (reading) at (1.6, -3.0) {};
-		\node[draw=none, fill=none, text=SchemeRed] at (1.6, -3.7) { Hovedet };
+		\node[block, minimum width=1.0cm, minimum height=1.0cm, draw=CoralRed, line width=0.40mm] (reading) at (1.6, -3.0) {};
+		\node[draw=none, fill=none, text=CoralRed] at (1.6, -3.7) { Hovedet };
 		\node[draw=none, fill=none] at (8.0, -3.0) {$\rightarrow \infty$};
-		\node[draw=none, fill=none, text=SchemeBlue] at (5.4, -3.7) { State $q_{j}$ };
+		\node[draw=none, fill=none, text=DeepSeaBlue] at (5.4, -3.7) { State $q_{j}$ };
 	\end{tikzpicture}
 	\caption{\label{fig:turingcomputation} Komputering i en Turingmaskine.}
 \end{figure}
@@ -152,9 +152,9 @@ Dette kaldes også \textit{rekursivt enumerabelt\footnote{Engelsk: recursively e
 \begin{figure}[ht]
 	\centering
 	\begin{tikzpicture}
-		\draw[SchemeLight,fill=SchemeLight,dashed, thick, opacity=0.2] (0.5,0) ellipse (4cm and 2cm);
+		\draw[Light,fill=Light,dashed, thick, opacity=0.2] (0.5,0) ellipse (4cm and 2cm);
 		\draw node at (1.7,1) {Genkendelige sprog};
-		\draw[SchemeBlue,fill=SchemeBlue,dashed, thick, opacity=0.5] (-1.0,0) ellipse (2cm and 1.0cm);
+		\draw[DeepSeaBlue,fill=DeepSeaBlue,dashed, thick, opacity=0.5] (-1.0,0) ellipse (2cm and 1.0cm);
 		\draw node at (-1,0) {Afgørlige sprog};
 	\end{tikzpicture}
 	\caption{\label{fig:univers} Univers af sprog}
@@ -289,7 +289,7 @@ Denne variant minder om en normal, deterministisk turingmaskine. Dog har den en 
 			\node[block, minimum width=0.8cm, minimum height=0.8cm] (block\i) at (\startx + \gap*\i - \gap,0.0) {\label};
 		}
 		\foreach \label [count=\y] in \indices {
-			\node[draw=none, fill=none, minimum width=0.8cm, minimum height=0.8cm,color=SchemeRed] (block\y) at (\startx + \gap*\y - \gap,0.7) {\label};
+			\node[draw=none, fill=none, minimum width=0.8cm, minimum height=0.8cm,color=CoralRed] (block\y) at (\startx + \gap*\y - \gap,0.7) {\label};
 		}
 
 		\node[draw=none, fill=none] at (7.2, 0.0) {$\rightarrow \infty$};
@@ -433,17 +433,17 @@ Altså vil den køre i \textbf{eksponentiel tid}. Dette kommer fra at der kan v�
 
 		\node[draw=none, fill=none] at (7.2, 0.0) {$\rightarrow \infty$};
 
-		\node[block, minimum width=1.0cm, minimum height=1.2cm, draw=SchemeRed, line width=0.4mm] (h1) at (1.6, 0.0) {};
-		\node[draw=none, fill=none, text=SchemeRed] (h1t) at (1.6, -1.0) {$h_{1}$};
+		\node[block, minimum width=1.0cm, minimum height=1.2cm, draw=CoralRed, line width=0.4mm] (h1) at (1.6, 0.0) {};
+		\node[draw=none, fill=none, text=CoralRed] (h1t) at (1.6, -1.0) {$h_{1}$};
 
-		\node[block, minimum width=1.0cm, minimum height=1.2cm, draw=SchemeGreen, line width=0.4mm] (h1) at (3.2, 0.0) {};
-		\node[draw=none, fill=none, text=SchemeGreen] (h1t) at (3.2, -1.0) {$h_{2}$};
+		\node[block, minimum width=1.0cm, minimum height=1.2cm, draw=TurquoiseGreen, line width=0.4mm] (h1) at (3.2, 0.0) {};
+		\node[draw=none, fill=none, text=TurquoiseGreen] (h1t) at (3.2, -1.0) {$h_{2}$};
 
-		\node[block, minimum width=1.2cm, minimum height=2.0cm, draw=SchemeBlue, line width=0.4mm] (h1) at (3.2, -0.2) {};
-		\node[draw=none, fill=none, text=SchemeBlue] (h1t) at (3.2, -1.5) {$h_{3}$};
+		\node[block, minimum width=1.2cm, minimum height=2.0cm, draw=DeepSeaBlue, line width=0.4mm] (h1) at (3.2, -0.2) {};
+		\node[draw=none, fill=none, text=DeepSeaBlue] (h1t) at (3.2, -1.5) {$h_{3}$};
 
-		\node[block, minimum width=1.0cm, minimum height=1.2cm, draw=SchemeViolet, line width=0.4mm] (h1) at (4.8, 0.0) {};
-		\node[draw=none, fill=none, text=SchemeViolet] (h1t) at (4.8, -1.0) {$h_{4}$};
+		\node[block, minimum width=1.0cm, minimum height=1.2cm, draw=SunsetOrange, line width=0.4mm] (h1) at (4.8, 0.0) {};
+		\node[draw=none, fill=none, text=SunsetOrange] (h1t) at (4.8, -1.0) {$h_{4}$};
 	\end{tikzpicture}
 	\caption{\label{fig:flerehoveder} Flerhovedet-bånd variant.}
 \end{figure}
@@ -479,8 +479,8 @@ I denne variant af en turingmaskine, er der er to-dimensionelt bånd.
 		\node[draw=none, fill=none] at (7.2, -3.6) {$\rightarrow \infty$};
 		\node[draw=none, fill=none] at (3.6, 0.0) {$\uparrow \infty$};
 
-		\node[block, minimum width=1.0cm, minimum height=1.2cm, draw=SchemeRed, line width=0.4mm] (h1) at (3.2, -3.2) {};
-		\node[draw=none, fill=none, text=SchemeRed] (h1t) at (3.2, -4.2) {$h_{1}$};
+		\node[block, minimum width=1.0cm, minimum height=1.2cm, draw=CoralRed, line width=0.4mm] (h1) at (3.2, -3.2) {};
+		\node[draw=none, fill=none, text=CoralRed] (h1t) at (3.2, -4.2) {$h_{1}$};
 	\end{tikzpicture}
 	\caption{\label{fig:flerehoveder} Flerhovedet-bånd variant.}
 \end{figure}
@@ -546,51 +546,6 @@ En enumerator kører for evigt, og kan i sin køretid printe forskellige strenge
 \end{theorem}
 
 \begin{proof}
-	\begin{figure}[ht]
-		\centering
-		\begin{tikzpicture}
-			\tikzset{block/.style={rectangle, draw, minimum height=2em, minimum width=3em}}
-			\tikzset{line/.style={draw, -latex'}}
-			\node[block, minimum height=1.5cm] (E) at (0, 0){$E$};
-			\node[block, minimum height=1.5cm] (ww) at (4, -2){$W = W'$};
-			\node[fill=none, draw=none] (start) at (-2, -2) {\texttt{<w>}};
-
-			\draw[->] (start) -- (ww.west);
-
-			\node[fill=none, draw=none] (no) at (5.3, -1.8) {Nej};
-			\draw[->, color=SchemeGreen] (ww.east) -- (6, -2) -- (6, -4) -- (0, -4) -- (E.south);
-
-			\node[fill=none, draw=none, color=SchemeGreen] (genstart) at (3, -3.8) {Genstart};
-
-			\draw[->] (E.east) -- (3.5, 0) -- (3.5,-1.25);
-			\node[fill=none, draw=none] (wprime) at (2, 0.2) {\texttt{<w'>}};
-
-
-			\draw[->] (4.5, -1.25) -- (4.5, 0) -- (8, 0);
-			\node[fill=none, draw=none] (yes) at (5.3, 0.2) {Ja};
-			\node[fill=none, draw=none] (accept) at (9, 0.0) {Accepter};
-
-			\draw[color=SchemeBlue, thick] (-1, 1) -- (7, 1) -- (7, -5) -- (-1, -5) -- cycle;
-
-			\node[fill=none, draw=none, color=SchemeBlue] (me) at (7.5, -5) {$M_{E}$};
-
-			\node[fill=none, draw=none, color=SchemeRed] (printed) at (7, 2) {Næste streng printet af $E$};
-
-			\draw[->, color=SchemeRed] (printed) -- (wprime);
-
-			% \node[block, minimum width=0.8cm] (a1) at (2,-1.0) {a};
-			% \node[block, minimum width=0.8cm] (a2) at (2.8,-1.0) {a};
-			% \node[block, minimum width=0.8cm] (b1) at (3.6,-1.0) {b};
-			% \node[block, minimum width=0.8cm] (b2) at (4.4,-1.0) {b};
-			% \node[block, minimum width=0.8cm] (b2) at (5.2,-1.0) {$\sqcup$};
-			% \node[block, minimum width=0.8cm] (b2) at (6.0,-1.0) {$\sqcup$};
-			% \node[block, minimum width=0.8cm] (b2) at (6.8,-1.0) {$\sqcup$};
-			% \node[label, minimum width=0.8cm] (b2) at (7.6,-1.0) {$\cdots$};
-
-			% \draw[->, thick] (control) -| (a1);
-		\end{tikzpicture}
-		\caption{\label{fig:enumeratordtmequiv} Visuelt bevis på ækvivalens mellem Enumeratorer og Turingmaskiner.}
-	\end{figure}
 
 	I Figur~\ref{fig:enumeratordtmequiv} ses et visuelt bevis på hvorfor en Enumerator er ækvivalent med en Turingmaskine. Algoritmisk kan det ses således:
 	\begin{enumerate}
@@ -608,6 +563,42 @@ En enumerator kører for evigt, og kan i sin køretid printe forskellige strenge
 
 	Da vi kan gøre dette gælder det at $L(E_{M}) = L(M)$.
 \end{proof}
+
+	\begin{figure}[ht]
+		\centering
+		\begin{tikzpicture}
+			\tikzset{block/.style={rectangle, draw, minimum height=2em, minimum width=3em}}
+			\tikzset{line/.style={draw, -latex'}}
+			\node[block, minimum height=1.5cm] (E) at (0, 0){$E$};
+			\node[block, minimum height=1.5cm] (ww) at (4, -2){$W = W'$};
+			\node[fill=none, draw=none] (start) at (-2, -2) {\texttt{<w>}};
+
+			\draw[->] (start) -- (ww.west);
+
+			\node[fill=none, draw=none] (no) at (5.3, -1.8) {Nej};
+			\draw[->, color=TurquoiseGreen] (ww.east) -- (6, -2) -- (6, -4) -- (0, -4) -- (E.south);
+
+			\node[fill=none, draw=none, color=TurquoiseGreen] (genstart) at (3, -3.8) {Genstart};
+
+			\draw[->] (E.east) -- (3.5, 0) -- (3.5,-1.25);
+			\node[fill=none, draw=none] (wprime) at (2, 0.2) {\texttt{<w'>}};
+
+
+			\draw[->] (4.5, -1.25) -- (4.5, 0) -- (8, 0);
+			\node[fill=none, draw=none] (yes) at (5.3, 0.2) {Ja};
+			\node[fill=none, draw=none] (accept) at (9, 0.0) {Accepter};
+
+			\draw[color=DeepSeaBlue, thick] (-1, 1) -- (7, 1) -- (7, -5) -- (-1, -5) -- cycle;
+
+			\node[fill=none, draw=none, color=DeepSeaBlue] (me) at (7.5, -5) {$M_{E}$};
+
+			\node[fill=none, draw=none, color=CoralRed] (printed) at (7, 2) {Næste streng printet af $E$};
+
+			\draw[->, color=CoralRed] (printed) -- (wprime);
+		\end{tikzpicture}
+		\caption{\label{fig:enumeratordtmequiv} Visuelt bevis på ækvivalens mellem Enumeratorer og Turingmaskiner.}
+	\end{figure}
+
 
 \section{Definitionen af Algoritme}%
 \label{sec:definitionofalgorithm}
