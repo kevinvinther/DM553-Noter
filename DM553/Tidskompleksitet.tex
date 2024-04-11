@@ -330,10 +330,12 @@ NP \subseteq EXPTIME = \bigcup_{k} TIME (2^{n^{k}})
 \end{equation*}
 Men vi ved ikke om $NP$ er en del af en mindre, deterministisk kompleksitetsklasse.
 
-\section{NP-Fuldstændighed}%
+\section{NP-Komplet}%
 \label{sec:npcompleteness}
 
-\textbf{NP-Fuldstændige} problemer er problemer hvis individuelle kompleksitet er relateret til en hel klasses kompleksitet. Altså, hvis der findes en polynomiel algoritme til en af disse problemer, vil alle problemer i $NP$ være polynomielt løslige.
+% TODO: Herfra begynder jeg at bruge \(\langle \rangle\) fremfor \texttt{< >}. Jeg skal have gjort det i resten også.
+
+\textbf{NP-Komplette} problemer er problemer hvis individuelle kompleksitet er relateret til en hel klasses kompleksitet. Altså, hvis der findes en polynomiel algoritme til en af disse problemer, vil alle problemer i $NP$ være polynomielt løslige.
 
 Det første $NP$-fuldstændige problem vi kigger på er \textit{satisfiability problemet}.
 
@@ -344,7 +346,7 @@ En boolsk formel er satisfiable hvis en tildeling af 0'er og 1'er til variablern
 
 Satisfiability problemet er at teste hvorledes en boolsk formel er satisfiable:
 \begin{equation*}
-SAT = \{\text{\texttt{<$\phi$>}} \mid \phi \text{ er en satisfiable boolsk formel}\}
+SAT = \{ \langle \phi \rangle \mid \phi \text{ er en satisfiable boolsk formel}\}
 \end{equation*}
 
 Følgende teorem siger at kompleksitetsklassen af SAT problemet er ens til kompleksiteten af alle problemer i $NP$.
@@ -359,11 +361,11 @@ $SAT \in P \iff P = NP$
 Her viser vi hvordan et problem $A$ kan reduceres til et problem $B$, der så kan bruges til at løse $A$. Når problem $A$ er effektivt reducérbart til problem $B$, kan en effektiv løsning til $B$ bruges til at løse $A$ effektivt.
 
 \begin{definition}
-En funktion $f : \Sigma^{*} \longrightarrow \Sigma^{*}$ er en polynomieltids beregnelig funktion hvis en polynomieltids Turingmaskine $M$ eksisterer som stopper med $f(w)$ p åsit bånd, når den er startet på et input $w$.
+En funktion $f : \Sigma^{*} \longrightarrow \Sigma^{*}$ er en polynomieltids beregnelig funktion hvis en polynomieltids Turingmaskine $M$ eksisterer som stopper med $f(w)$ på sit bånd, når den er startet på et input $w$.
 \end{definition}
 
 \begin{definition}
-  Sprog $A$ er polynomielttids reducerbart til sprog $B$, skrevet $A \leq_{P} B$, hvis en polynomieltids beregnlig funktion $f : \Sigma^{*} \longrightarrow \Sigma^{*}$ eksisterer, hvor for hvert $w$,
+  Sprog $A$ er polynomielttids reducerbart\footnote{Mapping reducible på engelsk} til sprog $B$, skrevet $A \leq_{P} B$, hvis en polynomieltids beregnlig funktion $f : \Sigma^{*} \longrightarrow \Sigma^{*}$ eksisterer, hvor for hvert $w$,
   \begin{equation*}
 w \in A \iff f(w) \in B
 \end{equation*}
@@ -377,7 +379,7 @@ Hvis $A \le_{P} B$ og $B \in P$, så $A \in P$
 \end{theorem}
 
 \begin{proof}
-  Lad $M$ være polynomiel tids algoritmen der afgører $B$ og $f$ være polynomiel tids reduktionen fra $A$ til $B$. Vi beskrive en polynomieltids algoritme $N$ som afgører $A$ som følger:\\
+  Lad $M$ være polynomiel tids algoritmen der afgører $B$ og $f$ være polynomiel tids reduktionen fra $A$ til $B$. Vi beskriver en polynomieltids algoritme $N$ som afgører $A$ som følger:\\
   \noindent
   $N = $ ``På input $w$:
   \begin{enumerate}
@@ -390,7 +392,7 @@ Vi har $w \in A$ når $f(w) \in B$ fordi $f$ er en reduktion fra $A$ til $B$. De
 
 Husk $3-SAT$ problemet fra DM551,
 \begin{equation*}
-  3SAT = \{\text{\texttt{<$\phi$>}} \mid \phi \text{ er en satisfiable }3cnf-formel\}
+  3SAT = \{ \langle \phi \rangle \mid \phi \text{ er en satisfiable }3cnf\text{-formel}\}
 \end{equation*}
 
 Hvor $3cnf$ blot betyder at hver clause har 3 literals i sig.
@@ -403,20 +405,61 @@ $3SAT$ er polynomielt tidsreducérbart til KLIKKE.
 
 Reduktionen $f$ konverterer formler til grafer. I de konstruerede grafer, svarer klikker af en specifik størrelse til satisfying assignment af formlen.
 
+Vi giver en hurtig
+
 \begin{proof}
   Lad $\phi$ være en formel med $k$ klausuler såsom:
   \begin{equation*}
 \phi = (a_{1} \lor b_{1} \lor c_{1}) \land (a_{2} \lor b_{2} \lor c_{2}) \land \cdots \land (a_{k} \lor b_{k} \land c_{k})
   \end{equation*}
-  Reduktionen $f$ genererer strengen \texttt{<G><k>}, hvor $G$ er en urettet graf defineret som følger.
-  Knuderne i $G$ organiseres i $k$ grupper af tre knuder, hver kaldet tripler, $t_{1}, \ldots, t_{k}$. Hver triple svarer til en af de klausuler i $\phi$, og hver knude i en triple svarer til en literal i den associeret klausul.
+  Reduktionen $f$ genererer strengen \(\langle G,k \rangle \) hvor $G$ er en urettet graf defineret som følger.
+  Knuderne i $G$ organiseres i $k$ grupper af tre knuder, hver kaldet tripler, $t_{1}, \ldots, t_{k}$. Hver triple svarer til en af de klausuler i $\phi$, og hver knude i en triple svarer til en literal i den associeret klausul. Vi giver dermed også hver knude i $G$ værdien for hver literal i $\phi$.
 
   Kanterne i $G$ forbinder alle undtagen to typer af par af knuder i $G$. Ingen kant mellem to knuder er den samme triple, og ingen kant findes mellem to knuder med modstridige labels, såsom $x_{2}$ og $\overline{x_{2}}$.
 
   Vi viser nu hvorfor dette virker. Vi viser at $\phi$ er satisfiable $\iff$ $G$ har en $k-$klikke.
 
-  %% NÅÊT HERTIL.
+  Antag at $\phi$   har en satisfying assignment, det betyder at der er mindst én literal som er sand i hver klausul. I hver triple af $G$ vælger vi en knude tilsvande til en sand literal i den satisfying assignment. Hvis der er mere end én sand literal, vælger vi bare en af dem arbitrært. De knuder vi lige har valgt former en $k-$klikke. Antallaet af knuder valgt er $k$, da vi vælger én for hver af de $k$ tripler. Hvert par af valgte knuder er forbundet af en kandt.
+
+  Antag at $G$ har en $k-$klikke. Intet par af klikken knuder er i den samme triple, fordi knuderne i den samme triple ikke er forbundet af kanter. Derfor indeholder hver af de $k$ tripler præcis en af de $k$ klikkes knuder. Vi tilegner sandhedsværdier til variablerne af $\phi$ så hver literal
+
+  %% MANGLER:
+  %% https://www.youtube.com/watch?v=iZPzBHGDsWI
 \end{proof}
+
+\subsection{Definitionen af NP-Komplethed}%
+\label{subsec:definitionofnpcompleteness}
+
+\begin{definition}[NP-Komplethed]
+  \label{def:npcomplete}
+  Et sprog $B$ er \textbf{NP-Komplet} hvis det opfylder følgende to betingelser:
+  \begin{enumerate}
+    \item $B \in NP$
+    \item Hvert $A$ i $NP$ er reducerbart i polynomiel tid til $B$.
+  \end{enumerate}
+\end{definition}
+
+Ud fra denne definition kan vi også se hvordan følgende vigtige teorem fremkommer.
+\begin{theorem}
+Hvis $B$ er $NP-$komplet og $B \in P$, så er $P = NP$.
+\end{theorem}
+
+\begin{proof}
+Dette følger fra definitionen af polynomiel tids reducérbarhed.
+\end{proof}
+
+\begin{theorem}
+Hvis $B$ er $NP$-komplet og $B \le_{P} C$ for $C$ i $NP$, så er $C$ $NP$-komplet.
+\end{theorem}
+
+\begin{proof}
+Vi ved allerede at $C$ i er $NP$, så vi skal vise at hvert $A$ i $NP$ er reducerbart i polynomiel tid til $C$. Fordi $B$ er $NP$-komplet, er hvert sprog i $NP$ reducerbart i polynomiel tid til $C$.
+% Mangler:(
+\end{proof}
+
+
+
+
 
 
 %%% Local Variables:
