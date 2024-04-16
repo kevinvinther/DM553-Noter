@@ -175,8 +175,8 @@ Vores sidste eksempel viser at hvert CFL er afgørligt i polynomiel tid.
 	Hvert kontekst-frit sprog er medlem af $P$.
 \end{theorem}
 
-Vi har tidligere bevist at alle kontekstfrie sprog er afgørlige, men algoritmen vi brugte der er ikke polynomiel\footnote{Se Sipser pp. 290 ed. 3 for flere detaljer}. For at fåen polynomiel algoritme bruger vi dynamisk programmering.
-% MANGLER
+Vi har tidligere bevist at alle kontekstfrie sprog er afgørlige, men algoritmen vi brugte der er ikke polynomiel\footnote{Se Sipser pp. 290 ed. 3 for flere detaljer} med i deterministisk Turingmaskine, men polynomiel i en nondetermistisk Turingmaskine (ved bare at prøve hver vej, og tjekke om den vej genererer $w$). For at få en deterministisk polynomiel algoritme bruger vi dynamisk programmering.
+%% MANGLER
 \begin{proof}
 
 \end{proof}
@@ -395,7 +395,7 @@ Husk $3-SAT$ problemet fra DM551,
   3SAT = \{ \langle \phi \rangle \mid \phi \text{ er en satisfiable }3cnf\text{-formel}\}
 \end{equation*}
 
-Hvor $3cnf$ blot betyder at hver clause har 3 literals i sig.
+Hvor $3cnf$ blot betyder at hver clause har 3 literals i sig, og har formen $\phi = (x \lor x \lor x) \land (x \lor x \lor x) \land \cdots$.
 
 Det følgende teorem præsenterer en polynomieltidsreduktion fra $3SAT$ til $KLIKKE$ problemet.
 
