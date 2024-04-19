@@ -4,9 +4,13 @@ Beregnelighedsteori, som er den teori vi har kigget på indtil videre om hvorvid
 \section{Måling af kompleksitet}%
 \label{sec:measuringcomplexity}
 
-Da dette ikke er et delkapitel som er en del af pensum, kommer alle mine noter fra forfatterens Youtube video om delkapitlet: \href{https://www.youtube.com/watch?v=asjAc90L8rE&list=PLidiQIHRzpXIFFbyGrWkqXXVj0BztDcTF&index=12}{12. Time Complexity}.
+Da dette ikke er et delkapitel som er en del af pensum, kommer alle mine noter fra forfatterens Youtube video om delkapitlet: \href{https://www.youtube.com/watch?v=asjAc90L8rE&list=PLidiQIHRzpXIFFbyGrWkqXXVj0BztDcTF&index=12}{12. Time Complexity}, og den lille del Jørgen har i sin video.
 
 Vi starter med at kigge på eksemplet $A = \{a^{n}b^{n} \mid n \ge 0\}$. Vi stiller nu spørgsmålet: \textit{hvor mange skridt er nødvændige for at afgøre $A$}? Svaret på dette kommer naturligvis an på længden af det input vi er givet, og vi er derfor nødt til at give et svar ved en \textit{upper bound}. Det er altså det vi kalder \textit{worst-case}.
+
+\begin{definition}[Køretid]
+Lad $M$ være en deterministisk Turingmaskine som afgører et sprog. \textit{Køretiden} eller \textit{tidskompleksiteten} af $M$ er funktionen $f: \mathbb{N} \rightarrow \mathbb{N}$ hvor $f(n)$ er det maksimum antal af skridt som $m$ tager på et input af længde $n$.
+\end{definition}
 
 \begin{definition}[Store $O$]
 $f(n)$ er $O(g(n))$ hvis $f(n) \le cg(n)$ for en konstant $c$ uafhængig af $n$.
@@ -426,6 +430,28 @@ Vi giver en hurtig
   %% MANGLER:
   %% https://www.youtube.com/watch?v=iZPzBHGDsWI
 \end{proof}
+
+Jørgen kommer også med følgende teorem, samt beviset til denne:
+\begin{theorem}
+SAT er reducerbart i polynomiel tid til 3-SAT.
+\end{theorem}
+
+\begin{proof}
+  I et 3-SAT problem har vi klausuler af 3 literals. Ved en almen satisfiability klausul, kan den være af alle mulige størrelser. Vi kigger på 3 cases, og beskriver hvordan de ``konverteres'' til 3-SAT, hvor $|C| =$ størrelsen på klausulen.
+  \begin{itemize}
+    \item $|C| \ge 4$: En klausul $C_{i} = (\lambda_{1} \lor \lambda_{2} \lor \cdots \lor \lambda_{k})$. Vi introducerer nye variabler $y_{1}, y_{2}, \ldots, y_{k-3}$ kun til klausulen $C_{i}$. Vi erstatter så $C_{i}$ med følgende klausuler:
+          \begin{equation*}
+            X_{i} = (\lambda_{1} \lor \lambda_{2} \lor y_{1}) \land (\overline{y_{1}} \lor \lambda_{3} \lor y_{2}) \land (\overline{y_{2}} \lor \lambda_{4} \lor y_{3}) \land \cdots \land (\overline{y_{k-4}} \lor \lambda_{k-2} \lor y_{k-3}) \land (\overline{y_{k-3}} \lor \lambda_{k-1} \lor \lambda_{k})
+
+          \end{equation*}
+          %% MANGLER FORKLARING PÅ HVORFOR DEN ER SAND
+
+
+    \item $|C| = 2$: Simpelt: $(\lambda_{1} \lor \lambda_{2}) \rightarrow (\lambda_{1} \lor \lambda_{2} \lor z) \land (\lambda_{1} \lor \lambda_{2} \lor \overline{z})$
+    \item $|C| = 1$: Simpelt: $(\lambda) \rightarrow (\lambda \lor x \lor y) \land (\lambda \lor x \lor \overline{y}) \land (\lambda \lor \overline{x} \lor y) \land (\lambda \lor \overline{x} \lor \overline{y})$
+  \end{itemize}
+\end{proof}
+
 
 \subsection{Definitionen af NP-Komplethed}%
 \label{subsec:definitionofnpcompleteness}
