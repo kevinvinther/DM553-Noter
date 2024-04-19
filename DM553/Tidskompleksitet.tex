@@ -9,40 +9,40 @@ Da dette ikke er et delkapitel som er en del af pensum, kommer alle mine noter f
 Vi starter med at kigge på eksemplet $A = \{a^{n}b^{n} \mid n \ge 0\}$. Vi stiller nu spørgsmålet: \textit{hvor mange skridt er nødvændige for at afgøre $A$}? Svaret på dette kommer naturligvis an på længden af det input vi er givet, og vi er derfor nødt til at give et svar ved en \textit{upper bound}. Det er altså det vi kalder \textit{worst-case}.
 
 \begin{definition}[Køretid]
-Lad $M$ være en deterministisk Turingmaskine som afgører et sprog. \textit{Køretiden} eller \textit{tidskompleksiteten} af $M$ er funktionen $f: \mathbb{N} \rightarrow \mathbb{N}$ hvor $f(n)$ er det maksimum antal af skridt som $m$ tager på et input af længde $n$.
+	Lad $M$ være en deterministisk Turingmaskine som afgører et sprog. \textit{Køretiden} eller \textit{tidskompleksiteten} af $M$ er funktionen $f: \mathbb{N} \rightarrow \mathbb{N}$ hvor $f(n)$ er det maksimum antal af skridt som $m$ tager på et input af længde $n$.
 \end{definition}
 
 \begin{definition}[Store $O$]
-$f(n)$ er $O(g(n))$ hvis $f(n) \le cg(n)$ for en konstant $c$ uafhængig af $n$.
+	$f(n)$ er $O(g(n))$ hvis $f(n) \le cg(n)$ for en konstant $c$ uafhængig af $n$.
 \end{definition}
 
 \begin{definition}[Lille $o$]
-$f(n)$ er $o(g(n))$ hvis $f(n) \le \varepsilon g(n)$ for alle $\varepsilon > 0$ og et stort $n$.
+	$f(n)$ er $o(g(n))$ hvis $f(n) \le \varepsilon g(n)$ for alle $\varepsilon > 0$ og et stort $n$.
 \end{definition}
 
 Lad os kigge på et eksempel hvor vi bruger store $O$ notation.
 
 \begin{theorem}
-En 1-bånds deterministisk Turingmaskine $M$ kan afgøre $A$ på input længde $n$, hvor $M$ bruger højest $cn^{2}$ skridt for en konstant $c$.
+	En 1-bånds deterministisk Turingmaskine $M$ kan afgøre $A$ på input længde $n$, hvor $M$ bruger højest $cn^{2}$ skridt for en konstant $c$.
 \end{theorem}
 
 Det vil altså sige at $M$ har køretid $O(n^{2})$.
 
 \begin{proof}
-  "M = på input $w$
-  \begin{enumerate}
-    \item Scan input til at tjekke at det er i den rigtige rækkefølge, altså $w \in a^{*}b^{*}$. \textit{Afvis} hvis ikke.
+	"M = på input $w$
+	\begin{enumerate}
+		\item Scan input til at tjekke at det er i den rigtige rækkefølge, altså $w \in a^{*}b^{*}$. \textit{Afvis} hvis ikke.
 
-    \item Løkke indtil alle er krydset af
-          \begin{enumerate}
-            \item Scan båndet, kryds én $a$ og én $b$
-            \item \textit{Afvis} hvis kun $a$ eller $b$ er tilbage
-          \end{enumerate}
-    \item \textit{Accepter} hvis alle er krdyset af.''
-  \end{enumerate}
+		\item Løkke indtil alle er krydset af
+		      \begin{enumerate}
+			      \item Scan båndet, kryds én $a$ og én $b$
+			      \item \textit{Afvis} hvis kun $a$ eller $b$ er tilbage
+		      \end{enumerate}
+		\item \textit{Accepter} hvis alle er krdyset af.''
+	\end{enumerate}
 
-  Første punkt tager $O(n)$ tid.
-  Næste skridt tager $O(n)$ tid $O(n)$ gange, altså $O(n \times n) = O(n^{2})$. Det vil altså sige at algoritemn tager tid $O(n + n^{2}) = O(n^{2})$.
+	Første punkt tager $O(n)$ tid.
+	Næste skridt tager $O(n)$ tid $O(n)$ gange, altså $O(n \times n) = O(n^{2})$. Det vil altså sige at algoritemn tager tid $O(n + n^{2}) = O(n^{2})$.
 \end{proof}
 
 Vi kan faktisk lave en algoritme der kører i $O(n \log n)$ tid, og en på 2 bånd der kører i $O(n)$ tid, men det gider vi ikke til at kigge på nu.
@@ -50,16 +50,16 @@ Vi kan faktisk lave en algoritme der kører i $O(n \log n)$ tid, og en på 2 bå
 Læg dog mærke til at der er forskel på den laveste upper-bound pr model. I beregnlighedsteori er hvilken model vi vælger lige gyldig, hver model er altså ækvivalent i hvilket sprog den genkender/afgører etc. Dette gælder \textbf{ikke} i kompleksitetsteori. Her er det forskelligt fra model til model hvor mange skridtr en maskine tager.
 
 \begin{definition}
-Lad $t: \mathbb{N} \longrightarrow \mathbb{N}$. Vi siger at en Turingmaskine $M$ kører i tid $t(n)$ hvis $M$ altid stopper indenfor $t(n)$ skridt på alle input af længde $n$.
+	Lad $t: \mathbb{N} \longrightarrow \mathbb{N}$. Vi siger at en Turingmaskine $M$ kører i tid $t(n)$ hvis $M$ altid stopper indenfor $t(n)$ skridt på alle input af længde $n$.
 \end{definition}
 
 Det betyder for eksempel, at hvis vi har en maskine der kører på tid $t(n^{2})$, og vi giver den et input på $10$, så er det \textbf{garanteret} at den stopper indenfor 100 skridt.
 
 \begin{definition}
-  \begin{align*}
-    TIME(t(n)) = \{B \mid &\text{ en deterministisk 1-bånds Turingmaskine }\\
-    &M \text{ afgører } B \text{ og } M \text{ kører i tid } O(t(n))\}
-  \end{align*}
+	\begin{align*}
+		TIME(t(n)) = \{B \mid & \text{ en deterministisk 1-bånds Turingmaskine }                  \\
+		                      & M \text{ afgører } B \text{ og } M \text{ kører i tid } O(t(n))\}
+	\end{align*}
 \end{definition}
 
 Altså er $TIME(t(n))$ en \textbf{klase af sprog} som kører i tid $O(t(n))$, hvis $t(n) = n^{2}$, så er $TIME(n^{2})$ klassen af sprog der kører i $O(n^{2})$. Det betyder også at der er klasser der er delmængder af andre klasser. For eksempel $TIME(n) \subset TIME(n \log n) \subset TIME(n^{2}) \subset \cdots$.
@@ -76,16 +76,16 @@ Vi ser på polynomielle forskelle i køretid som værende små, og eksponentiell
 Eksponentielle algoritmer fremkommer ofte i \textbf{brute-force søgninger}, altså hvor vi ``bare leder efter en løsning'' på et problem, fremfor en effektiv løsning. Hvis man har en dybere forståelse af et problem, kan man ofte finde en polynomiel løsning.
 
 \begin{definition}
-To komputeringsmodeller er \textbf{polynomielt relateret} hvis de kan simulere hinanden i polynomiel tid.
+	To komputeringsmodeller er \textbf{polynomielt relateret} hvis de kan simulere hinanden i polynomiel tid.
 \end{definition}
 
 Alle ``reasonable'' (ifølge Sipser) deterministiske modeller er polynomielt relateret:
 \begin{itemize}
-  \item 1 bånds DTM
-  \item Flerbånds DTM
-  \item Multi-dimensionelle DTM
-  \item Random Access Machines
-  \item Cellular Automata
+	\item 1 bånds DTM
+	\item Flerbånds DTM
+	\item Multi-dimensionelle DTM
+	\item Random Access Machines
+	\item Cellular Automata
 \end{itemize}
 
 \begin{definition}[Klassen $P$]
@@ -288,33 +288,33 @@ En \textbf{klikke} i en urettet graf er en subgraf, hvori hver to knuder er samm
 
 Klikkeproblemet omhandler at finde ud af om en graf indeholder en klikke af en specifik størrelse, lad
 \begin{equation*}
-KLIKKE = \{\text{\texttt{<G><k>}} \mid G \text{ er en urettet graf med en } k-\text{klikke}\}
+	KLIKKE = \{\text{\texttt{<G><k>}} \mid G \text{ er en urettet graf med en } k-\text{klikke}\}
 \end{equation*}
 
 \begin{theorem}
-$KLIKKE$ er i $NP$.
+	$KLIKKE$ er i $NP$.
 \end{theorem}
 
 \begin{proof}
-  Følgende er en verifikator $V$ for $KLIKKE$.\\\\
-  \noindent
-  $V = $ `` På input \texttt{<<G><k>><c>}:
-  \begin{enumerate}
-    \item Tjek om $c$ er en subgraf med $k$ knuder i $G$.
-    \item Tjek om $G$ indeholder alle knuder der forbinder knuder i $c$.
-    \item Hvis begge består, \textit{accepter}, ellers \textit{afvis}.''
-  \end{enumerate}
+	Følgende er en verifikator $V$ for $KLIKKE$.\\\\
+	\noindent
+	$V = $ `` På input \texttt{<<G><k>><c>}:
+	\begin{enumerate}
+		\item Tjek om $c$ er en subgraf med $k$ knuder i $G$.
+		\item Tjek om $G$ indeholder alle knuder der forbinder knuder i $c$.
+		\item Hvis begge består, \textit{accepter}, ellers \textit{afvis}.''
+	\end{enumerate}
 \end{proof}
 
 Man kan også bevise det ved at lave en nondeterministisk polynomiel algoritme:
 
 \begin{proof}
-  $N = $ ``På input \texttt{<G><k>} hvor $G$ er en graf:
-  \begin{enumerate}
-    \item Nondeterministisk vælg en delmængde $c$ af $k$ knuder af $G$.
-    \item Tjek om $G$ indeholder alle kanter der forbinder knuder i $c$.
-    \item Hvis ja, \textit{accepter}, ellers \textit{afvis}.''
-  \end{enumerate}
+	$N = $ ``På input \texttt{<G><k>} hvor $G$ er en graf:
+	\begin{enumerate}
+		\item Nondeterministisk vælg en delmængde $c$ af $k$ knuder af $G$.
+		\item Tjek om $G$ indeholder alle kanter der forbinder knuder i $c$.
+		\item Hvis ja, \textit{accepter}, ellers \textit{afvis}.''
+	\end{enumerate}
 \end{proof}
 
 \subsection{P versus NP spørgsmålet}%
@@ -322,15 +322,15 @@ Man kan også bevise det ved at lave en nondeterministisk polynomiel algoritme:
 
 Vi opsummerer $P$ og $NP$ som følger:
 \begin{align*}
-\text{P} &= \text{ klassen af sprog hvor medlemskabet kan blive \textit{afgjort} hurtigt.} \\
-  \text{NP} &= \text{ klassen af sprog hvor medlemskabet kan blive \textit{verificeret} hurtigt.}
+	\text{P}  & = \text{ klassen af sprog hvor medlemskabet kan blive \textit{afgjort} hurtigt.}     \\
+	\text{NP} & = \text{ klassen af sprog hvor medlemskabet kan blive \textit{verificeret} hurtigt.}
 \end{align*}
 
 Vi kan ikke bevise eksistensen af et enkelt sprog i $NP$ som ikke er i $P$, så det er muligt at $P = NP$. Dette er en af de største uløste problemer i datalogi, og moderne matematik. Hvis disse klasser var lige, ville ethver polynomielt verificérbart problem være polynomielt afgørligt. De fleste forskere tror ikke at de to klasser er ens, fordi folk har brugt rigtig meget indsats  på at finde polynomieltidsalgoritme for nogle af problemer i $NP$ uden succes. Forskere har også prøvbet at bevise at klasserne er ulige men uden succes. For at bevise uligheden ville det kræve at man skulle vise at der ikke findes en hurtig algoritme til at erstatte brute-forcing.
 
 Den bedste derministiske metode vi kender til at afgøre sprog i $NP$ bruger eksponentiel tid, i andre ord kan vi bevise at
 \begin{equation*}
-NP \subseteq EXPTIME = \bigcup_{k} TIME (2^{n^{k}})
+	NP \subseteq EXPTIME = \bigcup_{k} TIME (2^{n^{k}})
 \end{equation*}
 Men vi ved ikke om $NP$ er en del af en mindre, deterministisk kompleksitetsklasse.
 
@@ -345,18 +345,18 @@ Det første $NP$-fuldstændige problem vi kigger på er \textit{satisfiability p
 
 En boolsk formel er satisfiable hvis en tildeling af 0'er og 1'er til variablerne gør at formlen evaluerer til 1. Eksempelvis er følgende formel satisfiable når $x = 0, y = 1, z = 0$:
 \begin{equation*}
-\phi = (\overline{x} \land y) \lor (x \land \overline{z})
+	\phi = (\overline{x} \land y) \lor (x \land \overline{z})
 \end{equation*}
 
 Satisfiability problemet er at teste hvorledes en boolsk formel er satisfiable:
 \begin{equation*}
-SAT = \{ \langle \phi \rangle \mid \phi \text{ er en satisfiable boolsk formel}\}
+	SAT = \{ \langle \phi \rangle \mid \phi \text{ er en satisfiable boolsk formel}\}
 \end{equation*}
 
 Følgende teorem siger at kompleksitetsklassen af SAT problemet er ens til kompleksiteten af alle problemer i $NP$.
 
 \begin{theorem}
-$SAT \in P \iff P = NP$
+	$SAT \in P \iff P = NP$
 \end{theorem}
 
 \subsection{Polynomieltids Reducérbarhed}%
@@ -365,38 +365,38 @@ $SAT \in P \iff P = NP$
 Her viser vi hvordan et problem $A$ kan reduceres til et problem $B$, der så kan bruges til at løse $A$. Når problem $A$ er effektivt reducérbart til problem $B$, kan en effektiv løsning til $B$ bruges til at løse $A$ effektivt.
 
 \begin{definition}
-En funktion $f : \Sigma^{*} \longrightarrow \Sigma^{*}$ er en polynomieltids beregnelig funktion hvis en polynomieltids Turingmaskine $M$ eksisterer som stopper med $f(w)$ på sit bånd, når den er startet på et input $w$.
+	En funktion $f : \Sigma^{*} \longrightarrow \Sigma^{*}$ er en polynomieltids beregnelig funktion hvis en polynomieltids Turingmaskine $M$ eksisterer som stopper med $f(w)$ på sit bånd, når den er startet på et input $w$.
 \end{definition}
 
 \begin{definition}
-  Sprog $A$ er polynomielttids reducerbart\footnote{Mapping reducible på engelsk} til sprog $B$, skrevet $A \leq_{P} B$, hvis en polynomieltids beregnlig funktion $f : \Sigma^{*} \longrightarrow \Sigma^{*}$ eksisterer, hvor for hvert $w$,
-  \begin{equation*}
-w \in A \iff f(w) \in B
-\end{equation*}
-Funktionen $f$ kaldes polynomielt tids reduktionen af $A$ til $B$.
+	Sprog $A$ er polynomielttids reducerbart\footnote{Mapping reducible på engelsk} til sprog $B$, skrevet $A \leq_{P} B$, hvis en polynomieltids beregnlig funktion $f : \Sigma^{*} \longrightarrow \Sigma^{*}$ eksisterer, hvor for hvert $w$,
+	\begin{equation*}
+		w \in A \iff f(w) \in B
+	\end{equation*}
+	Funktionen $f$ kaldes polynomielt tids reduktionen af $A$ til $B$.
 \end{definition}
 
 Hvis et sprog er polynomielt tids reducérbart til et sprog som allerede er kendt til at have en polynomiel tids løsning, får vi en polynomiel tids løsning til det originale sprog, pr det følgende teorem:
 
 \begin{theorem}
-Hvis $A \le_{P} B$ og $B \in P$, så $A \in P$
+	Hvis $A \le_{P} B$ og $B \in P$, så $A \in P$
 \end{theorem}
 
 \begin{proof}
-  Lad $M$ være polynomiel tids algoritmen der afgører $B$ og $f$ være polynomiel tids reduktionen fra $A$ til $B$. Vi beskriver en polynomieltids algoritme $N$ som afgører $A$ som følger:\\
-  \noindent
-  $N = $ ``På input $w$:
-  \begin{enumerate}
-    \item Beregn $f(w)$.
-    \item Kør $M$ på input $f(w)$ og output hvadend $M$ outputter.''
-  \end{enumerate}
+	Lad $M$ være polynomiel tids algoritmen der afgører $B$ og $f$ være polynomiel tids reduktionen fra $A$ til $B$. Vi beskriver en polynomieltids algoritme $N$ som afgører $A$ som følger:\\
+	\noindent
+	$N = $ ``På input $w$:
+	\begin{enumerate}
+		\item Beregn $f(w)$.
+		\item Kør $M$ på input $f(w)$ og output hvadend $M$ outputter.''
+	\end{enumerate}
 
-Vi har $w \in A$ når $f(w) \in B$ fordi $f$ er en reduktion fra $A$ til $B$. Dermed accepterer $M$ $f(w)$ når $w \in A$. $N$ kører i polynomiel tid fordi hver af dens to stadier kører i polynomiel tid. Stadie 2 kører i polynomiel tid fordi kompositionen af to polynomier er polynomiel.
+	Vi har $w \in A$ når $f(w) \in B$ fordi $f$ er en reduktion fra $A$ til $B$. Dermed accepterer $M$ $f(w)$ når $w \in A$. $N$ kører i polynomiel tid fordi hver af dens to stadier kører i polynomiel tid. Stadie 2 kører i polynomiel tid fordi kompositionen af to polynomier er polynomiel.
 \end{proof}
 
 Husk $3-SAT$ problemet fra DM551,
 \begin{equation*}
-  3SAT = \{ \langle \phi \rangle \mid \phi \text{ er en satisfiable }3cnf\text{-formel}\}
+	3SAT = \{ \langle \phi \rangle \mid \phi \text{ er en satisfiable }3cnf\text{-formel}\}
 \end{equation*}
 
 Hvor $3cnf$ blot betyder at hver clause har 3 literals i sig, og har formen $\phi = (x \lor x \lor x) \land (x \lor x \lor x) \land \cdots$.
@@ -404,7 +404,7 @@ Hvor $3cnf$ blot betyder at hver clause har 3 literals i sig, og har formen $\ph
 Det følgende teorem præsenterer en polynomieltidsreduktion fra $3SAT$ til $KLIKKE$ problemet.
 
 \begin{theorem}
-$3SAT$ er polynomielt tidsreducérbart til KLIKKE.
+	$3SAT$ er polynomielt tidsreducérbart til KLIKKE.
 \end{theorem}
 
 Reduktionen $f$ konverterer formler til grafer. I de konstruerede grafer, svarer klikker af en specifik størrelse til satisfying assignment af formlen.
@@ -412,44 +412,43 @@ Reduktionen $f$ konverterer formler til grafer. I de konstruerede grafer, svarer
 Vi giver en hurtig
 
 \begin{proof}
-  Lad $\phi$ være en formel med $k$ klausuler såsom:
-  \begin{equation*}
-\phi = (a_{1} \lor b_{1} \lor c_{1}) \land (a_{2} \lor b_{2} \lor c_{2}) \land \cdots \land (a_{k} \lor b_{k} \land c_{k})
-  \end{equation*}
-  Reduktionen $f$ genererer strengen \(\langle G,k \rangle \) hvor $G$ er en urettet graf defineret som følger.
-  Knuderne i $G$ organiseres i $k$ grupper af tre knuder, hver kaldet tripler, $t_{1}, \ldots, t_{k}$. Hver triple svarer til en af de klausuler i $\phi$, og hver knude i en triple svarer til en literal i den associeret klausul. Vi giver dermed også hver knude i $G$ værdien for hver literal i $\phi$.
+	Lad $\phi$ være en formel med $k$ klausuler såsom:
+	\begin{equation*}
+		\phi = (a_{1} \lor b_{1} \lor c_{1}) \land (a_{2} \lor b_{2} \lor c_{2}) \land \cdots \land (a_{k} \lor b_{k} \land c_{k})
+	\end{equation*}
+	Reduktionen $f$ genererer strengen \(\langle G,k \rangle \) hvor $G$ er en urettet graf defineret som følger.
+	Knuderne i $G$ organiseres i $k$ grupper af tre knuder, hver kaldet tripler, $t_{1}, \ldots, t_{k}$. Hver triple svarer til en af de klausuler i $\phi$, og hver knude i en triple svarer til en literal i den associeret klausul. Vi giver dermed også hver knude i $G$ værdien for hver literal i $\phi$.
 
-  Kanterne i $G$ forbinder alle undtagen to typer af par af knuder i $G$. Ingen kant mellem to knuder er den samme triple, og ingen kant findes mellem to knuder med modstridige labels, såsom $x_{2}$ og $\overline{x_{2}}$.
+	Kanterne i $G$ forbinder alle undtagen to typer af par af knuder i $G$. Ingen kant mellem to knuder er den samme triple, og ingen kant findes mellem to knuder med modstridige labels, såsom $x_{2}$ og $\overline{x_{2}}$.
 
-  Vi viser nu hvorfor dette virker. Vi viser at $\phi$ er satisfiable $\iff$ $G$ har en $k-$klikke.
+	Vi viser nu hvorfor dette virker. Vi viser at $\phi$ er satisfiable $\iff$ $G$ har en $k-$klikke.
 
-  Antag at $\phi$   har en satisfying assignment, det betyder at der er mindst én literal som er sand i hver klausul. I hver triple af $G$ vælger vi en knude tilsvande til en sand literal i den satisfying assignment. Hvis der er mere end én sand literal, vælger vi bare en af dem arbitrært. De knuder vi lige har valgt former en $k-$klikke. Antallaet af knuder valgt er $k$, da vi vælger én for hver af de $k$ tripler. Hvert par af valgte knuder er forbundet af en kandt.
+	Antag at $\phi$   har en satisfying assignment, det betyder at der er mindst én literal som er sand i hver klausul. I hver triple af $G$ vælger vi en knude tilsvande til en sand literal i den satisfying assignment. Hvis der er mere end én sand literal, vælger vi bare en af dem arbitrært. De knuder vi lige har valgt former en $k-$klikke. Antallaet af knuder valgt er $k$, da vi vælger én for hver af de $k$ tripler. Hvert par af valgte knuder er forbundet af en kandt.
 
-  Antag at $G$ har en $k-$klikke. Intet par af klikken knuder er i den samme triple, fordi knuderne i den samme triple ikke er forbundet af kanter. Derfor indeholder hver af de $k$ tripler præcis en af de $k$ klikkes knuder. Vi tilegner sandhedsværdier til variablerne af $\phi$ så hver literal
+	Antag at $G$ har en $k-$klikke. Intet par af klikken knuder er i den samme triple, fordi knuderne i den samme triple ikke er forbundet af kanter. Derfor indeholder hver af de $k$ tripler præcis en af de $k$ klikkes knuder. Vi tilegner sandhedsværdier til variablerne af $\phi$ så hver literal
 
-  %% MANGLER:
-  %% https://www.youtube.com/watch?v=iZPzBHGDsWI
+	%% MANGLER:
+	%% https://www.youtube.com/watch?v=iZPzBHGDsWI
 \end{proof}
 
 Jørgen kommer også med følgende teorem, samt beviset til denne:
 \begin{theorem}
-SAT er reducerbart i polynomiel tid til 3-SAT.
+	SAT er reducerbart i polynomiel tid til 3-SAT.
 \end{theorem}
 
 \begin{proof}
-  I et 3-SAT problem har vi klausuler af 3 literals. Ved en almen satisfiability klausul, kan den være af alle mulige størrelser. Vi kigger på 3 cases, og beskriver hvordan de ``konverteres'' til 3-SAT, hvor $|C| =$ størrelsen på klausulen.
-  \begin{itemize}
-    \item $|C| \ge 4$: En klausul $C_{i} = (\lambda_{1} \lor \lambda_{2} \lor \cdots \lor \lambda_{k})$. Vi introducerer nye variabler $y_{1}, y_{2}, \ldots, y_{k-3}$ kun til klausulen $C_{i}$. Vi erstatter så $C_{i}$ med følgende klausuler:
-          \begin{equation*}
-            X_{i} = (\lambda_{1} \lor \lambda_{2} \lor y_{1}) \land (\overline{y_{1}} \lor \lambda_{3} \lor y_{2}) \land (\overline{y_{2}} \lor \lambda_{4} \lor y_{3}) \land \cdots \land (\overline{y_{k-4}} \lor \lambda_{k-2} \lor y_{k-3}) \land (\overline{y_{k-3}} \lor \lambda_{k-1} \lor \lambda_{k})
+	I et 3-SAT problem har vi klausuler af 3 literals. Ved en almen satisfiability klausul, kan den være af alle mulige størrelser. Vi kigger på 3 cases, og beskriver hvordan de ``konverteres'' til 3-SAT, hvor $|C| =$ størrelsen på klausulen.
+	\begin{itemize}
+		\item $|C| \ge 4$: En klausul $C_{i} = (\lambda_{1} \lor \lambda_{2} \lor \cdots \lor \lambda_{k})$. Vi introducerer nye variabler $y_{1}, y_{2}, \ldots, y_{k-3}$ kun til klausulen $C_{i}$. Vi erstatter så $C_{i}$ med følgende klausuler:
+		      \begin{equation*}
+			      X_{i} = (\lambda_{1} \lor \lambda_{2} \lor y_{1}) \land (\overline{y_{1}} \lor \lambda_{3} \lor y_{2}) \land (\overline{y_{2}} \lor \lambda_{4} \lor y_{3}) \land \cdots \land (\overline{y_{k-4}} \lor \lambda_{k-2} \lor y_{k-3}) \land (\overline{y_{k-3}} \lor \lambda_{k-1} \lor \lambda_{k})
+		      \end{equation*}
+		      %% MANGLER FORKLARING PÅ HVORFOR DEN ER SAND
 
-          \end{equation*}
-          %% MANGLER FORKLARING PÅ HVORFOR DEN ER SAND
 
-
-    \item $|C| = 2$: Simpelt: $(\lambda_{1} \lor \lambda_{2}) \rightarrow (\lambda_{1} \lor \lambda_{2} \lor z) \land (\lambda_{1} \lor \lambda_{2} \lor \overline{z})$
-    \item $|C| = 1$: Simpelt: $(\lambda) \rightarrow (\lambda \lor x \lor y) \land (\lambda \lor x \lor \overline{y}) \land (\lambda \lor \overline{x} \lor y) \land (\lambda \lor \overline{x} \lor \overline{y})$
-  \end{itemize}
+		\item $|C| = 2$: Simpelt: $(\lambda_{1} \lor \lambda_{2}) \rightarrow (\lambda_{1} \lor \lambda_{2} \lor z) \land (\lambda_{1} \lor \lambda_{2} \lor \overline{z})$
+		\item $|C| = 1$: Simpelt: $(\lambda) \rightarrow (\lambda \lor x \lor y) \land (\lambda \lor x \lor \overline{y}) \land (\lambda \lor \overline{x} \lor y) \land (\lambda \lor \overline{x} \lor \overline{y})$
+	\end{itemize}
 \end{proof}
 
 
@@ -457,31 +456,47 @@ SAT er reducerbart i polynomiel tid til 3-SAT.
 \label{subsec:definitionofnpcompleteness}
 
 \begin{definition}[NP-Komplethed]
-  \label{def:npcomplete}
-  Et sprog $B$ er \textbf{NP-Komplet} hvis det opfylder følgende to betingelser:
-  \begin{enumerate}
-    \item $B \in NP$
-    \item Hvert $A$ i $NP$ er reducerbart i polynomiel tid til $B$.
-  \end{enumerate}
+	\label{def:npcomplete}
+	Et sprog $B$ er \textbf{NP-Komplet} hvis det opfylder følgende to betingelser:
+	\begin{enumerate}
+		\item $B \in NP$
+		\item Hvert $A$ i $NP$ er reducerbart i polynomiel tid til $B$.
+	\end{enumerate}
 \end{definition}
 
 Ud fra denne definition kan vi også se hvordan følgende vigtige teorem fremkommer.
 \begin{theorem}
-Hvis $B$ er $NP-$komplet og $B \in P$, så er $P = NP$.
+	Hvis $B$ er $NP-$komplet og $B \in P$, så er $P = NP$.
 \end{theorem}
 
 \begin{proof}
-Dette følger fra definitionen af polynomiel tids reducérbarhed.
+	Dette følger fra definitionen af polynomiel tids reducérbarhed.
 \end{proof}
 
 \begin{theorem}
-Hvis $B$ er $NP$-komplet og $B \le_{P} C$ for $C$ i $NP$, så er $C$ $NP$-komplet.
+	Hvis $B$ er $NP$-komplet og $B \le_{P} C$ for $C$ i $NP$, så er $C$ $NP$-komplet.
 \end{theorem}
 
 \begin{proof}
-Vi ved allerede at $C$ i er $NP$, så vi skal vise at hvert $A$ i $NP$ er reducerbart i polynomiel tid til $C$. Fordi $B$ er $NP$-komplet, er hvert sprog i $NP$ reducerbart i polynomiel tid til $C$.
-% Mangler:(
+	Vi ved allerede at $C$ i er $NP$, så vi skal vise at hvert $A$ i $NP$ er reducerbart i polynomiel tid til $C$. Fordi $B$ er $NP$-komplet, er hvert sprog i $NP$ reducerbart i polynomiel tid til $C$. Dette gælder fordi når $B \le_{P} C$ så $A \le_{P} B \le_{P} C$ da to polynomier lagt sammen også giver et polynomie betyder dette at $A \leq_{P} C$, og dermed er $C$ også NP-komplet.
 \end{proof}
+
+\subsection{Flere problemer og Cormen}%
+\label{subsec:7.5andcormen}
+
+Resten af dette kapitel kommer fra en blanding af delkapitel 7.5 i Sipser, og Cormen delkapitel 34.5.
+
+\begin{theorem}
+	$3 \text{-SAT} \le_P \text{VERTEX-COVER}$
+\end{theorem}
+
+Det er nok at vise at $3-\text{SAT} \le_{P} \text{CLIQUE} \le_{P} \text{Independent Set} \le_{P} \text{Vertex-Cover}$, som vi allerede har gjort i Teoremer \textbf{MANGLER} %% MANGLER.
+Men nu vil vi gøre det eksplicit.
+
+Givet en instans $f = C_{1} \land C_{2} \land \cdots \land C_{m}$  af 3$\text{-SAT}$ med variablerne $x_{1}, x_{2}, \ldots, x_{n}$. Lad $k = n + 2m$ og konstruér en graf $G = G(f)$ med $2n+3m$ knuder.
+
+
+
 
 
 
