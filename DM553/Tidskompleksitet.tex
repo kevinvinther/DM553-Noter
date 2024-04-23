@@ -637,8 +637,160 @@ $f$ er satisfiable $\iff$ $\langle S,t\rangle \in $  subset-sum
 \end{proof}
 
 \begin{proof}[\(\Leftarrow\)]
-Antag at $S' \subseteq S$ satisfier $\sum_{x \in S'}x = t$
+Antag at $S' \subseteq S$ satisfier $\sum_{x \in S'}x = t$, så sæt $x_{i} \leftarrow T \text{ hvis } v_{i} \in S'$ og $x_{i} \leftarrow T \text{ hvis } v_{i}' \in S'$
 \end{proof}
+
+Vi går nu videre til hamiltonsk cyklus (hamiltonian cycle.) En Hamiltonsk cyklus er en cyklus $C$ på en graf $G$ hvor $V(C) = V$, altså en cyklus der går igennem hver eneste knude én gang. Den er anderledes fra en hamiltonsk path, idet at den starter også slutter på samme knude.
+
+\begin{theorem}
+Hamiltonsk Cyklus er NP-komplet.
+\end{theorem}
+
+\begin{proof}
+  Hamiltonsk cyklus er i $NP$: Certifikatet er en permutation $v_{1}, v_{2}, \ldots, v_{n}$ således at $v_{i}, v_{i+1} \in E$ for $i = 1, 2, \ldots n-1$ og $v_{1}v_{n} \in E$
+
+  Problemet er NP-komplet da Vertex-cover $\le_{P}$ hamiltonsk cyklus. Til at bevise dette bruger vi en sub-graf, som man kalder en \textit{gadget}:
+  \begin{center}
+  \begin{tikzpicture}[node distance=1.5cm]
+
+	\node[state] (1) {};
+	\node[state, below=of 1]  (2) {};
+	\node[state, below=of 2]  (3) {};
+	\node[state, below=of 3]  (4) {};
+	\node[state, below=of 4]  (5) {};
+	\node[state, below=of 5]  (6) {};
+
+	\node[state, right=of 1] (11) {};
+	\node[state, below=of 11] (12) {};
+	\node[state, below=of 12] (13) {};
+	\node[state, below=of 13] (14) {};
+	\node[state, below=of 14] (15) {};
+	\node[state, below=of 15] (16) {};
+	\node[left=of 1] (01) {};
+	\node[left=of 6] (06) {};
+	\node[right=of 11] (21) {};
+	\node[right=of 16] (26) {};
+
+	\path[-]
+	(1) edge node {} (13)
+		edge node {} (2)
+	(2) edge node {} (3)
+	(3) edge node {} (4)
+		edge node {} (11)
+	(4) edge node {} (16)
+    	edge node {} (5)
+	(5) edge node {}(6)
+	(6) edge node {}(14)
+	(11) edge node {}(12)
+    (12) edge node {}(13)
+	(13) edge node {}(14)
+	(14) edge node {}(15)
+	(15) edge node {} (16)
+	(01) edge node {} (1)
+	(06) edge node {} (6)
+	(21) edge node {} (11)
+	(26) edge node {} (16);
+  \end{tikzpicture}
+  \end{center}
+
+  Der er to måder for en cyklus at besøge alle knuderne på her. Først kan den gøre sådan:
+  \begin{center}
+  \begin{tikzpicture}[node distance=1.5cm]
+	\node[state] (1) {};
+	\node[state, below=of 1]  (2) {};
+	\node[state, below=of 2]  (3) {};
+	\node[state, below=of 3]  (4) {};
+	\node[state, below=of 4]  (5) {};
+	\node[state, below=of 5]  (6) {};
+
+	\node[state, right=of 1] (11) {};
+	\node[state, below=of 11] (12) {};
+	\node[state, below=of 12] (13) {};
+	\node[state, below=of 13] (14) {};
+	\node[state, below=of 14] (15) {};
+	\node[state, below=of 15] (16) {};
+	\node[left=of 1] (01) {};
+	\node[left=of 6] (06) {};
+	\node[right=of 11] (21) {};
+	\node[right=of 16] (26) {};
+
+	\path[-]
+	(1) edge  node  {} (13)
+		edge [CoralRed, line width=2pt] node {} (2)
+	(2) edge [CoralRed, line width=2pt] node {} (3)
+	(3) edge node {} (4)
+		edge [CoralRed, line width=2pt] node {} (11)
+	(4) edge [CoralRed, line width=2pt]node {} (16)
+    	edge [CoralRed, line width=2pt] node {} (5)
+	(5) edge [CoralRed, line width=2pt] node {}(6)
+	(6) edge node {}(14)
+	(11) edge [CoralRed, line width=2pt] node {}(12)
+    (12) edge [CoralRed, line width=2pt]node {}(13)
+	(13) edge [CoralRed, line width=2pt]node {}(14)
+	(14) edge [CoralRed, line width=2pt]node {}(15)
+	(15) edge [CoralRed, line width=2pt]node {} (16)
+	(01) edge [CoralRed, line width=2pt]node {} (1)
+	(06) edge [CoralRed, line width=2pt] node {} (6)
+	(21) edge node {} (11)
+	(26) edge node {} (16);
+  \end{tikzpicture}
+  \end{center}
+
+  Man kan dog også gøre det ved at komme ind fra den ene side, tage den, og så den anden side bagefter:
+
+  \begin{center}
+  \begin{tikzpicture}[node distance=1.5cm]
+
+	\node[state] (1) {};
+	\node[state, below=of 1]  (2) {};
+	\node[state, below=of 2]  (3) {};
+	\node[state, below=of 3]  (4) {};
+	\node[state, below=of 4]  (5) {};
+	\node[state, below=of 5]  (6) {};
+
+	\node[state, right=of 1] (11) {};
+	\node[state, below=of 11] (12) {};
+	\node[state, below=of 12] (13) {};
+	\node[state, below=of 13] (14) {};
+	\node[state, below=of 14] (15) {};
+	\node[state, below=of 15] (16) {};
+	\node[left=of 1] (01) {};
+	\node[left=of 6] (06) {};
+	\node[right=of 11] (21) {};
+	\node[right=of 16] (26) {};
+
+	\path[-]
+	(1) edge node {} (13)
+		edge [TurquoiseGreen, line width=2pt]node {} (2)
+	(2) edge [TurquoiseGreen, line width=2pt]node {} (3)
+	(3) edge [TurquoiseGreen, line width=2pt]node {} (4)
+		edge node {} (11)
+	(4) edge node {} (16)
+    	edge [TurquoiseGreen, line width=2pt]node {} (5)
+	(5) edge [TurquoiseGreen, line width=2pt]node {}(6)
+	(6) edge node {}(14)
+	(11) edge [DeepSeaBlue, line width=2pt] node {}(12)
+    (12) edge [DeepSeaBlue, line width=2pt]node {}(13)
+	(13) edge [DeepSeaBlue, line width=2pt]node {}(14)
+	(14) edge [DeepSeaBlue, line width=2pt]node {}(15)
+	(15) edge [DeepSeaBlue, line width=2pt]node {} (16)
+	(01) edge [TurquoiseGreen, line width=2pt] node {} (1)
+	(06) edge [TurquoiseGreen, line width=2pt] node {} (6)
+	(21) edge [DeepSeaBlue, line width=2pt]node {} (11)
+	(26) edge [DeepSeaBlue, line width=2pt]node {} (16);
+  \end{tikzpicture}
+  \end{center}
+
+  Lad $\langle G,k \rangle $ være en instans af vertex-cover, hvor $G = (V,E)$. For hver kant $u,v \in E$ tag en kopi, $W_{uv}$ af $W$, hvor $W$ er vores gadget vi lige har set to måder at tage hver knude i en cyklus på. Dermed, hvis der er 100 kanter har vi 100 kopier af $W$. Fiks så en ordning af naboerne om hver knude $u \in V$. Dette betyder simpelt, at for hver knude kan vi tænke på hver af knudens naboer som den 1. nabo, den 2. nabo etc. Så hver nabo til knuden $u \in V$ har en ``rangering'' af en art.
+
+  %% MANGLER
+  %% ærligt, læs i bogen i stedet, jørgens forklaringe r lidt for kludret
+\end{proof}
+
+\subsection{Cook-Levin Teoremet}%
+\label{subsec:cooklevin}
+
+
 
 
 
