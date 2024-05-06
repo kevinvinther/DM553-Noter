@@ -486,6 +486,11 @@ Ud fra denne definition kan vi også se hvordan følgende vigtige teorem fremkom
 
 Resten af dette kapitel kommer fra en blanding af delkapitel 7.5 i Sipser, og Cormen delkapitel 34.5.
 
+Et \textit{vertex cover} af grafen $G$ er en delmængde af knuderne hvor hver kant af $G$ rører en af disse knuder. $Vertex-Cover$ problemet stiller spørgsmålet om der findes et vertex cover af en specifik størrelse:
+\begin{equation*}
+\text{VERTEX-COVER} = \{ \langle G, k \rangle \mid G \text{ er en urettet graf som har en } k-\text{knude vertex cover}\}
+\end{equation*}
+
 \begin{theorem}
 	$3 \text{-SAT} \le_P \text{VERTEX-COVER}$
 \end{theorem}
@@ -493,10 +498,297 @@ Resten af dette kapitel kommer fra en blanding af delkapitel 7.5 i Sipser, og Co
 Det er nok at vise at $3-\text{SAT} \le_{P} \text{CLIQUE} \le_{P} \text{Independent Set} \le_{P} \text{Vertex-Cover}$, som vi allerede har gjort i Teoremer \textbf{MANGLER} %% MANGLER.
 Men nu vil vi gøre det eksplicit.
 
-Givet en instans $f = C_{1} \land C_{2} \land \cdots \land C_{m}$  af 3$\text{-SAT}$ med variablerne $x_{1}, x_{2}, \ldots, x_{n}$. Lad $k = n + 2m$ og konstruér en graf $G = G(f)$ med $2n+3m$ knuder.
+Givet en instans $f = C_{1} \land C_{2} \land \cdots \land C_{m}$  af 3$\text{-SAT}$ med variablerne $x_{1}, x_{2}, \ldots, x_{n}$. Lad $k = n + 2m$ og konstruér en graf $G = G(f)$ med $2n+3m$ knuder (husk her at $m$ er antallet af klausuler og $n$ er antallet af variable.)
+Hver variabel $x_{i}$ repræsenteres af to knuder sat sammen af en kant. Dette kan ses i Figur~\ref{fig:variablepairvc}.
+\begin{figure}[ht]
+\begin{center}
+\begin{tikzpicture}[auto, node distance=3cm, every loop/.style={},
+                    thick,main node/.style={circle,draw,font=\sffamily\Large\bfseries}]
+		\node[state] (q1) {$v_{i}$};
+		\node[state, right=of q1] (q2) {$\overline{v_{i}}$};
+
+		\path[every node/.style={font=\sffamily\small}]
+		(q1) edge node {} (q2);
+\end{tikzpicture}
+\end{center}
+  \caption{\label{fig:variablepairvc} Et variabel par i 3-SAT $\le_{P}$ VC.}
+\end{figure}
+
+Hver klausul $c_{j}$ repræsenteres af 3 knuder sammensat via kanter som ses i Figur~\ref{fig:clause3sattovc}.
+\begin{figure}[ht]
+
+\begin{center}
+\begin{tikzpicture}
+		\node[state] (q1) {};
+		\node[state, right=of q1] (q2) {$z_{j}$};
+		\node[state, right=of q2] (q3) {};
+
+		\path[-]
+		(q1) edge node {} (q2)
+		(q2) edge node {} (q3)
+        (q3) edge[bend left] node {} (q1);
+\end{tikzpicture}
+\end{center}
+  \caption{\label{fig:clause3sattovc} En klausul i 3-SAT $\le_{P}$ VC.}
+\end{figure}
+I Figur~\ref{fig:3sat-to-clique} ses et eksempel på en konversation af en 3-SAT klausul $C_{1} = (x_{1} \lor \overline{x_{3}} \lor x_{5})$ til vertex-cover problemet.
+\begin{figure}[ht]
+\begin{center}
+  \begin{tikzpicture}[node distance=1.0cm]
+    \node[state] (1) {};
+    \node[state, below=of 1] (2) {$z_{1}$};
+    \node[state, below=of 2] (3) {};
+
+
+    \node[state, above right=0.4cm and 1cm of 2] (v3) {$v_{3}$};
+    \node[state, below=of v3] (nv3) {$\overline{v_{3}}$};
+
+    \node[state, above=of v3] (nv1) {$\overline{v_{1}}$};
+    \node[state, above=of nv1] (v1) {$v_{1}$};
+
+    \node[state, below=of nv3] (v5) {$v_{5}$};
+    \node[state, below=of v5] (nv5) {$\overline{v_{5}}$};
+
+
+    \path[-]
+    (1) edge node {} (2)
+        edge node {} (v1)
+    (2) edge node {} (3)
+        edge node {} (nv3)
+    (3) edge[bend left] node {} (1)
+        edge node {} (v5)
+
+    (v1) edge node {} (nv1)
+    (v3) edge node {} (nv3)
+    (v5) edge node {} (nv5);
+  \end{tikzpicture}
+\end{center}
+  \caption{\label{fig:3sat-to-clique} En konversation fra 3-SAT klausulen $(x_{1} \lor \overline{x_3} \lor x_{5})$ til Vertex-Cover problemet.}
+\end{figure}
 
 
 
+\begin{claim}
+$G(f)$ har et Vertex-Cover  af størrelse $n+2m$ $\iff$ $f$ er satisfiable.
+\end{claim}
+
+Vi kan relativt nemt se det her. Vi ved at hvert vertex cover har \textit{mindst} størrelse $n+2m$, da der er 2 per klausul trekant (Figur~\ref{fig:clause3sattovc}) og 1 per variabel kant (Figur~\ref{fig:variablepairvc}.) Grunden til at det er 2 per klausul trekant, er da man skal bruge mindst 2 knuder for at finde et vertex cover i trekanten.
+
+\begin{proof}[$f$ er satisfiable $\Rightarrow G(f)$ har et VC  af størrelse $n+2m$]
+  Antag at $f$ er satisfied af en truth assignment $t : \{x_{1} \ldots x_{n}\} \rightarrow \{T, F\}^{n}$. Vi konstruerer $U \le V(G)$ ved at tilføje $v_{i}$ til $U$ hvis $t(x_{i}) = T$ og tilføje $\overline{v_{i}}$ til $U$ hvis $t(x_{i}) = F\;\;(t(\overline{x_i}) = T)$. Nu ``cover'' $U$ alle kanter $v_{i} - \overline{v_i}\;\; i \in [n]$
+
+  For hver klausultrekant $Z_{j}$ er der mindst en af kanterne mellem variablerne og klausultrekanten, hvilket betyder at den er covered af $U$, da $C_{j}$ er satisfiable af $t$. Nu er $U$ et vertex cover og $|U| = n +2m$
+\end{proof}
+
+\begin{proof}[$G(f)$ har et VC af størrelse $n+2m$ \(\Rightarrow f\)  er satisfiable]
+Antag at $G$ har et vertex cover $X$ hvor $|X| = n+2m$, så er $|X \cap \{v_{i}, \overline{v_{i}}\} = 1$ for $i \in [n]$ og $X$ har præcis 2 knuder (vertices) fra $Z_{j}$ for $j \in [m]$. Lad $\phi(x_{i}) = T \iff v_{i} \in X \; i \in [n]$. Så er $\phi$ en satisfying truth assignment, altså har hver klausul $c_{j}$ en sand literal.
+\end{proof}
+
+
+Vi kigger nu på problemet ``subset-sum''. Subset-sum har som input $\langle S, t \rangle$ hvor $S$  er en mængde af ikke-negative heltal og $t \ge 0$ er et heltal. Problemet stiller så spørgsmålet: Eksisterer der en mængde $S' \subseteq S$ således at $\sum_{x \in S'}x = t$?
+
+\begin{theorem}
+\textit{Subset-sum} er $NP$-komplet.
+\end{theorem}
+
+\begin{proof}
+.
+  \begin{enumerate}
+    \item Subset-sum $\in NP$: Certifikatet er en mængde $S' \subseteq S$ hvor $\sum_{x \in S'}x= t$.
+          \item Vi viser at $3-SAT \le_{P}$ subset-sum.
+  \end{enumerate}
+  Lad $f = C_{1} \land C_{2} \land \cdots \land C_{m}$ være en 3-sat instans med variablerne $x_{1}, x_{2}, \ldots, x_{n}$. Vi konstruerer en instans $\langle S, t\rangle$ af subset-sum således at: $f$ er afgørlig $\iff$ $\langle S,t \rangle \in $ subset-sum ($\exists S' \subseteq S : \sum_{x \in S'}x=t$)
+
+  Vi kigger på tal i base 10, og lader $t = 11 \cdots 144 \cdots 4$ hvor 1-delen af $n$ og 4-delen er $m$. Vi ser på denne streng som et tal i base 10. Det vil altså sige at der er lige så mange $1$'er som der er variabler, og der er lige så manger 4'er som der er klausuler. Hver variabel $x_{i}$ i $f$ repræsenteres af $v_{i}$\footnote{Ikke en knude!} med:
+  \begin{align*}
+&x_{i}\;\;\;\;\;\;\;\;\;\;\;\;C_{j}\\
+v_{i} = 0 \cdots 0&10 \cdots 0 \cdots 1 \cdots 0 \;\; \text{ 1 i position }j \text{ hvis } x_{i} \text{ er en literal af } C_{j}
+  \end{align*}
+  \begin{align*}
+&x_{i}\;\;\;\;\;\;\;\;\;\;\;\;C_{j}\\
+v_{i}' = 0 \cdots 0&10 \cdots 0 \cdots 1 \cdots 0 \;\; \text{ 1 i position }j' \iff \overline{x_{i}} \text{ er en literal af } C_{j}'
+  \end{align*}
+  Der er kun ét 1-tal i start-delen, da $v_{i}$ og $v_{i}'$ repræsenterer en variabel $x_{i}$, men der kan være flere 1'ere i den anden del, da denne variabel kan være del af flere klausuler. I den anden formel er det alle klausuler hvor $\overline{x_{i}}$ er tilstede.
+
+  Hver klausul $C_{j}$ repræsenteres af $S_{j}, S_{j}'$, hvor
+  \begin{align*}
+    &{\color{red}C_{j}}\\
+ S_{j} = {00 \cdots 0 } {\color{red}0 \cdots 0}&{\color{red}10 \cdots 0}
+  \end{align*}
+  \begin{align*}
+    &{\color{red}C_{j}}\\
+ S_{j}' = {00 \cdots 0 } {\color{red}0 \cdots 0}&{\color{red}20 \cdots 0}
+  \end{align*}
+
+  Idéen her er at vi gerne vil have der til at stå 4, så det kan ligne $t$. Jørgen har dette på sine slides. Jeg gider ikke til at lave selve tabellen lige nu.
+\end{proof}
+
+\begin{claim}
+$f$ er satisfiable $\iff$ $\langle S,t\rangle \in $  subset-sum
+\end{claim}
+
+\begin{proof}[\(\Rightarrow\)]
+  For $i \in [n]$ : hvis $x_{i} = T$, tilføj $v_{i}$ til $S'$, ellers tilføj $v_{i}'$ til $S'$. For $j \in [n]$ :
+  \begin{itemize}
+    \item Hvis $C_{j}$ har 1 sand literal, tilføj $S_{j}, S_{j}'$ til $S'$
+    \item Hvis $C_{j}$ har 2 sande literals, tilføj $S_{j}'$ til $S'$.
+    \item Hvis $C_{j}$ har 3 sande literals, tilføj $S_{j}$ til $S'$
+  \end{itemize}
+\end{proof}
+
+\begin{proof}[\(\Leftarrow\)]
+Antag at $S' \subseteq S$ satisfier $\sum_{x \in S'}x = t$, så sæt $x_{i} \leftarrow T \text{ hvis } v_{i} \in S'$ og $x_{i} \leftarrow T \text{ hvis } v_{i}' \in S'$
+\end{proof}
+
+Vi går nu videre til hamiltonsk cyklus (hamiltonian cycle.) En Hamiltonsk cyklus er en cyklus $C$ på en graf $G$ hvor $V(C) = V$, altså en cyklus der går igennem hver eneste knude én gang. Den er anderledes fra en hamiltonsk path, idet at den starter også slutter på samme knude.
+
+\begin{theorem}
+Hamiltonsk Cyklus er NP-komplet.
+\end{theorem}
+
+\begin{proof}
+  Hamiltonsk cyklus er i $NP$: Certifikatet er en permutation $v_{1}, v_{2}, \ldots, v_{n}$ således at $v_{i}, v_{i+1} \in E$ for $i = 1, 2, \ldots n-1$ og $v_{1}v_{n} \in E$
+
+  Problemet er NP-komplet da Vertex-cover $\le_{P}$ hamiltonsk cyklus. Til at bevise dette bruger vi en sub-graf, som man kalder en \textit{gadget}:
+  \begin{center}
+  \begin{tikzpicture}[node distance=1.5cm]
+
+	\node[state] (1) {};
+	\node[state, below=of 1]  (2) {};
+	\node[state, below=of 2]  (3) {};
+	\node[state, below=of 3]  (4) {};
+	\node[state, below=of 4]  (5) {};
+	\node[state, below=of 5]  (6) {};
+
+	\node[state, right=of 1] (11) {};
+	\node[state, below=of 11] (12) {};
+	\node[state, below=of 12] (13) {};
+	\node[state, below=of 13] (14) {};
+	\node[state, below=of 14] (15) {};
+	\node[state, below=of 15] (16) {};
+	\node[left=of 1] (01) {};
+	\node[left=of 6] (06) {};
+	\node[right=of 11] (21) {};
+	\node[right=of 16] (26) {};
+
+	\path[-]
+	(1) edge node {} (13)
+		edge node {} (2)
+	(2) edge node {} (3)
+	(3) edge node {} (4)
+		edge node {} (11)
+	(4) edge node {} (16)
+    	edge node {} (5)
+	(5) edge node {}(6)
+	(6) edge node {}(14)
+	(11) edge node {}(12)
+    (12) edge node {}(13)
+	(13) edge node {}(14)
+	(14) edge node {}(15)
+	(15) edge node {} (16)
+	(01) edge node {} (1)
+	(06) edge node {} (6)
+	(21) edge node {} (11)
+	(26) edge node {} (16);
+  \end{tikzpicture}
+  \end{center}
+
+  Der er to måder for en cyklus at besøge alle knuderne på her. Først kan den gøre sådan:
+  \begin{center}
+  \begin{tikzpicture}[node distance=1.5cm]
+	\node[state] (1) {};
+	\node[state, below=of 1]  (2) {};
+	\node[state, below=of 2]  (3) {};
+	\node[state, below=of 3]  (4) {};
+	\node[state, below=of 4]  (5) {};
+	\node[state, below=of 5]  (6) {};
+
+	\node[state, right=of 1] (11) {};
+	\node[state, below=of 11] (12) {};
+	\node[state, below=of 12] (13) {};
+	\node[state, below=of 13] (14) {};
+	\node[state, below=of 14] (15) {};
+	\node[state, below=of 15] (16) {};
+	\node[left=of 1] (01) {};
+	\node[left=of 6] (06) {};
+	\node[right=of 11] (21) {};
+	\node[right=of 16] (26) {};
+
+	\path[-]
+	(1) edge  node  {} (13)
+		edge [CoralRed, line width=2pt] node {} (2)
+	(2) edge [CoralRed, line width=2pt] node {} (3)
+	(3) edge node {} (4)
+		edge [CoralRed, line width=2pt] node {} (11)
+	(4) edge [CoralRed, line width=2pt]node {} (16)
+    	edge [CoralRed, line width=2pt] node {} (5)
+	(5) edge [CoralRed, line width=2pt] node {}(6)
+	(6) edge node {}(14)
+	(11) edge [CoralRed, line width=2pt] node {}(12)
+    (12) edge [CoralRed, line width=2pt]node {}(13)
+	(13) edge [CoralRed, line width=2pt]node {}(14)
+	(14) edge [CoralRed, line width=2pt]node {}(15)
+	(15) edge [CoralRed, line width=2pt]node {} (16)
+	(01) edge [CoralRed, line width=2pt]node {} (1)
+	(06) edge [CoralRed, line width=2pt] node {} (6)
+	(21) edge node {} (11)
+	(26) edge node {} (16);
+  \end{tikzpicture}
+  \end{center}
+
+  Man kan dog også gøre det ved at komme ind fra den ene side, tage den, og så den anden side bagefter:
+
+  \begin{center}
+  \begin{tikzpicture}[node distance=1.5cm]
+
+	\node[state] (1) {};
+	\node[state, below=of 1]  (2) {};
+	\node[state, below=of 2]  (3) {};
+	\node[state, below=of 3]  (4) {};
+	\node[state, below=of 4]  (5) {};
+	\node[state, below=of 5]  (6) {};
+
+	\node[state, right=of 1] (11) {};
+	\node[state, below=of 11] (12) {};
+	\node[state, below=of 12] (13) {};
+	\node[state, below=of 13] (14) {};
+	\node[state, below=of 14] (15) {};
+	\node[state, below=of 15] (16) {};
+	\node[left=of 1] (01) {};
+	\node[left=of 6] (06) {};
+	\node[right=of 11] (21) {};
+	\node[right=of 16] (26) {};
+
+	\path[-]
+	(1) edge node {} (13)
+		edge [TurquoiseGreen, line width=2pt]node {} (2)
+	(2) edge [TurquoiseGreen, line width=2pt]node {} (3)
+	(3) edge [TurquoiseGreen, line width=2pt]node {} (4)
+		edge node {} (11)
+	(4) edge node {} (16)
+    	edge [TurquoiseGreen, line width=2pt]node {} (5)
+	(5) edge [TurquoiseGreen, line width=2pt]node {}(6)
+	(6) edge node {}(14)
+	(11) edge [DeepSeaBlue, line width=2pt] node {}(12)
+    (12) edge [DeepSeaBlue, line width=2pt]node {}(13)
+	(13) edge [DeepSeaBlue, line width=2pt]node {}(14)
+	(14) edge [DeepSeaBlue, line width=2pt]node {}(15)
+	(15) edge [DeepSeaBlue, line width=2pt]node {} (16)
+	(01) edge [TurquoiseGreen, line width=2pt] node {} (1)
+	(06) edge [TurquoiseGreen, line width=2pt] node {} (6)
+	(21) edge [DeepSeaBlue, line width=2pt]node {} (11)
+	(26) edge [DeepSeaBlue, line width=2pt]node {} (16);
+  \end{tikzpicture}
+  \end{center}
+
+  Lad $\langle G,k \rangle $ være en instans af vertex-cover, hvor $G = (V,E)$. For hver kant $u,v \in E$ tag en kopi, $W_{uv}$ af $W$, hvor $W$ er vores gadget vi lige har set to måder at tage hver knude i en cyklus på. Dermed, hvis der er 100 kanter har vi 100 kopier af $W$. Fiks så en ordning af naboerne om hver knude $u \in V$. Dette betyder simpelt, at for hver knude kan vi tænke på hver af knudens naboer som den 1. nabo, den 2. nabo etc. Så hver nabo til knuden $u \in V$ har en ``rangering'' af en art.
+
+  %% MANGLER
+  %% ærligt, læs i bogen i stedet, jørgens forklaringe r lidt for kludret
+\end{proof}
+
+\subsection{Cook-Levin Teoremet}%
+\label{subsec:cooklevin}
 
 
 
