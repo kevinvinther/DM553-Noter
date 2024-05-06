@@ -1,0 +1,44 @@
+\documentclass{beamer}
+
+\title{DM553 Emner}
+\subtitle{Til mundtlig præsentation af hele pensum.}
+
+\author{Kevin Vinther}
+\institute{IMADA}
+\date{6. Maj - 14 Juni (?)}
+
+% Font settings
+\usepackage[no-math]{fontspec} %-----------------------%  This exact order
+\defaultfontfeatures{%                                 %  of declarations
+  Scale=MatchLowercase, % needed here ...              %  is important for
+}                                                      %  single quotes not
+                                                       %  ("typographic")
+\defaultfontfeatures{%                                 %  in verbatim blocks
+  Scale=MatchLowercase, % ... and here again           %  of Scheme code.
+  Mapping=tex-text,                                    %  Now the quote is
+  SmallCapsFeatures={LetterSpace=2.5,WordSpace=1.05},  %  upright and safely
+}                                                      %  copy-pasteable to
+\setmainfont{Linux Libertine O}                        %  the REPL without
+\setsansfont{Linux Biolinum O} %-----------------------%  giving errors.
+
+% Theme setting
+\usetheme{default}
+\usecolortheme{dove}
+
+\usepackage{blindtext}
+\usepackage{hyperref}
+
+% Fonts and layout
+\usefonttheme{professionalfonts}
+\setbeamerfont{frametitle}{series=\bfseries}
+\setbeamertemplate{navigation symbols}{}
+\setbeamertemplate{footline}[frame number]
+
+\begin{document}
+
+%%% local variables:
+%%% mode: latex
+%%% tex-engine: xetex
+%%% tex-command-extra-options: "-shell-escape"
+%%% tex-master: "main"
+%%% end:
