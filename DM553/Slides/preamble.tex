@@ -7,19 +7,6 @@
 \institute{IMADA}
 \date{6. Maj - 14 Juni (?)}
 
-% Font settings
-\usepackage[no-math]{fontspec} %-----------------------%  This exact order
-\defaultfontfeatures{%                                 %  of declarations
-  Scale=MatchLowercase, % needed here ...              %  is important for
-}                                                      %  single quotes not
-                                                       %  ("typographic")
-\defaultfontfeatures{%                                 %  in verbatim blocks
-  Scale=MatchLowercase, % ... and here again           %  of Scheme code.
-  Mapping=tex-text,                                    %  Now the quote is
-  SmallCapsFeatures={LetterSpace=2.5,WordSpace=1.05},  %  upright and safely
-}                                                      %  copy-pasteable to
-\setmainfont{Linux Libertine O}                        %  the REPL without
-\setsansfont{Linux Biolinum O} %-----------------------%  giving errors.
 
 % Theme setting
 \usetheme{default}
@@ -27,6 +14,16 @@
 
 \usepackage{blindtext}
 \usepackage{hyperref}
+\usepackage[T1]{fontenc} %thanks's daleif
+\usepackage[utf8]{inputenc}
+\usepackage{amsthm}
+
+% Sæt sproget til dansk
+\usepackage{polyglossia}
+\setdefaultlanguage{danish}
+\setotherlanguages{english}
+
+
 
 % Fonts and layout
 \usefonttheme{professionalfonts}
@@ -34,11 +31,32 @@
 \setbeamertemplate{navigation symbols}{}
 \setbeamertemplate{footline}[frame number]
 
+\usepackage{tikz} % Til grafer
+\usetikzlibrary{automata} % Til automatgrafer
+\usetikzlibrary{positioning} % Positionering af knuder
+\usetikzlibrary{arrows.meta, arrows} % arrows til at ændre kanter
+\tikzset{
+	node distance=2.5cm, % minimumsdistancen mellem to knuderj
+	every state/.style={
+			semithick,
+			fill=gray!10
+		},
+	initial text={}, % Ingen tekst, bare kanter
+	double distance=2pt, % Udseende på accept states
+	every edge/.style={ % Egenskaber for hver transition
+			draw,
+			>=stealth', % bold arrowheads
+			auto,
+			semithick
+		}
+}
+% Tak til: https://www3.nd.edu/~dchiang/teaching/theory/2018/www/tikz_tutorial.pdf
+
 \begin{document}
 
-%%% local variables:
-%%% mode: latex
-%%% tex-engine: xetex
-%%% tex-command-extra-options: "-shell-escape"
-%%% tex-master: "main"
-%%% end:
+%%% Local variables:
+%%% Mode: latex
+%%% Tex-engine: xetex
+%%% Tex-command-extra-options: "-shell-escape"
+%%% Tex-master: "main"
+%%% End:
