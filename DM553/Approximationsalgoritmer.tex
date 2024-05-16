@@ -1,0 +1,37 @@
+\chapter{Approximationsalgoritmer}
+
+Approximationsalgoritmer, eller approximation algorithms (eller, et andet dansk ord: tilnærmelsesalgoritmer.) En approximationsalgoritme er en algoritme hvis løsning er tæt på at være optimal, men ikke helt er der. Vi kommer her til at kigge på flere polynomiel-tids approximationsalgoritmer for NP-komplette problemer. Jørgen kalder de problemer vi kigger på for ``optimiseringsproblemer''. Vi vil nu kigge på nogle eksempler på optimiseringsproblemer:
+
+\begin{itemize}
+  \item Givet en graf $G = (V, E)$, find et vertex cover $U$ af $G$ med $|U|$ værende minimum størrelse.
+\end{itemize}
+
+Altså stiller algoritmen ikke spørgsmålet om der findes et  vertex cover af størrelse $k$, men i stedet siger den at vi skal finde et vertex cover af minimum størrelse.
+
+Ofte kan vi ``bare'' bruge decision-algoritmen til at hjælpe os med at finde en algoritme til optimisering, men her har vi ikke en polynomiel algoritme, så vi kan ikke bruge en decision algoritme.
+
+\begin{itemize}
+  \item Givet $G = (V,E)$, find den længste cyklus.
+  \item Givet $G = (V,E)$, find en klikke af maksimum størrelse.
+  \item Givet en 3-SAT formel $\phi$ over variablerne $x_{1}, \ldots, x_{n}$, find en truth assignment som satisfier det maksimale antal af klausuler i $\phi$ (MAX-3-SAT.)
+  \item Givet en komplet graf $K_{n}$ med en kostefunktion på kanterne, find en Traveling Salesman Problem tur af minimum kost.
+  \item Givet en mængde $S = \{x_{1}, x_{2}, \ldots, x_{n}\}$ af heltal og $t \in \mathbb{Z}$, find en delmængde $S' \subseteq S$ som minimerer $t - \sum_{x_{i} \in S'}x_{i}$ imens $\sum_{x_{i} \in S'} x_{i} \le t$ (altså en sum der er så tæt som muligt på $t$, også kaldt subset-sum problemet.)
+\end{itemize}
+
+Målet i approximationsalgoritmer er altså at finde en løsning $C$ i polynomiel tid således at $C$ er \textit{tæt på} $C^*$ hvor $C^{*}$ er værdien af den optimale løsning.
+
+En algoritme $A$ til et problem $P$ har et \textit{approximationsforhold} (approximation ratio) $\rho(n)$ hvis $\max \left\{ \frac{C}{C^{*}}, \frac{C^{*}}{C} \right\} \le \rho(n)$.
+
+Til et minimeringsproblem har vi $C \ge C^{*}$ så vi ønsker $\frac{C}{C^{*}} \le \rho(n)$.
+
+Til et maksimeringsproblem har vi $C \le C^{*}$ så vi ønsker $\frac{C^{*}}{C} \le \rho(n)$.
+
+\section{Vertex Cover}%
+\label{sec:label}
+
+%%% Local Variables:
+%%% mode: latex
+%%% TeX-engine: xetex
+%%% TeX-command-extra-options: "-shell-escape"
+%%% TeX-master: "main"
+%%% End:

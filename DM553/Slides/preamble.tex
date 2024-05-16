@@ -1,16 +1,41 @@
 \documentclass{beamer}
 
-\title{DM553 Emner}
-\subtitle{Til mundtlig præsentation af hele pensum.}
-
-\author{Kevin Vinther}
-\institute{IMADA}
-\date{6. Maj - 14 Juni (?)}
 
 
 % Theme setting
-\usetheme{default}
-\usecolortheme{dove}
+\usetheme{metropolis}
+
+% Fonts and layout
+\usefonttheme{professionalfonts}
+\setbeamerfont{frametitle}{series=\bfseries}
+\setbeamertemplate{navigation symbols}{}
+\setbeamertemplate{footline}[frame number]
+
+
+% Define custom pastel colors
+\definecolor{pastelRed}{RGB}{255, 105, 97}   % A soft pastel red
+\definecolor{pastelBlue}{RGB}{119, 158, 203} % A muted pastel blue
+\definecolor{pastelYellow}{RGB}{255, 223, 0} % A gentle pastel yellow
+\definecolor{lightGray}{RGB}{211, 211, 211}  % A light gray for subtitles and less emphasized text
+
+% Apply the custom colors
+\setbeamercolor{palette primary}{bg=black, fg=white}
+\setbeamercolor{palette secondary}{bg=lightGray, fg=black}
+\setbeamercolor{palette tertiary}{bg=black, fg=white}
+\setbeamercolor{titlelike}{parent=palette primary, fg=black}
+\setbeamercolor{subtitle}{fg=lightGray}
+\setbeamercolor{structure}{fg=black} % For itemize, enumerate, etc
+
+% Change color of normal text
+\setbeamercolor{normal text}{fg=black, bg=white}
+
+% Set the color of the table of contents
+\setbeamercolor{section in toc}{fg=black} % Section titles in TOC
+\setbeamercolor{subsection in toc}{fg=black} % Subsection titles in TOC
+
+% Set block colors
+\setbeamercolor{block title}{use=structure,fg=white,bg=pastelRed}
+\setbeamercolor{block body}{fg=black,bg=white}
 
 \usepackage{blindtext}
 \usepackage{hyperref}
@@ -25,11 +50,6 @@
 
 
 
-% Fonts and layout
-\usefonttheme{professionalfonts}
-\setbeamerfont{frametitle}{series=\bfseries}
-\setbeamertemplate{navigation symbols}{}
-\setbeamertemplate{footline}[frame number]
 
 \usepackage{tikz} % Til grafer
 \usetikzlibrary{automata} % Til automatgrafer
@@ -52,11 +72,20 @@
 }
 % Tak til: https://www3.nd.edu/~dchiang/teaching/theory/2018/www/tikz_tutorial.pdf
 
+
+\title{DM553 Emner}
+\subtitle{Til mundtlig præsentation af hele pensum.}
+
+\author{Kevin Vinther}
+\institute{IMADA}
+\date{6. Maj - 14 Juni (?)}
+
+
 \begin{document}
 
-%%% Local variables:
-%%% Mode: latex
-%%% Tex-engine: xetex
-%%% Tex-command-extra-options: "-shell-escape"
-%%% Tex-master: "main"
+%%% Local Variables:
+%%% mode: latex
+%%% TeX-engine: xetex
+%%% TeX-command-extra-options: "-shell-escape"
+%%% TeX-master: "main"
 %%% End:

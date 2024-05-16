@@ -51,7 +51,7 @@
 			(q2) edge[loop above] node {\texttt{1}} ()
 			(q3) edge[bend left] node {\texttt{0,1}} (q2);
 		\end{tikzpicture}
-		\caption{\label{fig:sipser1.6} Et eksempel på et state diagram for en automat $M_{1}$}
+		\caption{\label{fig:sipser1.6} Et eksempel på et tilstandsdiagram for en automat $M_{1}$}
 	\end{figure}
 
 	For at give et eksempel beskriver vi $M_{1}$ i Figur~\ref{fig:sipser1.6} formelt.\\
@@ -69,7 +69,7 @@
 				      $q_3$ & $q_2$      & $q_2$
 			      \end{tabular}
 		      \end{table}
-		\item $q_{1}$ er start staten
+		\item $q_{1}$ er starttilstanden
 		\item $F = \{q_{2}\}$
 	\end{enumerate}
 \end{frame}
@@ -303,11 +303,87 @@
 	\frametitle{Bevis på Pumpelemmaet}
 	\begin{itemize}
 		\item Lad os nu bevise at pumpelemmaet er sandt.
+	  \item Givet en DFA $A$, og en pumpelængde $p$\footnote{Vi angiver $p$ til at være antallet af tilstande i $A$}, vil vi gerne vise at enhver streng $v$ hvor $|v| \ge p$ kan splittes til tre delstrenge $xyz = v$.
+	  \item Hvis $\{\forall v \in L(A)  \mid |v| \ge p\} = \emptyset$ er sætningen sand for $A$.
+	  \item For enhver anden streng der overholder $|v| \ge p$, kan vi se på denne strengs gennemgang af $A$ som en sekvens: $q_{1}, q_{9}, q_{4}, \ldots, q_{10}$\footnote{Eksempel tilstande, ikke en reel gennemgang} hvor $q_{1}$ er starttilstanden og $q_{10}$ er accepttilstanden.
+	  \item Da vi ved at $|v| \ge p$ og $p = |Q|$, og for hver karakter i $v$ går vi igennem en tilstand plus starttilstanden, må antallet af tilstande i gennemgangen være $|v| + 1$.
+	  \item Dermed gælder det at $|v| + 1 > |Q|$.
+	  \item Dette betyder at der \textbf{må} være en tilstand som er gentagen.\footnote{Fra dueslagsprincippet.}
+	  \item Da vi kan sikre at der er mindst én gentagen tilstand, kan vi splitte strengen op således at $x$ er strengen før den gentagne tilstand. $y$ er fra den første gentagende tilstand til den bliver gentaget. $z$ er resterende.
+	  \item Vi vil nu vise at denne opdeling af $s$ opfylder betingelserne:
+			\begin{enumerate}
+			  \item $y$ kan gentages så mange gange vi vil, inklusiv $0$
+			  \item $y > 0$ er sikret, da den gentagne del af gennemgangen skal være $y \ge 1$ (1 hvis e.g. $q_{0}, q_{0}$)
+			  \item For at sikre $|xy| \le p$ skal $y$ starte ved den første gentagne tilstand. Fra dueslagsprincippet må gentagningen ske indenfor de først $p+1$ tilstande.
+ 			\end{enumerate}
+	  \item For at bruge pumpelemmaet til at bevise nonregulæritet af et sprog $B$, antager vi først at sproget $B$ er regulært for at kunne finde et modstrid.
 	\end{itemize}
 \end{frame}
 
+\begin{frame}
+  \frametitle{Eksempel 1.75}
+
+  \begin{itemize}
+	\item Vi kigger hurtigt på et eksempel:
+	\item Lad $F = \{ww \mid w \in \{\text{\texttt{0,1}}\}^{*}\}$
+	\item Vi bruger strengen $0^{p}10^{p}1$
+	\item Grundet betingelse 3 $|xy| \le p$ er det umuligt at pumpe denne, da $xy = 00 \ldots 00$ da vi ved at der er $p$ \texttt{0}'er.
+	\item Bemærk her at vi \textit{ikke} kunne bruge f.eks. strengen $0^{p}0^{p}$, da den ville være i $F$.
+	\item Dermed kræver det også lidt kreativitet.
+  \end{itemize}
+\end{frame}
+
+\begin{frame}
+  \frametitle{Eksempel 1.76}
+ \begin{itemize}
+   \item Givet $D = \{1^{n^{2}}\}$
+   \item Vi vælger strengen $1^{p^{2}}$
+   \item Fra betingelse 3: $|xy| \le p$
+   \item Dermed $|y| \le p$
+   \item Dermed $|xyz| \le p^{2}$ og $|xy^{2}z| \le p^{2}+p$, hvor vi ønsker $(p+1)^{2} = p^{2} + 2p + 1$
+ \end{itemize}
+\end{frame}
+
+
+\begin{frame}
+  \frametitle{Eksempel 1.77}
+ \begin{itemize}
+   \item<1-> Sidste eksempel: nedpumpning
+   \item<1-> Givet $E = \{0^{i}1^{j} \mid i > j\}$
+   \item<1-> $s = 0^{p+1}1^{p}$
+   \item<1-> Det virker umuligt at, for $0^{p+1}1^{p}$, uanset pumpingen vil \texttt{0} vel stadig være større? Hvad gør vi?
+   \item<2> Som hintet: vi nedpumper! $y^{0} = \varepsilon$, og da $|y| \ge 1$ er $i$ enten mindre end eller lig med $j$.
+ \end{itemize}
+\end{frame}
+
+
 \subsection{Non-kontekstfrie sprog}%
 \label{subsec:nonkontekstfriesprog}
+
+\begin{frame}
+  \frametitle{Non-kontekstfrie sprog}
+  \begin{itemize}
+	\item Ligesom ved regulære sprog, er der nogle sprog der \textbf{ikke} er kontekstfrie. Husk at $RL \subset CFL$\footnote{RL = Regular Languages, CFL = Context-Free Languages}, og dermed hvis et sprog ikke er regulært er det heller ikke kontekstfrit.
+  \end{itemize}
+\end{frame}
+
+\begin{frame}[allowframebreaks]
+  \frametitle{Pumpelemmaet for kontekstfrie sprog}
+
+  \begin{theorem}[Pumpelemma for kontekstfrie sprog]
+	Hvis $A$ er et kontekstfrit sprog, så er der et tal $p$ (pumpelængden) hvor, hvis $s$ er i nogen strenge i $A$ af længde mindst $p$, så kan $s$ opdelees til fem stykker $s = uvxyz$ som opfylder de følgende betingelser:
+	\begin{itemize}
+	  \item For hvert $i \ge 0$, $uv^{i}xy^{i}z \in A$
+	  \item $|vy| > 0$
+	  \item $|vxy| \le p$
+	\end{itemize}
+  \end{theorem}
+  \begin{itemize}
+	\item Her siger betingelse 2 at \textit{enten} $v$ eller $y$ ikke er den tomme streng.
+	\item Betingelse 3 siger at delene $v, x$ og $y$ sammen har længde højest $p$.
+  \end{itemize}
+  \item Lad os nu bevise.
+\end{frame}
 
 
 %%% Local Variables:
