@@ -232,7 +232,7 @@
 	\frametitle{Regulære Udtryk}
 	\begin{itemize}
 		\item Regulære udtryk er udtryk for et regulært sprog.
-		\item For eksempel er det regulære udtryk $(0 \cup 1)0^{*}$ et udtryk for sproget af alle strenge der starter med et 0 eller et 1, efterfulgt af 0 eller flere 0'er.
+		\item For eksempel er det regulære udtryk $(0 \cup 1)0^{*}$ et udtryk for sproget af alle strenge der starter med et 0 eller et 1, efterfulgt af ingen eller flere 0'er.
 		\item Ligesom $\times$ i algebra, er $\circ$ (sammenkædning) ofte implicit mellem symboler.
 	\end{itemize}
 \end{frame}
@@ -303,57 +303,57 @@
 	\frametitle{Bevis på Pumpelemmaet}
 	\begin{itemize}
 		\item Lad os nu bevise at pumpelemmaet er sandt.
-	  \item Givet en DFA $A$, og en pumpelængde $p$\footnote{Vi angiver $p$ til at være antallet af tilstande i $A$}, vil vi gerne vise at enhver streng $v$ hvor $|v| \ge p$ kan splittes til tre delstrenge $xyz = v$.
-	  \item Hvis $\{\forall v \in L(A)  \mid |v| \ge p\} = \emptyset$ er sætningen sand for $A$.
-	  \item For enhver anden streng der overholder $|v| \ge p$, kan vi se på denne strengs gennemgang af $A$ som en sekvens: $q_{1}, q_{9}, q_{4}, \ldots, q_{10}$\footnote{Eksempel tilstande, ikke en reel gennemgang} hvor $q_{1}$ er starttilstanden og $q_{10}$ er accepttilstanden.
-	  \item Da vi ved at $|v| \ge p$ og $p = |Q|$, og for hver karakter i $v$ går vi igennem en tilstand plus starttilstanden, må antallet af tilstande i gennemgangen være $|v| + 1$.
-	  \item Dermed gælder det at $|v| + 1 > |Q|$.
-	  \item Dette betyder at der \textbf{må} være en tilstand som er gentagen.\footnote{Fra dueslagsprincippet.}
-	  \item Da vi kan sikre at der er mindst én gentagen tilstand, kan vi splitte strengen op således at $x$ er strengen før den gentagne tilstand. $y$ er fra den første gentagende tilstand til den bliver gentaget. $z$ er resterende.
-	  \item Vi vil nu vise at denne opdeling af $s$ opfylder betingelserne:
-			\begin{enumerate}
-			  \item $y$ kan gentages så mange gange vi vil, inklusiv $0$
-			  \item $y > 0$ er sikret, da den gentagne del af gennemgangen skal være $y \ge 1$ (1 hvis e.g. $q_{0}, q_{0}$)
-			  \item For at sikre $|xy| \le p$ skal $y$ starte ved den første gentagne tilstand. Fra dueslagsprincippet må gentagningen ske indenfor de først $p+1$ tilstande.
- 			\end{enumerate}
-	  \item For at bruge pumpelemmaet til at bevise nonregulæritet af et sprog $B$, antager vi først at sproget $B$ er regulært for at kunne finde et modstrid.
+		\item Givet en DFA $A$, og en pumpelængde $p$\footnote{Vi angiver $p$ til at være antallet af tilstande i $A$}, vil vi gerne vise at enhver streng $v$ hvor $|v| \ge p$ kan splittes til tre delstrenge $xyz = v$.
+		\item Hvis $\{\forall v \in L(A)  \mid |v| \ge p\} = \emptyset$ er sætningen sand for $A$.
+		\item For enhver anden streng der overholder $|v| \ge p$, kan vi se på denne strengs gennemgang af $A$ som en sekvens: $q_{1}, q_{9}, q_{4}, \ldots, q_{10}$\footnote{Eksempel tilstande, ikke en reel gennemgang} hvor $q_{1}$ er starttilstanden og $q_{10}$ er accepttilstanden.
+		\item Da vi ved at $|v| \ge p$ og $p = |Q|$, og for hver karakter i $v$ går vi igennem en tilstand plus starttilstanden, må antallet af tilstande i gennemgangen være $|v| + 1$.
+		\item Dermed gælder det at $|v| + 1 > |Q|$.
+		\item Dette betyder at der \textbf{må} være en tilstand som er gentagen.\footnote{Fra dueslagsprincippet.}
+		\item Da vi kan sikre at der er mindst én gentagen tilstand, kan vi splitte strengen op således at $x$ er strengen før den gentagne tilstand. $y$ er fra den første gentagende tilstand til den bliver gentaget. $z$ er resterende.
+		\item Vi vil nu vise at denne opdeling af $s$ opfylder betingelserne:
+		      \begin{enumerate}
+			      \item $y$ kan gentages så mange gange vi vil, inklusiv $0$
+			      \item $y > 0$ er sikret, da den gentagne del af gennemgangen skal være $y \ge 1$ (1 hvis e.g. $q_{0}, q_{0}$)
+			      \item For at sikre $|xy| \le p$ skal $y$ starte ved den første gentagne tilstand. Fra dueslagsprincippet må gentagningen ske indenfor de først $p+1$ tilstande.
+		      \end{enumerate}
+		\item For at bruge pumpelemmaet til at bevise nonregulæritet af et sprog $B$, antager vi først at sproget $B$ er regulært for at kunne finde et modstrid.
 	\end{itemize}
 \end{frame}
 
 \begin{frame}
-  \frametitle{Eksempel 1.75}
+	\frametitle{Eksempel 1.75}
 
-  \begin{itemize}
-	\item Vi kigger hurtigt på et eksempel:
-	\item Lad $F = \{ww \mid w \in \{\text{\texttt{0,1}}\}^{*}\}$
-	\item Vi bruger strengen $0^{p}10^{p}1$
-	\item Grundet betingelse 3 $|xy| \le p$ er det umuligt at pumpe denne, da $xy = 00 \ldots 00$ da vi ved at der er $p$ \texttt{0}'er.
-	\item Bemærk her at vi \textit{ikke} kunne bruge f.eks. strengen $0^{p}0^{p}$, da den ville være i $F$.
-	\item Dermed kræver det også lidt kreativitet.
-  \end{itemize}
+	\begin{itemize}
+		\item Vi kigger hurtigt på et eksempel:
+		\item Lad $F = \{ww \mid w \in \{\text{\texttt{0,1}}\}^{*}\}$
+		\item Vi bruger strengen $0^{p}10^{p}1$
+		\item Grundet betingelse 3 $|xy| \le p$ er det umuligt at pumpe denne, da $xy = 00 \ldots 00$ da vi ved at der er $p$ \texttt{0}'er.
+		\item Bemærk her at vi \textit{ikke} kunne bruge f.eks. strengen $0^{p}0^{p}$, da den ville være i $F$.
+		\item Dermed kræver det også lidt kreativitet.
+	\end{itemize}
 \end{frame}
 
 \begin{frame}
-  \frametitle{Eksempel 1.76}
- \begin{itemize}
-   \item Givet $D = \{1^{n^{2}}\}$
-   \item Vi vælger strengen $1^{p^{2}}$
-   \item Fra betingelse 3: $|xy| \le p$
-   \item Dermed $|y| \le p$
-   \item Dermed $|xyz| \le p^{2}$ og $|xy^{2}z| \le p^{2}+p$, hvor vi ønsker $(p+1)^{2} = p^{2} + 2p + 1$
- \end{itemize}
+	\frametitle{Eksempel 1.76}
+	\begin{itemize}
+		\item Givet $D = \{1^{n^{2}}\}$
+		\item Vi vælger strengen $1^{p^{2}}$
+		\item Fra betingelse 3: $|xy| \le p$
+		\item Dermed $|y| \le p$
+		\item Dermed $|xyz| \le p^{2}$ og $|xy^{2}z| \le p^{2}+p$, hvor vi ønsker $(p+1)^{2} = p^{2} + 2p + 1$
+	\end{itemize}
 \end{frame}
 
 
 \begin{frame}
-  \frametitle{Eksempel 1.77}
- \begin{itemize}
-   \item<1-> Sidste eksempel: nedpumpning
-   \item<1-> Givet $E = \{0^{i}1^{j} \mid i > j\}$
-   \item<1-> $s = 0^{p+1}1^{p}$
-   \item<1-> Det virker umuligt at, for $0^{p+1}1^{p}$, uanset pumpingen vil \texttt{0} vel stadig være større? Hvad gør vi?
-   \item<2> Som hintet: vi nedpumper! $y^{0} = \varepsilon$, og da $|y| \ge 1$ er $i$ enten mindre end eller lig med $j$.
- \end{itemize}
+	\frametitle{Eksempel 1.77}
+	\begin{itemize}
+		\item<1-> Sidste eksempel: nedpumpning
+		\item<1-> Givet $E = \{0^{i}1^{j} \mid i > j\}$
+		\item<1-> $s = 0^{p+1}1^{p}$
+		\item<1-> Det virker umuligt at, for $0^{p+1}1^{p}$, uanset pumpingen vil \texttt{0} vel stadig være større? Hvad gør vi?
+		\item<2> Som hintet: vi nedpumper! $y^{0} = \varepsilon$, og da $|y| \ge 1$ er $i$ enten mindre end eller lig med $j$.
+	\end{itemize}
 \end{frame}
 
 
@@ -361,28 +361,125 @@
 \label{subsec:nonkontekstfriesprog}
 
 \begin{frame}
-  \frametitle{Non-kontekstfrie sprog}
-  \begin{itemize}
-	\item Ligesom ved regulære sprog, er der nogle sprog der \textbf{ikke} er kontekstfrie. Husk at $RL \subset CFL$\footnote{RL = Regular Languages, CFL = Context-Free Languages}, og dermed hvis et sprog ikke er regulært er det heller ikke kontekstfrit.
-  \end{itemize}
+	\frametitle{Non-kontekstfrie sprog}
+	\begin{itemize}
+		\item Ligesom ved regulære sprog, er der nogle sprog der \textbf{ikke} er kontekstfrie. Husk at $RL \subset CFL$\footnote{RL = Regular Languages, CFL = Context-Free Languages}, og dermed hvis et sprog ikke er kontekstfrit er det heller ikke regulært.
+	\end{itemize}
 \end{frame}
 
 \begin{frame}[allowframebreaks]
-  \frametitle{Pumpelemmaet for kontekstfrie sprog}
+	\frametitle{Pumpelemmaet for kontekstfrie sprog}
 
-  \begin{theorem}[Pumpelemma for kontekstfrie sprog]
-	Hvis $A$ er et kontekstfrit sprog, så er der et tal $p$ (pumpelængden) hvor, hvis $s$ er i nogen strenge i $A$ af længde mindst $p$, så kan $s$ opdelees til fem stykker $s = uvxyz$ som opfylder de følgende betingelser:
+	\begin{theorem}[Pumpelemma for kontekstfrie sprog]
+		Hvis $A$ er et kontekstfrit sprog, så er der et tal $p$ (pumpelængden) hvor, hvis $s$ er i nogen strenge i $A$ af længde mindst $p$, så kan $s$ opdelees til fem stykker $s = uvxyz$ som opfylder de følgende betingelser:
+		\begin{itemize}
+			\item For hvert $i \ge 0$, $uv^{i}xy^{i}z \in A$
+			\item $|vy| > 0$
+			\item $|vxy| \le p$
+		\end{itemize}
+	\end{theorem}
 	\begin{itemize}
-	  \item For hvert $i \ge 0$, $uv^{i}xy^{i}z \in A$
-	  \item $|vy| > 0$
-	  \item $|vxy| \le p$
+		\item Her siger betingelse 2 at \textit{enten} $v$ eller $y$ ikke er den tomme streng.
+		\item Betingelse 3 siger at delene $v, x$ og $y$ sammen har længde højest $p$.
+		\item Idéen bag beviset er relativt simpelt.
+		\item Lad $A$ være et CFL, $G$ en CFG som genererer det.
+		\item Vi skal vise at en lang streng $s$, kan pumpes og blive i $A$.
+		\item Fordi $s$ er langt, må parsetræet også være stort, og have en lang vej fra startvariablen i roden af træet til en af terminalsymbolerne på et blad i træet.
+		\item På denne vej er der et symbol $R$ som må gentages grundet dueslagsprincippet\footnote{Samme ræsonnement som i pumpelemmaet for regulære sprog bruges her}.
+		\item Dette vil tillade os at genbruge det subtræ der bruges mellem de to $R$'er.
 	\end{itemize}
-  \end{theorem}
-  \begin{itemize}
-	\item Her siger betingelse 2 at \textit{enten} $v$ eller $y$ ikke er den tomme streng.
-	\item Betingelse 3 siger at delene $v, x$ og $y$ sammen har længde højest $p$.
-  \end{itemize}
-  \item Lad os nu bevise.
+	\begin{center}
+		\includegraphics[scale=0.2]{figur/figur235.png}
+	\end{center}
+\end{frame}
+
+\begin{frame}[allowframebreaks]
+	\frametitle{Formelt Bevis For Pumpelemma}
+	\begin{itemize}
+		\item Lad os nu lave et formelt bevis for pumpelemmaet.
+		\item Lad $G$ være en CFG for sproget $A$.
+		\item Lad $b$ være maks antal symboler i højrehåndssiden af en regel\footnote{Vi antager mindst 2}.
+		\item I parsetræet vil en knude dermed højest have $b$ børn.
+		\item Dermed vil \textit{højest} $b^{h}$ blade være indenfor $h$ skridt af startvariablen.
+		\item Hvis højden af træet er højest $b^{h}$, er længden af strengen også højest $b^{h}$.
+		\item Hvis længden på en streng er $b^{h}+1$, må parsetræerne være mindst $h+1$ høje.
+		\item Vi sætter $p$ til at være $b^{|V|+1}$ hvor $|V|$ er antallet af variabler i $G$.
+		\item Lad $\tau$ være det parsetræ i $s$ med færrest knuder.
+		\item Længden af $\tau$ er \textit{mindst} $|V|+1$. Vejen fra roden til et blad har længde mindst $|V|+2$ ($+1$ fra roden).
+		\item Ud fra dette, ved vi med sikkerhed grundet dueprincippet at der er en gentagen variabel, $R$.
+		\item Vi definerer $R$ til at være en variabel der gentages blandt de laveste $|V|+1$ variabler på vejen.
+		\item Vi opdeler $s$ til $uvxyz$ som i figuren vist tidligere.
+		\item Lad os nu kigge på betingelse 1: $\forall i \ge 0 : uv^{i}xy^{i}z \in A$:
+		      \begin{itemize}
+			      \item På figuren ses resultatet af:
+			            \begin{enumerate}
+				            \item Ikke at ændre noget, i.e. $i = 1$
+				            \item Gentage $R$ én gang, i.e. $i = 2$
+				            \item Fjerne gentagelsen af $R$, i.e., $i = 0$
+			            \end{enumerate}
+			      \item Dette viser klart at hver gang vi gentager $R$, bliver $v$ og $y$ også gentaget.
+			      \item Dette har ingen effekt på $x$ da den først genereres efter $R$ er genereret.
+		      \end{itemize}
+		\item For betingelse 2: $|vy| > 0$:
+		      \begin{itemize}
+			      \item Dette er sikret, da vi valgte $\tau$ til at være vejen i parsetræet med færrest knuder.
+			      \item Hvis vi ikke havde valgt denne, ville der være en risiko for at vælge en vej med færre knuder, som ville tillade at $|vy| = 0$ (grundet dueslagsprincippet ikke ville kunne bruges.)
+		      \end{itemize}
+		\item For betingelse 3: $|vxy| \le p$:
+		      \begin{itemize}
+			      \item Da vi valgte $R$ så begge forekomster af $R$ var i mindstedelen af $|V|+1$ viarabler på vejen, og vi valgte den længste vej i prasetræet, så subtræet hvor $R$ genererer $vxy$ er højest $|V|+1$ høj. Træet kan højest generere en streng af længde $b^{|V|+1} = p$, dermed opfyldes betingelse 3.
+		      \end{itemize}
+	\end{itemize}
+\end{frame}
+
+\begin{frame}[allowframebreaks]
+	\frametitle{Eksempel 2.36}
+
+	\begin{itemize}
+		\item Vi vil vise at $B = \{a^{n}b^{n}c^{n} \mid n \ge 0\}$ \textbf{ikke} er kontekstfrit.
+		\item Vi antager at $B$ er et CFL
+		\item Lad $p$ være pumpelængden
+		\item Vi vælger strengen $a^{p}b^{p}c^{p}$
+		\item Uanset hvordan vi vælger at inddelle i $uvxyz$ vil $v$ og $y$ enten indeholde:
+		      \begin{itemize}
+			      \item udelukkende \texttt{a}'er, \texttt{b}'er eller \texttt{c}'er
+			      \item en blanding af \texttt{a}'er og \texttt{b}'er eller en blanding af \texttt{b}'er og \texttt{c}'er.
+		      \end{itemize}
+		\item Om det er første eller andet tilfælde overholder det ikke pumpelemmaet.
+		\item Første tilfælde vil give flere af to symboler, men ikke det sidste.
+		\item Andet tilfælde vil måske give det rigtige antal, men ikke i den rigtige orden.
+	\end{itemize}
+\end{frame}
+
+\begin{frame}[allowframebreaks]
+	\frametitle{Hovedpunkter}
+	Disse er fra Jørgens noter\footnote{Weekly note 2}.
+	\begin{itemize}
+		\item Endelige automater er matematiske modeller af computere.
+		\item Endelige automater bruger en konstant mængde hukommelse, og bestemmer om en given streng er en del af et sprog. Bevægelserne i en deterministisk endelig automat er valgt ud fra dens starttilstand og inputstreng.
+		\item Walk'en igennem en DFA givet en inputstreng $w$ er afhængig og unik ud fra $w$.
+		\item En DFA $M$ accepterer en streng hvis walken starter i starttilstanden og efter at have ædt hvert symbol ender i en accepttilstand i $M$.
+		\item En NFA kan vælge mellem flere alternative bevægelser, og har mulighed for at gætte bevægelse.
+		\item En NFA accepterer en streng $w$ hvis der eksisterer en walk fra starttilstanden til en af de accepterende tilstande.
+		\item Der findes en eksponentiel algoritme der konverterer fra NFA til DFA, hvilket betyder at de er ækvivalente i deres beskrivelser.
+		\item Et regulært udtryk er en formel speicificering af et regulært sprog.
+		\item Et sprog er accepteret af en endelig automat hvis og kun hvis det er genereret af et regulært udtryk.
+		\item Klassen af regulære sprog er lukket under sammenkædning, komplement, foreningsmængde,  stjerne og fællesmængde.\footnote{Ved fællesmængde bemærk at $L \cap L' = \overline{\overline{L} \cup \overline{L'}}$}
+		\item Hvert endeligt sprog er regulært. Dermed er alle non-regulære sprog også uendelige.
+		\item Bevis ved pumpelemmaet kan ses som et 2-personers spil mellem dig og en modstander:
+		      \begin{itemize}
+			      \item Antag at $L = L(M)$ for en DFA $M$, og lad $p$ være antallet af tilstande i $M$.
+			      \item Du bestemmer en streng $s \in L$ hvor $|s| \ge p$
+			      \item Modstanderen vælger strenge $x,y,z$ over $\Sigma$:
+			            \begin{itemize}
+				            \item $s = xyz$
+				            \item $xy^{i}z \in L \forall i \ge 0$
+				            \item $|y| > 0$ og $|xy| \le p$
+			            \end{itemize}
+			      \item Du vælger en $i \ge 0$ og viser at $xy^{i}z \notin L$, modstrid
+			      \item Du vinder
+		      \end{itemize}
+	\end{itemize}
 \end{frame}
 
 
