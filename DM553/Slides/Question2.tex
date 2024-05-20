@@ -2,23 +2,23 @@
 \label{sec:pdacfg}
 
 \begin{frame}
-  \frametitle{Pensum}
-  \begin{itemize}
-    \item Sipser 2.1-2.2: \textbf{Pushdown Automata and Context-free Languages}
-    \item Weekly Note 2
-    \item Video 3-6
-  \end{itemize}
+	\frametitle{Pensum}
+	\begin{itemize}
+		\item Sipser 2.1-2.2: \textbf{Pushdown Automata and Context-free Languages}
+		\item Weekly Note 2
+		\item Video 3-6
+	\end{itemize}
 \end{frame}
 
 \begin{frame}[allowframebreaks]
-  \frametitle{Kontekstfrie Sprog}
+	\frametitle{Kontekstfrie Sprog}
 
-  \begin{itemize}
-    \item Klassen af kontekstfrie sprog (CFL) er sprog der har en større beskrivelseskraft end regulære sprog.
-    \item For eksempel har en kontekstfri grammatik en rekursiv strucktur, der giver dem en uendelig hukommelse.
-    \item \textit{Fun Fact:} CFL kommer fra studierne om menneskets sprog.
-    \item Pushdown Automater, som er NFA men med en tilsluttet stak, genkender også klassen af kontekstfrie sprog.
-  \end{itemize}
+	\begin{itemize}
+		\item Klassen af kontekstfrie sprog (CFL) er sprog der har en større beskrivelseskraft end regulære sprog.
+		\item For eksempel har en kontekstfri grammatik en rekursiv strucktur, der giver dem en uendelig hukommelse.
+		\item \textit{Fun Fact:} CFL kommer fra studierne om menneskets sprog.
+		\item Pushdown Automater, som er NFA men med en tilsluttet stak, genkender også klassen af kontekstfrie sprog.
+	\end{itemize}
 
 \end{frame}
 
@@ -26,149 +26,299 @@
 \label{subsec:cfg}
 
 \begin{frame}[allowframebreaks]
-  \frametitle{Kontekstfrie Grammatikker}
+	\frametitle{Kontekstfrie Grammatikker}
 
-  \begin{equation}
-    \tag{G_1}
-    \begin{align}
-      A &\rightarrow \text{\texttt{0}}A \text{\texttt{1}} \\
-      A &\rightarrow B \\
-      B &\rightarrow \#
-    \end{align}
-    \label{eq:cfgex}
-  \end{equation}
+	\begin{equation}
+		\tag{G_1}
+		\begin{align}
+			A & \rightarrow \text{\texttt{0}}A \text{\texttt{1}} \\
+			A & \rightarrow B                                    \\
+			B & \rightarrow \#
+		\end{align}
+		\label{eq:cfgex}
+	\end{equation}
 
-  \begin{itemize}
-    \item \eqref{eq:cfgex} er et eksempel på en kontekstfri grammatik.
-    \item En kontekstfri grammatik indeholder en samling af substitueringsregler, også kaldt \textit{produktioner}
-    \item Hver regel er på en linje i grammatikken (e.g. $B \rightarrow \#$ i \eqref{eq:cfgex}).
-    \item En regel består af et symbol (venstresiden) og en streng (højresiden).
-    \item Symbolet kaldes en \textit{variabel} eller \textit{non-terminale}.
-    \item Strengen er ofte en blanding af variabler og \textit{terminale}.
-    \item En af variablerne er udnævnt til at være startvariablen. Oftest er denne på venstresiden af den første regel.
-    \item Du genererer en streng ud fra en grammatik ved at gøre følgende:
-          \begin{enumerate}
-            \item Skriv først startvariablen.
-            \item Find env ariabel som er nedskrevet, og en regel der starter med denne variabel.
-            \item Erstat den nedskrevne variabel med højresiden af denne regel.
-            \item Gentag 2. og 3.   skridt indtil der ikke er flere variabler.
-          \end{enumerate}
-    \item En sekvens af erstatninger kaldes en \textit{afledning.}
-    \item Et eksempel på en afledning fra \eqref{eq:cfgex}:
-          \begin{equation*}
-A \Rightarrow 0A1 \Rightarrow 00A11 \Rightarrow 000A111 \Rightarrow 000B111 \Rightarrow 000\#111
-\end{equation*}
+	\begin{itemize}
+		\item \eqref{eq:cfgex} er et eksempel på en kontekstfri grammatik.
+		\item En kontekstfri grammatik indeholder en samling af substitueringsregler, også kaldt \textit{produktioner}
+		\item Hver regel er på en linje i grammatikken (e.g. $B \rightarrow \#$ i \eqref{eq:cfgex}).
+		\item En regel består af et symbol (venstresiden) og en streng (højresiden).
+		\item Symbolet kaldes en \textit{variabel} eller \textit{non-terminale}.
+		\item Strengen er ofte en blanding af variabler og \textit{terminale}.
+		\item En af variablerne er udnævnt til at være startvariablen. Oftest er denne på venstresiden af den første regel.
+		\item Du genererer en streng ud fra en grammatik ved at gøre følgende:
+		      \begin{enumerate}
+			      \item Skriv først startvariablen.
+			      \item Find env ariabel som er nedskrevet, og en regel der starter med denne variabel.
+			      \item Erstat den nedskrevne variabel med højresiden af denne regel.
+			      \item Gentag 2. og 3.   skridt indtil der ikke er flere variabler.
+		      \end{enumerate}
+		\item En sekvens af erstatninger kaldes en \textit{afledning.}
+		\item Et eksempel på en afledning fra \eqref{eq:cfgex}:
+		      \begin{equation*}
+			      A \Rightarrow 0A1 \Rightarrow 00A11 \Rightarrow 000A111 \Rightarrow 000B111 \Rightarrow 000\#111
+		      \end{equation*}
 
-    \item Vi kan også visualisere dette ved at bruge et parsetræ.
-  \end{itemize}
-  \begin{center}
-    \includegraphics[scale=0.3]{figur/figur21.png}
-  \end{center}
-  \begin{itemize}
-    \item Alle strenge der kan genereres fra \eqref{eq:cfgex} er dele af \textit{sproget af grammatikken}, som skrives $L(G_{1})$.
-    \item \textbf{Ethvert sprog der kan genereres af en CFG er et kontekstfrit sprog}. (Definition, ikke sætning.)
-  \end{itemize}
+		\item Vi kan også visualisere dette ved at bruge et parsetræ.
+	\end{itemize}
+	\begin{center}
+		\includegraphics[scale=0.3]{figur/figur21.png}
+	\end{center}
+	\begin{itemize}
+		\item Alle strenge der kan genereres fra \eqref{eq:cfgex} er dele af \textit{sproget af grammatikken}, som skrives $L(G_{1})$.
+		\item \textbf{Ethvert sprog der kan genereres af en CFG er et kontekstfrit sprog}. (Definition, ikke sætning.)
+	\end{itemize}
 \end{frame}
 
 \begin{frame}
-  \frametitle{Formel Definition af Kontekstfri Grammatik}
-\begin{definition}[Kontekstfri Grammatik]
-  En kontekstfri grammatik er en 4-tuple $(V, \Sigma, R, S)$, hvor
-  \begin{enumerate}
-    \item $V$ er en endelig mængde kaldet \textit{variabler}
-    \item $\Sigma$ er en endelig mængde disjunkt fra $V$, kaldet \textit{terminaler}
-    \item $R$ er en endelig mængde af \textit{regler}, hvor hver regel er en variabel (venstresiden) og en streng af variabler og terminaler (på højresiden)
-    \item $S \in V$ er startvariablen
-  \end{enumerate}
-\end{definition}
+	\frametitle{Formel Definition af Kontekstfri Grammatik}
+	\begin{definition}[Kontekstfri Grammatik]
+		En kontekstfri grammatik er en 4-tuple $(V, \Sigma, R, S)$, hvor
+		\begin{enumerate}
+			\item $V$ er en endelig mængde kaldet \textit{variabler}
+			\item $\Sigma$ er en endelig mængde disjunkt fra $V$, kaldet \textit{terminaler}
+			\item $R$ er en endelig mængde af \textit{regler}, hvor hver regel er en variabel (venstresiden) og en streng af variabler og terminaler (på højresiden)
+			\item $S \in V$ er startvariablen
+		\end{enumerate}
+	\end{definition}
 \end{frame}
 
 \begin{frame}
-  \frametitle{Kontekstfrie grammatikker, fortsat}
+	\frametitle{Kontekstfrie grammatikker, fortsat}
 
-  \begin{itemize}
-    \item Hvis $uAw$ kan blive til $uwv$, siger vi at $uAv$ \textit{giver} $uwv$, og skriver det $uAv \Rightarrow uwv$.
-\item Vi siger at $u$ \textit{udleder} (ikke afleder!) $v$ hvis der eksisterer en udledning $u \Rightarrow u_{1} \Rightarrow u_{2} \Rightarrow \cdots \Rightarrow u_{k} \Rightarrow v$.
-          \begin{itemize}
-            \item Vi skriver dette $u \overset{*}{\Rightarrow} v$ hvis $u = v$
-          \end{itemize}
-    \item Sproget af en grammatik er dermed $\{w \in \Sigma^{*} \mid S \overset{*}{\Rightarrow}\}$
-  \end{itemize}
+	\begin{itemize}
+		\item Hvis $uAw$ kan blive til $uwv$, siger vi at $uAv$ \textit{giver} $uwv$, og skriver det $uAv \Rightarrow uwv$.
+		\item Vi siger at $u$ \textit{udleder} (ikke afleder!) $v$ hvis der eksisterer en udledning $u \Rightarrow u_{1} \Rightarrow u_{2} \Rightarrow \cdots \Rightarrow u_{k} \Rightarrow v$.
+		      \begin{itemize}
+			      \item Vi skriver dette $u \overset{*}{\Rightarrow} v$ hvis $u = v$
+		      \end{itemize}
+		\item Sproget af en grammatik er dermed $\{w \in \Sigma^{*} \mid S \overset{*}{\Rightarrow}\}$
+	\end{itemize}
 \end{frame}
 
 \begin{frame}[allowframebreaks]
-  \frametitle{Tvetydighed}
+	\frametitle{Tvetydighed}
 
-  \begin{itemize}
-    \item Hvis en grammatik kan generere den samme streng på mere end én forskellig måde, siger vi at strengen er afledt tvetydigt i den grammatik.
-    \item Hvis en grammatik kan generere en streng tvetydigt, siger vi at selve grammatikken er \textit{tvetydig}.
-  \end{itemize}
+	\begin{itemize}
+		\item Hvis en grammatik kan generere den samme streng på mere end én forskellig måde, siger vi at strengen er afledt tvetydigt i den grammatik.
+		\item Hvis en grammatik kan generere en streng tvetydigt, siger vi at selve grammatikken er \textit{tvetydig}.
+	\end{itemize}
 
-  \begin{equation}
-\langle \text{EXPR} \rangle \rightarrow \langle \text{EXPR} \rangle + \langle \text{EXPR} \rangle \mid \langle \text{EXPR} \rangle \times \langle \text{EXPR} \rangle \mid ( \langle \text{EXPR} \rangle ) \mid a
-  \end{equation}
+	\begin{equation}
+		\langle \text{EXPR} \rangle \rightarrow \langle \text{EXPR} \rangle + \langle \text{EXPR} \rangle \mid \langle \text{EXPR} \rangle \times \langle \text{EXPR} \rangle \mid ( \langle \text{EXPR} \rangle ) \mid a
+	\end{equation}
 
-  \begin{itemize}
-    \item Den ovenstående grammatik er tvetydig, da den generer strengen $a+a \times a$ tvetydigt.
-    \item Vi kan se dette ved at lave to forskellige parsetræer:
-  \end{itemize}
+	\begin{itemize}
+		\item Den ovenstående grammatik er tvetydig, da den generer strengen $a+a \times a$ tvetydigt.
+		\item Vi kan se dette ved at lave to forskellige parsetræer:
+	\end{itemize}
 
-  \begin{center}
-  \includegraphics[scale=0.3]{figur/figur26.png}
-  \end{center}
-  \begin{itemize}
-    \item Der eksisterer sproge der kun kan genereres af tvetydige grammatikker.
-    \item Disse sprog siges at være \textit{i sig selv tvetydige}.
-  \end{itemize}
+	\begin{center}
+		\includegraphics[scale=0.3]{figur/figur26.png}
+	\end{center}
+	\begin{itemize}
+		\item Der eksisterer sproge der kun kan genereres af tvetydige grammatikker.
+		\item Disse sprog siges at være \textit{i sig selv tvetydige}.
+	\end{itemize}
 \end{frame}
 
 \begin{frame}[allowframebreaks]
-  \frametitle{Chomsky Normal Form}
+	\frametitle{Chomsky Normal Form}
 
-  \begin{itemize}
-    \item (også kaldt, af Jørgen, Chomsky grammar).
-    \item Chomsky Normal Form er en speciel \textit{form} til kontekstfrie grammatikker.
-    \item Chomsky Normal Form sikrer nogle specifikke ting, der gør den brugbar til f.eks. algoritmer og beviser.
-  \end{itemize}
+	\begin{itemize}
+		\item (også kaldt, af Jørgen, Chomsky grammar).
+		\item Chomsky Normal Form er en speciel \textit{form} til kontekstfrie grammatikker.
+		\item Chomsky Normal Form sikrer nogle specifikke ting, der gør den brugbar til f.eks. algoritmer og beviser.
+	\end{itemize}
 
-  \begin{definition}[Chomsky Normal Form]
-    En kontekstfri grammatik er i CNF hvis hver regel er af formen
-    \begin{align*}
-      A &\rightarrow BC \\
-      A &\rightarrow a
-    \end{align*}
-    hvor $a$ er en vilkårlig terminal, og $A, B$ og $C$ er variabler, undtagen at $B$ og $C$ \textit{ikke} må være startvariablen. Vi tillader deruover også reglen $S \rightarrow \varepsilon$, hvor $S$ er startvariablen.
-  \end{definition}
+	\begin{definition}[Chomsky Normal Form]
+		En kontekstfri grammatik er i CNF hvis hver regel er af formen
+		\begin{align*}
+			A & \rightarrow BC \\
+			A & \rightarrow a
+		\end{align*}
+		hvor $a$ er en vilkårlig terminal, og $A, B$ og $C$ er variabler, undtagen at $B$ og $C$ \textit{ikke} må være startvariablen. Vi tillader deruover også reglen $S \rightarrow \varepsilon$, hvor $S$ er startvariablen.
+	\end{definition}
 
-  \begin{theorem}
-Ethvert kontekstfrit sprog er genereret af en kontekstfri grammatik i CNF.
-  \end{theorem}
+	\begin{theorem}
+		Ethvert kontekstfrit sprog er genereret af en kontekstfri grammatik i CNF.
+	\end{theorem}
 
-  \begin{itemize}
-    \item Vi kan konvertere en grammatik $G$ til CNF.
-    \item Vi kan gøre dette ved at, trinvist, fjerne regler der ikke overholder betingelserne, og erstatter med regler der overholder.
-    \item Først tilføjer vi en ny startvariabel.
-    \item Så fjerner vi alle $\varepsilon$-regler af formen $A \rightarrow \varepsilon$.
-    \item Vi eliminerer også alle \textit{unit regler} af formen $A\rightarrow B$.
-    \item Til sidst konverterer vi de resterende regler til den rigtige form.
-\item \textbf{Bevis:}
-  \end{itemize}
-    \begin{enumerate}
-      \item Først laver vi en ny startvariabel $S_{0}$, og tilføjer reglen $S_{0} \rightarrow S$, hvor $S$ var den tidligere variabel. Dermed sikrer vi at startvariablen ikke er på højresiden.
-      \item Derefter tager vi os af epsilon-reglerne. Vi fjerner alle regler $A \rightarrow \varepsilon$ hvor $A$ ikke er starvariablen. \\ Derefter, for hver $A$ på højresiden af en regel, tilføjer vi en ny regel hvor vi fjerner $A$. Altså hvis $R \rightarrow uAv$ er en regel, tilføjer vi reglen $R \rightarrow uv$. Vi gørt dette for hvert tilfælde af $A$, så $R \rightarrow uavAw$ giver us tre regler: $R \rightarrow uvAw, R \rightarrow uAvw$ og $R \rightarrow uvw$. \\ Hvis reglen $R \rightarrow A$ eksisterer, erstatter vi denne med $R\rightarrow \varepsilon$, undtagen hvis $R \rightarrow \varepsilon$ er en regel vi allerede har fjernet. \\ Vi gentager dette indtil vi har fjernet alle epsilon-regler.
-      \item Derefter fjerner vi alle \textit{unit regler}, altså for hvert $A \rightarrow B$ fjerner vi denne, og for alle $B \rightarrow u$, tilføjer vi $A \rightarrow u$, undtagen hvis dette er en regel vi allerede har fjernet, hvor $u$ er en streng af terminale og variabler. Vi gentager indtil alle unit regler er fjernet.
-      \item Sidst konverterer vi alle tilbagestående regler til den rigtige form. For hvert $A \rightarrow u_{1}u_{2} \ldots u_{k}, k \ge 3$ fjerner vi denne regel, og tilføjer reglerne $A \rightarrow u_{1}A_{1}$, $A_{1} \rightarrow u_{2}A_{2}$, $A_{2} \rightarrow u_{3}A_{3}, \ldots A_{k-2} \rightarrow u_{k-1}u_{k}$
-    \end{enumerate}
+	\begin{itemize}
+		\item Vi kan konvertere en grammatik $G$ til CNF.
+		\item Vi kan gøre dette ved at, trinvist, fjerne regler der ikke overholder betingelserne, og erstatter med regler der overholder.
+		\item Først tilføjer vi en ny startvariabel.
+		\item Så fjerner vi alle $\varepsilon$-regler af formen $A \rightarrow \varepsilon$.
+		\item Vi eliminerer også alle \textit{unit regler} af formen $A\rightarrow B$.
+		\item Til sidst konverterer vi de resterende regler til den rigtige form.
+		\item \textbf{Bevis:}
+	\end{itemize}
+	\begin{enumerate}
+		\item Først laver vi en ny startvariabel $S_{0}$, og tilføjer reglen $S_{0} \rightarrow S$, hvor $S$ var den tidligere variabel. Dermed sikrer vi at startvariablen ikke er på højresiden.
+		\item Derefter tager vi os af epsilon-reglerne. Vi fjerner alle regler $A \rightarrow \varepsilon$ hvor $A$ ikke er starvariablen. \\ Derefter, for hver $A$ på højresiden af en regel, tilføjer vi en ny regel hvor vi fjerner $A$. Altså hvis $R \rightarrow uAv$ er en regel, tilføjer vi reglen $R \rightarrow uv$. Vi gørt dette for hvert tilfælde af $A$, så $R \rightarrow uavAw$ giver us tre regler: $R \rightarrow uvAw, R \rightarrow uAvw$ og $R \rightarrow uvw$. \\ Hvis reglen $R \rightarrow A$ eksisterer, erstatter vi denne med $R\rightarrow \varepsilon$, undtagen hvis $R \rightarrow \varepsilon$ er en regel vi allerede har fjernet. \\ Vi gentager dette indtil vi har fjernet alle epsilon-regler.
+		\item Derefter fjerner vi alle \textit{unit regler}, altså for hvert $A \rightarrow B$ fjerner vi denne, og for alle $B \rightarrow u$, tilføjer vi $A \rightarrow u$, undtagen hvis dette er en regel vi allerede har fjernet, hvor $u$ er en streng af terminale og variabler. Vi gentager indtil alle unit regler er fjernet.
+		\item Sidst konverterer vi alle tilbagestående regler til den rigtige form. For hvert $A \rightarrow u_{1}u_{2} \ldots u_{k}, k \ge 3$ fjerner vi denne regel, og tilføjer reglerne $A \rightarrow u_{1}A_{1}$, $A_{1} \rightarrow u_{2}A_{2}$, $A_{2} \rightarrow u_{3}A_{3}, \ldots A_{k-2} \rightarrow u_{k-1}u_{k}$
+	\end{enumerate}
 \end{frame}
 
 
-  \frametitle{CFG Konverting Eksempel}
-  Vi kigget på eksempel 2.10 pp. 110 i bogen for bedring af forståelse.
+\frametitle{CFG Konverting Eksempel}
+Vi kigger på eksempel 2.10 pp. 110 i bogen for bedring af forståelse.
 \end{frame}
 
 \subsection{Pushdown Automater}%
 \label{subsec:pda}
 
+
+\begin{frame}[allowframebreaks]
+	\frametitle{Pushdown Automater}
+	\begin{itemize}
+		\item Pushdown Automater (PDA) er ligesom NFA'er, men med en tilsluttet stak.
+		\item Denne stak tillader pushdown automater at genkende flere sprog end en normal endelig automat, da den giver en uendelig hukommelse.
+		\item Overførselsfunktionen for en PDA tillader dermed også \textit{pushing} og \textit{popping} af stakken.
+		\item Stakken fungerer LIFO, og har dermed begrænset hukommelse.
+		\item Sproget $\{0^{n}1^{n} \mid n \ge 0\}$ er et eksempel på et sprog der kan genkendes når vi nu har en stak:
+		      \begin{itemize}
+			      \item For hvert \texttt{0} der er læst, push det til stakken.
+			      \item Når et \texttt{1} læses, pop for hvert 1 der er læst.
+			      \item Hvis stakken er tom når der ikke er flere \texttt{1}'ere, så \textit{accepter}, ellers \textit{afvis}.
+		      \end{itemize}
+
+		\item En PDA er nondeterministisk, og er \textit{ikke} ækvivalent i sin deskriptive kraft til deterministiske automater med en stak. Disse genkender færre sprog.
+	\end{itemize}
+\end{frame}
+
+\begin{frame}[allowframebreaks]
+	\frametitle{Formel Definition af en Pushdown Automat}
+	\begin{itemize}
+		\item Det er ikke nødvendigt at bruge samme alfabet til input og til stak, dermed lader vi inputalfabetet være $\Sigma$ og stakalfabetet være $\Gamma$.
+		\item Dermed er overførselsfunktionens domæne $Q \times \Sigma_{\varepsilon} \times \Gamma_{\varepsilon}$.
+		\item Værdimængden fungerer som typisk ved nondeterminisme, men inklusiv stakken, da den også kan ændres. Dermed bliver værdimængden $\mathcal{P}(Q \times \Gamma_{\varepsilon})$.
+	\end{itemize}
+
+	\begin{definition}[Pushdown Automat]
+		En \textit{pushdown automat} er en 6-tuple ($Q, \Sigma, \Gamma, \delta, q_{0}, F$), hvor $Q, \Sigma, \Gamma$ og $F$ alle er endelige mængder, og
+		\begin{enumerate}
+			\item $Q$ er mængden af tilstande
+			\item $\Sigma$ er inputalfabetet
+			\item $\Gamma$ er stakalfabetet
+			\item $\delta : Q \times \Sigma_{\varepsilon} \times \Gamma_{\varepsilon} \longrightarrow \mathcal{P}(Q \times \Gamma_{\varepsilon})$ er overførselsfunktionen
+			\item $q_{0} \in Q$ er starttilstanden
+			\item $F \subseteq Q$ er mængden af accepttilstande
+		\end{enumerate}
+	\end{definition}
+
+	\begin{itemize}
+		\item Komputeringen i en pushdown automat fungerer som følge:
+		\item Lad input $w$ være et input der accepteres hvis $w$ kan skrives $w = w_{1}, \ldots, w_{n}, $, hvor $\forall w_{i} : w_{i} \in \Sigma_{\varepsilon}$.
+		\item En sekvens af tilstande $r_{0}, r_{1}, \ldots, r_{m} \in Q$ og strengene $s_{0}, s_{1}, \ldots, s_{m} \in \Gamma^{*}$ eksisterer som opfylder følgende tre betingelser:
+		      \begin{enumerate}
+			      \item $r_{0} = q_{0}$ og $s_{0} = \varepsilon$
+			      \item $i = 0, \ldots, m-1 : (r_{i+1}, b) \in \delta(r_{i}, w_{i+1}, a)$, hvor $s_{i} = at$ og $s_{i+1} = bt$, hvor $a,b \in \Gamma^{*}$ og $t \in \Gamma^{*}$. I.e., bevæger $M$ sig ifølge tilstanden, stakken og det næste inputsymbol.
+			      \item $r_{m} \in F$. Denne betingelse siger at en accepttilstand forekommer i inputtets slutning.
+		      \end{enumerate}
+	\end{itemize}
+\end{frame}
+
+\begin{frame}[allowframebreaks]
+	\frametitle{Eksempel 2.14}
+
+	\begin{itemize}
+		\item Vi vil nu beskrive en PDA der genkender $\{0^{n}1^{n} \mid n \ge 0\}$.
+		\item Lad $M_{1} = (Q, \Sigma, \Gamma, \delta, q_{1}, F)$, hvor
+		      \begin{enumerate}
+			      \item[$Q = $] $\{q_{1}, q_{2}, q_{3}, q_{4}\}$
+			      \item[$\Sigma = $] $\{0, 1\}$
+			      \item[$\Gamma = $] $\{0, \mathdollar \}$
+			      \item[$F = $] $\{q_{1}, q_{4}\}$
+			      \item[$\delta = $]
+			            \includegraphics[scale=0.3]{figur/eksempel214.png}
+		      \end{enumerate}
+
+		\item Vi kan også lave en tilstandsdiagram. Bemærk her at $a,b \longrightarrow c$ betyder ``læs et $a$ fra input, erstat $b$ fra stakken med $c$'': \\
+		      \includegraphics[scale=0.4]{figur/figur215.png}
+	\end{itemize}
+\end{frame}
+
+\begin{frame}[allowframebreaks]
+	\frametitle{Ækvivalens med Kontekstfrie Grammatikker}
+	\begin{theorem}
+		Et sprog er kontekstfrit hvis og kun hvis ($\iff$) en pushdown automat genkender det.
+	\end{theorem}
+
+	\begin{lemma}
+		Hvis et sprog er kontekstfrit, så genkender en pushdown automat det.
+	\end{lemma}
+
+	\begin{itemize}
+		\item Vi gør ligesom i bogen og kommer først med idéen, og derefter selve beviset:
+		\item Vores mål er at vise at en CFG $G$ der genkender $A$ kan konverteres til en ækvivalent PDA $P$.
+		\item PDA'en fungerer ved at acceptere input $w$ hvis $G$ genererer denne streng. Den finder ud af dette ved at finde ud af om der findes en afledning for $w$.
+		\item Vi kalder en streng af variabler og terminaler der ikke er sluttet (afledt) og ikke er startstrengen for en \textit{mellemliggende streng} (intermediate string).
+		\item Følgende er en uformel beskrivelse af PDA'en $P$:
+		      \begin{enumerate}
+			      \item Placer markeringssymbolet $\mathdollar$ og startvariablen på stakken
+			      \item Gentag følgende skridt forevigt:
+			            \begin{enumerate}
+				            \item Hvis toppen af stakken er et variabelsymbol $A$, vælg nondeterministisk en af reglerne og erstat med højrehåndssiden.
+				            \item Hvis toppen er et terminalsymbol, læs det næste symbol fra inputtet og sammenlign med $a$. Hvis de er lig hinanden, så gentag. Hvis ikke, så \textit{afvis} denne gren.
+				            \item Hvis toppen af stakken er symbolet $\mathdollar$, gå til \textit{accepttilstanden}.
+			            \end{enumerate}
+		      \end{enumerate}
+
+		\item Vi vil nu formalisere dette bevis.
+		\item Lad $P = (Q, \Sigma, \Gamma, \delta, q_{start}, F)$ være en PDA.
+		\item Vi laver en forsimplet notation til overførselsfunktionen:
+		\item Lad $q$ og $r$ være tilstande i PDA'en, og lad $a \in \Sigma_{\varepsilon}, s \in \Gamma_{ \varepsilon}$.
+		\item Vi vil gerne gå fra $q$ til $r$ når den læser $a$ og popper $s$.
+		\item Derudover skal den pushe strengen $u = u_{1}, \ldots u_{l}$ til stakken på samme tid.
+		\item Vi implmenterer denne handling ved at introducere nye tilstande $q_{1}, \ldots, q_{l-1}$, og lade overførselsfunktionen være som følger:
+		      \begin{align*}
+			       & \delta(q,a,s) \text{ indeholder } (q_{1}, u_{l}),              \\
+			       & \delta(q_{1}, \varepsilon, \varepsilon) = \{(q_{2}, u_{l-1})\} \\
+			       & \delta(q_{2}, \varepsilon, \varepsilon) = \{(q_{3}, u_{l-2})\} \\
+			      \vdots                                                            \\
+			       & \delta(q_{l-1}, \varepsilon, \varepsilon) = \{(r, u_{1})\}
+		      \end{align*}
+
+		\item Vi kan grafisk se implementering her:
+		      \includegraphics[scale=0.5]{figur/figur223.png}
+		\item Tilstandene i $P$ er $Q = \{q_{start}, q_{gentag}, q_{accept}\} \cup E$ hvor $E$ er mængden af tilstandene vi skal bruge for at implementere \(\delta\). Ydermere $F = \{q_{accept}\}$.
+		\item Vi definerer overførselsfunktionen som følger:
+		      \begin{itemize}
+			      \item Lad stakken starte med symbolerne $\mathdollar, S$. Det gør vi ved at bruge vores notation, $\delta(q_{start}, \varepsilon, \varepsilon) = \{(q_{loop}, S \mathdollar)\}$
+			      \item Som det næste skal vi håndtere toppen af stakken. Til dette er der tre muligheder:
+			            \begin{enumerate}
+				            \item Toppen af stakken er en variabel\\ Lad $\delta(q_{loop}, \varepsilon, A) = \{(q_{loop}, w) \mid \text{ hvor } A \rightarrow w \text{ er en regel i }R\}$
+				            \item Toppen af stakken er en terminal\\ Lad $\delta(q_{loop}, a, a) = \{(q_{loop}, \varepsilon)\}$
+				            \item Toppen af stakken er tom (\textdollar) \\ Lad $\delta(q_{loop}, \varepsilon, \mathdollar) = \{(q_{accept}, \varepsilon)\}$
+			            \end{enumerate}
+		      \end{itemize}
+
+		\item Vi kan se dette grafisk om følger:
+
+		      \includegraphics[scale=0.3]{figur/figur224.png}
+	\end{itemize}
+\end{frame}
+
+\begin{frame}[allowframebreaks]
+	\frametitle{Eksempel 2.25}
+
+	\begin{itemize}
+		\item Vi kigger hurtigt på et eksempel. Vi konstruerer en PDA fra CFG'en $G$:
+	\end{itemize}
+	\begin{align*}
+		S & \rightarrow aTb \mid b          \\
+		T & \rightarrow Ta \mid \varepsilon
+	\end{align*}
+
+	\begin{itemize}
+		\item Overførselsfunktionen (samt hele tilstandsdaigrammet) kan ses i følgende diagram:
+	\end{itemize}
+
+	\includegraphics[scale=0.3]{figur/figur226.png}
+
+\end{frame}
 
 
 
