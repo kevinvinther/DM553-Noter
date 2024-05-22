@@ -6,7 +6,7 @@
 	\begin{itemize}
 		\item Sipser 2.1-2.2: \textbf{Pushdown Automata and Context-free Languages}
 		\item Weekly Note 2
-		\item Video 3-6
+	  \item Video 3-6
 	\end{itemize}
 \end{frame}
 
@@ -26,19 +26,15 @@
 \label{subsec:cfg}
 
 \begin{frame}[allowframebreaks]
-	\frametitle{Kontekstfrie Grammatikker}
-
-	\begin{equation}
-		\tag{G_1}
-		\begin{align}
-			A & \rightarrow \text{\texttt{0}}A \text{\texttt{1}} \\
-			A & \rightarrow B                                    \\
-			B & \rightarrow \#
-		\end{align}
+  \frametitle{Kontekstfrie Grammatikker}
+  \begin{align}
+	A & \rightarrow \text{\texttt{0}}A \text{\texttt{1}} \\
+	A & \rightarrow B                                    \\
+	B & \rightarrow \#
+		\tag{$G_1$}
 		\label{eq:cfgex}
-	\end{equation}
-
-	\begin{itemize}
+  \end{align}
+  \begin{itemize}
 		\item \eqref{eq:cfgex} er et eksempel på en kontekstfri grammatik.
 		\item En kontekstfri grammatik indeholder en samling af substitueringsregler, også kaldt \textit{produktioner}
 		\item Hver regel er på en linje i grammatikken (e.g. $B \rightarrow \#$ i \eqref{eq:cfgex}).
@@ -214,7 +210,7 @@ Vi kigger på eksempel 2.10 pp. 110 i bogen for bedring af forståelse.
 		\item En sekvens af tilstande $r_{0}, r_{1}, \ldots, r_{m} \in Q$ og strengene $s_{0}, s_{1}, \ldots, s_{m} \in \Gamma^{*}$ eksisterer som opfylder følgende tre betingelser:
 		      \begin{enumerate}
 			      \item $r_{0} = q_{0}$ og $s_{0} = \varepsilon$
-			      \item $i = 0, \ldots, m-1 : (r_{i+1}, b) \in \delta(r_{i}, w_{i+1}, a)$, hvor $s_{i} = at$ og $s_{i+1} = bt$, hvor $a,b \in \Gamma^{*}$ og $t \in \Gamma^{*}$. I.e., bevæger $M$ sig ifølge tilstanden, stakken og det næste inputsymbol.
+			      \item $i = 0, \ldots, m-1 : (r_{i+1}, b) \in \delta(r_{i}, w_{i+1}, a)$, hvor $s_{i} = at$ og $s_{i+1} = bt$, hvor $a,b \in \Gamma_{\varepsilon}$ og $t \in \Gamma^{*}$. I.e., bevæger $M$ sig ifølge tilstanden, stakken og det næste inputsymbol.
 			      \item $r_{m} \in F$. Denne betingelse siger at en accepttilstand forekommer i inputtets slutning.
 		      \end{enumerate}
 	\end{itemize}
@@ -315,15 +311,122 @@ Vi kigger på eksempel 2.10 pp. 110 i bogen for bedring af forståelse.
 	\begin{itemize}
 		\item Overførselsfunktionen (samt hele tilstandsdaigrammet) kan ses i følgende diagram:
 	\end{itemize}
-
 	\includegraphics[scale=0.3]{figur/figur226.png}
+\end{frame}
 
+\begin{frame}[allowframebreaks]
+	\frametitle{Ækvivalens Med Kontekstfrie Grammatikker 2}
+	\begin{itemize}
+		\item Vi vil nu bevise den anden retning.
+	\end{itemize}
+
+	\begin{lemma}
+		Hvis en PDA genkender et sprog, så er det kontekst-frit.
+	\end{lemma}
+
+	\begin{itemize}
+		\item Givet en PDA $P$, og en CFG $G$:
+		\item For hvert par af states, $p$ og $q$ i $P$, vil vi have en variabel i grammatikken $A_{pq}$.
+		\item Formålet med denne variabel er at den skal kunne generere alle strenge som kan tage $P$ fra $p$ med en tom stak til $q$ med en tom stak. Dette vil også betyde at stakken ikke ændrer sig overhovedet.
+		\item Vi starter med at ændre lidt i $P$:
+		      \begin{enumerate}
+			      \item Den har én accept state $q_{accept}$
+			      \item Den tømmer sin stak før den accepterer
+			      \item Hver overførsel pusher enten et symbol til stakken eller popper et symbol fra stakken. Men ingen på samme tid.
+		      \end{enumerate}
+		\item Det er nemt at ændre i $P$ for at få den ønskede funktionalitet.
+		\item For den 3. ændrer vi hver overførsel som både popper og pusher med to overførsler.
+		\item Hver overførsel der hverken pusher eller popper, ændrer vi til to, hhv. en der først pusher og en der så popper.
+		\item Vi ved at ved at gå fra en state $p$ til $q$ i PDA'en, givet en streng $x$, skal der \textit{pushes} før der kan \textit{poppes}. Vi ved dette præcis fordi vi antager at stakken er tom, eller at den i det mindste ikke ændrer på stakken. Dermed på der ikke poppes noget.
+		\item Der er to muligheder, når $P$ kører på $x$:
+		      \begin{enumerate}
+			      \item Symbolet poppet i slutningen er symbolet pushet i starten.
+			      \item Symbolet poppet i slutningen er \textit{ikke} symbolet pushet i starten.
+		      \end{enumerate}
+
+		\item Hvis (1) betyder det at stakken kun har været tom 2 gange: Før første push, og efter sidste pop.
+		\item Hvis (2) må det første symbol blive poppet på et eller andet tidspunkt før $x$ er færdigkomputeret.
+		\item Ved (1) kan vi simulere dette med reglen $A_{pq} \rightarrow aA_{rs}b$ hvor:
+		      \begin{itemize}
+			      \item $a$ er inputtet læst ved første overførsel
+			      \item $b$ er inputtet læst ved sidste overførsel
+			      \item $r$ er tilstanden efterfølgende $p$, og $s$ er tilstanden før $q$
+		      \end{itemize}
+		\item Ved (2) kan vi simulere den med reglen $A_{pq} \rightarrow A_{pr}A_{rq}$, hvor $r$ er tilstanden når stakken bliver tom.
+
+		\item Visuelt forklaring for (1): \includegraphics[scale=0.3]{figur/figur228.png}
+		\item Visuelt forklaring for (2): \includegraphics[scale=0.3]{figur/figur229.png}
+
+		\item Nu til det formelle bevis (piv :( )
+		\item Lad $P = (Q, \Sigma, \Gamma, \delta, q_{0}, \{q_{accept}\})$ og konstruer $G$.
+		\item Variablerne af $G$ er $\{A_{pq} \mid p,q \in Q\}$
+		\item Startvariablen er $A_{q_{0}, q_{accept}}$
+		\item Vi beskriver $G$'s regler i tre dele:
+		      \begin{enumerate}
+			      \item For hvert $p,q,r,s \in Q, u \in \Gamma$ og $a,b \in \Sigma_{\varepsilon}$, hvis $\delta(p,a,\varepsilon)$ indeholder $(r,u)$ og $\delta(s,b,u)$ indeholder $(q, \varepsilon)$, put reglen $A_{pq} \rightarrow aA_{rs}b$ i $G$.
+			      \item For hvert $p,q,r \in Q$, put reglen $A_{pq} \rightarrow A_{pr}A_{rq}$ i $G$
+			      \item For hvert $p \in Q$, put reglen $A_{pp} \rightarrow \varepsilon$ i $G$
+		      \end{enumerate}
+
+		\item \textbf{Påstand}:
+		      Hvis $A_{pq}$ genererer $x$, så kan $x$ bringe $P$ fra $p$ på en tom stak til $q$ med en tom stak.
+		\item Vi beviser ved induktion.
+		\item \textit{Basis}: Afledningen har ét skridt. Dette er trivielt bevist ved vores regel $A_{pp} \rightarrow \varepsilon$.
+		\item \textit{Induktionsskridt}: Vi antager at det er sandt for afledninger af længde højest $k$, hvor $k \ge 1$, og beviser at det også gælder afledninger af længde $k+1$:
+		\item Antag at $A_{pq} \overset{*}{\Rightarrow} x$ på $k+1$ skridt.
+		\item Det første skridt i den afledning er enten $A_{pq} \Rightarrow aA_{rs}b$ eller $A_{pq} \Rightarrow A_{pr}A_{rq}$. Vi håndterer de to tilfælde seperat.
+		\item I første tilfælde, lad os tænke på strengen i henhold til $y$, således at vi kan opdele $x$ til at være $x = ayb$, hvor $a$ og $b$ kender vi allerede.
+		\item Fordi $A_{rs} \overset{*}{\Rightarrow} y$ med $k$ skridt, siger induktionshypotesen at $P$ kan gå fra $r$ på en tom stak til $s$ på en tom stak.
+		\item Fordi $A_{pq} \rightarrow aA_{rs}b$ er en regel af $G$, indeholder $\delta(p,a,\varepsilon)$ $(r,u)$ og $\delta(s,b,u)$ indeholder $(q, \varepsilon)$, for et staksymbol $u$.
+		\item Dermed, hvis $P$ starter på $p$ med en tom stak, efter at have læst $a$ kan den gå til tilstand $r$ og pushe $u$ til stakken.
+		\item Så kan den læse strengen $y$ og bringe den til $s$ og lade $u$ være på stakken.
+		\item Dermed, efter at have læst $b$ kan den gå til tilstand $q$ og poppe $u$ af stakken.
+		\item Så $x$ kan gå fra $p$ på en tom stak til $q$ på en tom stak.
+		\item I det andet tilfælde, antag at portionerne $y$ og $z$ af $x$  som $A_{pr}$ og $A_{rq}$ hhv. genererer, så $x = yz$.
+		\item Fordi $A_{pr} \overset{*}{\Rightarrow} y$ på højest $k$ skridt og $A_{rq} \overset{*}{\Rightarrow} z$ på højest $k$ skridt, siger induktionshypotesen at $y$ kan bringe $P$ fra $p$ til $r$ og $z$ kan bringe $P$ fra $r$ til $q$ med en tom stak fra begyndelsen til slutningen. Dermed kan $x$ bringe den fra $p$ på en tom stak til $q$ med en tom stak.
+		\item \textbf{Påstand}: Hvis $x$ kan bringe $P$ fra $p$ på en tom stak til $q$ på en tom stak, genererer $A_{pq}$ strengen $x$.
+		\item Vi beviser igen ved induktion :)
+		\item \textit{Basisskridt}. Komputeringen har $0$ skridt. Hvis komputeringen har 0 skridt starter og ender den på samme tilstand, e.g. $p$. Vi skal altså vise at $A_{pp} \overset{*}{\Rightarrow} x$. På 0 skirdt kan $P$ ikke læse nogen karakterer, så $x = \varepsilon$. Ved konstruktion, har $G$ reglen $A_{pp} \rightarrow \varepsilon$.
+		\item \textit{Induktionsskridt}: Antag sand for komputationer af længde højest $k$, hvor $k \ge 0$, og bevis for $k+1$:
+		\item Antag at $P$ har en komputering hvor $x$ bringer $p$ til $q$ på en tom stak i $k+1$ skridt.
+		\item Så er stakken enten kun tom i begyndelsen og slutningen, eller den bliver tom på en eller flere tidspunkter mellem disse to.
+		\item I første tilfælde (kun tom to gange) er symbolet der puishes i første overførsel det samme som symbolet der poppes i sidste overførsel.
+		\item Vi kalder dette symbol $u$.
+		\item Lad $a$ være inputtet læst i første overførsel og $b$ inputtet i sidste overførsel.
+		\item Lad $r$ være tilstanden efter første overførsel, og $s$ tilstanden før sidste.
+		\item Med det vil $\delta(p,a,\varepsilon)$ indeholde $(r,u)$ og $\delta(s,b,u)$ vil indeholder $(q,\varepsilon)$.
+		\item Dermed er reglen $A_{pq} \rightarrow aA_{rs}b$ i $G$
+		\item Lad $y$ være portionen af $x$ uden $a$ eller $b$, så $x = ayb$.
+		\item Input $y$ kan bringe $P$ fra $r$ til $s$ på en tom stak uden at røre symbolet $u$ som er på styakken.
+		\item Vi har fjernet første og sidste skridt af de $k+1$ skridt i den originale komputering af $x$, så komputeringen på $y$ har $(k+1)-2 = k-1$ skridt.
+		\item Dermed siger induktionshypotesen at $A_{rs} \overset{*}{\Rightarrow} y$. Dermed $A_{pq} \overset{*}{\Rightarrow} x$.
+		\item I andet tilfælde (3 eller flere gange der er en tom stak):
+		\item Lad $r$ være en tilstand hvor stakken bliver tom andet end i begyndelsen eller slutningen af komputeringen på $x$.
+		\item Så indeholder portionen af komputeringen fra $p$ til $r$ og fra $r$ til $q$ højest $k$ skridt.
+		\item Hvis $y$ er inputet læst i første portion og $z$ i anden, så siger induktionshypotesen at $A_{pr} \overset{*}{\Rightarrow} y$ og $A_{rq} \overset{*}{\Rightarrow} z$. Fordi reglen $A_{pq} \rightarrow A_{pr}A_{rq}$ er i $G$, $A_{pq} \overset{*}{\Rightarrow} x$.
+	\end{itemize}
+\end{frame}
+
+\begin{frame}[allowframebreaks]
+	\frametitle{Jørgens Noter}
+	\begin{itemize}
+		\item En pushdown-automat (PDA) er en ikke-deterministisk endelig automat med en stak, hvilket gør PDA'er mere kraftfulde end DFA'er og NFA'er.
+		\item Hvis en PDA skal være deterministisk, mister den evnen til at genkende visse sprog. Dette sker ikke for endelige automater.
+		\item Et vigtigt faktum uden bevis (se papiret under noter på hjemmesiden) er, at hvert kontekstfrit sprog over et ét-symbols alfabet også er regulært. Du skal kunne bruge dette faktum, men ikke bevise det.
+		\item Der findes sprog, der ikke er kontekstfrie, og pumpesætningen kan bruges til at bevise dette ved modstrid. Et eksempel er $\{a^n b^n c^n \mid n \geq 0\}$.
+		\item Hvert regulært sprog er kontekstfrit.
+		\item Klassen af kontekstfrie sprog er ikke lukket under fællesmængde. Der findes kontekstfrie sprog $L_1$ og $L_2$, hvor $L_1 \cap L_2$ ikke er kontekstfrit. For eksempel, hvis $L_1 = \{a^i b^j c^k \mid i, j, k \geq 0 \text{ og } i = j\}$ og $L_2 = \{a^i b^j c^k \mid i, j, k \geq 0 \text{ og } j = k\}$, så er både $L_1$ og $L_2$ kontekstfrie, men $L_1 \cap L_2 = \{a^n b^n c^n \mid n \geq 0\}$, hvilket ikke er kontekstfrit.
+		\item PDA'er er ækvivalente med kontekstfrie grammatikker. For enhver PDA $A$ kan man konstruere en grammatik $G$ sådan at $L(A) = L(G)$, og omvendt.
+		\item Klassen af kontekstfrie sprog er lukket under foreningsmængde, sammenkædning og stjerne, men ikke under fællesmængde og komplement. Dette betyder ikke, at komplementet af et kontekstfrit sprog aldrig er kontekstfrit. For eksempel er både $\Sigma^*$ og dets komplement, den tomme mængde, kontekstfrie (også regulære). Ligeledes er $L = \{a^n b^n \mid n \geq 0\}$ og dets komplement kontekstfrie (men ikke regulære).
+		\item Fællesmængde af et kontekstfrit sprog $L_1$ med et regulært sprog $L_2$ er kontekstfrit. Hvis vi har en PDA $M_1$ for $L_1$ over $\Sigma$ og en DFA $M_2$ for $L_2$, kan vi lave en PDA $M$ som simulerer $M_1$ og $M_2$ parallelt. Den nye PDA $M$ har par af tilstande $(q, p)$, hvor $q$ er den aktuelle tilstand af $M_1$ og $p$ den aktuelle tilstand af $M_2$. Når $M$ læser et symbol $a \in \Sigma$, opdaterer den både $M_1$'s tilstand og stak samt $M_2$'s tilstand. $M$ accepterer en streng $w$ hvis og kun hvis både $M_1$ accepterer $w$ (med tom stak) og $M_2$ accepterer $w$. Derfor er $L_1 \cap L_2$ kontekstfrit, da det accepteres af en PDA.
+	\end{itemize}
 \end{frame}
 
 
 
 
-%%% Local Variables:
+
+
 %%% mode: latex
 %%% TeX-engine: xetex
 %%% TeX-command-extra-options: "-shell-escape"

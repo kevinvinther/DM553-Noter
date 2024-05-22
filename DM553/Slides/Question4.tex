@@ -2,21 +2,287 @@
 \label{sec:Afgørlighed}
 
 \begin{frame}
-  \frametitle{Pensum}
-  \begin{itemize}
-    \item Sipser 4: \textbf{Afgørlighed} (Undtagen Sætning 4.17)
-    \item Siper 5.1 pp. 215-220 + 5.3: \textbf{Reducérbarhed}
-    \item Weekly Note 5
-    \item Weekly Note 6
-    \item Video 11-14
-  \end{itemize}
+	\frametitle{Pensum}
+	\begin{itemize}
+		\item Sipser 4: \textbf{Afgørlighed} (Undtagen Sætning 4.17)
+		\item Siper 5.1 pp. 215-220 + 5.3: \textbf{Reducérbarhed}
+		\item Weekly Note 5
+		\item Weekly Note 6
+		\item Video 11-14
+	\end{itemize}
+\end{frame}
+
+\subsection{Afgørlige Sprog}%
+\label{subsec:label}
+
+
+\begin{frame}
+	\frametitle{Afgørlige Sprog}
+	\begin{itemize}
+		\item Husk at et afgørligt sprog er et sprog hvor en Turingmaskine vil afgøre sproget på \textbf{alle} strenge.
+		\item Dette kapitel tager fokus på at vise at automater og CFG'er er afgørlige.
+	\end{itemize}
+\end{frame}
+
+\begin{frame}[allowframebreaks]
+	\frametitle{FA Acceptance Problem}
+	\begin{itemize}
+		\item Acceptance problemet med DFA'er problemet om hvorvidt en DFA $A$ accepterer en streng $w$.
+		\item Sproget indeholder indkodninger af alle DFA'er sammen med strenge som disse DFA'er accepterer.
+	\end{itemize}
+	\begin{equation*}
+		A_{DFA} = \{\langle B, w \rangle \mid B \text{ er en DFA som accepterer inputstrengen }w\}
+	\end{equation*}
+
+	\begin{itemize}
+		\item Problemet bliver altså at fremfor at teste om DFA $B$ accepterer $w$, så tester vi om $\langle B, w \rangle$ er et medlem af sproget $A_{DFA}$ (disse er ækvivalente!)
+	\end{itemize}
+
+	\begin{theorem}
+		$A_{DFA}$ er et afgørligt sprog.
+	\end{theorem}
+
+	\begin{itemize}
+		\item Vi beviser ved at præsentere en TM $M$ som afgører $A_{DFA}$.
+		\item $M = $''På input \(\langle B , w \rangle\) hvor $B$ er en DFA og $w$ er en streng:
+		      \begin{enumerate}
+			      \item Simulér $B$ på input $w$
+			      \item Hvis simuleringen ender i en accepttilstand, \textit{accepter}. Hvis den ender i en ikke accepterende tilstand, \textit{afvis}.''
+		      \end{enumerate}
+	\end{itemize}
+	\begin{itemize}
+		\item Vi kan gøre det samme ved nondeterministiske endelige automater:
+	\end{itemize}
+
+	\begin{theorem}
+		$A_{NFA}$ er et afgørligt sprog.
+	\end{theorem}
+
+	\begin{itemize}
+		\item TM $N$ afgører $A_{NFA}$ ved at konvertere det til en DFA, og derefter give det videre til $M$ der afgører $N$.
+		\item $N = $''På input \(\langle B, w  \rangle\), hvor $B$ er en NFA og $w$ er en streng:
+		      \begin{itemize}
+			      \item Konvertér NFA $B$ til en ækvivalent DFA $C$, ved brug af algoritmen givet tidligere.
+			      \item Kør $M$ på input $\langle C, w \rangle $
+			      \item Hvis $M$ accepterer, så \textit{accepter}, ellers, \textit{afvis}.''
+		      \end{itemize}
+	\end{itemize}
+
+	\begin{itemize}
+		\item Trods det ikke er en endelig automat, kan vi også bevise dette for regulære sprog.
+	\end{itemize}
+
+	\begin{theorem}
+		$A_{REX}$ er et afgørligt sprog.
+	\end{theorem}
+
+	\begin{itemize}
+		\item Her er $A_{REX} = \{\langle R, w \rangle \mid R \text{ er et regulært udtryk som genererer strengen }w\}$
+		\item Følgende TM $P$ afgører $A_{REX}$:
+		\item $P =$''På input \(\langle R, w \rangle\), hvor $R$ er et regulært udtryk og $w$ er en streng:
+		      \begin{enumerate}
+			      \item Konvertér det regulære udtryk $R$ til en ækvivalnet $NFA$ ved at bruge den tidligere algoritme.
+			      \item Kør $N$ på $\langle A, w  \rangle $
+			      \item Hvis $N$ accepterer, \textit{accepter}, ellers \textit{afvis}''
+		      \end{enumerate}
+	\end{itemize}
+\end{frame}
+
+\begin{frame}[allowframebreaks]
+	\frametitle{Tomheds Testing}
+	\begin{itemize}
+		\item Formålet med ``tomhedstesting'' (som jeg har kaldt det, \textit{engelsk: emptiness testing}) er at finde ud af om en DFA genkender nogen strenge overhovedet, eller om sproget er tomt, i.e. $L(A) = \emptyset$ hvor $A$ er en DFA.
+		\item Vi kalder dette sprog $E_{DFA} = \{\langle A \rangle \mid A \text{ er en DFA og }L(A) = \emptyset\}$
+	\end{itemize}
+
+	\begin{theorem}
+		$E_{DFA}$ er et afgørligt sprog.
+	\end{theorem}
+
+	\begin{itemize}
+		\item En DFA accepterer en streng $\iff$ det er muligt at komme til en accepttilstand ved kun at gå gennem overføringerne (pilene) på DFA'en.
+		\item Vi konstruerer $T$ som afgører $E_{DFA}$:
+		\item $T = $''På input \(\langle A \rangle\), hvor $A$ er en DFA:
+		      \begin{enumerate}
+			      \item Markér starttilstanden
+			      \item Gentag indstil ingen nye tilstande markeres:
+			            \begin{enumerate}
+				            \item Markér en ny tilstand der har en overføring der kommer ind i den fra en anden tilstand der allerede er markeret.
+			            \end{enumerate}
+			      \item Hvis ingen accepttilstand er markeret, \textit{accepter}, ellers \textit{afvis}.
+		      \end{enumerate}
+	\end{itemize}
+\end{frame}
+
+\begin{frame}[allowframebreaks]
+	\frametitle{Lighedstesting}
+	\begin{itemize}
+		\item Før afgjorde vi sproget der sagde at sproget af en specifik DFA er tomt.
+		\item Nu vil vi afgøre sproget der siger at to DFA'er har samme sprog.
+		\item Vi definerer dette sprog til at være $EQ_{DFA} = \{\langle A, B \rangle \mid A \text{ og } B \text{ er DFA'er og } L(A) = L(B)\}$
+	\end{itemize}
+
+	\begin{theorem}
+		$EQ_{DFA}$ er et afgørligt sprog.
+	\end{theorem}
+
+	\begin{itemize}
+		\item Til at bevise dette bruger vi Turingmaskinen beskrevet til $E_{DFA}$.
+		\item Vi konstruerer en ny DFA, $C$ fra $A$ og $B$.
+		\item $C$ accepterer kun strenge som er accepteret af \textit{enten} $A$ eller $B$, men \textbf{ikke} begge!
+		\item $L(C) = \left( L(A) \cap \overline{L(B)} \right) \cup (\overline{L(A)} \cap L(B))$
+		\item Når vi har konstrueret $C$ kan vi bruge Turingmaskinen der afgører $E_{DFA}$ til at tjekke om $L(C) = \emptyset$, og hvis det er, så \textit{accepterer} vi.
+		\item $F = $''På input \(\langle A, B \rangle\), hvor $A$ og $B$ er DFA'er:
+		      \begin{enumerate}
+			      \item Konstruer DFA $C$ som beskrevet.
+			      \item Kør TM $T$ (fra $E_{DFA}$) på $\langle C \rangle$
+			      \item Hvis $T$ accepterer, \textit{accepter}, ellers \textit{afvis}.''
+		      \end{enumerate}
+	\end{itemize}
+\end{frame}
+
+\begin{frame}[allowframebreaks]
+	\frametitle{Afgørlige Problemer i kontekstfrie sprog}
+	\begin{itemize}
+		\item Vi kigger først på $A_{CFG} = \{\langle G, w \rangle \mid G \text{ er en CFG som genererer strengen }w\}$
+	\end{itemize}
+	\begin{theorem}
+		$A_{CFG}$ er et afgørligt sprog.
+	\end{theorem}
+
+	\begin{itemize}
+		\item For at gøre dette til en afgører, skal vi være sikker på at den aldrig når ud i en uendelig lang afgledning, eller at den prøver uendeligt mange afledninger.
+		\item Vi ved at hvis en CFG $G$ er i CNF (i.e., er en Chomsky Grammatik), har en alle afledninger af $w$ $2n-1$ skridt, hvor $n = |w|$.
+		\item $S = $''På input \(\langle G, w \rangle\), hvor $G$ er en CFG og $w$ er en streng:
+		      \begin{enumerate}
+			      \item Konvertér $G$ til en Chomsky grammatik.
+			      \item Lav en liste af alle afledninger af længde $2n-1$ skridt, hvor $n =|w|$, undtagen hvis $n = 0$, så lav en liste af alle afledninger med ét skridt.
+			      \item Hvis nogen af disse afledninger genererer $w$, så \textit{accepter}, ellers \textit{afvis}.''
+		      \end{enumerate}
+	\end{itemize}
+
+	\begin{itemize}
+		\item Vi går nu videre til at kigge på tomhed for kontekstfrie grammatikker.
+		\item Lad $E_{CFG} = \{\langle G \rangle \mid G \text{ er en CFG og } L(G) = \emptyset \}$
+	\end{itemize}
+
+	\begin{theorem}
+		$E_{CFG}$ er et afgørligt sprog.
+	\end{theorem}
+
+	\begin{itemize}
+		\item Den her er lidt mere tricky. Vi kan ikke gøre ligesom i $E_{DFA}$, da $|w|$ kan være uendeligt stort.
+		\item I stedet leder TM'en efter terminale, og derefter forsøger at finde variabler der leder til denne/disse terminale(r).
+		\item $R = $''På input \(\langle G \rangle\), hvor $G$ er en CFG:
+		      \begin{enumerate}
+			      \item Markér alle terminale symboler i $G$
+			      \item Gentag indtil ingen nye variabler markeres:
+			            \begin{enumerate}
+				            \item Markér en variabel $A$, hvor $G$ har en regel $A \rightarrow U_{1}U_{2} \cdots U_{k}$ og hvert symbol $U_{1}U_{2} \ldots, U_{k}$  allerede er markeret.
+			            \end{enumerate}
+			      \item Hvis startvariablen \textbf{ikke} er markeret, så \textit{accepter} og ellers \textit{afvis}.
+		      \end{enumerate}
+	\end{itemize}
+
+	\begin{itemize}
+		\item Vi kunne nu være fristet til at gå videre til $EQ_{CFG}$, hvor vi sammenligner to kontekstfrie grammatikker, men der er et problem her: CFL er \textbf{ikke} lukket under komplement eller fællesmængde!
+		\item Vi beviser ikke dette (i hele kurset, tror jeg?), men $EQ_{CFG}$ er \textbf{ikke} afgørligt.
+		\item Vi vil til gengæld gerne vise at alle kontekstfrie sprog er afgørlige.
+	\end{itemize}
+
+	\begin{theorem}
+		Hvert kontekstfrit sprog er afgørligt.
+	\end{theorem}
+	\begin{itemize}
+		\item Vi kan ikke bare konvertere en PDA til en NDTM og så til en DTM, da der er en reel sandsynlighed for at PDA'en kører på en gren uendeligt.
+		\item I stedet bruger vi Turingmaskinen $S$, vi konstruerede til at afgøre $A_{CFG}$.
+		\item $M_{G} = $''På input \(w\):
+		      \begin{enumerate}
+			      \item Kør TM $S$ på \(\langle G, w \rangle \)
+			      \item Hvis $S$ accepterer, \textit{acceptér}, ellers \textit{afvis}.''
+		      \end{enumerate}
+	\end{itemize}
+	\begin{itemize}
+		\item Med dette bevis ved vi nu (med sikkerhed) at:
+	\end{itemize}
+	\begin{equation*}
+		Regulaer \subset Kontekstfri \subset Afgorlig \subset Genkendelig
+	\end{equation*}\footnote{Matematikken kan åbenbart ikke lide æøå}
+
+\end{frame}
+
+\subsection{Uafgørlighed}%
+\label{subsec:uafgørlighed}
+
+\begin{frame}[allowframebreaks]
+	\frametitle{Uafgørlighed}
+
+	\begin{itemize}
+		\item Vi har nu kigget på afgørlige problemer i sprogteori, men vil nu kigge over mod de \textit{uafgørlige} problemer.
+		\item Husk, uafgørlige problemer er problemer der ikke \textit{altid} vil give et svar, og \textit{kan} gå i en uendelig løkke.
+		\item Vi starter med at kigge på problemet, om en given Turingmaskine accepterer en given streng.
+		\item Lad $A_{TM} = \{\langle M, w \rangle \mid M \text{ er en Turingmaskine og } M \text{ accepterer }w\}$
+	\end{itemize}
+
+	\begin{theorem}
+		$A_{TM}$ er uafgørligt.
+	\end{theorem}
+
+	\begin{itemize}
+		\item Før vi viser at det er uafgørligt, vil vi vise at det er genkendeligt:
+
+		\item Lad $U = $''På input \(\langle M , w \rangle\), hvor $M$ er en Turingmaskine og $w$ er en streng:
+		      \begin{enumerate}
+			      \item Simulér $M$ på input $w$
+			      \item Hvis $M$ går til sin accepttilstand, så \textit{accepter}, hvis den går til sin afvisningstilstand, så \textit{afvis}.''
+		      \end{enumerate}
+
+		\item Bemærk her at der bliver skrevet \textit{``hvis''}, altså fordi det ikke er sikkert at den går i en accept- eller afvisningstilstand.
+		\item Vi bruger \textit{diagionalization} (diagonalisering) til at bevise uafgørligheden af $A_{Tm}$.
+		\item Først kommer vi med en reminder på injektiv (one-to-one), surjektiv (onto) og bijektive (one-to-one \textit{og} onto) funktioner:
+		      \begin{itemize}
+			      \item Givet to mængder $A$ og $B$ og en funktion $f : A \rightarrow B$, så siger vi at:
+			      \item $f$ er \textit{injektiv} hvis den aldrig mapper to forskellige elementer til samme plads, altså $f(a) \ne f(b)$ hvis $a \ne b$.
+			      \item $f$ er \textit{bijektiv} hvis den rammer hvert element i $B$, altså for hvert $b \in B$ er der en $a \in A$ hvor $f(a) = b$.
+			      \item Vi siger at $A$ og $B$ er af ssamme størrelse hvis der er en funktion der både er injektiv og surjektiv, kaldet en korrespondance, eller \textit{bijektiv}.
+		      \end{itemize}
+		\item Uden at bruge for meget tid på det, husk tilbage til diskret matematik:
+		\item Alle positive heltal (naturlige tal) og komplekse tal (tal som er resultat fra en brøk) er \textit{tælleligt uendelige}. Alle mængder der er \textit{tælleligt uendelige} er bijektive til disse mængder.
+		\item Nogle mængder er ikke tælleligt uendelige, men er stadig uendelige, såsom alle reelle tal. Disse siges at være \textit{overtællelige}.
+		\item VI kan ikke vise en bijektion mellem mængden af naturlige tal og mængden af reelle tal.
+		\item Der er overtælleligt mange sprog, men tælleligt mange Turingmaskine. Ud fra dertte i sig selv, kan vi deducere at der eksisterer sprog som ikke er Turing-genkendelige.
+	\end{itemize}
+
+	\begin{corollary}
+		Nogle sprog er ikke Turing-genkendelige.
+	\end{corollary}
+
+	\begin{itemize}
+		\item Vi viser først at alle Turingmaskiner er tællelige.
+		\item Først observerer vi at $\Sigma^{*}$ er tælleligt. Vi kan tælle $\Sigma^{*}$ ved først at skrive alle strenge af længde 1, så længde 2, etc.
+		\item Mængden af alle Turingmaskiner er tællelige fordi hver Turingmaskine har en kodning til en streng \(\langle M \rangle\).
+		\item Hvis vi fjerner alle strenge der \textbf{ikke} er lovlige kodninger af en Turingmaskine, får vi en liste af \textbf{alle} Turingmaskiner.
+		\item For at vise at mængden af alle sprog er overtællelige, ser vi først at mængden af alle uendelige binære sekvenser er overtællelige (e.g. 00111000$\ldots$)
+		\item Lad $\mathcal{B}$ være mængden af alle uendelige binære sekvenser.
+		\item Vi beviser ved brug af diagonalisering.
+		\item Lad $\mathcal{L}$ være mængden af alle sprog over alfabetet $\Sigma$. Vi viser at $\mathcal{L}$ er overtælleligt ved at give en bijektion med $\mathcal{B}$, og dermed vise at de har samme kardinalitet.
+		\item Lad $\Sigma^{*} = \{s_{1}, s_{2}, s_{3}, \ldots\}$. Hvert sprog $AS \in \mathcal{L}$ har en unik sekvens i $\mathcal{B}$.
+		\item Den $i$'e bit af sekvensen er et 1 hvis $s_{i} \in A$ og $0$ hvis $s_{i} \notin A$.
+		\item E.g., hvis $A$ er sproget af alle strenge der starter med et $0$ hvor $\Sigma = \{0,1\}$, ville den \textit{karakteristiske sekvens} være:
+		      \begin{center}
+			      \includegraphics[scale=0.3]{figur/karsekv.png}
+		      \end{center}
+	\end{itemize}
 \end{frame}
 
 
 
-%%% local variables:
+
+
+
+%%% Local Variables:
 %%% mode: latex
-%%% tex-engine: xetex
-%%% tex-command-extra-options: "-shell-escape"
-%%% tex-master: "main"
-%%% end:
+%%% TeX-engine: xetex
+%%% TeX-command-extra-options: "-shell-escape"
+%%% TeX-master: "main"
+%%% End:
