@@ -272,10 +272,275 @@
 		      \begin{center}
 			      \includegraphics[scale=0.3]{figur/karsekv.png}
 		      \end{center}
+
+		\item Vi viser her et funktionen $f : \mathcal{L} \rightarrow \mathcal{B}$, hvor $f(A)$ er lig med den karakteristiske sekvens af $A$, er bijektiv. Derfor, da $\mathcal{B}$ er utællelig, er $\mathcal{L}$ også utællelig.
+		\item Vi går nu tilbage til  sproget $A_{TM} = \{\langle M, w \rangle \mid M \text{ er en Turingmaskine og } M \text{ accepterer }w\}$
+		\item Vi antager at $A_{TM}$ er afgørligt, og får dermed et modstrid.
+		\item Antag at $H$ er en TM der afgører $A_{TM}$. På input $\langle M, w \rangle $, hvor $M$ er en TM og $w$ er en streng, stopper $H$ og accepterer hvis $M$ accepterer $w$. $H$ afviser hvis omvendt.
+		\item Vi bruger nu $H$ til at konstruere en ny Turingmaskine, $D$, som bruger $H$.
+		\item $D$ bruger $H$ til at bestemme hvad $M$ gør, hvis $M$ får sin egen beskrivelse, $\langle M \rangle$. Når den har fået denne information, gør den det omvendte.
+		\item $D = $''På input \(\langle M \rangle \), hvor $M$ er en Turingmaskine:
+		      \begin{enumerate}
+			      \item Kør $H$ på input \(\langle M, \langle M \rangle \rangle\).
+			      \item Output det omvendte af hvad $H$ outputter.
+		      \end{enumerate}
+		\item Det at $M$ kører med sig selv som input, bruges også i virkeligheden, for eksempel hvis en oversætter til Python i sig selv er skrevet i Python.
+
+		\item Altså:
+		      \begin{equation*}
+			      D(\langle M \rangle ) = \begin{cases}
+				      \text{\textit{accepter}} & \text{ hvis }M \text{ ikke accepterer } \langle M \rangle \\
+				      \text{\textit{afvis}}    & \text{ hvis }M \text{ accepterer } \langle M \rangle
+			      \end{cases}
+		      \end{equation*}
+
+		\item Hvad sker der så hvis vi kører $D$ på sin egen beskrivelse $\langle D \rangle $ som put? Så får vi:
+		      \begin{equation*}
+			      D(\langle M \rangle ) = \begin{cases}
+				      \text{\textit{accepter}} & \text{ hvis }D \text{ ikke accepterer } \langle D \rangle \\
+				      \text{\textit{afvis}}    & \text{ hvis }D \text{ accepterer } \langle D \rangle
+			      \end{cases}
+		      \end{equation*}
+		\item Uanset hvad $D$ gør skal den gøre det omvendte, hvilket er umuligt. Dermed kan $D$ ikke eksisterer (og samme med $H$, da $D$ næsten eksklusivt bruger denne.)
 	\end{itemize}
 \end{frame}
 
 
+\begin{frame}[allowframebreaks]
+	\frametitle{Turing Ugenkendelighed}
+	\begin{theorem}
+		Et sprog $A$ er afgørligt $\iff$ $A$ er Turing-genkendeligt og co-Turing-genkendeligt
+	\end{theorem}
+	\begin{itemize}
+		\item Her betyder co-Turing-genkendeligt, at dets komplement er Turing-genkendeligt.
+		\item \(\Rightarrow\) Er tydeligt, hvis $A$ er afgørligt, er både $A$ og $\overline{A}$ også.
+		\item \(\Leftarrow\) Vi konstsruerer en TM $M$:
+		\item $M = $''På input $w$
+		      \begin{enumerate}
+			      \item Kør både $M_{1}$ og $M_{2}$ i parallel på input $w$
+			      \item Hvis $M_{1}$ accepterer, så \textit{accepter}, hvis $M_{2}$ accepterer, så \textit{afvis}.''
+		      \end{enumerate}
+		\item Vi kan gøre dette, da vi ved at et genkendeligt sprog vil genkende alle strenge der er en del af $A$, men ikke nødvendigvis alle strenge der \textbf{ikke} er en del af $A$. Da $\overline{A}$ også er genkendeligt, kan vi strege dette over.
+	\end{itemize}
+
+	\begin{corollary}
+		$\overline{A_{TM}}$ er Turing-genkendeligt.
+	\end{corollary}
+
+	\begin{itemize}
+		\item Vi ved at $A_{TM}$ er Turing-genkendeligt. Hvis $\overline{A_{TM}}$ også var Turing-genkendeligt, ville $A_{TM}$ være afgørligt.
+	\end{itemize}
+\end{frame}
+
+
+\subsection{Uafgørlige Problemer fra Sprogteori}%
+\label{subsec:uafgørligsprogteori}
+
+
+\begin{frame}[allowframebreaks]
+	\frametitle{Uafgørlige Problemer fra Sprogteori}
+	\begin{itemize}
+		\item Indtil videre har vi kun set ét uafgørligt problem.
+		\item Vi vil nu få kigget på en del flere, herunder et af de mest kendte problemer i datalogi: Standsproblemet (halting problem).
+		\item $HALT_{TM} = \{\langle M, w \rangle \mid M \text{ er en } TM \text{ og } M \text{ standser på input } w\}$
+	\end{itemize}
+
+	\begin{theorem}
+		$HALT_{TM}$ er uafgørligt.
+	\end{theorem}
+
+	\begin{itemize}
+		\item Vi bruger bevis ved modstrid.
+		\item Vi gør dette ved at \textit{reducere} $A_{TM}$ til $HALT_{TM}$.
+		\item I.e., vi beviser at hvis vi kan afgøre $HALT_{TM}$ kan vi \textbf{også} afgøre $A_{TM}$.
+		\item Lad $R$ være en Turingmaskine der afgører $HALT_{TM}$ og lad $S$ være en Turingmaskine der afgører $A_{TM}$.
+		\item $S = $''På input \(\langle M , w \rangle \), en kodning af en Turingmaskine $M$ og en streng $w$:
+		      \begin{enumerate}
+			      \item Kør $R$ på input \(\langle M , w \rangle\)
+			      \item Hvis $R$ afviser, \textit{afvis}
+			      \item Hvis $R$ accepterer, simulér $M$ på $w$ til den standser.
+			      \item Hvis $M$ accepterer, \textit{accepter}, hvis $M$ afviser, \textit{afvis}.''
+		      \end{enumerate}
+		\item Altså kan vi bruge $HALT_{TM}$ til at afgøre $A_{TM}$.
+		\item Vi går nu videre til tomhed i en Turingmaskine.
+		\item $E_{TM} = \{\langle M \rangle \mid M \text{ er en Turingmaskine og }L(M) = \emptyset\}$
+	\end{itemize}
+
+	\begin{theorem}
+		$E_{TM}$ er uafgørligt.
+	\end{theorem}
+
+	\begin{itemize}
+		\item Lad $R$ være en TM der afgører $E_{TM}$.
+		\item Vi bruger $R$ til at konsturere $S$ som afgører $A_{TM}$.
+		\item Vi kører $R$ på en TM $M$ som vi modificerer til at afvise alle strenge undtagen $w$, som den kører på som normalt.
+		\item Hvis $R$ accepterer denne, så ved vi $M$ \textbf{ikke} accepterer $w$, da sproget er tomt.
+		\item Vi kalder den modificeret maskine $M_{1}$.
+		\item $M_{1} = $ ``På input $x$:
+		      \begin{enumerate}
+			      \item Hvis $x \ne w$, \textit{afvis}.
+			      \item Hvis $x = w$ kør $M$ på input $w$, og \textit{accepter} hvis $M$ accepterer.''
+		      \end{enumerate}
+
+		\item Vi antager at $R$ afgører $E_{TM}$ og konstruerer nu $S$ til at afgøre $A_{TM}$:
+		\item $S = $''På input \(\langle M, w \rangle\), en kodning af en Turingmaskine $M$; og en streng $w$:
+		      \begin{enumerate}
+			      \item Brug beskrivelsen af $M$ og $w$ til at konstruere $M_{1}$.
+			      \item Kør $R$ på input $\langle M_{1}\rangle$
+			      \item Hvis $R$ accepterer, \textit{afvis}, hvis $R$ afviser, \textit{accepter}.''
+		      \end{enumerate}
+	\end{itemize}
+
+	\begin{equation*}
+		REGULAR_{TM} = \{\langle M \rangle \mid M \text{ er en Turingmaskine og } L(M) \text{ er et regulært sprog.}\}
+	\end{equation*}
+
+	\begin{theorem}
+		$REGULAR_{TM}$ er uafgørligt
+	\end{theorem}
+
+	\begin{itemize}
+		\item Vores idé her er at modificere $M$ således at $M_{2}$ (modificeret $M$) genkender et regulært sprog hvis og kun hvis $M$ accepterer $w$.
+		\item Vi designer $M_{2}$ til at genkende det ikke-regulære sprog $\{0^{n}1^{n} \mid n \ge 0\}$ hvis $M$ \textbf{ikke} accepterer $w$, og genkende det regulære sprog $\Sigma^{*}$ hvis $M$ accepterer $w$.
+		\item Bemærk at vi \textbf{ikke} konstruerer $M_{2}$ til rent faktisk at blive kørt!
+		\item Vi konstruerer den udelukkende til at vise at $REGULAR_{TM}$ er umuligt.
+		\item $S = $''På input \(\langle M, w \rangle\), hvor $M$ er en Turingmaskine og $w$ er en streng:
+		      \begin{enumerate}
+			      \item Konstruer den følgende Turingmaskine $M_{2}$:
+			      \item[  ] $M_{2} =$''På input $x$:
+			            \begin{enumerate}
+				            \item Hvis $x$ er af formen $0^{n}1^{n}$, \textit{accepter}.
+				            \item Hvis $x$ ikke har denne form, kør $M$ på input $w$  og \textit{accepter} hvis $M$ accepterer $w$.''
+			            \end{enumerate}
+			      \item Kør $R$ på input $\langle M_{2} \rangle $
+			      \item Hvis $R$ accepterer, så \textit{accepter}, ellers \textit{afvis}.
+		      \end{enumerate}
+	\end{itemize}
+
+	\begin{equation*}
+		EQ_{TM} = \{\langle M_{1}, M_{2} \rangle \mid M_{1} \text{ og } M_{2} \text{ er Turingmaskiner og } L(M_{1}) = L(M_{2})\}
+	\end{equation*}
+
+	\begin{theorem}
+		$EQ_{TM}$ er uafgørligt.
+	\end{theorem}
+
+	\begin{itemize}
+		\item$S =$''På input \(\langle M \rangle \), hvor $M$ er en Turingmaskine:
+		      \begin{enumerate}
+			      \item Kør $R$ på input $\langle M, M_{1} \rangle$, hvor $M_{1}$ er en Turingmaskine der afviser alle input.
+			      \item Hvis $R$ accepterer, \textit{accepter}, hvis $R$ afviser, \textit{afvis}.''
+		      \end{enumerate}
+		\item Her reducerer vi så fra $E_{TM}$ fremfor fra $A_{TM}$ som vi har gjort tidligere.
+	\end{itemize}
+\end{frame}
+
+
+
+\subsection{Mapping Reducerbarhed}%
+\label{subsec:mapping}
+
+\begin{frame}[allowframebreaks]
+	\frametitle{Mapping Reducerbarhed}
+	\begin{itemize}
+		\item Mapping reducerbarhed er blot reducerbarhed som vi har set tidligere, men formaliseret.
+		\item Hvis vi kan reducere et problem $A$ til et problem $B$ ved at bruge mapping reducerbarhed, betyder det at en beregnelig funktion eksisterer, som konverterer instanser af problem $A$ til instanser af problem $B$.
+		\item En sådan funktion  kan vi løse $A$ med en løser for $B$.
+	\end{itemize}
+
+
+	\begin{definition}[Beregnelig funktion]
+		En funktion $f : \Sigma^{*} \longrightarrow \Sigma^{*}$ er en beregnelig funktion hvis en Turingmaskine $M$, på hvert input $w$, stopper med $f(w)$ på sit bånd.
+	\end{definition}
+
+	\begin{itemize}
+		\item For eksempel er alle aritmetiske operationer beregnelige. For eksempel $f : \langle m , n \rangle \rightarrow m + n$ er beregnelig.
+		\item Disse funktioner kan også være transformationer af maskinbeskrivelser.
+		\item For eksempel kan en beregnlig funktion tage som input $w$ en turingmaskine $\langle M \rangle $ og returnere en modificeret maskine, $\langle M' \rangle $.
+	\end{itemize}
+\end{frame}
+
+\begin{frame}[allowframebreaks]
+	\frametitle{Formel Definition af Mapping Reducerbarhed}
+	\begin{definition}
+		Sprog $A$ er mapping reducerbart til sprog $B$, skrevet $A \le_{M} B$, hvis der er en beregnelig funktion $f : \Sigma^{*} \longrightarrow \Sigma^{*}$, hvor for hvert $w$,
+		\begin{equation*}
+			w \in A \iff f(w) \in B
+		\end{equation*}
+
+		Funktionen $f$ kaldes reduktionen fra $A$ til $B$.
+	\end{definition}
+
+	\begin{theorem}
+		Hvis $A \le_{M} B$ og $B$ er afgørligt, så er $A$ afgørligt.
+	\end{theorem}
+	\begin{itemize}
+		\item Lad $M$ være en afgører for $B$ og lad $f$ være reduktionen fra $A$ til $B$. Vi beskriver afgøreren $N$ for $A$ som følger:
+		\item $N =$''På input $w$:
+		      \begin{enumerate}
+			      \item Beregn $f(w)$
+			      \item Kør $M$ på input $f(w)$ og output hvad $M$ outputter.''
+		      \end{enumerate}
+		\item Så, hvis $w \in A$ så er $f(w) \in B$, og M accepterer $f(w)$ når $w \in A$.
+		\item Følgende corollary har været det primære værktøj vi har brugt til at bevise uafgørlighed:
+	\end{itemize}
+
+	\begin{corollary}
+		Hvis $A \le_{M} B$ og $A$ er uafgørligt, så er $B$ uafgørligt.
+	\end{corollary}
+
+	\begin{itemize}
+		\item Vi kigger nu på nogle af vores tidligere eksempler, men med beregnelige funktioner.
+		\item Vi viser nu en mapping reduktion fra $A_{TM}$ til $HALT_{TM}$.
+		\item Vi præsenterer en beregnelig funktion $f : \langle M , w \rangle \rightarrow \langle M ' , w' )$, hvor
+		      \begin{equation*}
+			      \langle M , w \rangle \in A_{TM} \iff \langle M ', w' \rangle \in HALT_{TM}
+		      \end{equation*}
+
+		\item Følgende maskine $F$ beregner en reduktion $f$:
+		\item $F =$''På input \(\langle M , w \rangle\):
+		      \begin{enumerate}
+			      \item Konstruér $M'$:. \\
+			            $M' = $''På input $x$:
+			            \begin{enumerate}
+				            \item Kør $M$ på $x$
+				            \item Hvis $M$ accepterer, \textit{accepter}
+				            \item Hvis $M$ afviser, gå i løkke.''
+			            \end{enumerate}
+			      \item Output \(\langle M', w \rangle\)
+		      \end{enumerate}
+	\end{itemize}
+
+	\begin{theorem}
+		Hvis $A \le_{M} B$ og $B$ er Turing-genkendeligt, så er $A$ Turing-genkendeligt.
+	\end{theorem}
+	\begin{itemize}
+		\item Beviset er det samme som ved afgørligt.
+	\end{itemize}
+
+	\begin{corollary}
+		Hvis $A \le_{M} B$ og $A$ ikke er Turing-genkendeligt, så er $B$ ikke Turing-genkendeligt.
+	\end{corollary}
+
+	\begin{theorem}
+		$EQ_{TM}$ er hverken Turing-genkendeligt eller co-Turing-genkendeligt.
+	\end{theorem}
+	\begin{itemize}
+		\item Først viser vi at $EQ_{TM}$ ikke er Turing-genkendeligt.
+		\item Vi viser dette ved at vise at $A_{TM} \le_{M} \overline{EQ_{TM}}$.
+		\item Reduktionsfunktionen $f$ fungerer som følger:
+		\item $F =$''På input \(\langle M, w \rangle\), hvor $M$ er en Turingmaskine og $w$ er en streng:
+		      \begin{enumerate}
+			      \item Konstruer følgende to maskiner: $M_{1}$ og $M_{2}$.\\
+			            $M_{1} = $''På hvilket som helst input \textit{afvis}'' \\
+			            $M_{2} =$''På hvilket som helst input, kør $M$ på $w$. \textit{Accepter} hvis den accepterer.\\
+			      \item Output \(\langle M_{1}, M_{2} \rangle \)
+		      \end{enumerate}
+		\item Her accepterer $M_{1}$ intet.
+		\item Hvis $M$ accepterer $w$, så accepterer $M_{2}$ \textbf{alt}.
+		\item Dermed er de to maskiner \textbf{ikke} ens.
+	\end{itemize}
+\end{frame}
 
 
 

@@ -2,22 +2,467 @@
 \label{sec:npkomplethed}
 
 \begin{frame}
-  \frametitle{Pensum}
+	\frametitle{Pensum}
+	\begin{itemize}
+		\item Siper 7.1-7.4: \textbf{Tidskompleksitet inkl. P, NP, NP-komplethed}
+		\item CLRS 34: \textbf{NP-Komplethed Beviser} (minus sider 1070-1078)
+		\item Weekly Note 7
+		\item Weekly Note 8
+		\item Weekly Note 9 (ish)
+		\item Video 15-17
+	\end{itemize}
+\end{frame}
+
+\subsection{Måling af kompleksitet}%
+\label{subsec:label}
+
+\begin{frame}[allowframebreaks]
+	\frametitle{Kompleksitet}
+	\begin{itemize}
+		\item Trods der eksisterer sprog som vi kan afgøre i teori, kan vi ofte ikke afgøre dem \textit{i praksis}, grundet deres kompleksitet (køretid.)
+		\item Vi vil kigge på sproget $A = \{0^{k}1^{k} \mid k \ge 0\}$.
+		\item Vi laver en algoritme, og finder dens køretid.
+		\item $M_{1} = $''På input streng $w$:
+		      \begin{enumerate}
+			      \item Scan henover båndet og \textit{afvis} hvis et 0 findes til højre af et 1. (Altså hvis den ser et 1, og så et 0).
+			      \item Gentag hvis der stadig er 0 og 1 på båndet:
+			            \begin{enumerate}
+				            \item Scan henover båndet og afkryds hvert 0 og hvert 1
+			            \end{enumerate}
+
+			      \item Hvis der stadig er 0'er tilbage efter 1 er blevet krydset af, eller omvendt, så \textit{afvis}. Ellers \textit{accepter}.
+		      \end{enumerate}
+
+		\item Køretiden af en algoritme kan være afhængig af flere parametre.
+		\item Hvis algoritmen kører på en graf, kan den for eksempel være afhængig af antallet af knuder og kanter.
+		\item I \textit{worst-case køretid} kigger vi på hvad det værst mulige tilfælde er, givet alle inputs af en længde (ofte $n$).
+	\end{itemize}
+	\begin{definition}
+		Lad $M$ være en deterministisk TM som standser på alle input. \textit{Køretiden} eller \textit{tidskompleksiteten} af $M$ er funktionen $f : \mathcal{N} \rightarrow \mathcal{N}$, hvor $f(n)$ er maksimumsantallet af skridt som $M$ tager på et input af længde $n$. Hvis $f(n)$ er køretiden af $M$, så siger vi at $M$ kører i tid $f(n)$ og at $M$ er en $f(n)$-tids Turingmaskine. Vi bruger normalvis $n$ til at repræsentere længden af et input.
+	\end{definition}
+\end{frame}
+
+\begin{frame}[allowframebreaks]
+	\frametitle{Store-O og lille-O notation}
+	\begin{itemize}
+		\item Den præcise køretid af en algoritme er ofte meget kompleks.
+		\item Derfor bruger vi \textit{asymptotisk analyse}.
+		\item Ved asymptotisk notation kigger vi ikke på koefficienter og kun ``highest order term'' af udtrykket af køretiden. Så for eksempel bliver $2n+3$ bare til $n$.
+		\item Et andet eksempel er $f(n) = 6n^{3} + 2n^{2}+20n+45$. Dette bliver til $f(n) = O(n^{3})$.
+		\item Asymptotisk notation er også det der kalders store-$O$ notation.
+	\end{itemize}
+
+	\begin{definition}
+		Lad $f$ og $g$ være funktioner $f,g : \mathcal{N} \rightarrow \mathcal{R}^{+}$. Vi siger at $f(n) = O(g(n))$ hvis positive heltal $c$ og $n_{o}$ eksisterer således at for hvert heltal $n \ge n_{0}$,
+		\begin{equation}
+			f(n) \le cg(n)
+		\end{equation}
+		Når $f(n) = O(g(n))$, siger vi at $g(n)$ er et \textit{upper bound}, eller \textit{øvre grænse} for $f(n)$, eller mere præcist at $g(n)$ er en asymptotisk øvre grænse for $f(n)$.
+	\end{definition}
+	\begin{itemize}
+		\item Intuitivt betyder $f(n) = O(g(n))$ at $f$ er mindre end eller lig med $g$.
+		\item Bemærk også her at logaritmens base er undertrykket, så $\log_{2}$ bliver bare til $O(\log)$
+		\item Det vil altså sige at $f_{2}(n) = 3n \log_{2} n + 5n \log_{2}\log_{2}n+2 = O(n \log n)$.
+		\item Store-$O$ kan også findes i arimetiske udtryk såsom $f(n) = O(n^{2})+O(n)$ bemærk dog at dette blot er lig med $O(n^{2})$ da $n^{2} > n$.
+		\item Ved $f(n) = 2^{O(n)}$ er dette et udtryk for $2^{cn}$, for en konstant $c$.
+		\item Lille-$o$ notation siger at en funktion er asymptotisk mindre end en anden.
+		\item Analogt til store-$O$ og lille-$O$ er hhv. $\le$ og $<$.
+	\end{itemize}
+
+	\begin{definition}
+		Lad $f$ og $g$ være funktionerne $f, g : \mathcal{N} \rightarrow \mathcal{R}^{+}$. Say that $f(n) = o(g(n))$ hvis
+		\begin{equation*}
+			\lim_{n \rightarrow \infty} \frac{f(n)}{g(n)} = 0
+		\end{equation*}
+		I andre ord betyder $f(n) = o(g(n))$ at for alle reelle tal $c > 0$, eksisterer der et tal $n_{0}$ hvor $f(n) < cg(n)$ for alle $n \ge n_{0}$
+	\end{definition}
+
+	\begin{itemize}
+		\item Følgende er eksempler af ligninger med lille-$o$:
+		\item $\sqrt{n} = o(n)$
+		\item $n = o(n \log \log n)$
+		\item $n \log \log n = o(n \log n)$
+		\item $n \log n = o(n^{2})$
+		\item $n^{2} = o(n^{3})$
+	\end{itemize}
+\end{frame}
+
+\begin{frame}[allowframebreaks]
+	\frametitle{Analyse af Algoritmer}
+	\begin{itemize}
+		\item Nu vil vi faktisk til at analysere algoritmen vi konstruerede tidligere.
+		\item $M_{1} = $''På input streng $w$:
+		      \begin{enumerate}
+			      \item Scan henover båndet og \textit{afvis} hvis et 0 findes til højre af et 1. (Altså hvis den ser et 1, og så et 0).
+			      \item Gentag hvis der stadig er 0 og 1 på båndet:
+			            \begin{enumerate}
+				            \item Scan henover båndet og afkryds hvert 0 og hvert 1
+			            \end{enumerate}
+
+			      \item Hvis der stadig er 0'er tilbage efter 1 er blevet krydset af, eller omvendt, så \textit{afvis}. Ellers \textit{accepter}.
+		      \end{enumerate}
+
+		\item Vi analysere hver af dens fire stadier seperat.
+		      \begin{enumerate}
+			      \item At scanne tager $n$ skridt, da længden af strengen er $n$. Vi skal også tilbage igen, og dette tager $n$ skridt. I alt $2n$. (Husk at $2n = O(n)$)
+			      \item[2-3] Hvert scan her bruger $O(n)$ skridt. Fordi hver scan afkrydser to symboler, er det højets $n/2$ scanninger (fordi vi krydser to af hver gang.) Dermed er tiden taget af stadier 2-3 $(n/2)O(n) = O(n^{2})$ skridt.
+			      \item[4] Tiden den bruger på at finde ud af dette er \textit{højest} $O(n)$.
+		      \end{enumerate}
+		\item Dermed er tiden $O(n) + O(n^{2})+O(n) = O(n^{2})$
+	\end{itemize}
+
+	\begin{definition}
+		Lad $t : \mathcal{N} \rightarrow \mathcal{R}^{+}$ være en funktion. Vi definerer \textit{tidskompleksitetsklassen} $TIME(t(n))$ til at være samlingen af alle sprog der er afgjort af en Turingmaskine som kører i $O(t(n))$ tid.
+	\end{definition}
+	\begin{itemize}
+		\item Det vil altså sige at algoritmen $A$ vi analyserede før er en del af $TIME(n^{2})$, altså $A \in TIME(n^{2})$.
+		\item Jeg har udeladt et bevis for at denne algoritme kan afgøres i $O(n \log n)$ tid, men en vigtigt takeaway fra dette er at alle sprog der kan afgøres i $o(n \log n)$ (bemærk lille-$o$!) er regulære.
+		\item Church-turing tesen (som er beregnelighedsteori) siger at alle ``reasonable'' modeller af komputering er ækvivalente.
+		\item I kompleksitetsteori bestemmer modelvalget kompleksiteten på et sprog.
+		\item For eksempel kan $A$ afgøres i $O(n)$ tid på en 2-bånds Turingmaskine.
+	\end{itemize}
+\end{frame}
+
+\begin{frame}[allowframebreaks]
+	\frametitle{Kompleksitetsforholdet mellem modeller}
+
+	\begin{itemize}
+		\item Vi vil nu kigge på hvordan valget af en model kan påvirke køretiden af sprog.
+		\item Vi kigger på tre modeller: enkeltbåndsmaskinen, multibåndsmaskionen og den nondeterministiske maskine.
+	\end{itemize}
+
+	\begin{theorem}
+		Lad $t(n)$ være en funktion hvor $t(n) \ge n$. Så for hver $t(n)$-tids multibånds Turingmaskine, er der en ækvivalent $O(t^{2}(n))$-tids enkelt-bånds Turingmaskine.
+	\end{theorem}
+	\begin{itemize}
+		\item Vi vil vise dette ved at analysere algoritmen vi brugte tidligere til at konvertere fra multibånds til enkeltbånds.
+		\item Lad $M$ være en $k$-bånds TM der kører i $t(n)$ tid.
+		\item Lad $S$ være en enkeltbånds TM der kører i $O(t^{2}(n))$ tid.
+		\item $S$ simulerer $M$ som beskrevet (meget) tidligere.
+		\item Til at starte med tager $S$ sit bånd i det format der repræsenterer alle bånd af $M$ og simulerer derefter $M$'s skridt.
+		\item For at simulere et skridt scanner $S$ al informationen for at bestemme informationerne under symbolerne ved $M$'s båndhoveder.
+		\item $S$ laver så en til scanning over dets bånd til at opdatere båndindholdet og hovedpositioner.
+		\item Hvis en af hovederne går til højre mere end der er plads til, rightshifter vi.
+		\item For hvert skridt af $M$, laver $S$ to scanninger over den aktive del af dens bånd. Den første scanning får informationen nødvendigt til at bevæge sig, og den anden scanning udfører denne bevægelse.
+		\item Hvert bånd i $M$ har længde højest $t(n)$, da det er muligt at hovedet bevæger sig til højre for hvert skridt.
+		\item Dermed bruger en scanning af den aktive del af $S$' bånd højest $O(t(n))$ skridt.
+		\item For at simulerer hvert af $M$'s skridt, laver $S$ to scanninger og op til $k$  højreshifts, hver bruger $O(t(n))$ tid, så den endelige tid til ét skridt et $O(t(n))$.
+		\item Vi sætter nu en grænse på den endelige tid af hele $S$:
+		      \begin{enumerate}
+			      \item Først tager 4S båndet i den rigtige format. Dette bruger $O(n)$ tid.
+			      \item Så simulerer $S$ hvert af de $t(n)$ skridt af $M$, dette bruger $O(t(n))$ tid. Denne del af simuleringen bruger altså $t(n) \times O(t(n)) = O(t^{2}(n))$ trin.
+			      \item Dermed er hele simuleringen $O(n) + O(t^{2}(n))$ skridt.
+			      \item $O(n) + O(t^{2}(n)) = O(t^{2}(n))$
+		      \end{enumerate}
+
+		\item Vi vil nu kigge på nondeterministisk Turingmaskines køretid og en simulerende køretid.
+	\end{itemize}
+	\begin{definition}
+		Lad $N$ være en NDTM som er afgører. \textit{Køretiden} af $N$ er funktionen $f : \mathcal{N} \rightarrow \mathcal{N}$, hvor $f(n)$ er det maksimum antal af skridt som $N$ bruger på en gren af dens komputering, på en længde $n$.
+	\end{definition}
+
+	\begin{center}
+		\includegraphics[scale=0.3]{figur/figur710.png}
+	\end{center}
+
+	\begin{theorem}
+		Lad $t(n)$ være en funktion, hvor $t(n) \ge n$. Så for hver $t(n)$ tids NDTM enkeltbånds Turingmaskine, har den ækvivalent $2^{O(t(n))}$-tids (D)TM på et enkelt bånd.
+	\end{theorem}
+
+	\begin{itemize}
+		\item På en input længde $n$, så har hver gren af $N$'s træ længde højest $t(n)$.
+		\item Hver knude i træet har højest $b$ børn, hvor $b$ er det maskimale antal af lovlige valg af $N$'s overføringsfunktion.'s overføringsfunktion.
+		\item Dermed er det endelige antal af blade i træet højest $b^{t(n)}$
+		\item Simuleringerne går videre ved at udforske træet i BFS.
+		\item Antallet af knuder i træet er mindre end det dobbelte af antallet af blade, så vi kan sætte en grænse $O(b^{t(n)})$.
+		\item Tiden det tager at gå fra roden til en knude er $O(t(n))$.
+		\item Køretiden er altså $O(t(n)b^{t(n)}) = 2^{O(t(n))}$.
+	\end{itemize}
+\end{frame}
+
+\subsection{Klassen $P$}%
+\label{subsec:label}
+
+\begin{frame}[allowframebreaks]
+	\frametitle{Klassen $P$}
+	\begin{itemize}
+		\item Vi så tidligere at en multibånds TM kan konverteres til en enkeltbånds TM der kører i $O(n^{2})$ tid, altså polynomiel.
+		\item Vi så også at en NDTM kan konverteres til en TM der kører i $2^{O(n)}$ tid, som altså er eksponentielt.
+		\item Vi differentierer ofte algoritmer mellem at være \textit{eksponentielle} og \textit{polynomielle}, hvor vi synes at de polynomielle algoritmer er en del hurtigere end de eksponentielle.
+		\item For eksempel polynomiet $n^{3}$ og eksponenten $2^{n}$. Hvis $n = 1000$ så er $n^{3} \approx 1 000 000 000$, hvorimod $2^{n}$ er langt større end antallet af atomer i universet (mellem $10^{78}$ og $10^{82}$).
+		\item Vi får ofte eksponentielle algoritmer ved at lave brute-force løsninger til problemer.
+	\end{itemize}
+
+	\begin{definition}
+		$P$ er klassen af sprog som af afgørlige i polynomiel tid på en deterministisk enkeltbånds Turingmaskine.
+		\begin{equation}
+			P = \bigcup_k TIME(n^{k})
+		\end{equation}
+	\end{definition}
+
+	\begin{itemize}
+		\item Klassen $P$ er vigtig fordi:
+		      \begin{enumerate}
+			      \item $P$ er en invariant for alle modeller der er polynomielt ækvivalente til en enkeltbånds TM
+			      \item $P$ er nogenlunde det vi tænker på som klassen af problemer vi realistisk set kan løse på en computer
+		      \end{enumerate}
+	\end{itemize}
+\end{frame}
+
+\begin{frame}[allowframebreaks]
+	\frametitle{Eksempler på problemer i $P$}
+	\begin{itemize}
+		\item Når vi repræsenterer problemerne i kodning (\(\langle M \rangle\)), antager vi at denne kodning er rimelig, og kan blive sat om til en intern repræsentation i polynomiel tid.
+		\item Vi vil i disse eksempler kigge meget på grafer.
+		\item En rimelig kodning af en graf er en liste af dens knuder og kenter.
+		\item En anden rimelig kodning (som også oftest er brugt i programmering) er en \textit{adjacency matrix}, hvor den $(i,j)$'e ``entry'' er $1$ hvis der er en kant fra knude $i$ til knude $j$, og 0 ellers.
+		\item Det første problem omhandler rettede grafer, nemlig $PATH$ problemet.
+	\end{itemize}
+
+	\begin{equation}
+		PATH = \{\langle G, s, t \rangle \mid G \text{ er en rettet graf med en rettet vej fra } s \text{ til } t\}
+	\end{equation}
+
+	\begin{theorem}
+		$PATH \in P$
+	\end{theorem}
+
+	\begin{itemize}
+		\item Vi beviser ved at konstruere en algoritme der kører i polynomiel tid. Først kigger vi dog på brute-force løsningen, som vi kan konkludere ikke er hurtig nok.
+		\item En Brute-force løsning kigger alle mulige veje og tjekker om nogen af dem er rettet fra $s$ til $t$.
+		\item En vej kan længst have længde $m$ hvor $m$ er antallet af knuder. ($m$ fordi det aldrig vil være nødvendigt at gentage en knude.)
+		\item Antallet af potentielle veje er cirka $m^{m}$, som er eksponentielt baseret på antal knuder i $G$.
+		\item Altså er brute-force algoritmen $\notin P$.
+		\item Hvis vi i stedet kører en form for BFS får vi en algoritme der kører i polynomiel tid:
+		\item $M =$''På input \(\langle G, s, t \rangle \) hvor $G$ er en rettet graf med knuder $s$ og $t$.
+		      \begin{enumerate}
+			      \item Markér knude $s$
+			      \item Gentag følgende indtil der ikke er flere knuder der bliver markeret:
+			            \begin{enumerate}
+				            \item Scan alle knuder af $G$. Hvis en kant $(a,b)$ er fundet ved at gå fra en markeret knude $a$ til en markeret knude $b$, markér knude $b$.
+			            \end{enumerate}
+			      \item Hvis $t$ er markeret, \textit{accepter} og ellers \textit{afvis}.
+		      \end{enumerate}
+		\item Hvis $t$ markeres er der fundet en vej fra $s$ til $t$.
+		\item Stadierne 1 og 3 kører kun en enkelt gang.
+		\item Stadie 2 kører højest $m$ gange, fordi hver gang tager den en til knude.
+		\item Dermed er antallet af stadier brugt højest $m+2$, hvilket er polynomielt i $G$.
+		\item Vi kigger nu på problemet om \textit{relative primtal} (også kaldet inbyrdisk primiske).
+		\item To tal er indbyrdisk primiske hvis 1 er det største heltal som ligeligt deler dem begge.
+		\item For eksempel er 10 og 21 indbyrdisk primiske, selvom ingen af dem er primtal. 10 og 22 er dog ikke indbyrdisk primiske fordi begge er delelige med $2$.
+		\item Vi definerer nu problemet $RELPRIME$.
+	\end{itemize}
+
+	\begin{equation}
+		RELPRIME = \{\langle x, y \rangle \mid x \text{ og } y \text{ er indbyrdisk primiske}\}
+	\end{equation}
+
+	\begin{theorem}
+		$RELPRIME \in P$
+	\end{theorem}
+
+	\begin{itemize}
+		\item En måde at løse dette på er ved at gå alle tal igennem, og se om de er delelige med tallene. Dette er dog eksponentielt i sin køretid.
+		\item I stedet bruger vi Euklids algoritme, som vi havde om i Diskret Matematik.
+		\item Denne kører polynomielt.
+		\item Følgende er Euklids algoritme:
+		\item $E = $''På input \(\langle x,y\rangle\), hvor $x$ og $y$ er naturlige tal i binær:
+		      \begin{enumerate}
+			      \item Gentag indtil $y = 0$:
+			            \begin{enumerate}
+				            \item[2] $x \leftarrow x \mod y$
+				            \item[3] Byt $x$ og $y$
+			            \end{enumerate}
+			      \item[4] Output $x$''
+		      \end{enumerate}
+		\item Vi bruger $E$  som subrutine i algoritmen $R$:
+		\item $R = $''På input \(\langle x, y \rangle\), hvor $x$ og $y$ er naturlige tal i binær:
+		      \begin{enumerate}
+			      \item Kør $E$ på \(\langle x, y \rangle \)
+			      \item Hvis resultatet er $1$, \textit{accepter}, ellers \textit{afvis}.''
+		      \end{enumerate}
+
+		\item Vi vil nu vise at $E$ og dermed $R$ er polynomielt.
+		\item Stadie 2 af $R$ skærer værdien mindst halvt.
+		\item Efter stadie 2, er $x < y$.
+		\item Efter stadie 3 er $x > y$, da vi har byttet værdierne.
+		\item Når stadie 2 eksekveres er $x > y$.
+		\item Hvis $x/2 < y$, så $x \mod y = x - y < x / 2$, og $x$ ryger mindst ned til halvdelen
+		\item De originale værdier af $x$ og $y$ byttes hver gang stadie 3 kører.
+		\item Dermed er maksimums antallet af gangene stadie 2 og 3 køres den $\min\{ 2 \log_{2} x, 2 \log_{2} y\}$
+		\item Disse logaritmer er propertionelle til længderne af repræsentationerne.
+		\item Hvert stadie i $E$ bruger polynomiel tid, og da antallet af stadier der køres er $O(n)$ er den endelige køretid polynomiel.
+		\item Sidst kigger vi på problemet om at alle kontekstfrie sprog er afgørlige i polynomiel tid.
+	\end{itemize}
+
+  \begin{theorem}
+Hvert kontekstfrit sprog $\in P$.
+  \end{theorem}
+
   \begin{itemize}
-    \item Siper 7.1-7.4: \textbf{Tidskompleksitet inkl. P, NP, NP-komplethed}
-    \item CLRS 34: \textbf{NP-Komplethed Beviser} (minus sider 1070-1078)
-    \item Weekly Note 7
-    \item Weekly Note 8
-    \item Weekly Note 9 (ish)
-    \item Video 15-17
+    \item Algoritmen vi konstruerede tidligere til at bevise at alle kontekstfrie sprog var afgørlige er \textbf{ikke} nok her!
+    \item Den algoritme forsøger alle afledninger med $2n-1$ skridt, når dens input er en streng af længde 4n.
+    \item Antallet af afledninger med $k$ skridt kan være eksponentielt i $k$.
+    \item For at få en algoritme der kører i polynomiel tid bruger vi \textit{dynamic programming}.
+    \item Dynamic programming holder på løsningsinformation og deler problemer op i mindre problemer.
+    \item Vi gør dette ved at lave en table af alle delproblemer, og putter deres løsninger ind systematisk, som vi finder dem.
+    \item I det her tilfælde er delproblemerne om hver variabel i $G$ genererer hver delstreng i $w$.
+    \item Algoritmen putter løsningen ind i en tabel af størrelse $n \times n$.
+    \item Hvor $i \le j$, er den $(i,j)$'e ``entry'' i tabellen samlingen af variabler der genererer delstringen $w_{i}w_{i+1}\ldots w_{j}$. Hvor $i > j$ er ``entriesne'' ikke brugt.
+    \item Algoritmen fylder hver entry for hver delstreng af $w$.
+    \item Først fylder den for delstrengene af længde 1, så længde 2, etc.
+    \item Den bruger disse entries til de mindre længder til at hjælpe med at bestemme entries i længere længder.
+    \item Antag for eksempel at algoritmen allerede har fundet ud af hvilke variabler genererer alle delstrenge op til længde $k$.
+    \item For at bestemme om en variabel $A$ genererer to delstrenge af længde $k+1$, splitter algoritmen edn delstreng i to dele på de $k$ mulige måder.
+    \item For hvert split, kigger algoritmen på reglen $A \rightarrow BC$, for at bestemmet om $B$ genererer den første del og $C$ den anden del.
+    \item Hvis både $B$ og $C$ genererer hhv. første og anden del, så genererer $A$ delstrengen og kan blive tilføjet til tabellen.
+    \item Algoritmen starter processen med strenge af længde $1$ ved at kigge efter regler $A \rightarrow b$
+    \item Den følgende algoritme implementerer idéen præsenteret tidligere.
+    \item Lad $G$ være en Chomsky grammatik der genererer CFL'et $L$.
+    \item Antag at $S$ er startvariablen.
   \end{itemize}
+  \includegraphics[scale=0.3]{figur/polycfg.png}
+  \begin{itemize}
+    \item Stadierne $4$ og $5$ kører højest $nv$ gange, hvor $v$ er antallet af variabler.
+    \item Disse stadier kører altså $O(n)$ gange
+    \item Stadie 6 kører højest $n$ gange.
+    \item Hver gang stadie 6 kører, kører stadie 7 højest $n$ gange.
+    \item Hver gang stadie 7 kører, kører stadierne 8 og 9 højest $n$ gange.
+    \item Hver gang stadie 9 kører, kører stadie 10 $r$ gange, hvor $r$ er antallet af regler
+    \item Stadie 3, den indre løkke, kører $O(n^{3})$ gange.
+    \item $O(n) + O(n) + \ldots + O(r) + O(n^{3}) = O(n^{3})$
+  \end{itemize}
+\end{frame}
+
+\subsection{Klassen $NP$}%
+\label{subsec:label}
+
+\begin{frame}[allowframebreaks]
+  \frametitle{Klassen $NP$}
+ \begin{itemize}
+   \item Nogen problemer kender vi ikke polynomielle løsninger til.
+   \item Et eksempel på et sådan problem er $HAMPATH$ problemet.
+ \end{itemize}
+
+ \begin{align*}
+   HAMPATH = &\{\langle G, s, t \rangle \mid G \text{ er en rettet graf med en HAMPTH fra } \\
+   &s \text{ til } t\}
+ \end{align*}
+
+ \begin{itemize}
+   \item En hamiltoniansk vej er en rettet vej som går gennem hver knude én gang.
+   \item Trods der ikke eksisterer en polynomiel løsning til Hampath problemet, kan vi verificere løsningen i polynomiel tid.
+   \item Altså kan vi overbevises om at en løsning til problemet er en korrekt løsning i polynomiel tid.
+ \end{itemize}
+
+ \begin{definition}
+   En \textit{verifikator} for et sprog $A$ er en algoritme $V$, hvor
+   \begin{equation*}
+     A = \{w \mid V \text{ accepterer } \langle w, c \rangle \text{ for en streng }c\}
+   \end{equation*}
+
+   Vi regner tiden for en verifikator kun ud fra længden af $w$, så en verifikator i polynomiel tid kører i polynomiel tid i længden af $w$. Et sprog $A$ er verificerbart i polynomiel tid hvis det har en verifikator der kører i polynomiel tid.
+ \end{definition}
+
+ \begin{itemize}
+   \item $c$ kaldes for et \textit{certifikat} eller \textit{bevis} af medlemskab i $A$.
+   \item For verifikatorerer i polynomiel tid, har certifikatet også polynomiel længde i $w$, fordi det er alt verifikatoren kan nå.
+   \item For eksempel, ved HAMPATH problemet er et certifikat en vej fra $s$ til $t$.
+   \item
+ \end{itemize}
+ \begin{definition}
+$NP$ er klassen af sprog som har verifikatorer i polynomiel tid.
+ \end{definition}
+ \begin{itemize}
+   \item Denne definition klargører også at $P \subseteq NP$.
+   \item Følgende er en NDTM der afgører HAMPATH problemet i polynomiel tid:
+   \item $N_{1} = $''På input \(\langle G, s, t \rangle\), hvor $G$ er en rettet graf med knuder $s$ og $t$:
+         \begin{enumerate}
+           \item Skriv en liste af $m$ tal $p_{1}, \ldots, p_{m}$, hvor $m$ er antallet af knuder i $G$. Hver tal i listen er nondeterministisk valgt til at være mellem $1$ og $m$.
+           \item Se om der er nogle ens tal, hvis der er \textit{afvis}
+           \item Tjek om $s = p_{1}$ og $t = p_{m}$. Hvis ikke \textit{afvis}.
+           \item For hvert $i$ mellem $1$ og $m-1$, tjek om $(p_{i}, p_{i+1})$ er en kant i $G$. Hvis ikke, \textit{afvis}. Ellers \textit{accepter}.
+         \end{enumerate}
+ \end{itemize}
+
+ \begin{theorem}
+Et sprog $A$ er i $NP$ $\iff$ $A$ er afgjort  af en NDTM i polynomiel tid.
+ \end{theorem}
+
+ \begin{itemize}
+   \item Vi viser hvordan man konverterer en verifikator i polynomiel tid, til en NDTM i polynomiel tid, og omvendt.
+   \item NDTM'en simulerer verifikatoren ved at gætte på certifikatet.
+   \item Verifikatoren simulerer NDTM'en ved at bruge den accepterende gren som certifikat.
+   \item \(\Rightarrow\) Lad $A \in NP$. Lad $V$ være vertifikatoren i polynomiel tid for $A$. Antag at $V$ er en Turingmaskine der kører i tid $n^{k}$ og konstruer $N$:
+   \item $N =$''På input $w$ af længde $n$:
+         \begin{enumerate}
+           \item Nondeterministisk vælg streng $c$ af længde højest $n^{k}$
+           \item Kør $V$ på input $\langle w, c \rangle $
+           \item Hvis $V$ accepterer, \textit{accepter}, ellers \textit{afvis}.
+         \end{enumerate}
+
+   \item \(\Leftarrow\) Antag at $A$ er afgjort af en NDTM i polynomiel tid $N$ og konstruer en verifikator i polynomiel tid $V$ som følger:
+   \item $V = $''På input \(\langle w, c \rangle  \)hvor $w$ og $c$ er strenge:
+         \begin{enumerate}
+           \item Simuler $N$ på input $w$, og lad hvert symbol af $c$ være beskrivlsen af det nondeterministisk valg lavet på hvert skridt.
+           \item Hvis denne gren af $N$ accepterer, så \textit{accepter}, ellers \textit{afvis}.
+         \end{enumerate}
+ \end{itemize}
+
+ \begin{definition}
+\begin{align*}
+NTIME(t(n)) = \{& L \mid L \text{ er et sprog afgjort af en } O(t(n)) \\ &\text{ tids NDTM }\}
+\end{align*}
+ \end{definition}
+
+ \begin{corollary}
+   \begin{equation}
+     NP = \bigcup_k NTIME(n^{k})
+   \end{equation}
+ \end{corollary}
+\end{frame}
+
+\begin{frame}[allowframebreaks]
+  \frametitle{Eksempler på problemer i $NP$}
+
+  \item \textbf{Klikke-problemet}
+  \item En \textbf{klikke} i en urettet graf, er en delgraf hvor hver to knuder er forbundet af en kant.
+  \item En $k-klikke$ er en klikke der indeholder $k$ knuder.
+
+  \begin{equation}
+CLIQUE = \{\langle G, k \rangle \mid G \text{ er en urettet graf med en }k-\text{klikke}\}
+  \end{equation}
+
+  \begin{theorem}
+$CLIQUE \in NP$
+  \end{theorem}
+ \begin{itemize}
+   \item Vi viser to beviser, en for certifikat, og en for NDTM.
+   \item Følgende er en verifikator $V$ til clique:
+   \item $V = $''På input \(\langle \langle G, k \rangle , c \rangle \)
+         \begin{enumerate}
+           \item Test om $c$ er en delgraf med $k$ knuder i $G$
+           \item Test om $G$ indeholder alle kanter der forbinder knuder i $c$
+           \item Hvis begge er ``ja'', \textit{accepter}, ellers \textit{afvis}
+         \end{enumerate}
+   \item Følgende er en NDTM der afgører $CLIQUE$:
+   \item $N = $''På input $\langle G , k \rangle $ hvor $G$ er en graf:
+         \begin{enumerate}
+           \item Nondeterministisk vælg en delmængde $c$ af $k$ knuder i $G$
+           \item Test om $G$ indeholder alle kanter der forbinder knuder i $c$
+           \item Hvis ``ja'', \textit{accepter}, ellers \textit{afvis}.
+         \end{enumerate}
+
+
+ \end{itemize}
+
 \end{frame}
 
 
 
-%%% local variables:
+%%% Local Variables:
 %%% mode: latex
-%%% tex-engine: xetex
-%%% tex-command-extra-options: "-shell-escape"
-%%% tex-master: "main"
-%%% end:
+%%% TeX-engine: xetex
+%%% TeX-command-extra-options: "-shell-escape"
+%%% TeX-master: "main"
+%%% End:
