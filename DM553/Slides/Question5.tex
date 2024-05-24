@@ -1,4 +1,4 @@
-\section{NP-komplethed Beviser}%
+\section{NP-kompletheds Beviser}%
 \label{sec:npkomplethed}
 
 \begin{frame}
@@ -295,170 +295,371 @@
 		\item Sidst kigger vi på problemet om at alle kontekstfrie sprog er afgørlige i polynomiel tid.
 	\end{itemize}
 
-  \begin{theorem}
-Hvert kontekstfrit sprog $\in P$.
-  \end{theorem}
+	\begin{theorem}
+		Hvert kontekstfrit sprog $\in P$.
+	\end{theorem}
 
-  \begin{itemize}
-    \item Algoritmen vi konstruerede tidligere til at bevise at alle kontekstfrie sprog var afgørlige er \textbf{ikke} nok her!
-    \item Den algoritme forsøger alle afledninger med $2n-1$ skridt, når dens input er en streng af længde 4n.
-    \item Antallet af afledninger med $k$ skridt kan være eksponentielt i $k$.
-    \item For at få en algoritme der kører i polynomiel tid bruger vi \textit{dynamic programming}.
-    \item Dynamic programming holder på løsningsinformation og deler problemer op i mindre problemer.
-    \item Vi gør dette ved at lave en table af alle delproblemer, og putter deres løsninger ind systematisk, som vi finder dem.
-    \item I det her tilfælde er delproblemerne om hver variabel i $G$ genererer hver delstreng i $w$.
-    \item Algoritmen putter løsningen ind i en tabel af størrelse $n \times n$.
-    \item Hvor $i \le j$, er den $(i,j)$'e ``entry'' i tabellen samlingen af variabler der genererer delstringen $w_{i}w_{i+1}\ldots w_{j}$. Hvor $i > j$ er ``entriesne'' ikke brugt.
-    \item Algoritmen fylder hver entry for hver delstreng af $w$.
-    \item Først fylder den for delstrengene af længde 1, så længde 2, etc.
-    \item Den bruger disse entries til de mindre længder til at hjælpe med at bestemme entries i længere længder.
-    \item Antag for eksempel at algoritmen allerede har fundet ud af hvilke variabler genererer alle delstrenge op til længde $k$.
-    \item For at bestemme om en variabel $A$ genererer to delstrenge af længde $k+1$, splitter algoritmen edn delstreng i to dele på de $k$ mulige måder.
-    \item For hvert split, kigger algoritmen på reglen $A \rightarrow BC$, for at bestemmet om $B$ genererer den første del og $C$ den anden del.
-    \item Hvis både $B$ og $C$ genererer hhv. første og anden del, så genererer $A$ delstrengen og kan blive tilføjet til tabellen.
-    \item Algoritmen starter processen med strenge af længde $1$ ved at kigge efter regler $A \rightarrow b$
-    \item Den følgende algoritme implementerer idéen præsenteret tidligere.
-    \item Lad $G$ være en Chomsky grammatik der genererer CFL'et $L$.
-    \item Antag at $S$ er startvariablen.
-  \end{itemize}
-  \includegraphics[scale=0.3]{figur/polycfg.png}
-  \begin{itemize}
-    \item Stadierne $4$ og $5$ kører højest $nv$ gange, hvor $v$ er antallet af variabler.
-    \item Disse stadier kører altså $O(n)$ gange
-    \item Stadie 6 kører højest $n$ gange.
-    \item Hver gang stadie 6 kører, kører stadie 7 højest $n$ gange.
-    \item Hver gang stadie 7 kører, kører stadierne 8 og 9 højest $n$ gange.
-    \item Hver gang stadie 9 kører, kører stadie 10 $r$ gange, hvor $r$ er antallet af regler
-    \item Stadie 3, den indre løkke, kører $O(n^{3})$ gange.
-    \item $O(n) + O(n) + \ldots + O(r) + O(n^{3}) = O(n^{3})$
-  \end{itemize}
+	\begin{itemize}
+		\item Algoritmen vi konstruerede tidligere til at bevise at alle kontekstfrie sprog var afgørlige er \textbf{ikke} nok her!
+		\item Den algoritme forsøger alle afledninger med $2n-1$ skridt, når dens input er en streng af længde 4n.
+		\item Antallet af afledninger med $k$ skridt kan være eksponentielt i $k$.
+		\item For at få en algoritme der kører i polynomiel tid bruger vi \textit{dynamic programming}.
+		\item Dynamic programming holder på løsningsinformation og deler problemer op i mindre problemer.
+		\item Vi gør dette ved at lave en table af alle delproblemer, og putter deres løsninger ind systematisk, som vi finder dem.
+		\item I det her tilfælde er delproblemerne om hver variabel i $G$ genererer hver delstreng i $w$.
+		\item Algoritmen putter løsningen ind i en tabel af størrelse $n \times n$.
+		\item Hvor $i \le j$, er den $(i,j)$'e ``entry'' i tabellen samlingen af variabler der genererer delstringen $w_{i}w_{i+1}\ldots w_{j}$. Hvor $i > j$ er ``entriesne'' ikke brugt.
+		\item Algoritmen fylder hver entry for hver delstreng af $w$.
+		\item Først fylder den for delstrengene af længde 1, så længde 2, etc.
+		\item Den bruger disse entries til de mindre længder til at hjælpe med at bestemme entries i længere længder.
+		\item Antag for eksempel at algoritmen allerede har fundet ud af hvilke variabler genererer alle delstrenge op til længde $k$.
+		\item For at bestemme om en variabel $A$ genererer to delstrenge af længde $k+1$, splitter algoritmen edn delstreng i to dele på de $k$ mulige måder.
+		\item For hvert split, kigger algoritmen på reglen $A \rightarrow BC$, for at bestemmet om $B$ genererer den første del og $C$ den anden del.
+		\item Hvis både $B$ og $C$ genererer hhv. første og anden del, så genererer $A$ delstrengen og kan blive tilføjet til tabellen.
+		\item Algoritmen starter processen med strenge af længde $1$ ved at kigge efter regler $A \rightarrow b$
+		\item Den følgende algoritme implementerer idéen præsenteret tidligere.
+		\item Lad $G$ være en Chomsky grammatik der genererer CFL'et $L$.
+		\item Antag at $S$ er startvariablen.
+	\end{itemize}
+	\includegraphics[scale=0.3]{figur/polycfg.png}
+	\begin{itemize}
+		\item Stadierne $4$ og $5$ kører højest $nv$ gange, hvor $v$ er antallet af variabler.
+		\item Disse stadier kører altså $O(n)$ gange
+		\item Stadie 6 kører højest $n$ gange.
+		\item Hver gang stadie 6 kører, kører stadie 7 højest $n$ gange.
+		\item Hver gang stadie 7 kører, kører stadierne 8 og 9 højest $n$ gange.
+		\item Hver gang stadie 9 kører, kører stadie 10 $r$ gange, hvor $r$ er antallet af regler
+		\item Stadie 3, den indre løkke, kører $O(n^{3})$ gange.
+		\item $O(n) + O(n) + \ldots + O(r) + O(n^{3}) = O(n^{3})$
+	\end{itemize}
 \end{frame}
 
 \subsection{Klassen $NP$}%
 \label{subsec:label}
 
 \begin{frame}[allowframebreaks]
-  \frametitle{Klassen $NP$}
- \begin{itemize}
-   \item Nogen problemer kender vi ikke polynomielle løsninger til.
-   \item Et eksempel på et sådan problem er $HAMPATH$ problemet.
- \end{itemize}
+	\frametitle{Klassen $NP$}
+	\begin{itemize}
+		\item Nogen problemer kender vi ikke polynomielle løsninger til.
+		\item Et eksempel på et sådan problem er $HAMPATH$ problemet.
+	\end{itemize}
 
- \begin{align*}
-   HAMPATH = &\{\langle G, s, t \rangle \mid G \text{ er en rettet graf med en HAMPTH fra } \\
-   &s \text{ til } t\}
- \end{align*}
+	\begin{align*}
+		HAMPATH = & \{\langle G, s, t \rangle \mid G \text{ er en rettet graf med en HAMPTH fra } \\
+		          & s \text{ til } t\}
+	\end{align*}
 
- \begin{itemize}
-   \item En hamiltoniansk vej er en rettet vej som går gennem hver knude én gang.
-   \item Trods der ikke eksisterer en polynomiel løsning til Hampath problemet, kan vi verificere løsningen i polynomiel tid.
-   \item Altså kan vi overbevises om at en løsning til problemet er en korrekt løsning i polynomiel tid.
- \end{itemize}
+	\begin{itemize}
+		\item En hamiltoniansk vej er en rettet vej som går gennem hver knude én gang.
+		\item Trods der ikke eksisterer en polynomiel løsning til Hampath problemet, kan vi verificere løsningen i polynomiel tid.
+		\item Altså kan vi overbevises om at en løsning til problemet er en korrekt løsning i polynomiel tid.
+	\end{itemize}
 
- \begin{definition}
-   En \textit{verifikator} for et sprog $A$ er en algoritme $V$, hvor
-   \begin{equation*}
-     A = \{w \mid V \text{ accepterer } \langle w, c \rangle \text{ for en streng }c\}
-   \end{equation*}
+	\begin{definition}
+		En \textit{verifikator} for et sprog $A$ er en algoritme $V$, hvor
+		\begin{equation*}
+			A = \{w \mid V \text{ accepterer } \langle w, c \rangle \text{ for en streng }c\}
+		\end{equation*}
 
-   Vi regner tiden for en verifikator kun ud fra længden af $w$, så en verifikator i polynomiel tid kører i polynomiel tid i længden af $w$. Et sprog $A$ er verificerbart i polynomiel tid hvis det har en verifikator der kører i polynomiel tid.
- \end{definition}
+		Vi regner tiden for en verifikator kun ud fra længden af $w$, så en verifikator i polynomiel tid kører i polynomiel tid i længden af $w$. Et sprog $A$ er verificerbart i polynomiel tid hvis det har en verifikator der kører i polynomiel tid.
+	\end{definition}
 
- \begin{itemize}
-   \item $c$ kaldes for et \textit{certifikat} eller \textit{bevis} af medlemskab i $A$.
-   \item For verifikatorerer i polynomiel tid, har certifikatet også polynomiel længde i $w$, fordi det er alt verifikatoren kan nå.
-   \item For eksempel, ved HAMPATH problemet er et certifikat en vej fra $s$ til $t$.
-   \item
- \end{itemize}
- \begin{definition}
-$NP$ er klassen af sprog som har verifikatorer i polynomiel tid.
- \end{definition}
- \begin{itemize}
-   \item Denne definition klargører også at $P \subseteq NP$.
-   \item Følgende er en NDTM der afgører HAMPATH problemet i polynomiel tid:
-   \item $N_{1} = $''På input \(\langle G, s, t \rangle\), hvor $G$ er en rettet graf med knuder $s$ og $t$:
-         \begin{enumerate}
-           \item Skriv en liste af $m$ tal $p_{1}, \ldots, p_{m}$, hvor $m$ er antallet af knuder i $G$. Hver tal i listen er nondeterministisk valgt til at være mellem $1$ og $m$.
-           \item Se om der er nogle ens tal, hvis der er \textit{afvis}
-           \item Tjek om $s = p_{1}$ og $t = p_{m}$. Hvis ikke \textit{afvis}.
-           \item For hvert $i$ mellem $1$ og $m-1$, tjek om $(p_{i}, p_{i+1})$ er en kant i $G$. Hvis ikke, \textit{afvis}. Ellers \textit{accepter}.
-         \end{enumerate}
- \end{itemize}
+	\begin{itemize}
+		\item $c$ kaldes for et \textit{certifikat} eller \textit{bevis} af medlemskab i $A$.
+		\item For verifikatorerer i polynomiel tid, har certifikatet også polynomiel længde i $w$, fordi det er alt verifikatoren kan nå.
+		\item For eksempel, ved HAMPATH problemet er et certifikat en vej fra $s$ til $t$.
+		\item
+	\end{itemize}
+	\begin{definition}
+		$NP$ er klassen af sprog som har verifikatorer i polynomiel tid.
+	\end{definition}
+	\begin{itemize}
+		\item Denne definition klargører også at $P \subseteq NP$.
+		\item Følgende er en NDTM der afgører HAMPATH problemet i polynomiel tid:
+		\item $N_{1} = $''På input \(\langle G, s, t \rangle\), hvor $G$ er en rettet graf med knuder $s$ og $t$:
+		      \begin{enumerate}
+			      \item Skriv en liste af $m$ tal $p_{1}, \ldots, p_{m}$, hvor $m$ er antallet af knuder i $G$. Hver tal i listen er nondeterministisk valgt til at være mellem $1$ og $m$.
+			      \item Se om der er nogle ens tal, hvis der er \textit{afvis}
+			      \item Tjek om $s = p_{1}$ og $t = p_{m}$. Hvis ikke \textit{afvis}.
+			      \item For hvert $i$ mellem $1$ og $m-1$, tjek om $(p_{i}, p_{i+1})$ er en kant i $G$. Hvis ikke, \textit{afvis}. Ellers \textit{accepter}.
+		      \end{enumerate}
+	\end{itemize}
 
- \begin{theorem}
-Et sprog $A$ er i $NP$ $\iff$ $A$ er afgjort  af en NDTM i polynomiel tid.
- \end{theorem}
+	\begin{theorem}
+		Et sprog $A$ er i $NP$ $\iff$ $A$ er afgjort  af en NDTM i polynomiel tid.
+	\end{theorem}
 
- \begin{itemize}
-   \item Vi viser hvordan man konverterer en verifikator i polynomiel tid, til en NDTM i polynomiel tid, og omvendt.
-   \item NDTM'en simulerer verifikatoren ved at gætte på certifikatet.
-   \item Verifikatoren simulerer NDTM'en ved at bruge den accepterende gren som certifikat.
-   \item \(\Rightarrow\) Lad $A \in NP$. Lad $V$ være vertifikatoren i polynomiel tid for $A$. Antag at $V$ er en Turingmaskine der kører i tid $n^{k}$ og konstruer $N$:
-   \item $N =$''På input $w$ af længde $n$:
-         \begin{enumerate}
-           \item Nondeterministisk vælg streng $c$ af længde højest $n^{k}$
-           \item Kør $V$ på input $\langle w, c \rangle $
-           \item Hvis $V$ accepterer, \textit{accepter}, ellers \textit{afvis}.
-         \end{enumerate}
+	\begin{itemize}
+		\item Vi viser hvordan man konverterer en verifikator i polynomiel tid, til en NDTM i polynomiel tid, og omvendt.
+		\item NDTM'en simulerer verifikatoren ved at gætte på certifikatet.
+		\item Verifikatoren simulerer NDTM'en ved at bruge den accepterende gren som certifikat.
+		\item \(\Rightarrow\) Lad $A \in NP$. Lad $V$ være vertifikatoren i polynomiel tid for $A$. Antag at $V$ er en Turingmaskine der kører i tid $n^{k}$ og konstruer $N$:
+		\item $N =$''På input $w$ af længde $n$:
+		      \begin{enumerate}
+			      \item Nondeterministisk vælg streng $c$ af længde højest $n^{k}$
+			      \item Kør $V$ på input $\langle w, c \rangle $
+			      \item Hvis $V$ accepterer, \textit{accepter}, ellers \textit{afvis}.
+		      \end{enumerate}
 
-   \item \(\Leftarrow\) Antag at $A$ er afgjort af en NDTM i polynomiel tid $N$ og konstruer en verifikator i polynomiel tid $V$ som følger:
-   \item $V = $''På input \(\langle w, c \rangle  \)hvor $w$ og $c$ er strenge:
-         \begin{enumerate}
-           \item Simuler $N$ på input $w$, og lad hvert symbol af $c$ være beskrivlsen af det nondeterministisk valg lavet på hvert skridt.
-           \item Hvis denne gren af $N$ accepterer, så \textit{accepter}, ellers \textit{afvis}.
-         \end{enumerate}
- \end{itemize}
+		\item \(\Leftarrow\) Antag at $A$ er afgjort af en NDTM i polynomiel tid $N$ og konstruer en verifikator i polynomiel tid $V$ som følger:
+		\item $V = $''På input \(\langle w, c \rangle  \)hvor $w$ og $c$ er strenge:
+		      \begin{enumerate}
+			      \item Simuler $N$ på input $w$, og lad hvert symbol af $c$ være beskrivlsen af det nondeterministisk valg lavet på hvert skridt.
+			      \item Hvis denne gren af $N$ accepterer, så \textit{accepter}, ellers \textit{afvis}.
+		      \end{enumerate}
+	\end{itemize}
 
- \begin{definition}
-\begin{align*}
-NTIME(t(n)) = \{& L \mid L \text{ er et sprog afgjort af en } O(t(n)) \\ &\text{ tids NDTM }\}
-\end{align*}
- \end{definition}
+	\begin{definition}
+		\begin{align*}
+			NTIME(t(n)) = \{ & L \mid L \text{ er et sprog afgjort af en } O(t(n)) \\ &\text{ tids NDTM }\}
+		\end{align*}
+	\end{definition}
 
- \begin{corollary}
-   \begin{equation}
-     NP = \bigcup_k NTIME(n^{k})
-   \end{equation}
- \end{corollary}
+	\begin{corollary}
+		\begin{equation}
+			NP = \bigcup_k NTIME(n^{k})
+		\end{equation}
+	\end{corollary}
 \end{frame}
 
 \begin{frame}[allowframebreaks]
-  \frametitle{Eksempler på problemer i $NP$}
+	\frametitle{Eksempler på problemer i $NP$}
 
-  \item \textbf{Klikke-problemet}
-  \item En \textbf{klikke} i en urettet graf, er en delgraf hvor hver to knuder er forbundet af en kant.
-  \item En $k-klikke$ er en klikke der indeholder $k$ knuder.
+	\item \textbf{Klikke-problemet}
+	\item En \textbf{klikke} i en urettet graf, er en delgraf hvor hver to knuder er forbundet af en kant.
+	\item En $k-$klikke er en klikke der indeholder $k$ knuder.
 
-  \begin{equation}
-CLIQUE = \{\langle G, k \rangle \mid G \text{ er en urettet graf med en }k-\text{klikke}\}
-  \end{equation}
+	\begin{equation}
+		CLIQUE = \{\langle G, k \rangle \mid G \text{ er en urettet graf med en }k-\text{klikke}\}
+	\end{equation}
 
-  \begin{theorem}
-$CLIQUE \in NP$
-  \end{theorem}
- \begin{itemize}
-   \item Vi viser to beviser, en for certifikat, og en for NDTM.
-   \item Følgende er en verifikator $V$ til clique:
-   \item $V = $''På input \(\langle \langle G, k \rangle , c \rangle \)
-         \begin{enumerate}
-           \item Test om $c$ er en delgraf med $k$ knuder i $G$
-           \item Test om $G$ indeholder alle kanter der forbinder knuder i $c$
-           \item Hvis begge er ``ja'', \textit{accepter}, ellers \textit{afvis}
-         \end{enumerate}
-   \item Følgende er en NDTM der afgører $CLIQUE$:
-   \item $N = $''På input $\langle G , k \rangle $ hvor $G$ er en graf:
-         \begin{enumerate}
-           \item Nondeterministisk vælg en delmængde $c$ af $k$ knuder i $G$
-           \item Test om $G$ indeholder alle kanter der forbinder knuder i $c$
-           \item Hvis ``ja'', \textit{accepter}, ellers \textit{afvis}.
-         \end{enumerate}
+	\begin{theorem}
+		$CLIQUE \in NP$
+	\end{theorem}
+	\begin{itemize}
+		\item Vi viser to beviser, en for certifikat, og en for NDTM.
+		\item Følgende er en verifikator $V$ til clique:
+		\item $V = $''På input \(\langle \langle G, k \rangle , c \rangle \)
+		      \begin{enumerate}
+			      \item Test om $c$ er en delgraf med $k$ knuder i $G$
+			      \item Test om $G$ indeholder alle kanter der forbinder knuder i $c$
+			      \item Hvis begge er ``ja'', \textit{accepter}, ellers \textit{afvis}
+		      \end{enumerate}
+		\item Følgende er en NDTM der afgører $CLIQUE$:
+		\item $N = $''På input $\langle G , k \rangle $ hvor $G$ er en graf:
+		      \begin{enumerate}
+			      \item Nondeterministisk vælg en delmængde $c$ af $k$ knuder i $G$
+			      \item Test om $G$ indeholder alle kanter der forbinder knuder i $c$
+			      \item Hvis ``ja'', \textit{accepter}, ellers \textit{afvis}.
+		      \end{enumerate}
 
+		\item Vi vil nu kigge på \textit{SUBSET-SUM} problemet.
+		\item Givet en samling af tal $x_{1}, x_{2}, \ldots, x_{k}$ og et tal $t$, vil vi finde ud af om samlingen indeholder en delsamling som summerer op til $t$.
+		      \begin{align*}
+			      \text{SUBSET-SUM} = \{\langle S , t \rangle \mid S = \{x_{1}, \ldots, x_{k}\}, \\
+			      \text{og en} \{y_{1}, \ldots, y_{l}\} \subseteq \{x_{1}, \ldots, x_{k}\}, \text{har vi} \sum{y_{i}}= t\}
+		      \end{align*}
+		\item Her er mængderne \textit{multisets} (multimængde?), så det er tilladt at der er repetition af elementerne.
+	\end{itemize}
 
- \end{itemize}
+	\begin{theorem}
+		SUBSET-SUM $\in NP$
+	\end{theorem}
 
+	\begin{itemize}
+		\item Vi viser igen to beviser, et for certifikatet, og et for en NDTM.
+		\item Lad $V$ være en verifikator for Subset-Sum:
+
+		\item $V =$''På input \(\langle \langle S, t \rangle, c \rangle\):
+		      \begin{enumerate}
+			      \item Test om $c$ er en samling af tal som summer op til $t$.
+			      \item Test om $S$ indeholder alle tal i $c$.
+			      \item Hvis begge ``ja'' \textit{accepter}, og ellers \textit{afvis}.
+		      \end{enumerate}
+		\item $N =$''På input \(\langle S, t \rangle\):
+		      \begin{enumerate}
+			      \item Vælg nondeterministisk en delmængde $c$ af tallene i $S$.
+			      \item Test om $c$ er en samling af tal der summerer op til $t$.
+			      \item Hvis ja, \textit{accepter}, ellers \textit{afvis}.
+		      \end{enumerate}
+		\item Bemærk her at trods både \textit{clique} og \textit{subset-sum} er i $NP$ er deres komplementer \textbf{ikke}.
+		\item Vi laver en seperat kompleksitetsklasse $coNP$ som nidehodler sprogene som er komplementer af sprog i $NP$.
+		\item Vi ved ikke om $coNP = NP$
+	\end{itemize}
 \end{frame}
 
+\subsection{NP-Komplethed}%
+\label{subsec:npcompleteness}
 
+\begin{frame}[allowframebreaks]
+	\frametitle{NP-Komplethed}
+	\begin{itemize}
+		\item I 70'erne opdagede Stephen Cook og Leonid Levin (uafhængigt af hinanden) at der er problemer i $NP$ hvis individuelle kompleksitet relateres til hele klassen.
+		\item Altså, hvis man finder en polynomiel løsning til en af disse problemer, finder man en polynomiel løsning til hele klassen, og dermed $P = NP$, og omvendt.
+		\item Disse siges at være $NP$-Komplette.
+		\item Hurtigt recap af SAT-problemet, som er $NP$-komplet:
+		      \begin{itemize}
+			      \item Boolske variabler: Værdier 0 eller 1
+			      \item Boolske operationer: AND $\land$, OR $\lor$, NOT $\neg$ (eller $\overline{x}$):
+			      \item Boolsk formel: Et udtryk med boolske variabler og operationer, e.g. $\phi = (\overline{x} \lor y) \land (x \land or \overline{z})$
+			      \item Et boolsk udtryk er \textit{satisfiable} hvis en tildeling af værdier til variablerne gør at $\phi$ evaluerer til $1$.
+		      \end{itemize}
+
+		\item Satisfiability problemet tester om en boolsk formel er satisfiable:
+		      \begin{equation*}
+			      SAT = \{\langle \phi \rangle \mid \phi \text{ er en satisfiable Boolsk formel}\}
+		      \end{equation*}
+		\item Det betyder altså, at ud fra vores definitioner af NP-Komplet og SAT:
+	\end{itemize}
+	\begin{theorem}
+		$SAT \in P \iff P = NP$
+	\end{theorem}
+\end{frame}
+
+\begin{frame}[allowframebreaks]
+	\frametitle{Reducerbarhed i Polynomiel tid}
+	\begin{itemize}
+		\item Ligesom vi så tidligere med at vi kunne reducere fra et problem til en anden i beregnelighedsteori, så kan vi gøre det samme i kompleksitetsteori.
+		\item Her siger vi at hvis et problem $A$ kan \textit{effektivt} reduceres til problem $B$, kan en effektiv løsning til $B$ bruges til at løse $A$ effektivt.
+	\end{itemize}
+
+	\begin{definition}
+		En funktion $f : \Sigma^{*} \longrightarrow \Sigma^{*}$ er en polynomieltids beregnelig funktion  hvis en Turingmaskine $M$ der kører i polynomiel tid eksisterer som standser med $f(w)$ på sit bånd, når den er startet på et input $w$.
+	\end{definition}
+
+	\begin{definition}
+		Sprog $A$ er polynomieltids mapping reducerbart, eller simpelt polynomielttids reducerbart (eller reducerbart i polynomiel tid) til sprog $B$, skrevet $A \le_{P} B$, hvis en beregnelig funktion i polynomiel tid $f : \Sigma^{*} \longrightarrow \Sigma^{*}$ eksisterer, hvor
+		\begin{equation*}
+			\forall w : w \in A \iff f(w) \in B
+		\end{equation*}
+		Funktionen $f$ kaldes reduktionen i polynomiel tid af $A$ til $B$.
+	\end{definition}
+
+	\begin{theorem}
+		Hvis $A \le_{P} B$ og $B \in P$, så $A \in P$
+	\end{theorem}
+
+	\begin{itemize}
+		\item Vi beviser.
+		\item Lad $M$ være en algoritme der kører i polynomiel tid og afgører $B$, og lad $f$ være reduktionen i polynomiel tid fra $A$ til $B$. VI beskriver en algoritme $N$ der kører i polynomiel tid som afgører $A$:
+		\item $N =$''På input $w$:
+		      \begin{enumerate}
+			      \item Udregn $f(w)$
+			      \item Kør $M$ på input $f(w)$ og output hvad $M$ outputter.''
+		      \end{enumerate}
+		\item Fordi $f$ er en reduktion fra $A$ til $B$ så er $w \in A$ når $f(w) \in b$.
+		\item Dermed accepterer $M$ $f(w)$ når $w \in A$.
+		\item Derudover kører $N$ i polynomiel tid, fordi hver af sine to stadier kører i polynomiel tid.
+		\item Bemærk at stadie 2 kører i polynomiel tid fordi to polynomier sammensat er et nyt polynomie.
+		\item Vi vil nu kigge på en reduktion fra $3$-SAT til CLIQUE.
+		\item Husk at $3$-SAT problemet er et satisfiable problem hvor alle klausuler har tre literals. E.g.:
+		      \begin{equation}
+			      (x_{1} \lor \overline{x_{2}} \lor \overline{x_{3}}) \land (x_{3} \lor \overline{x_{5}} \lor x_{6})
+		      \end{equation}
+		\item Lad $\text{3-SAT} = \{\langle \phi  \rangle \mid \phi \text{ er en satisfiable 3-CNF formel}\}$
+		\item CNF betyder conjunctive normal form, og er den form set over.
+	\end{itemize}
+
+	\begin{theorem}
+		3SAT er polynomielt reducerbart til CLIQUE
+	\end{theorem}
+
+	\begin{itemize}
+		\item Vi vil i reduktionen konvertere formlerne til grafer.
+		\item I de konstruerede grafer korresponderer en klikke af en specifik størrelse til en satisfying tildeling over formlen.
+		\item Lad $\phi$ være en formel med $k$ klausuler, såsom:
+		      \begin{equation}
+			      \phi = (a_1 \lor b_1 \lor c_1) \land (a_2 \lor b_2 \lor c_2) \land \cdots \land (a_k \lor b_k \lor c_k).
+		      \end{equation}
+
+		\item En reduktion $f$ genererer strengen $\langle G, k \rangle$ hvor $G$ er en urettet graf defineret som følger.
+		\item Knuderne i $G$ organiseres i $k$ grupper af de tre knuder som hver kaldes \textit{triples} $t_{1}, \ldots, t_{k}$.
+		\item Hver triple svarer til en klausul i $\phi$.
+		\item Navngiv hver knude i $G$ med dens korresponderende literal i $\phi$.
+		\item Kanterne i $G$  forbinder alle par undtagen to typer:
+		      \begin{itemize}
+			      \item \textbf{Ingen} kanter mellem knuderne i den samme triple
+			      \item \textbf{Ingen} kanter mellem to knuder med uoverensstemmelige navne (e.g. $x_{1}$ og $\overline{x_{1}}$).
+		      \end{itemize}
+
+		\item Eksempel ved formlen $\phi = (x_1 \lor \overline{x_1} \lor x_2) \land (\overline{x_1} \lor \overline{x_2} \lor \overline{x_2}) \land (\overline{x_1} \lor x_2 \lor \overline{x_2}).$
+
+		\item Bliver lavet om til:
+		      \includegraphics[scale=0.5]{figur/figur733.png}
+		\item Husk at en $k$-klikke er en komplet delgraf af størrelse $k$ af en større graf $G$.
+		\item Altså hvor alle knuderne er forbundet af kanter.
+	\end{itemize}
+
+	\begin{theorem}
+		$\phi$  er satisfiable $\iff$ $G$ har en $k$-klikke.
+	\end{theorem}
+
+	\begin{itemize}
+		\item Antag at $\phi$ har en satisfying tildeling.
+		\item \(\Rightarrow\) Ved en sådan tiledeling er der mindst én literal i hver klausul der evalueres til at være sand. (Altså den evalueres til at være sand, Jørgen spurgte mig om dette i DM551 eksamen!)
+		\item I hver triple i $G$ vælger vi en knude korresponderende til en sand literal i den tildeling der er satisfying.
+		\item Hvis mere end én literal er sand vælger vi arbitrært en af dem.
+		\item De knuder vi vælger giver en $k$-klikke.
+		\item Antallet af knuder vi har valgt er $k$, fordi vi vælger en fra hver af de $k$ tripler.
+		\item Det er en $k$-klikke fordi:
+		      \begin{enumerate}
+			      \item De kan ikke være fra samme triple, og dermed ikke have en kant mellem sig
+			      \item De kan ikke være uoverensstemmelige, da de begge skal have en \textit{sand} sandhedsværdi.
+		      \end{enumerate}
+		\item \(\Leftarrow\) Antag at $G$ har en $k$-klikk. Ingen af de to knuder kan være i samme triple. Dermed må hver af de $k$ tripler have præcis én af knuderne.
+		\item Vi tildeler sandhedsværdier til variablerne i $\phi$ så hver literal  der er en del af klikke knuderne bliver gjort sand.
+		\item Dette er altid muligt da der ikke er kanter mellem uoverensstemmelige literale.
+		\item Denne tildeling af sandhedsværdier er sand, da der er mindst én sand literal i hver triple (klausul).
+		\item Dermed er $\phi$ satisfiable.
+	\end{itemize}
+\end{frame}
+
+\begin{frame}[allowframebreaks]
+	\frametitle{Definitionen af NP-Komplethed}
+	\begin{definition}
+		Et sprog $B$ er $NP$-komplet hvis det satisfier to betingelser:
+		\begin{enumerate}
+			\item $B \in NP$
+			\item $\forall A \in NP : A \le_{P} B$
+		\end{enumerate}
+	\end{definition}
+
+	\begin{theorem}
+		Hvis $B$ er NP-Komplet og $B \in P$, så er $P = NP$.
+	\end{theorem}
+
+	\begin{itemize}
+		\item Beviset følger fra definitionen af reducerbarhed i polynomiel tid.
+	\end{itemize}
+
+	\begin{theorem}
+		Hvis $B$ er NP-Komplet og $B \le_{P} C$ for $C \in NP$ så er $C$ NP-komplet.
+	\end{theorem}
+	\begin{itemize}
+		\item Vi ved allerede at $C \in NP$. Vi skal derfor vise at alle $A \in NP$ er reducerbart i polynomiel tid til $C$.
+		\item Fordi $B$ er NP-Komplet, er hvert sprog i $NP$ reducerbart i polynomiel tid til $B$ og $B$ er polynomielt tid reducerbart til $C$.
+		\item Hvis $A$ er polynomielt reducerbart til $B$  og $B$ til $C$, så er $A$ til $C$.
+	\end{itemize}
+\end{frame}
+
+\begin{frame}[allowframebreaks]
+	\frametitle{Vertex-Cover problemet}
+	\begin{itemize}
+		\item Ved en urettet graf $G$, er et \textit{vertex cover} af $G$ en delmængde af knuder hvor hver kant af $G$ rører en af disse knuder.
+		      \begin{align*}
+			      \text{VERTEX-COVER} & = \{\langle G , k \rangle \mid G \text{ er en urettet graf som har en } \\
+			                          & k\text{-knude vertex cover.}\}
+		      \end{align*}
+	\end{itemize}
+	\begin{theorem}
+		VERTEX-COVER er NP-Komplet
+	\end{theorem}
+
+	\begin{itemize}
+		\item Vi viser at 3-SAT er polytids reducerbart til VERTEX-COVER.
+		\item Reduktionen konverterer en 3cnf-formel $\phi$ til en graf $G$ og et tal $k$, så $\phi$ er satisfiable når $G$ har et vertex cover med $k$ knuder.
+	\end{itemize}
+\end{frame}
 
 %%% Local Variables:
 %%% mode: latex
