@@ -658,6 +658,32 @@
 	\begin{itemize}
 		\item Vi viser at 3-SAT er polytids reducerbart til VERTEX-COVER.
 		\item Reduktionen konverterer en 3cnf-formel $\phi$ til en graf $G$ og et tal $k$, så $\phi$ er satisfiable når $G$ har et vertex cover med $k$ knuder.
+		\item Til at bevise dette bruger vi ``gadgets'', som er små ``dele'', vi vil putte sammen.
+		\item Vi kommer til at have to typer af disse ``gadgets'':
+		      \begin{itemize}
+			      \item Variabel Gadget: En lille graf for hver af variablerne
+			      \item Klausul Gadget: En lille graf for hvert klausul
+		      \end{itemize}
+
+		\item Variabel gadgetten har to knuder. Givet en literal $v_{i}$, vil der være en knude $v_{i} \in V$  og $\overline{v_{i}} \in G$. Derudover vil $(v_{i}, \overline{v_{i}}) \in E$.
+		\item At have denne variabel gadget skal sikre for os at vi kun vælger én af de knuder, fremfor begge.
+		\item Givet en klausul $(v_{i} \lor v_{j} \lor v_{k})$ får vi en ``gadget'' hvor $\{v_{i}, v_{j}, v_{k}\} \in G$ og $\{(v_{i}, v_{k}), (v_{j}, v_{k}), (v_{j}, v_{i})\} \in E$. Altså får vi en form for trekant.
+		\item Kort terminologi, $G_{V}$ er gadgateten der omhandler variabler og $G_{K}$ er gadgetten med klausuler. Derudover $G_{V} \cup G_{K} = G$
+		\item Vi tilføjer nu kanter mellem alle knuder der har samme navn, så knuden $v_{i} \in G_{V}$ og knuden $v_{i} \in G_{K}$ skal have en kant mellem sig $(v_{i}, v_{i}) \in E$.
+		\item Hvis en knude blive valgt til vertex-coveret, vil det betyde at sandhedsværdien skal være sand.
+		\item Givet en formel $\phi$ der har $m$ variabler og $l$ klausuler, så har grafen $G = (V,E)$ antal knuder $|V| = 2m+3l$.
+		\item Lad $k = m+2l$
+		\item Følgende eksempel er for $\phi = (x_{1} \lor x_{1} \lor x_{2}) \land (\overline{x_{1}} \lor \overline{x_{2}} \lor \overline{x_{2}}) \land (\overline{x_{1}} \lor x_{2} \lor x_{2})$. For denne er $k = 8 = 2 + 2 \cdot 3$.
+		      \includegraphics[scale=0.5]{figur/figur745.png}
+		\item Grunden til at $k = m+2l$:
+		      \begin{itemize}
+			      \item $2l$ = Man skal vælge mindst 2 knuder for at cover hver kant
+			      \item $m$ = Vi må kun vælge én af variablerne i variabel gadgetten.
+		      \end{itemize}
+		\item For at bevise at denne reduktion fungerer skal vi vise at:
+		\item $\phi$ er satisfiable $\iff$ $G$ har et vertex cover med $k$ knuder.
+		\item Hvis \(\phi\) er satisfiable \(\Rightarrow\) har $G$ et vertex cover med $k$ knuder.
+		\item
 	\end{itemize}
 \end{frame}
 
