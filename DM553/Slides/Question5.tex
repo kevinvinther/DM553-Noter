@@ -425,12 +425,12 @@
 \begin{frame}[allowframebreaks]
 	\frametitle{Eksempler på problemer i $NP$}
 
-	\item \textbf{Klikke-problemet}
-	\item En \textbf{klikke} i en urettet graf, er en delgraf hvor hver to knuder er forbundet af en kant.
-	\item En $k-$klikke er en klikke der indeholder $k$ knuder.
+	\item \textbf{Klike-problemet}
+	\item En \textbf{klike} i en urettet graf, er en delgraf hvor hver to knuder er forbundet af en kant.
+	\item En $k-$klike er en klike der indeholder $k$ knuder.
 
 	\begin{equation}
-		CLIQUE = \{\langle G, k \rangle \mid G \text{ er en urettet graf med en }k-\text{klikke}\}
+		CLIQUE = \{\langle G, k \rangle \mid G \text{ er en urettet graf med en }k-\text{klike}\}
 	\end{equation}
 
 	\begin{theorem}
@@ -566,7 +566,7 @@
 
 	\begin{itemize}
 		\item Vi vil i reduktionen konvertere formlerne til grafer.
-		\item I de konstruerede grafer korresponderer en klikke af en specifik størrelse til en satisfying tildeling over formlen.
+		\item I de konstruerede grafer korresponderer en klike af en specifik størrelse til en satisfying tildeling over formlen.
 		\item Lad $\phi$ være en formel med $k$ klausuler, såsom:
 		      \begin{equation}
 			      \phi = (a_1 \lor b_1 \lor c_1) \land (a_2 \lor b_2 \lor c_2) \land \cdots \land (a_k \lor b_k \lor c_k).
@@ -586,12 +586,12 @@
 
 		\item Bliver lavet om til:
 		      \includegraphics[scale=0.5]{figur/figur733.png}
-		\item Husk at en $k$-klikke er en komplet delgraf af størrelse $k$ af en større graf $G$.
+		\item Husk at en $k$-klike er en komplet delgraf af størrelse $k$ af en større graf $G$.
 		\item Altså hvor alle knuderne er forbundet af kanter.
 	\end{itemize}
 
 	\begin{theorem}
-		$\phi$  er satisfiable $\iff$ $G$ har en $k$-klikke.
+		$\phi$  er satisfiable $\iff$ $G$ har en $k$-klike.
 	\end{theorem}
 
 	\begin{itemize}
@@ -599,15 +599,15 @@
 		\item \(\Rightarrow\) Ved en sådan tiledeling er der mindst én literal i hver klausul der evalueres til at være sand. (Altså den evalueres til at være sand, Jørgen spurgte mig om dette i DM551 eksamen!)
 		\item I hver triple i $G$ vælger vi en knude korresponderende til en sand literal i den tildeling der er satisfying.
 		\item Hvis mere end én literal er sand vælger vi arbitrært en af dem.
-		\item De knuder vi vælger giver en $k$-klikke.
+		\item De knuder vi vælger giver en $k$-klike.
 		\item Antallet af knuder vi har valgt er $k$, fordi vi vælger en fra hver af de $k$ tripler.
-		\item Det er en $k$-klikke fordi:
+		\item Det er en $k$-klike fordi:
 		      \begin{enumerate}
 			      \item De kan ikke være fra samme triple, og dermed ikke have en kant mellem sig
 			      \item De kan ikke være uoverensstemmelige, da de begge skal have en \textit{sand} sandhedsværdi.
 		      \end{enumerate}
 		\item \(\Leftarrow\) Antag at $G$ har en $k$-klikk. Ingen af de to knuder kan være i samme triple. Dermed må hver af de $k$ tripler have præcis én af knuderne.
-		\item Vi tildeler sandhedsværdier til variablerne i $\phi$ så hver literal  der er en del af klikke knuderne bliver gjort sand.
+		\item Vi tildeler sandhedsværdier til variablerne i $\phi$ så hver literal  der er en del af klike knuderne bliver gjort sand.
 		\item Dette er altid muligt da der ikke er kanter mellem uoverensstemmelige literale.
 		\item Denne tildeling af sandhedsværdier er sand, da der er mindst én sand literal i hver triple (klausul).
 		\item Dermed er $\phi$ satisfiable.
@@ -683,8 +683,165 @@
 		\item For at bevise at denne reduktion fungerer skal vi vise at:
 		\item $\phi$ er satisfiable $\iff$ $G$ har et vertex cover med $k$ knuder.
 		\item Hvis \(\phi\) er satisfiable \(\Rightarrow\) har $G$ et vertex cover med $k$ knuder.
-		\item
+		\item Først putter vi knuderne af variable gadgetsne ind som korresponderer til de sande variabler i assignmentet.
+		\item Så vælger vi en sand literal i hver klausul og putter de resterende to knuder fra hver klausul gadget ind i vertex coveret.
+		\item Vi har nu $k$ knuder, som ``cover'' alle kanter fordi hver variabel gadget er covered, og alle tre kanter i hver klausul gadget er coveret, og alle kanter mellem variabel og klausul gadgets er covered.
+		\item Dermed har $G$ et vertex cover med $k$ knuder.
+		\item Hvis $G$ har et vertex cover med $k$ knuder \(\Rightarrow\) så er $\phi$ satisfiable.
+		\item Vertex coveret må indeholde en knude i hver variabel gadget og to i hver klausul for at kunne cover alle kanterne i gadgetsne.
+		\item Vi tager alle de knuder der er en del af vertex coveret, og giver dem \textit{TRUE} værdi til de korresponderende literals.
+		\item Denne sandhedsfordeling til $\phi$ er satisfiable fordi hver af de tre kanter er covered, og kun to knuder i hver klausul er i vertex coveret.
+		\item Dermed er en af kanterne covered af en knude fra en variabel gadget, så assignmentet satisfier den korresponderende klausul.
 	\end{itemize}
+\end{frame}
+
+\begin{frame}[allowframebreaks]
+	\frametitle{Certifikater}
+	\begin{itemize}
+		\item Vi har kigget lidt på certifikater allerede, nu vil vi kigge på flere (og denne gang fra Cormen!)
+		\item Vi kigger først på Hamiltonian Cycle problemet.
+		\item Givet en graf $G = (V,E)$ har en graf en Hamiltonian cycle?
+		      \begin{equation}
+			      \text{HAM-CYCLE} = \{\langle G \rangle \mid G \text{ er en hamiltoniansk graf}\}
+		      \end{equation}
+
+
+		\item En hamiltoniansk kreds er blot en kreds der går alle knuder igennem på en graf.
+		\item Vi kan relativt nemt tage et certifikat, som er en sekvens af knuder, og tjekke om disse er en permutation af knuderne $V$, og om der eksisterer kanter mellem hver to knuder i sekvensen.
+		\item En sådan verifikationsalgoritme kan implementeres til at køre i $O(n^{2})$ tid, altså polynomiel.
+		\item Hvis en graf \textit{ikke} er hamiltoniansk, betyder det at man ikke kan lave en hamiltoniansk kreds.
+	\end{itemize}
+\end{frame}
+
+\begin{frame}[allowframebreaks]
+	\frametitle{NP og co-NP}
+
+	\begin{itemize}
+		\item Som tidligere beskrevet, er $NP$ klassen hvor et certifikat kan verificeres i polynomiel tid, og en NDTM kan løse problemet i polynomiel tid.
+		\item Man ved ikke om $P = NP$, men man ved heller ikke om $NP$ er lukket under komplement.
+		\item Lad $co-NP$ være kompleksitetsklassen indeholdende sprog $A \in NP$ hvor $\overline{A} \in NP$.
+		\item Vi ved ikke om $NP = co-NP$.
+		\item Hvis $P = NP$ er det ikke sikkert at $P = NP = co-NP$
+		\item Hvis $NP = co-NP$ er det ikke sikkert at $P = co-NP$
+	\end{itemize}
+\end{frame}
+
+\begin{frame}[allowframebreaks]
+	\frametitle{NP-komplethed og reducerbarhed}
+
+	\begin{itemize}
+		\item Jeg skriver det her nogle dage efter de sidste slides, så det kan godt være jeg kommer til at gentage mig selv lidt.
+		\item En af grundene til at mange forskere mener at $P \ne NP$ er eksistensen af $NP$-komplette problemer.
+		\item Trods utroligt lang tid brugt på NP-komplette problemer, er der ikke fundet et eneste problem med en polynomiel køretid.
+		\item HAM-CYCLE, som vi beskrev før, er et eksempel på et NP-komplet problem.
+		\item Ofte beskrives NP-komplette problemer som ``de sværeste problemer'' i $NP$, fordi, hvis man finder en løsning således at sproget $A$ som er NP-komplet viser sig at være i $P$, vil man indirekte have fundet en løsning sålede at alle $A \in NP$ også er en del af $P$, dermed $P = NP$
+		\item Cormen bruger noget lidt andet terminologi i forhold til reduktioner:
+		\item Funktionen $f$ der reducerer problem $A$ til $B$ kaldes \textit{reduktionsfunktionen}.
+		\item Den polynomielle algoritme der udregner $f$, kaldes en \textit{reduktionsalgoritme}.
+	\end{itemize}
+\end{frame}
+
+\begin{frame}[allowframebreaks]
+	\frametitle{Hamiltoniansk kreds problemet}
+
+	\begin{theorem}
+		Hamiltoniansk kreds problemet er NP-komplet.
+	\end{theorem}
+	\begin{itemize}
+		\item Først viser vi at HAM-CYCLE $\in NP$.
+		\item Givet en graf $G = (V,E)$ er vores certifikat en sekvens af $|V|$ knuder som giver en hamiltoniansk kreds.
+		\item Algoritmen tjekker om denne sekvens indeholder hver knude i $V$ præcis en gang, og at den første knude er gentaget i slutningen. Hvis der er en kant mellem hvert par af knuder, laver dette en kreds.
+		\item Vi beviser nu VERTEX-COVER $\le_P$ HAM-CYCLE.
+		\item Givet en urettet graf $G = (V,E)$ og et heltal $k$, konstruerer vi en urettet graf $G' = (V', E')$ som har en hamiltoniansk kreds $\iff$ $G$ har et vertex cover af størrelse $k$.
+		\item Til denne konstruktion bruger vi en \textit{widget}, som er en del af en graf der bruger specifikke egenskaber.
+		      \begin{center}
+			      \includegraphics[scale=0.3]{figur/figur3416.png}
+		      \end{center}
+
+		\item (a) i figuren over viser den widget vi brguer.
+		\item For hver kant $(u,v) \in E$, vil grafen $G'$ som vi konstruere indeholde en kopi af denne ``widget'', hvilke vi skriver som $W_{uv}$.
+		\item Vi navngiver hver knude i $W_{uv}$ved $(u,v,i)$ eller $(v,u,i)$ hvor $i \le i \le 6$ så hver widget $W_{uv}$ indeholder 12 knuder.
+		\item $W_{uv}$ indeholder også de 14 kanter vist i (a).
+		\item Udover strukturen tvinger vi nogle egenskaber, såsom at widgetten ikke skal have for mange forbindelser udefra ($G'$) til widgetten.
+		\item Kun 4 knuder: $(u,v,1), (u,v,6), (v,u,1)$ og $(v,u,6)$ har kanter              udefra $W_{uv}$.
+		\item En hamiltoniansk kreds i $G'$ skal igennem alle kanter i $W_{uv}$ på en af de tre måder der kan ses i (b)-(d).
+		\item Dog er grafen $G'$ ikke kun widgets.
+		\item Der er også andre knuder i $V'$ som kaldes \textit{selector vertices} $s_{1}, s_{2}, \ldots, s_{k}$.
+		\item Vi bruger kanter incident på selector knuder i $G'$ til at vælge de $k$ knuder i coveret i $G$.
+		\item Udover kanterne i widgetsne, har $E'$ også to andre typer kanter, som kan ses i følgende figur, hvor (a) er den originale graf $G$, og (b) er den transformerede graf $G'$:
+		      \begin{center}
+			      \includegraphics[scale=0.25]{figur/figur3417.png}
+		      \end{center}
+		\item For hver knude $u \in V$ tilføjer vi kanter til at ``joine'' par af widgets så vi laver en vej indeholdende alle widgets korresponderedne til kanter incident til $u \in G$ .
+		\item Vi vælger arbitrært ordren af knuder som er naboknuder til hver knude $u \in V$  som $u^{(1)}, u^{(2)}, \ldots u^{(grad(u))}$, hvor $grad(u)$ er hvor mange naboknuder $u$ har.
+		\item Vi laver en vej i $G'$ gennem alle widgetsne der korresopnderer til kanterne incident på $u$ ved at tilføje kanterne $\{((u,u^{(i)}, 6), (u, u^{(i+1)}, 1))\}$ hvor $1 \le i \le grad(u)-1$ til $E'$.
+		\item I figuren vist tidligere har vi ordret naboknuderne til $w$ som $x,y,z$, så grafen $G'$ i del $(b)$ af figuren indeholder kanterne $((w,x,6), (w,y,1))$ og $((w,y,6), (w,z,1))$.
+		\item For hver knude $u \in V$, fylder disse kanter en vej indeholdende alle widgets korresponderende til kanter incident på $u$ i $G$.
+		\item Intuitionen mellem alle de her kanter er at hvis vi vælger en knude $u \in V$ i vertex coveret af $G$, kan vi konstruere en vej fra $(u, u^{(1)}, 1)$ til $(u, u^{(grad(u))}, 6)$ i $G'$ som ``cover'' alle widgets korresponderende til kanterne incident på $u$.
+		\item Altså, for alle widgetsne $W_{u,u^{(i)}}$, inkluderer vejen enten alle 12 knuder (hvis $u$ er i vertex coveret, men $u^{(i)}$ ikke er) , eller kun de seks knuder $(u, u^{(i)}, 1), (u, u^{(i)}, 2), \ldots, (u, u^{(i)}, 6)$.
+		\item Den endelige type af kant i $E'$ ``joiner'' den første knude $(u, u^{(1)}, 1)$ og den sidste knude $(u, u^{(grad(u))}, 6)$ af hver af de veje til hver af selector knuderne.
+		\item Altså inkluderer vi følgende kanter:
+		      \begin{align*}
+			      \{(s_{j}, (u, u^{(1)}, 1) & : u \in V \text{ og } 1 \le j \le k\}                                 \\
+			      \cup                      & \{(s_{j}, (u, u^{(grad(u)}, 6)) : u \in V \text{ og } 1 \le j \le k\}
+		      \end{align*}
+
+		\item Det næste vi skal vise er at $|G'|$ er polynomielt i $|G|$, og dermed kan konstruere $|G'|$ i polynomiel tid.
+		\item Knuderne i $G'$ er dem i widgetsne plus selector knuderne.
+		\item 12 knuder per widget, plus $k \le |V|$ selector knude, har vi i alt:
+		      \begin{align*}
+			      |V'| & = 12 |E| + k     \\
+			           & \le 12 |E| + |V|
+		      \end{align*}
+		\item Kanterne i $G'$ er dem i widgetsne, dem som går gennem widetsne, og dem som forbinder selector kanterne til widgetsne.
+		\item Hver widget indeholder 14 kanter, i alt $14|E|$ i alle widgets.
+		\item For hver knude $u \in V$, har grafen $G'$ $grad(u)-1$ kanter gående mellem widgets. Dermed:
+		      \begin{equation*}
+			      \sum_{u \in V} (grad(u) - 1) = 2 |E| - |V|
+		      \end{equation*}
+		\item Til sidst har $G'$ to kanter for hvert par af selector knude og knude i $V$, altså i alt $2k|V|$ af sådanne kanter.
+		\item Det endelige antal af kanter i $G'$ er derfor
+		      \begin{align*}
+			      |E'| & = (14|E|) + (2|E| - |V|) + (2k|V|) \\
+			           & = (16|E|) + (2k-1)|V|              \\
+			           & \le 16|E| + (2 |V|-1) |V|
+		      \end{align*}
+
+		\item Nu skal vi vise at transformationen $f : G \rightarrow G'$ er en reduktion.
+		\item Altså at $G$ har et vertex cover af størrelse $k \iff G'$  har en hamiltoniansk kreds.
+		\item Antag at $G = (V,E)$ har et vertex cover $V^{*} \subseteq V$ af størrelse $k$.
+		\item Lad $V^{*} = \{u_{1}, u_{2}, \ldots u_{k}\}$.
+		\item Vi laver en hamiltoniansk kreds i $G'$ ved at inkludere følgende kanter for hver knude $u_{j} \in V^{*}$.
+		\item Inkluder kanterne $\{((u_{j}, u_{j}^{(i)}, 6), (u_{j}, u_{j}^{(i+1)}, 1)) : 1 \le i \le grad(u_{j}) -1\}$, som forbinder alle widgets korresponderende til kanter incident på $u_{j}$.
+		\item Vi inkluderer også kanterne i disse widgets, afhængigt af om kanterne er covered af en eller flere knuder i $V^{*}$.
+		\item Den hamiltonianske kreds inklduerer også kanterne:
+		      \begin{align*}
+			      \{(s_{j}, (u_{j}, u_{j}^{(1)}, & 1)) : 1 \le j \le k\}                                             \\
+			      \cup                           & \{(s_{j+1}, (u_{j}, u_{j}^{(grad(u_{j}))},6)) : 1 \le j \le k-1\} \\
+			      \cup                           & \{(s_{1}, (u_{k}, u_{k}^{(grad(u_{j}))}, 6)\}
+		      \end{align*}
+
+		\item Ved at kigge på den tidligere figur, kan vi se at disse kanter former en kreds.
+		\item På den anden side, antag at $G' = (V', E')$ har en hamiltoniansk kreds $C \subseteq E'$. Vi siger at mængden:
+		      \begin{equation*}
+			      V^{*} = \{u \in V : (s_{j}, (u, u^{(1)}, 1)) \in C \text{ for en } 1 \le j \le k\}
+		      \end{equation*}
+
+		\item Er et vertex cover for $G$.
+		\item Hvis vi deler $C$ i maksimale veje som starter ved en selector knude $s_{i}$; går igennem en kant $(s_{i}, (u, u^{(1)}, 1))$ for en $u \in V$, og ender i en selector knude $s_{j}$ uden at gå igennem andre selector knuder.
+		\item Vi kalder en sådan vej en ``cover vej'', eller ``cover path'' på engelsk.
+		\item Fra hvordan $G'$ konstrueres, må hver af sådanne veje starte ved en 4s_i, tage kanten $(s_{i}, (u, u^{(1)}, 1))$ for en knude $u \in V$, gå igennem alle widgetsne korresponderende til kanterne i $E$ incident på $u$, og slutte ved en selector vertex $s_{j}$.
+		\item VI kalder denne cover vej $p_u$ og fra den tidligere ligning for $V^*$ putter vi $u$ i $V^{*}$.
+		\item Hver widget besøgt af $p_{u}$ må enten være $W_{uv}$ eller $W_{vu}$ for en $v \in V$.
+		\item For hver widget besøgt af $p_u$ er dens kanter besøgt af enten en eller to cover vejer.
+		\item Hvis de er besøgt af en cover vej, så er kanten $(u,v) \in E$ coveret i $G$ af knude $u$.
+		\item Hvis de er besøgt af to cover veje, så er den anden cover vej $p_{v}$, som betyder at $v \in V^{*}$ og kanten $(u,v) \in E$ er covered af både $u$ og $v$.
+	\end{itemize}
+\end{frame}
+
+\begin{frame}[allowframebreaks]
+	\frametitle{Traveling Salesman Problemet}
+
 \end{frame}
 
 %%% Local Variables:

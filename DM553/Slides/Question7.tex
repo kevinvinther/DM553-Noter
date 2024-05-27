@@ -10,11 +10,134 @@
   \end{itemize}
 \end{frame}
 
+\begin{frame}
+  \frametitle{NP-Komplette Problemer i Praksis}
+  \begin{itemize}
+    \item I praksis er der $NP$-problemer der er vigtige at have løsninger til.
+    \item Hvis inputtet er småt nok, kan selv en algoritme med eksponentiel køretid være fin.
+    \item Der er mulighed for at der er nogle specielle cases vi kan løse i polynomiel tid.
+    \item Vi kan finde \textit{nær-optimale} løsninger i polynomiel tid. Nær-optimal er i praksis ofte godt \textit{nok}.
+    \item En nær-optimal løsning kalder vi en \textit{approksimationsalgoritmer}.
+  \end{itemize}
+\end{frame}
+
+\begin{frame}[allowframebreaks]
+  \frametitle{Præstationsforhold}
+  \begin{itemize}
+    \item Hvis vi arbejder på et problem som har en positiv kost (e.g. skridt i en algoritme), kan vi definere en nær-optimal løsning til enten at være:
+          \begin{itemize}
+            \item En løsning der er maksimum mulig
+            \item En løsning der er minimum mulig
+          \end{itemize}
+    \item Altså er problemet enten et maksimerings eller minimeringsproblem.
+    \item Vi siger at en algoritme har et approksimeringsforhold af $\rho(n)$ hvis, for at input af størrelse $n$, så er kosten $C$ af en løsning indenfor en faktor af \(\rho(n)\) af kosten $C^{*}$ af en optimal løsning:
+          \begin{equation}
+\max \left( \frac{C}{C^{*}}, \frac{C^{*}}{C} \right) \le \rho(n)
+          \end{equation}
+    \item Hvis en algoritme får et approksimationsforhold af \(\rho(n)\), kalder vi det en $\rho(n)$ approksimationsalgoritme.
+    \item Det betyder altså at, for eksempel ved Vertex-cover problemet, hvis vi har en 2-approksimationsalgoritme, så vil en løsning være \textbf{højest} en faktor af 2 væk fra den optimale løsning.
+    \item For et maksimeringsproblem gælder det at $0 < C \le C^{{*}}$ og forholdet $\frac{C^{*}}{C}$ giver faktoren som kosten af den optimale løsning er større end.
+    \item For et maksimeringsproblem gælder det at $0 < C^{*} \le C$, og forholdet $\frac{C}{C^{*}}$ giver faktoren som den approksimale løsning er større end kosten på den optimale løsning.
+    \item Approksimeringsforholdet af en approksimationsalgoritme er aldrig mindre end 1, da en $1$-approksimeringsalgoritme er optimal.
+    \item Et approksimationsskema (approximation scheme) til et optimeringsproblem er en approksimationsalgoritme som tager som input:
+          \begin{itemize}
+            \item En instans af problemet, OG
+            \item En værdi $\epsilon > 0$ for en konstant \(\epsilon\).
+          \end{itemize}
+
+    \item Et sådant skema er en $(1+\epsilon)$-approksimationsalgoritme.
+  \end{itemize}
+\end{frame}
+
+\begin{frame}[allowframebreaks]
+  \frametitle{Vertex-cover problemet}
+\begin{itemize}
+  \item Husk: Et vertex cover af en urettet graf $G = (V,E)$ er en ægte delmængde $V' \subseteq V$ således at hvis en kant $(u,v)$ er en kant af $G$, så er enten $u \in V'$ eller $v \in V'$ eller begge.
+  \item Størrelsen af et vertex cover er $|V'|$, i.e., antallet af knuder i det.
+  \item Vertex-cover problemet siger at vi finde et vertex cover af minimum størrelse i en given urettet graf.
+  \item Vi kalder et sådan vertex cover for et \textit{optimalt vertex cover}.
+  \item Altså er dette optimiseringsversionen af decision problemet.
+  \item Den følgende algoritme returnerer et vertex cover hvis størrelse er \textbf{højest} dobbelt det af det optimale.
+\end{itemize}
+\begin{center}
+  \includegraphics[scale=0.45]{figur/approxvertexcover.png}
+  \includegraphics[scale=0.35]{figur/figur3501.png}
+\end{center}
+\begin{itemize}
+  \item Køretiden af denne algoritme er $O(V+E)$, hvor vi bruger en adjacency list til at repræsentere $E'$.
+\end{itemize}
+
+\begin{theorem}
+\texttt{Approx-Vertex-Cover} er en polynomiel tids $2$-approksimationsalgoritme.
+\end{theorem}
+\begin{itemize}
+  \item \textbf{Polynomiel tid:}
+        \begin{itemize}
+          \item Linje 1: Initialiserer $C$ til at være den tomme mængde: $O(1)$
+          \item Linje 2: Lader $E'$ være en kopi af mængden $E \in G$: $O(1)$
+          \item Linjer 3-6: Vælger en kant $(u,v) \in E'$, tilføjer $u$ og $v$ til $C$, og sletter alle kanter i $E'$ som coveres af enten $u$ eller $v$: $O(V+E)$
+          \item Linje 7: Returnerer vertex coveret $C$: $O(1)$
+        \end{itemize}
+
+  \item Mængden $C$ af knuder der er returneret af AVC (Approx-Vertex-Cover) er et vertex cover, fordi algoritmen looper indtil alle kanter er i $C$.
+  \item For at se at det er en $2$-approksimationsalgoritme:
+  \item Lad $A$ være mængden af kanter som linje 4 i AVC valgte.
+  \item For at cover kantene i $A$, skal ethvert vertex cover, specifikt det optimale, $C^{*}$ inkludere mindst én endpoint af hver kant i $A$.
+  \item Der er ikke to kanter i $A$ som deler en endpoint, siden alle kanter der deler endpoint fjernes i linje 6.
+  \item Dermed er der ikke to kanter i $A$ som er covered af den samme knude fra $C^{*}$, og dermed har vi en nedre grænse:
+\end{itemize}
+\begin{equation}
+|C^{*}| \ge |A|
+\end{equation}
+\begin{itemize}
+  \item Da linje $4$ vælger en kant hvor ingen af endpointsne allerede er i $C$, har vi et upper bound på størrelsen af vertex coveret vi får af AVC:
+\end{itemize}
+\begin{equation}
+|C| = 2|A|
+\end{equation}
+\begin{itemize}
+  \item Tallet $2|A|$ kommer fra de to knuder fra hver kant vi har udvalgt.
+  \item Når vi kombinerer ligningerne får vi følgende:
+\end{itemize}
+\begin{align*}
+  |C| &= 2|A|\\
+  &\le 2|C^{*}|
+\end{align*}
+\begin{itemize}
+  \item Som beviser sætningen.
+  \item (Jeg har selv lidt brug for overbevisning her, jeg synes ikke Cormen's er specielt god.)
+\end{itemize}
+\end{frame}
+
+\begin{frame}[allowframebreaks]
+  \frametitle{Traveling-salesman Problemet}
+  \begin{itemize}
+    \item Ved TSP (Traveling-salesman problemet) får vi tildelt en urettet graf $G = (V,E)$.
+    \item $\forall (u,v) \in E : c(u,v) \ge 0$: Hver kant har et heltals ``kostefunktion''.
+    \item Målet med TSP er at finde en hamiloniansk kreds af $G$ med minimums kost.
+    \item Lad $c(A)$ være den totale kost af kanter i delmængden $A \subseteq E$.
+  \end{itemize}
+
+  \begin{equation*}
+c(A) = \sum_{(u,v) \in A} c(u,v)
+  \end{equation*}
+  \begin{itemize}
+    \item I mange praktiske situationer er den billigste vej fra $u$ til $v$ at gå direkte.
+    \item Vi formaliserer denne og siger at kostefunktionen $c$ satisfier trekantsuligheden (triangle inequality) hvis, $\forall u,v, w \in V$ gælder følgende:
+  \end{itemize}
+  \begin{equation*}
+c(u,w) \le c(u,v) + c(v,w)
+  \end{equation*}
+  \begin{itemize}
+    \item Vi vil starte med at vise en poly-tids 2-approksimationsalgoritme til TSP med trekantsuligheden.
+    \item Efter dette vil vi se at en konstant approksimationsalgoritme til TSP ikke er muligt uden trekantsuligheden undtagen hvis $P = NP$.
+  \end{itemize}
+\end{frame}
 
 
-%%% local variables:
+%%% Local Variables:
 %%% mode: latex
-%%% tex-engine: xetex
-%%% tex-command-extra-options: "-shell-escape"
-%%% tex-master: "main"
-%%% end:
+%%% TeX-engine: xetex
+%%% TeX-command-extra-options: "-shell-escape"
+%%% TeX-master: "main"
+%%% End:
