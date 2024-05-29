@@ -266,6 +266,25 @@
 	\end{itemize}
 \end{frame}
 
+\begin{frame}[allowframebreaks]
+	\frametitle{Set-Covering Problemet}
+	\begin{itemize}
+		\item Set-cover problemet er et optimeringsproblem, hvis decision version generaliserer vertex-cover problemet
+		\item Denne algoritme har en logaritmisk approksimationsfaktor.
+		\item Det vil sige, at når størrelsen af instansen bliver større, så bliver løsningen også i forhold til den optimale løsning.
+		\item Logaritmefunktionen gror dog langsomt, så derfor kan denne være værd at kigge på alligevel.
+		\item En instans, $(X, \mathcal{F})$ af set-covering problemet ineholder en endelig mængde $X$ og en familie $\mathcal{F}$ af delmængder af $X$, således at hvert element i $X$ er en del af mindst én delmængde i $\mathcal{F}$
+		      \begin{equation*}
+			      X = \bigcup_{S \in \mathcal{F}} S
+		      \end{equation*}
+		\item Vi siger at en delmængde $S \in F$ ``cover'' sine elementer.
+		\item Problemet er at finde en minimumsstørrelse delmængde $\mathcal{C} \subseteq \mathcal{F}$, hvis medlemmer ``cover'' hele $X$:
+		      \begin{equation*}
+			      X = \bigcup_{S \in \mathcal{C}} S
+		      \end{equation*}
+	\end{itemize}
+\end{frame}
+
 
 
 %%% Local Variables:
