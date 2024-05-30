@@ -282,9 +282,65 @@
 		      \begin{equation*}
 			      X = \bigcup_{S \in \mathcal{C}} S
 		      \end{equation*}
+	  \item Vi siger at alle $\mathcal{C}$ som tilfredsstiller ligningen over, ``cover'' $X$.
+	  \item Størrelsen af $\mathcal{C}$ er antallet af mængder den indeholder, fremfor antallet af elementer.
 	\end{itemize}
 \end{frame}
 
+\begin{frame}[allowframebreaks]
+  \frametitle{Grådig approksimationsalgoritme}
+  \begin{itemize}
+	\item Den grådige algoritme fungerer ved at tage den mængde $S$ som ``cover'' den største del af tilbagestående elementer som ikke er covered endnu.
+	\includegraphics[scale=0.5]{figur/greedy-set-cover.png}
+	\item Lad os kigge på et eksempel:
+	\includegraphics[scale=0.5]{figur/figur3503.png}
+	\item Den grådige algoritme tilføjer i denne rækkefølge, mængderne til $\mathcal{C}$: $S_{1}, S_{4}, S_{5}$ og så enten $S_{3}$ eller $S_{6}$.
+	\item Vi vil nu vise at algoritmen returnerer et set cover der ikke er meget større end det optimale.
+	\item Vi kalder det $d$'e harmoniske tal $H_{d} = \sum_{i=1}^d \frac{1}{i}$. Vi definerer $H_{0} = 0$
+  \end{itemize}
+  \begin{theorem}
+	\texttt{Greedy-Set-Cover} er en polynomiel-tids \(\rho(n)\)-approksimations algoritme, hvor
+	\begin{equation*}
+\rho(n) = H(\max \{|S| : S \in \mathcal{F}\})
+	\end{equation*}
+  \end{theorem}
+  \begin{itemize}
+	\item Algoritmen kører i polynomiel tid:
+	\item Antallet af \textit{iterations} på løkken i linje 3-6 har en øvre grænse på $\min\{|X|, |\mathcal{F}|\}$, og vi kan implementere ``kroppen'' af løkken til at køre i $O(|X||\mathcal{F}|)$ tid, dermed får vi en implementation der kører i $O(|X||\mathcal{F}| \min(|X|, |\mathcal{F}|))$
+	\item Vi viser nu at algoritmen er en \(\rho(n)\)-approksimationsalgoritme.
+	\item Vi giver en kost af $1$ til hver mængde valgt af algoritmen, og distribuerer denne kost over elementerne som bliver covered første gang, og bruge så de her koste til at aflede den ønskede forhold mellem størrelsen på et optimalt set cover $\mathcal{C}^{*}$ og størrelsen af set coveret som algoritmen giver os, $\mathcal{C}$.
+	\item Lad $S_{i}$ være den $i$'e delmængde valgt af \texttt{greedy-set-cover}.
+	\item Algoritmen tager altså en kost af 1, når dne tilføjer $S_{i}$ til $\mathcal{C}$.
+	\item Vi deler den her kost ligeligt blandt elementerne som coveres af $S_{i}$ første gang.
+	\item Vi lader $c_{x}$ være kosten til element $x$.
+	\item Hvert $x$ coveres første gang af $S_{i}$, så
+		  \begin{equation*}
+			c_{x} = \frac{1}{|S_{i} - (S_1 \cup S_{2} \cup \cdots \cup S_{i-1}|)}
+		  \end{equation*}
+
+	\item Hvert skridt af algoritmen giver 1 ``unit'' i kost og dermed:
+		  \begin{equation*}
+			|\mathcal{C}| = \sum_{x \in X} c_{x}
+		  \end{equation*}
+	\item Hvert element er i mindst én mængde i det optimale set-cover, så:
+		  \begin{equation*}
+			\sum_{S \in C^{*}} \sum_{x \in S} c_{x} \ge \sum_{x \in X} c_{x}
+		  \end{equation*}
+	\item Når vi kombinerer de to tidligere ligninger får vi:
+		  \begin{equation*}
+			|\mathcal{C}^{*}| \le \sum_{S \in \mathcal{C}^{*}} \sum_{x \in S}  c_{x}
+		  \end{equation*}
+	\item Resten af beviset hviler på følgende ulighed, som vi beviser senere: For alle $S \in \mathcal{F}$:
+		  \begin{equation*}
+			\sum_{x \in S} c_{x} \le H(|S|)
+		  \end{equation*}
+  \end{itemize}
+\end{frame}
+
+\begin{frame}[allowframebreaks]
+  \frametitle{Randomisering og Lineær Programmering}
+
+\end{frame}
 
 
 %%% Local Variables:
