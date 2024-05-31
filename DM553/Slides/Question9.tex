@@ -2,21 +2,48 @@
 \label{sec:adversaryargumenter}
 
 \begin{frame}
-  \frametitle{Pensum}
-  \begin{itemize}
-    \item Baase 3: \textbf{Adversary nedre grænse argumenter}
-    \item Baase 3.5: \textbf{Adversary Median Problem}
-    \item Jørgens noter: \textbf{Noter på nedre grænser}
-    \item Weekly Note 12
-    \item Video 24-25
-  \end{itemize}
+	\frametitle{Pensum}
+	\begin{itemize}
+		\item Baase 3: \textbf{Adversary nedre grænse argumenter}
+		\item Baase 3.5: \textbf{Adversary Median Problem}
+		\item Jørgens noter: \textbf{Noter på nedre grænser}
+		\item Weekly Note 12
+		\item Video 24-25
+	\end{itemize}
 \end{frame}
 
+\begin{frame}[allowframebreaks]
+  \frametitle{Nedre Grænser for Sammenligningsbaseret Sortering}
+  \begin{itemize}
+	\item Vi vil gerne bevise at en algoritme mindst vil kunne lave $\Theta(n \log n)$ sammenligninger.
+	\item Til at bevise dette bruger vi \textit{decision trees}.
+	\item Alle deterministiske sammenligningsbaseret sorteringsalgoritmer $A$  kan associeres med et decision tree.
+	\item Et decision tree har en knude som stiller en udtalelse op, e.g. $x_{14} < x_{17}$, og har så to kanter, en for hvis \textit{ja} og en for hvis \textit{nej}.
+	\item Disse kanter fører så videre til flere knuder der også har nej/ja kanter, osv. indtil du kommer til bladene.
+	\item Det vil også sige at roden af træet er den første sammenligning der bliver lavet.
+	\item Hvert blad repræsenterer altså en permutation for hvordan tallene kan se ud.
+	\item Det vil sige at alle mulige permutationer er blade, og dermed er der mindst $n!$ blade, for et input af størrelse $n$. Det er også muligt at en permutation kan være i et blad mere end én gang.
+	\item Et decision træ er et binært træ, hvilket betyder at for hvert ``niveau'' i træet, bliver antallet af knuder \textbf{højest} fordoblet.
+	\item Dermed er der også højest $2^{h}$ blade, hvor $h$ er højden på træet.
+	\item Dermed må $2^{h} \ge n!$.
+	\item Dermed må $h \ge \log n! \ge n \log n - cn$
+	\item Vi får dette fra at $2^{h} \ge n!$, hvor vi kan tage $\log_{2}$ på begge sider og få $\log_{2}(2^{h}) \ge \log_{2}(n!)$ som giver $h \ge \log_{2}(n!)$.
+	\item Den anden del, at $\log n! \ge n \log n - cn$ håber jeg ikke vi skal kunne til eksamen, for ChatGPT's bevis bruger både $\pi$ og $e$, og er i øvrigt ultra langt.
+	\item Hver vej fra roden til et blad svarer til sammenligninger lavet af $A$ til at sortere et input. Dermed er antallet af sammenligninger lig med længden af vejen.
+	\item Dermed bruger $A$ \textbf{mindst} $n \log n - cn$ sammenligninger på et input.
+	\item Vi kan også finde en nedre grænse for den gennemsnitlige mængde af sammenligninger via decision trees.
+	\item Givet en mængde $P$ som indeholder alle veje fra roden til bladene, kan vi definere $epl$ (externaexternal path length) til at være:
+		  \begin{equation*}
+			epl = \sum_{p \in P} \text{længde}(p)
+		  \end{equation*}
+	\item Lemma 2.8 i Baase, siger at $epl$ er minimeret når $T$ er ``almost balanced'', som vil sige at forskellen i distancen mellem rodden og alle blade enten er den samme for alle blade, eller er højest 1.
+  \end{itemize}
+  % 17:34
+\end{frame}
 
-
-%%% local variables:
+%%% Local Variables:
 %%% mode: latex
-%%% tex-engine: xetex
-%%% tex-command-extra-options: "-shell-escape"
-%%% tex-master: "main"
-%%% end:
+%%% TeX-engine: xetex
+%%% TeX-command-extra-options: "-shell-escape"
+%%% TeX-master: "main"
+%%% End:
