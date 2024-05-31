@@ -1,0 +1,40 @@
+\chapter{Weekly Note 3}
+
+\begin{exercise}[Sipser 1.46 (a) (c) (d)]
+  Bevis at de følgende sprog ikke er regulære. Du må bruge pumpelemmaet og closure af klassen af regulære sprog under foreningsmængde, fællesmængde og komplement.
+
+  \begin{enumerate}
+    \item[a.] $\{0^{n}1^{m}0^{n} \mid m,n \ge 0\}$
+    \item[c.] $\{w \mid w \in \{0,1\}^{*} \text{ er ikke en palindrom}\}$
+    \item[d.] $\{wtw \mid w, t \in \{0,1\}^{+}\}$
+  \end{enumerate}
+\end{exercise}
+
+\noindent
+\textbf{Spørgsmål (a)}\\
+\noindent
+Vi vælger strengen $0^{p}1^{p}0^{p}$. Givet den tredje betingelse i lemmaet, $|xy| \le p$ er det umuligt at pumpe denne, da $|xy|$ udelukkende kan være $0$'er, som vil betyde at der vil være flere 0'er til at starte med, hvilket går imod sproget.\\
+\noindent
+\textbf{Spørgsmål (c)}
+\noindent
+Komplementet af $(c)$ er $\{w \mid w \text{ er et palindrom}\}$, hvilket ikke er regulært ved $0^{p}10^{p}$
+\noindent
+\textbf{Spørgsmål (d)}
+\noindent
+Vi vælger strengen $0^{p}10^{p}$, hvor udfra tredje betingelse, $|xy| \le p$ vil $0^{p}$ blive større end det andet $0^{p}$, som går imod sprogets specifikation.
+
+\begin{exercise}[Sipser 2.2]
+  \begin{enumerate}
+    \item[a.] Brug sprogene $A = \{a^{m}b^{n}c^{n} \mid m,n \ge 0\}$ og $B = \{a^{n}b^{n}c^{m} \mid m,n \ge 0\}$ sammen med eksempel 2.36 til at vise at klassen af kontekstfrie sprog \textbf{ikke} er lukket under fællesmængde.
+    \item[b.] Brug del (a) og DeMorgan's lov (Sætning 0.20) til at vise at klassen af kontekstrfrie sprog \textbf{ikke} er lukket under komplement.
+  \end{enumerate}
+
+\end{exercise}
+
+%%% Local Variables:
+%%% mode: latex
+%%% TeX-engine: xetex
+%%% TeX-command-extra-options: "-shell-escape"
+%%% TeX-master: "main"
+%%% End:
+
