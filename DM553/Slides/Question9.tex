@@ -38,8 +38,60 @@
 		  \end{equation*}
 	\item Lemma 2.8 i Baase, siger at $epl$ er minimeret når $T$ er ``almost balanced'', som vil sige at forskellen i distancen mellem rodden og alle blade enten er den samme for alle blade, eller er højest 1.
   \end{itemize}
-  % 17:34
+  \begin{center}
+	\includegraphics[scale=0.3]{figur/baaselemma28.png}
+  \end{center}
+  \begin{itemize}
+	\item Beviset givet i Baase siger at hvis et blad $X$ på level $k \le d-2$, så kan vi lave et træ med det samme antal blade, og en mindre $epl$.
+	\item  Vi vælger en knude $Y$ på level $d-1$, som ikke er et blad, og fjerner dens børn, og giver så to børn til $X$. Antallet af børn har ikke ændret sig.
+	\item EPL-en er blevet nedsat med $2d+k$, fordi vejene til børnene (to børn, hver af længde $d$) af $Y$ og vejen til $X$ (længde $k$) ikke længere er forbundet.
+	\item Når vi så tager børnene tilbage til $X$  så får vi en øgning i EPL-en. Da børnene til $X$ vil være på level $k+1$, og der er to, bliver det $2(k+1)$. Da $Y$ forbliver på level $d-1$ er længden $d-1$.
+	\item Dermed er den totale øgning i EPL $2(k+1)+(d-1)=2k+2+d-1=2k+d+1$
+	\item Vi vil nu gerne finde ændringen, som vi gør ved at fjerne øgningen fra aftagelsen.
+	\item Aftagelsen: $2d+k$
+	\item Øgningen: $2k+d+1$
+	\item $(2d+k)-(2k+d+1) = 2d+k-2k-d-1=d-k-1$
+	\item Vi ved at $k \le d-2$, så $d-k-1 > 0 $
+	\item Så altså får vi et træ med en lavere EPL.
+	\item Lemma 2.9: Minimums EPL-en for et decision træ med $l$ blade er $l \lfloor \log l \rfloor + 2(l-2^{\lfloor \log l\rfloor })$
+	\item Hvis $l = 2^{k}$  for en $k$, og alle blade på level $\log l$, så er EPL--en $l \log l$
+	\item Hvis $l \ne 2^{k}$ for en $k$, så er dybden af træet $d = \lceil \log l \rceil$ og alle bladene er på level $d-1$ og $d$.
+	\item Summen for alle vejlængderne til niveau $d-1$ er $l(d-1)$.
+	\item Alle blade på niveau $d$ skal altså tilføje $1$ ekstra til EPL--en.
+	\item Antallet af blade på level $d$ er $2(l-2^{d-1})$, da, for hver knude på level $d-1$ som \textbf{ikke} er et blad, er der to blade på level $d$.
+	\item Dermed er summen $l(d-1)+2(l-2^{d-1}) = l \lfloor \log l \rfloor + 2(l-2^{\lfloor \log l \rfloor})$.
+	\item Grunden til at vi kan sige oprundet $\log l$, er fordi det er det nederste niveau, og $\log l$ vil give os en mellemting. Dermed er nedrundet det niveau der kommer over, e.g. 8 og 9, hvis $\log l = 8.4$. Vi kan kun forvente et heltal hvis $l = 2^{k}$.
+	\item Bemærk at hvis $l = 2^{k}$ så vil $2(l-2^{k}) = 2(2^{k}-2^{k}) = 2(0) = 0$
+	\item Lemma 2.10: Den gennemsnitlige længe af en vej i et 2-træ med $l$ blade er mindst $\lfloor \log l \rfloor$.
+	\item Beviset her er ret nemt:
+		  \begin{equation}
+\frac{l \lfloor \log l \rfloor + 2(l-2^{\lfloor \log l \rfloor})}{l} + \varepsilon
+		  \end{equation}
+
+	\item Hvor \(0 \le \varepsilon < 1\) da $l-2^{\lfloor \log l \rfloor }< \frac{l}{2}$, fordi $l > 2^{\lfloor \log l \rfloor}$
+	\item Teorem 2.11: Den gennemsnitlige mængde af sammenligninger lavet af en algoritme til at sortere $n$ elementer er mindst $\lfloor \log n! \rfloor \approx \lfloor n \log n - 1.5n \rfloor$
+  \end{itemize}
 \end{frame}
+
+\begin{frame}[allowframebreaks]
+  \frametitle{Modstander Argumenter for Sortering}
+\begin{itemize}
+  \item Vores modstander til det her er ``incredibly powerful''.
+  \item Vedkommende har en samling af permutationer af listen der skal sorteres, som opdateres efter et nyt valg er lavet i algoritmen.
+  \item Dermed kan modstanderen, efter hvert skridt, finde den værst mulige permutation, som er mulig for algoritmen.
+  \item Man kan se på en sorteringsalgoritme, som en algoritme der starter med at have alle $n!$ permutationer, og skal eleminere alle undtagen én som så bliver den sorteret permutation.
+  \item Vi (Jørgen) introducerer følgende terminologi:
+  \item \(\delta_{i}\) = permutationer der stadig er mulige efter den $i$'e sammenligning.
+  \item Dermed er \(|\delta_{o}| = n!\)
+  \item Hver gang din algoritme stiller spørgsmålet $x < y$? så er modstanderens mål er ``dræbe'' så få permutationer som muligt.
+  \item Dermed vil modstanderen gerne svare således at $\frac{|\delta_{i}|}{|\delta_{i-1}|} \ge \frac{1}{2}$, altså at mere end halvdelen af permutationerne er tilbage.
+  \item Det er ikke muligt at garantere mere end halvdelen, da det bedst mulige svar, ville fjerne halvdelen.
+  \item Dermed skal du bruge \textbf{mindst} $\log_{2}n!$ sammenligninger før $|\delta_{k}|=1$.
+  \item Vi viste tidligere at $\log_{2}n! = n \log n - cn$.
+  \item De tidligere problemer vi har kigget på har det været nemt for modstanderen at finde et godt modsvar, men her kræver det utroligt meget for modstanderen.
+\end{itemize}
+\end{frame}
+% 21:31 eller iindtil han er blevet færdig med at forklare det'' `nemme argument``''`.
 
 %%% Local Variables:
 %%% mode: latex

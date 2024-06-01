@@ -13,23 +13,64 @@
 \noindent
 \textbf{Spørgsmål (a)}\\
 \noindent
-Vi vælger strengen $0^{p}1^{p}0^{p}$. Givet den tredje betingelse i lemmaet, $|xy| \le p$ er det umuligt at pumpe denne, da $|xy|$ udelukkende kan være $0$'er, som vil betyde at der vil være flere 0'er til at starte med, hvilket går imod sproget.\\
+Vi vælger strengen $0^{p}1^{p}0^{p}$. Givet den tredje betingelse i lemmaet, $|xy| \le p$ er det umuligt at pumpe denne, da $|xy|$ udelukkende kan være $0$'er, som vil betyde at der vil være flere 0'er til at starte med, hvilket går imod sproget.\\\\
 \noindent
-\textbf{Spørgsmål (c)}
+\textbf{Spørgsmål (c)}\\
 \noindent
-Komplementet af $(c)$ er $\{w \mid w \text{ er et palindrom}\}$, hvilket ikke er regulært ved $0^{p}10^{p}$
+Komplementet af $(c)$ er $\{w \mid w \text{ er et palindrom}\}$, hvilket ikke er regulært ved $0^{p}10^{p}$\\\\
 \noindent
-\textbf{Spørgsmål (d)}
+\textbf{Spørgsmål (d)}\\
 \noindent
-Vi vælger strengen $0^{p}10^{p}$, hvor udfra tredje betingelse, $|xy| \le p$ vil $0^{p}$ blive større end det andet $0^{p}$, som går imod sprogets specifikation.
+Vi vælger strengen $0^{p}10^{p}$, hvor udfra tredje betingelse, $|xy| \le p$ vil $0^{p}$ blive større end det andet $0^{p}$, som går imod sprogets specifikation.\\\\
 
 \begin{exercise}[Sipser 2.2]
   \begin{enumerate}
     \item[a.] Brug sprogene $A = \{a^{m}b^{n}c^{n} \mid m,n \ge 0\}$ og $B = \{a^{n}b^{n}c^{m} \mid m,n \ge 0\}$ sammen med eksempel 2.36 til at vise at klassen af kontekstfrie sprog \textbf{ikke} er lukket under fællesmængde.
     \item[b.] Brug del (a) og DeMorgan's lov (Sætning 0.20) til at vise at klassen af kontekstrfrie sprog \textbf{ikke} er lukket under komplement.
   \end{enumerate}
-
 \end{exercise}
+\noindent
+\textbf{Spørgsmål (a)}
+\noindent
+Fællesmængden af sprogene $A$ og $B$ er $A \cap B = \{a^{n}b^{n}c^{n} \mid n \ge 0\}$ er et kendt ikke-kontekstfrit sprog.\\\\
+\noindent
+\textbf{Spørgsmål (b)}\\
+\noindent
+De Morgans lov: $X \cap Y = \overline{\overline{X} \cup \overline{Y}}$. Siden et sprog er lukket under foreningsmængde, ville det betyde at, hvis det var lukket under komplement, ville det også være lukket under fællesmængde, som vi lige har vist til at være umuligt.\\\\
+
+\begin{exercise}[Sipser 2.9]
+  Giv en kontekstfri grammatik der genererer sproget
+  \begin{equation*}
+A = \{a^{i}b^{j}c^{k} \mid i = j \text{ eller } j = k \text{ hvor } i,j,k \ge 0\}
+  \end{equation*}
+\end{exercise}
+
+\begin{align*}
+  S &\rightarrow S_{1} \mid S_{2} \\
+  S_{1} &\rightarrow T_{1}C \\
+  T_{1} &\rightarrow aT_{1}b \mid \varepsilon \\
+  C &\rightarrow  cC \mid \varepsilon \\
+  S_{1} &\rightarrow AT_{2} \\
+  T_{2} &\rightarrow bT_{2}c \mid \varepsilon \\
+  A &\rightarrow aA \mid \varepsilon
+\end{align*}
+
+\begin{exercise}[Sipser 2.30]
+  Brug Pumpelemmaet til at vise at de følgende sprog \textbf{ikke} er kontekstfrie:
+      \begin{enumerate}
+        \item $\{0^n 1^n 0^n 1^{p} \mid n \geq 0\}$
+        \item $\{0^n \# 0^{2n} \# 0^{3n} \mid n \geq 0\}$
+        \item $\{w \# t \mid w \text{ er en delstreng af } t, \text{ hvor } w, t \in \{a, b\}^*\}$
+        \item $\{t_1 \# t_2 \# \cdots \# t_k \mid k \geq 2, \text{ hver } t_i \in \{a, b\}^*, \text{ og } t_i = t_j \text{ for nogen } i \neq j\}$
+    \end{enumerate}
+\end{exercise}
+
+\noindent
+\textbf{Spørgsmål (a)}\\
+\noindent
+Vi tager strengen $0^{p}1^{p}0^{p}1^{p}$. $w = uvxyz$ hvor $|vy| > 0$ og $|vxy| \le p$
+Ud fra at $|vxy| \le p$
+
 
 %%% Local Variables:
 %%% mode: latex
