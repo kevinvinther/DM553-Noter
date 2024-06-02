@@ -69,6 +69,7 @@
 		  \end{equation}
 
 	\item Hvor \(0 \le \varepsilon < 1\) da $l-2^{\lfloor \log l \rfloor }< \frac{l}{2}$, fordi $l > 2^{\lfloor \log l \rfloor}$
+    \item Og $l$ kan højest være $2^{\lceil \log l \rceil} = 2^{\log l}$.
 	\item Teorem 2.11: Den gennemsnitlige mængde af sammenligninger lavet af en algoritme til at sortere $n$ elementer er mindst $\lfloor \log n! \rfloor \approx \lfloor n \log n - 1.5n \rfloor$
   \end{itemize}
 \end{frame}
@@ -92,6 +93,45 @@
 \end{itemize}
 \end{frame}
 % 21:31 eller iindtil han er blevet færdig med at forklare det'' `nemme argument``''`.
+
+\begin{frame}[allowframebreaks]
+  \frametitle{Jørgens Argument}
+ \begin{itemize}
+   \item Jørgen har selv fundet på det her argument, men han fandt ud af at han ikke var den første til det:(
+   \item Problemet med vores tidligere argument, er at det kræver for modstanderen at konstruere $\delta_{i}$ ud fra \(\delta_{i-1}\) hvilket kræver tid i forhold til \(|\delta_{i-1}|\).
+   \item Jørgens modstander er langt mindre kraftfuld, og viser en nedre grænse på $\frac{1}{5}n \log n$ sammenligninger.
+   \item Vi antager at $n = 2^{k}$.
+   \item Vi kører på en træstruktur.
+   \item Roden af træet har størrelse $n = 2^{k}$
+   \item Da det er et binært træ, splitter dette op til 2 knuder (som han kalder bags).
+   \item På niveau 1, (hvor roden er niveau 0) har vi så 2 knuder, som hver har $n/2 = 2^{k-1}$ størrelse.
+   \item Dette fortsætter indtil niveau $l$ som har $n/2^{l} = 2^{k-l}$ størrelse, og $2^{l}$ knuder (bags).
+   \item Jørgen forklarer det lidt snørklet, men jeg tror at ved niveau $l$ er $l = k$ og dermed er der en knude for hvert element.
+   \item Når vi spørger $x < y$ så ``filtrerer'' vi dem ned til børnene af knuden, der spørges ind til.
+   \item Du er først færdig med at sortere når \textbf{alle} elementer har været hele træet igennem, og er nede ved niveau $l$.
+   \item Så hvis vi spørger $u < v?$ og modstanderen siger $u < v$. Så tager vi $u$ i ``posen'' til venstre, og $v$ i posen til højre.
+   \item Måden modstanderen vælger at svare på, er ved at associere en tilstand til hver pose $b$ på niveau $l$. Der er tre tilstande:
+   \item $b$ er \textbf{åbent}:
+         \begin{itemize}
+           \item Hver af de venstre og højre deltræer af $b$ har mindre end $2^{k-l-1}$ elementer.
+         \end{itemize}
+   \item $b$ er ``venstre-flushed'':
+         \begin{itemize}
+           \item Det venstre deltræ af $b$ har $2^{k-l-1}$ elementer.
+         \end{itemize}
+   \item $b$ er ``højre-flushed'':
+         \begin{itemize}
+           \item Det højre deltræ af $b$ har  $2^{k-l-1}$ elementer.
+         \end{itemize}
+   \item Husk at der i alt er $2^{l}$ elementer, så dermed vil hver bag i gennemsnit kunne tage $2^{k-l}$ elementer. Da hvert deltræ har under $2^{k-l-1}$ elementer, betyder det at gennemsnittet ikke er nået endnu.
+   \item Du kan altså se det som, at ``x-flushed'' betyder at $\overline{x}$ har plads til at tage flere elementer, men $x$ har ikke.
+   \item Vi kigger på algoritmerne i Jørgens \href{https://imada.sdu.dk/u/jbj/DM553/Slides21/Lect24.pdf}{noter} side 7.
+   \item Nu til strategien som modstander.
+   \item Når algoritmen $A$ spørger om $x < y$, så vælger modstanderen at flytte 2, 1, eller nul elementer ned til et deltræ, dog med en undtagelse: hvis en af børnene er fyldte, så flytter vi alle andre elementer ned til det andet barn.
+   \item Vi kigger igen på Jørgens noter, denne gang side 8.
+   \item MANGLER: Bevis for $\Omega(n \log n)$.
+ \end{itemize}
+\end{frame}
 
 %%% Local Variables:
 %%% mode: latex
