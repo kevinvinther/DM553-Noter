@@ -84,7 +84,29 @@ Ved \textsc{Vertex-Cover} problemet, tog vi input $(G, k)$ og producerede en ker
 
 Bemærk at hvis et parameteriseret problem $Q$ med parameter $k$ har en kernel af størrelse $O(g(k))$ for en $g$, så kan vi løse $Q$ først ved at finde en kernel og så ved at tjekke alle mulige løsninger for kernelen (brute force).
 
-%% 32:40
+
+\subsection{En kernel af størrelse højest $2k$ til \textsc{Vertex-Cover}}%
+\label{subsec:kernel2k}
+
+I delkapitel~\ref{subsec:weightedvertexcover} så vi den følgende approximationsalgoritme baseret på lineær programmering for \textsc{Vertex-Cover}:
+\begin{enumerate}
+  \item Løs $Z_{LP} = \min \sum_{v \in V} X(v)$ således at $X(u)+X(v) \ge 1 \; \forall (u,v) \in E$ og $0 \le X(u) \le 1$.
+  \item Lad $\overline{X}$ være en optimal LP-løsning.
+  \item Tag $U = \{v \mid \overline{X}(v) \ge \frac{1}{2}\}$
+\end{enumerate}
+
+Denne algoritme var en $2$-approksimationsalgoritme, altså hvor $\frac{|U|}{|U_{\text{opt}}|} \le 2$. Til denne algoritme vil vi opdele knuderne i 3 mængder: $V_{<}, V_{=}, V_{>}$, hvor $V_{<}$ er mængden af knuder, hvor $\overline{X}(v) < \frac{1}{2}$, $V_{=}$ er mængden af knuder, hvor $\overline{X}(v) = \frac{1}{2}$, og $V_{>}$ er mængden af knuder, hvor $\overline{X}(v) > \frac{1}{2}$. Bemærk her at $V_{<}$ er uafhængig, hvilket betyder at der ingen kanter er mellem knuderne, da det er et krav at $\forall (u,v) \in E \mid X(u) + X(v) \ge 1$. Derudover er der heller ingen kanter mellem $V_{<}$ og $V_{=}$ da $X(u) + X(v) < 1$ når $u \in V_{<}$ og $v \in V_{=}$. Der kan til gengæld være kanter imellem knuder i $V_{>}$ og (få) i $V_{=}$, samt kan der være kanter mellem $V_{>}$ og $V_{<}$ samt $V_{>}$ og $V_{=}$.
+
+\begin{theorem}[Nemhauser-Trotter]
+Der eksisterer et optimalt vertex-cover $U^{*}$ således at $V_{>} \subseteq U^{*} \subseteq V_{=} \cup V_{>}$
+\end{theorem}
+
+Altså bruger det optimale vertex cover \textbf{ingen} knuder fra $V_{<}$.
+
+\begin{proof}
+  Antag at $X$ er et optimal vertex-cover af $G = (V,E)$ og at $X \cap V_{<} \ne \emptyset$. Lad $X' = (X \setminus V_{<}) \cup V_{>}$. Så er $X'$ et vertex-cover da $V_{<}$ er en uafhængig mængde og der er ingen kanter $(u,v)$ hvor $u \in V_{<}$ og $v \in V_{=}$.
+  Hvis $|X'| \le |X|$ er vi færdige, så vi antager at $|X'| > |X|$, så $|V_{>} \setminus X| > |X \cap V_{<}|$
+\end{proof}
 
 %%% Local Variables:
 %%% mode: latex
