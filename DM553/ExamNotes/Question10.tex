@@ -1,6 +1,90 @@
-\chapter{Pumpelemmaet for regulære og kontekstfrie sprog}
+\chapter{Faste parameteralgoritmer, parametriseret kompleksitet og eksakte eksponentielle algoritmer}
 
+\section{Faste Parameteralgoritmer og Parametriseret Kompleksitet}%
+\label{sec:label}
 
+\begin{note}[Kilder]
+	\href{https://imada.sdu.dk/u/jbj/DM553/FPTDM553.pdf}{Parameterized Algorithms, Cygan: pp. 3-7, 12-14, 17-22, 51-55}\\
+	Video 25
+\end{note}
+
+Antag at du er ejer af en bar. Du skal sørge for at der ikke kommer nogen slåskampe. Du kender allerede de personer der gerne vil slås, og hvem de gerne vil slås med. Dit mål er derfor at, givet $n$ personer, vil du gerne ekskludere $k$ personer, således at så få personer som muligt kommer op og slås.
+
+Vi kan modellere dette som et prbolem af \textsc{Vertex-Cover} problemet. Her er en knude en person, og en kant mellem to knuder betyder at de to knuder vil slås.
+
+\begin{wrapfigure}{r}{0.5\textwidth}
+	\centering
+	\begin{tikzpicture}[scale=0.5]
+		\begin{scope}[every node/.style={circle,thick,draw}]
+			\node (A) at (0,0) {};
+			\node (B) at (0,3) {};
+			\node (C) at (2.5,4) {};
+			\node (D) at (2.5,1) {};
+			\node (E) at (2.5,-1) {};
+			\node (F) at (5,2) {};
+		\end{scope}
+		\begin{scope}[>={Stealth[black]}]
+			\path [-] (A) edge node {} (B);
+			\path [-] (A) edge node {} (D);
+			\path [-] (D) edge node {} (C);
+			\path [-] (D) edge node {} (E);
+			\path [-] (D) edge node {} (F);
+			\path [-] (E) edge node {} (F);
+		\end{scope}
+	\end{tikzpicture}
+	\caption{\label{fig:barfightvertexcover} En graf $G = (V,E)$.}
+\end{wrapfigure}
+
+I Figur~\ref{fig:barfightvertexcover} ses et eksempel på en normal graf. For at konverte forstå grafen i forhold til barkamps problemet, er hver knude en person, og hver kant mellem to knuder, en slåskamp der venter på at ske. De knuder vi vælger til at være en del af mængden returneret af \textsc{Vertex-Cover} problemet, er de personer vi ikke lader komme ind i baren. Dermed er en instans $(G, k)$ af barkampsproblemet, lig med en instans $(G,k)$ af vertex-cover problemet. For at se hvorfor det er en instans af \textsc{Vertex-Cover} problemet, husk at formålet er at finde en mængde af knuder, som ``cover'' alle kanter. Dermed, hvis vi finder et ``cover'' på størrelse $k$ der cover så mange kanter som muligt, så har vi fundet de $k$ personer, der vil slås med flest andre personer i analogien. Da alle kanter er covered, betyder det dermed også at \textbf{ingen} slåskampe kommer til at foregå.
+
+Vi skal løse barkampsproblemet, men da \textsc{Vertex-Cover} er $\mathcal{NP}$-komplet, kan vi ikke bare gøre det som normalt. Vi antager at der er 1000 personer, som vil komme ind på baren, og at de har booket en plads. Derudover vil vi højest have at 10 personer bliver ekskluderet fra deres plads. Der er nu to umiddelbare metoder: \textit{Den Naive Metode} og \textit{Binomialmetoden}. Ved den naive metode prøver vi alle $2^{1000} \approx 1.07 \cdot 10^{301}$ delmængder og tjekker om en af dem er et cover af størrelse $\le k$. En algoritme der kører den naive metode, vil nok ikke blive færdig før universet har kollapset ind på sig selv. Ved binomialmetoden prøver vi alle $\binom{n}{k}$ delmængder af størrelse $k$, hvilket er en del bedre, cirka $2.63 \cdot 10^{23}$ muligheder. Dog er dette stadig alt for mange, og vil tage år at udregne.
+
+Vores løsning til problemet, er at tage instansen, og give det nogle regler, som vi kalder ``sikkerhedsregler''. Disse regler sikrer et mindre input, som vi så kan arbejde med, enten ved brute force, eller med en klogere løsning. Denne fremgangsmåde kaldes \textit{problemreducering} eller \textit{kernelisering}. Vi vil nu kigge på hvilke regler vi kan opsætte for \textsc{Vertex-Cover} problemet. Givet en graf $G = (V,E)$ og et ikke-negativt heltal $k$:
+\begin{itemize}
+	\item \textbf{Regel 1}: Hvis $\forall v \in V \mid d(v) = 0$, så fjerner vi $v$ fra grafen.
+	\item \textbf{Regel 2}: Hvis $\forall v \in V \mid d(v) \ge k + 1$ så fjerner vi $v$ og reducerer $k$ med én. vi putter $v$ ind, da, hvis vi ikke putter $v$ ind, skal vi putte \textbf{alle} $k+1$ naboer ind, hvilket vi ikke kan givet tallet $k$.
+	\item \textbf{Regel 3}. Hvis $\forall v \in V \mid d(v) = 1 \text{ og } w \text{ er den eneste nabo til }v$   så fjerner vi $v$ og $w$ i grafen, og reducerer $k$ med 1. Vi kan se det som at putte $w$ i coveret, da der kan være mange kanter til den, men vi ved der kun er én til $v$.
+\end{itemize}
+
+Vi putter disse regler på inputtet $G$ indtil ingen af dem er mulige længere, og lader $G' = (V', E')$ være den resulterende graf og lade $k'$ være det resulterende parameter. Hvis, efter vi har fulgt disse regler, $k' = 0$ og der stadig er kanter i grafen, så kan vi \textit{afvise} $(G, k)$, da vi ved ud fra vores regler at dem vi tilføjer til coveret, ville være i det optimale cover. Hvis vi har kørt alle reglerne igennem, og $k > 0$, så ved vi at $\forall v \in V \mid d_{G'}(v) \le k$ fra regel 2. Da hver kant højest kan være incident til $k'$ knuder, ved vi at $|E'| \le k'^{2}$. Grunden til vi bruger $k'^{2}$ fremfor $k^{2}$, er fordi regel 2 bliver brugt, selv når $k$ bliver reduceret. Ydermere, efter at have brugt alle reglerne, gælder det at $|V(G')| \le k^{2}$. Vi får dette resultat fra følgende udregning:
+\begin{equation*}
+	|V'| = \sum_{v \in V'} 1 = \frac{1}{2} \sum_{v \in V'} 2 \le \frac{1}{2} \sum_{v \in V'} d(v) = |E'| \le k'^{2} \le k^{2}
+\end{equation*}
+
+Delen af udregningen der siger $\frac{1}{2} \sum_{v \in V'}2 \le \frac{1}{2} \sum_{v \in V'} d(v)  $ kommer fra at vi har fjernet alle $v \mid d(v) = 1$ og $v \mid d(v) = 0$ i den originale graf, og dermed må det gælde at $\forall v \in V \mid d(v) \ge 2$.
+
+Når vi har sat disse regler ind og udført dem, kan vi køre en brute-force algoritme på inputtet $(G', k')$ og prøve alle $k'$ delmængder af $V'$ som er højest $\binom{k'^{2}}{k'} \le \binom{k^{2}}{k}$. Hvis $k = 10$ betyder det at vi \textbf{højest} skal prøve $\binom{100}{10} \approx 1.73 \cdot 10^{13}$ mulige delmængder. Bemærk nu, at \textit{reduceringen} eller \textit{kerneliseringen} af inputtet blev gjort i polynomiel tid, og har reduceret tiden markant.
+
+Vi vil også gerne vide hvilke knuder der ender med at være i coveret, og ikke bare om det er muligt. Lad $C_{1}$ være de knuder vi har tilføjet til vertex coveret i regel 2 og 3, og lad $C'$ være coveret der er fundet når $(G', k')$ er en ``ja'' instans. instans. Dermed er $C_{1} \cup C'$ et cover af $G$ hvis størrelse er $\le k$.
+
+\subsection{Køretid på parameteriseret \textsc{Vertex-Cover}}%
+\label{subsec:label}
+
+Tiden der bliver brugt i kerneliseringen af inputtet er $O((n+m)k)$. Vi reducerer $k$ højest $k$ gange (mere end $k$ vil afvise instansen), og de $k$ gange der reducerer, kan vi lave $n+m$ arbejde, hvor $n$ er antallet af knuder og $m$ antallet af kanter. Hvis vi ikke afviser instansen, så kommer vi til en instans $(G', k')$ således at $(G,k)$ er en ``ja'' instans $\iff$ $(G', k')$ er en ``ja'' instans.
+
+Når vi har kørt reglerne igennem, og har en ny instans $(G', k')$ skal vi højest brute force igennem $\binom{k^{2}}{k}$ mulige løsninger. Hver løsning tager $O(|V'|+|E')$ tid at kigge igennem, hvilket vi så tidligere var lig med $O(k^{2})$. Dermed kan vi løse $(G, k)$ i følgende tid, hvor $g(k)$ er en funktion af $k$:
+\begin{equation*}
+	O((n+m)k) + O(\binom{k^{2}}{k}k^{2}) = O(g(k)(n+m)) = O(g(k)\cdot n^{2})
+\end{equation*}
+
+\subsection{Definitioner}%
+\label{subsec:label}
+
+\begin{definition}[Parameteriseret Problem]
+	Et \textit{parameteriseret problem} $Q$ er \textit{Fastsat Parameter Traktabel} (FPT) eller \textit{Parametertraktabel i Faste Parametre} hvis der eksisterer en algoritme $A_{Q}$ der løser $Q$ i tid $O(f(k) \cdot n^{c})$ for en beregnlig funktion $f$ og en konstant $c \in \mathbb{R}_{+}$.
+\end{definition}
+
+Vi har tidligere vist at \textsc{Vertex-Cover} er FPT, da vi fandt en løsning der kørte i tid $O(g(k) \cdot n^{2})$, hvor $g(k) = f(k)$ og $2 = c$.
+
+\begin{definition}[Kernelisation, kernel]
+	En kernelisationsalgoritme (en kernel) for et parameteriseret problem $Q$ er en algoritme $A_{Q}$, som, givet en instans $(I,k)$ kører i polynomiel tid i $|(I,k)|$ og outputter en ækvivalent instans $(I', k')$, hvor $|I'| + k' \le g(k)$ for hver instans $(I, k)$ af $Q$ og $g$ er en fastsat beregnelig funktion.
+\end{definition}
+
+Ved \textsc{Vertex-Cover} problemet, tog vi input $(G, k)$ og producerede en kernel $(G', k')$ som opfylder kravet $|G'| + k' \le 2k^{2} + k$.
+
+Bemærk at hvis et parameteriseret problem $Q$ med parameter $k$ har en kernel af størrelse $O(g(k))$ for en $g$, så kan vi løse $Q$ først ved at finde en kernel og så ved at tjekke alle mulige løsninger for kernelen (brute force).
+
+%% 32:40
 
 %%% Local Variables:
 %%% mode: latex

@@ -4,8 +4,8 @@
 \label{sec:sorteringsalgoritmesammenligninger}
 
 \begin{note}[Kilder]
-Video 24 \\
-\href{https://imada.sdu.dk/u/jbj/DM553/LBnoteJBJ21.pdf}{Kapitel 7 - Jørgens noter til nedre grænser}
+	Video 24 \\
+	\href{https://imada.sdu.dk/u/jbj/DM553/LBnoteJBJ21.pdf}{Kapitel 7 - Jørgens noter til nedre grænser}
 \end{note}
 
 Vores mål her er at vise at en modstander altid vil kunne tvinge $\frac{1}{2}n \log n$ sammenligninger i enhver sammenligningsbaseret sorteringsalgoritme. Vi antager at listen der skal sorteres har størrelse $n$, og at $n = 2^{k}$, for et ikke-negativt heltal $k$.Modstanderen har, til at lave sin strategi, et binært træ $T$ af dybde $k = \log n$, hvis knuder indeholder elementer. Til at starte med er det kun roden i træet, hvis størrelse ikke er 0, den indeholder nemlig de $n$ elementer der skal sorteres.
@@ -16,84 +16,84 @@ I algoritmen som modstanderen bruger når vedkommende svarer på en sammenlignin
 
 Vi definerer tre tilstande, som en pose $b$ kan være i igennem køringen af algoritmen:
 \begin{itemize}
-  \item \textbf{Åben}: Både venstre og højre deltræ af $b$  har mindre end $2^{k-\ell-1}$ elementer.
-  \item \textbf{Højre-flushed}: Venstre deltræ har størrelse $2^{k-\ell-1}$.
-  \item \textbf{Venstre-flushed}: Højre deltræ har størrelse $2^{k-\ell-1}$.\footnote{Jørgens noter har nogle fejl i, som han ikke forklarer i videoen. Jeg har valgt at sige at ``venstre-flush'', betyder at elementerne kan komme ned til venstre deltræ. Derudover forklarer han slet ikke i noterne hvad hhv. right og left-flush er, han antager bare at man ved det.}
+	\item \textbf{Åben}: Både venstre og højre deltræ af $b$  har mindre end $2^{k-\ell-1}$ elementer.
+	\item \textbf{Højre-flushed}: Venstre deltræ har størrelse $2^{k-\ell-1}$.
+	\item \textbf{Venstre-flushed}: Højre deltræ har størrelse $2^{k-\ell-1}$.\footnote{Jørgens noter har nogle fejl i, som han ikke forklarer i videoen. Jeg har valgt at sige at ``venstre-flush'', betyder at elementerne kan komme ned til venstre deltræ. Derudover forklarer han slet ikke i noterne hvad hhv. right og left-flush er, han antager bare at man ved det.}
 \end{itemize}
 
 I Figur~\ref{fig:flushes} ses de tre tilstande for en pose $b$.
 
 \begin{figure}[ht]
-\centering
-\begin{tikzpicture}[level distance=2cm, sibling distance=2.5cm, every node/.style = {shape=rectangle, draw, align=center}]
-% Open state
-\node at (-4,0) {$b$ er åbent} [sibling distance=2.0cm]
-child {node {$<2^{k-\ell-1}$}}
-child {node {$<2^{k-\ell-1}$}};
+	\centering
+	\begin{tikzpicture}[level distance=2cm, sibling distance=2.5cm, every node/.style = {shape=rectangle, draw, align=center}]
+		% Open state
+		\node at (-4,0) {$b$ er åbent} [sibling distance=2.0cm]
+		child {node {$<2^{k-\ell-1}$}}
+		child {node {$<2^{k-\ell-1}$}};
 
-% Left-flushed state
-\node at (0,0) {$b$ er højre-flushed} [sibling distance=2.0cm]
-child {node {$=2^{k-\ell-1}$}}
-child {node {$<2^{k-\ell-1}$}};
+		% Left-flushed state
+		\node at (0,0) {$b$ er højre-flushed} [sibling distance=2.0cm]
+		child {node {$=2^{k-\ell-1}$}}
+		child {node {$<2^{k-\ell-1}$}};
 
-% Right-flushed state
-\node at (4,0) {$b$ er venstre-flushed} [sibling distance=2.0cm]
-child {node {$<2^{k-\ell-1}$}}
-child {node {$=2^{k-\ell-1}$}};
-\end{tikzpicture}
-  \caption{\label{fig:flushes} De 3 tilstande $b$ kan være i.}
+		% Right-flushed state
+		\node at (4,0) {$b$ er venstre-flushed} [sibling distance=2.0cm]
+		child {node {$<2^{k-\ell-1}$}}
+		child {node {$=2^{k-\ell-1}$}};
+	\end{tikzpicture}
+	\caption{\label{fig:flushes} De 3 tilstande $b$ kan være i.}
 \end{figure}
 
 Til at udføre sin strategi, gør modstanderen brug af følgende funktioner:
 \begin{itemize}
-  \item \textbf{MOVE(u)}: Denne funktion kaldes når et element $u$ er kommet til posen $b'$, og gør som følger:
-        \begin{itemize}
-          \item Hvis $b'$ er \textbf{åbent} forbliver $u$ i $b'$.
-          \item Hvis $b'$ er \textbf{højre-flushed} eller \textbf{venstre-flushed} bliver elementet $u$ flyttet til posen $b'$ på hhv. højre eller venstre deltræ. Derefter bliver \textbf{MOVE(u)} kaldt igen.
-        \end{itemize}
-  \item \textbf{CHECK(u)}: Denne funktion kaldes ved en åben pose $b$, og gør som følger:
-        \begin{itemize}
-          \item Tjekker om enten højre eller venstre deltræ $T[b]$ af posen $b$ på niveau $\ell$ indeholder $2^{k-\ell-1}$ elementer, og hvis så, markerer den pose $b$ hhv. venstre eller højre-flushed.
-          \item Kalder \textbf{MOVE} på \textit{alle} elementer i $b$.
-        \end{itemize}
+	\item \textbf{MOVE(u)}: Denne funktion kaldes når et element $u$ er kommet til posen $b'$, og gør som følger:
+	      \begin{itemize}
+		      \item Hvis $b'$ er \textbf{åbent} forbliver $u$ i $b'$.
+		      \item Hvis $b'$ er \textbf{højre-flushed} eller \textbf{venstre-flushed} bliver elementet $u$ flyttet til posen $b'$ på hhv. højre eller venstre deltræ. Derefter bliver \textbf{MOVE(u)} kaldt igen.
+	      \end{itemize}
+	\item \textbf{CHECK(u)}: Denne funktion kaldes ved en åben pose $b$, og gør som følger:
+	      \begin{itemize}
+		      \item Tjekker om enten højre eller venstre deltræ $T[b]$ af posen $b$ på niveau $\ell$ indeholder $2^{k-\ell-1}$ elementer, og hvis så, markerer den pose $b$ hhv. venstre eller højre-flushed.
+		      \item Kalder \textbf{MOVE} på \textit{alle} elementer i $b$.
+	      \end{itemize}
 \end{itemize}
 
 I Algoritme~\ref{alg:move} og Algoritme~\ref{alg:check} kan algoritmiske fortolkninger ses af hhv. CHECK og MOVE.
 
 \begin{algorithm}
-\caption{\label{alg:move} MOVE(u)}
-\begin{algorithmic}[1]
-\STATE $b(u)$ \COMMENT{Nuværende pose af $u$}
-\IF{$b(u)$ er åben}
-    \RETURN
-\ELSIF{$b(u)$ er venstre-flushed}
-    \STATE $b(u) \gets b^L(u)$
-    \STATE MOVE($u$)
-    \RETURN
-\ELSIF{$b(u)$ er højre-flushed}
-    \STATE $b(u) \gets b^R(u)$
-    \STATE MOVE($u$)
-    \RETURN
-\ENDIF
-\end{algorithmic}
+	\caption{\label{alg:move} MOVE(u)}
+	\begin{algorithmic}[1]
+		\STATE $b(u)$ \COMMENT{Nuværende pose af $u$}
+		\IF{$b(u)$ er åben}
+		\RETURN
+		\ELSIF{$b(u)$ er venstre-flushed}
+		\STATE $b(u) \gets b^L(u)$
+		\STATE MOVE($u$)
+		\RETURN
+		\ELSIF{$b(u)$ er højre-flushed}
+		\STATE $b(u) \gets b^R(u)$
+		\STATE MOVE($u$)
+		\RETURN
+		\ENDIF
+	\end{algorithmic}
 \end{algorithm}
 
 \begin{algorithm}
-\caption{\label{alg:check} CHECK(b)}
-\begin{algorithmic}[1]
-\STATE $b$ er en åben pose på niveau $\ell$
-\IF{$|T[b^R]| = 2^{k-\ell-1}$}
-    \STATE Marker $b$ som venstre-flushed \COMMENT{højre undertræ er fyldt}
-    \STATE MOVE($u$)
-    \RETURN
-\ENDIF
-\IF{$|T[b^L]| = 2^{k-\ell-1}$}
-    \STATE Marker $b$ som højre-flushed \COMMENT{venstre undertræ er fyldt}
-    \STATE MOVE($u$)
-    \RETURN
-\ENDIF
-\RETURN
-\end{algorithmic}
+	\caption{\label{alg:check} CHECK(b)}
+	\begin{algorithmic}[1]
+		\STATE $b$ er en åben pose på niveau $\ell$
+		\IF{$|T[b^R]| = 2^{k-\ell-1}$}
+		\STATE Marker $b$ som venstre-flushed \COMMENT{højre undertræ er fyldt}
+		\STATE MOVE($u$)
+		\RETURN
+		\ENDIF
+		\IF{$|T[b^L]| = 2^{k-\ell-1}$}
+		\STATE Marker $b$ som højre-flushed \COMMENT{venstre undertræ er fyldt}
+		\STATE MOVE($u$)
+		\RETURN
+		\ENDIF
+		\RETURN
+	\end{algorithmic}
 \end{algorithm}
 
 \subsection{Modstanderens Strategi}%
@@ -104,13 +104,78 @@ Imens modstanderen svarer på spørgsmål om $x < y$ fra algoritmen, så flytter
 Antag at sorteringsalgoritmen $A$ efterspørger resultatet på en sammenligning af elementer $u$ og $v$. Lad \(\ell(u)\) og \(\ell(v)\) være niveauene af hhv. $l$ og $v$. Lad $b(u)$ og $b(v)$ være poserne der indeholder henholdvis $u$ og $v$.
 
 \begin{enumerate}
-  \item Hvis den mindste fælles forfader (least comon ancestor) $b$ af $b(u)$ og $b(v)$ i $T$ ikke er $b(u)$ eller $b(v)$, så svarer modstanderen ``$u < v$'' hvis $u$ er i det venstre undertræ af $b$ og $v$ i det højre, og ``$v < u$'', hvis $u$ er i det højre undertræ af $b$ og $u$ i det venstre. Intet element flyttes her. $A$ får ingen information ud af den her sammenligning.
-  \item Hvis den mindste fælles forfader $b$ af $b(u)$ og $b(v)$ er i $\{b(u), b(v)\}$, så kan man, uden tab af generalitet, sige at $b = b(u)$ eller $b = b(v)$. Vi antager herfra at $b = b(u)$.
+	\item Hvis den mindste fælles forfader (least comon ancestor) $b$ af $b(u)$ og $b(v)$ i $T$ ikke er $b(u)$ eller $b(v)$, så svarer modstanderen ``$u < v$'' hvis $u$ er i det venstre undertræ af $b$ og $v$ i det højre, og ``$v < u$'', hvis $u$ er i det højre undertræ af $b$ og $u$ i det venstre. Intet element flyttes her. $A$ får ingen information ud af den her sammenligning.
+	\item Hvis den mindste fælles forfader $b$ af $b(u)$ og $b(v)$ er i $\{b(u), b(v)\}$, så kan man, uden tab af generalitet, sige at $b = b(u)$ eller $b = b(v)$. Vi antager herfra at $b = b(u)$.
+	      \begin{enumerate}
+		      \item Hvis $b(u) = b(v)$ så:
+		            \begin{itemize}
+			            \item Svar ``$u < v$'' og flyt $u$ til roden af det venstre undertræ af $T[b]$, og $v$ til roden af det højre undertræ af $T[b]$.
+			            \item Kald \textbf{MOVE(u)}, \textbf{MOVE(v)} og sidst \textbf{CHECK(b)}.
+		            \end{itemize}
+
+		      \item Hvis $b(u) \ne b(v)$ og $b(v)$ er i højre undertræ af $b(u)$:
+		            \begin{itemize}
+			            \item Svar ``$u < v$'' og flyt $u$ til roden at det venstre undertræ af $T[b(u)]$.
+			            \item Kald \textbf{MOVE(u)} og så \textbf{CHECK(b)}
+		            \end{itemize}
+		      \item Hvis $b(u) \ne b(v)$ og $b(v)$ er i venstre undertræ af $T[b(u)]$:
+		            \begin{itemize}
+			            \item Svar ``$u > v$'', flyt $u$ til roden af det højre deltræ af $T[b(u)]$.
+			            \item Kald \textbf{MOVE(u)} og så \textbf{CHECK(b)}
+		            \end{itemize}
+	      \end{enumerate}
 \end{enumerate}
 
+En formulering af algoritmen i \textit{algorithmic} miljøet kan findes i Algoritme~\ref{alg:sortingquery}.
 
+\begin{algorithm}
+	\caption{\label{alg:sortingquery} Svar på forespørgsel $u < v$}
+	\begin{algorithmic}[1]
+		\STATE Lad $b$ være den fælles forfader til $b(u)$ og $b(v)$ i $T$
+		\IF{$b \neq b(u)$ og $b \neq b(v)$}
+		\IF{$u \in T[b^L]$}
+		\STATE svar $u < v$
+		\ELSE
+		\STATE svar $u > v$
+		\ENDIF
+		\ELSE
+		\STATE \COMMENT{Lad os antage $b = b(v)$, ellers omnavngiv $u,v$}
+		\IF{$b(u) = b(v)$}
+		\STATE svar $u < v$ og $b(u) \gets b^L(u)$; $b(v) \gets b^R(u)$
+		\STATE MOVE($u$); MOVE($v$); CHECK($b$)
+		\ELSIF{$b(u)$ i $T[b^R(v)]$}
+		\STATE svar $u < v$; $b(u) \gets b^L(u)$
+		\STATE MOVE($u$); CHECK($b$)
+		\ELSE
+		\STATE svar $u > v$; $b(u) \gets $ $b^R(u)$
+		\STATE MOVE($u$); CHECK($b$)
+		\ENDIF
+		\ENDIF
+	\end{algorithmic}
+\end{algorithm}
 
+\begin{theorem}
+	Ved strategien fra Algoritme~\ref{alg:sortingquery}, kan modstanderen tvinge enhver sorteringsbaseret algoritme $A$ til at lave $\Omega(n \log n)$ sammenligninger.
+\end{theorem}
+\begin{proof}
+	Til at starte med har rodposen på niveau $0$ alle $n$ elementer og i slutningen er alle elementer i bladposer på niveau $k = \log n$. \footnote{Tidligere siger Jørgen at dette er $k-1$, han blander nok roden til at være på niveau $0$ og $1$.} I løbet af denne proces får alle andre poser mindst ét element, og bliver så tomme igen, hvilket sker \textit{mindst} én gang.
 
+	Vi viser nu, at vi kan associere mindst $2^{k-\ell-1}$ sammenligninger lavet af algoritmen A privat til hver pose på niveau \(\ell\). Dette betyder, at mindst n/2 sammenligninger associeres privat med hver af de \(\log n\) niveauer, hvilket betyder, at A laver \(\Omega(n \log n)\) sammenligninger før inputtet sorteres. Vi får \(n/2\) fra, at hvert niveau har \(2^{\ell}\) poser, og hver pose bruger mindst \(2^{k-\ell-1}\) sammenligninger, dermed \(2^{\ell} \cdot 2^{k-\ell-1} = 2^{k-1} = n/2\) sammenligninger.
+
+	Lad \( b \) være en arbitrær pose på niveau \( \ell \). Vi viser nu, hvordan man kan associere en mængde af mindst \( 2^{k-\ell-1} \) private sammenligninger af \( A \) til \( b \). Private sammenligninger er sammenligninger, der kun gælder en pose, \( b \). Disse vil være sammenligningerne mellem elementer \( u \) og \( v \), hvor mindst en af elementerne hører til \( b \) og den anden til \( T[b] \) (og dermed muligvis også til \( b \)). Før at \( b \) kan blive flushed (venstre eller højre) og dermed være færdig med sammenligninger i \( b \), skal et af undertræerne have \( 2^{k-\ell-1} \) elementer. Disse elementer skal flyttes ned i træet, hvilket sker via sammenligninger. Dermed kræves der mindst \( 2^{k-\ell-1} \) sammenligninger for en pose \( b \).
+\end{proof}
+
+\begin{corollary}
+	Modstanderens strategi kan gøres i tid $O(n \log n)$.
+\end{corollary}
+
+\begin{proof}
+	Repræsentationen af $T$ kan implementeres ved at lade de $2^{\ell}$ poser på niveau $\ell$ repræsenteres som $b_{\ell,0 }, b_{\ell, 1}, \ldots, b_{\ell, 2^{\ell}-1}$, og ved at holde to værdier for hvert element $u$: $\ell(u)$ og $b(u)$, hvor $0 \le b(u) \le 2^{\ell(u)}-1$. Hvis $u$ flyttes ned på et niveau i det venstre (hhv. højre) undertræ af $b(u)$ erstatter vi $b(u)$ med $2b(u)$ (hhv. $2b(u)+1$). Dermed tager det konstant tid at flytte et element ned med et niveau. Dermed, hvis man flytter et element ned præcis $\log n$ niveauer, tager det $O(n \log n)$ tid, hvis man antager at \textbf{MOVE} tager konstakt tid.
+
+	Vi kan gøre dette ved at holde øje med, for hver pose $b$, om $b$ er åben, højre-flushed eller venstre-flushed. Ligesådan tager \textbf{CHECK(b)} konstant tid, udover kaldene til \textbf{MOVE}, hvis vi holder to tællere $venstre(b)$ og $højre(b)$, som tæller antallet af element i hhv. venstre og højre undertræ af $T[b]$ og opdaterer dem, når vi flytter et niveau ned.
+
+	Beviset til hvordan $(2b)$ eller $(2c)$ fungerer, giver Jørgen ikke, og vil hellere have at vi beviser det.
+\end{proof}
 
 %%% Local Variables:
 %%% mode: latex
