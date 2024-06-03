@@ -105,8 +105,23 @@ Altså bruger det optimale vertex cover \textbf{ingen} knuder fra $V_{<}$.
 
 \begin{proof}
   Antag at $X$ er et optimal vertex-cover af $G = (V,E)$ og at $X \cap V_{<} \ne \emptyset$. Lad $X' = (X \setminus V_{<}) \cup V_{>}$. Så er $X'$ et vertex-cover da $V_{<}$ er en uafhængig mængde og der er ingen kanter $(u,v)$ hvor $u \in V_{<}$ og $v \in V_{=}$.
-  Hvis $|X'| \le |X|$ er vi færdige, så vi antager at $|X'| > |X|$, så $|V_{>} \setminus X| > |X \cap V_{<}|$
+  Hvis $|X'| \le |X|$ er vi færdige, så vi antager at $|X'| > |X|$, dermed:
+  \begin{equation}
+\label{eq:vmxgtxcvl}
+|V_{>} \setminus X| > |X \cap X_{<}|
+  \end{equation}
+
+  Lad \(\varepsilon = \min_{v \in V_{<} \cup V_{>}} |\frac{1}{2} - X(v)| \).
+
+  \begin{itemize}
+	\item For $v \in V_{>} \setminus X$ lad $X(v) =  \overline{X}(v) - \varepsilon$
+	\item For $v \in V_{<} \cap X$ lad $X(v) = \overline{X}(v) + \varepsilon$
+	\item For alle andre $v$ lad $X(v) = \overline{X}(v)$
+  \end{itemize}
+
 \end{proof}
+
+% 38-ish
 
 %%% Local Variables:
 %%% mode: latex
