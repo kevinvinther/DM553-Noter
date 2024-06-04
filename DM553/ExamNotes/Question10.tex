@@ -90,38 +90,98 @@ Bemærk at hvis et parameteriseret problem $Q$ med parameter $k$ har en kernel a
 
 I delkapitel~\ref{subsec:weightedvertexcover} så vi den følgende approximationsalgoritme baseret på lineær programmering for \textsc{Vertex-Cover}:
 \begin{enumerate}
-  \item Løs $Z_{LP} = \min \sum_{v \in V} X(v)$ således at $X(u)+X(v) \ge 1 \; \forall (u,v) \in E$ og $0 \le X(u) \le 1$.
-  \item Lad $\overline{X}$ være en optimal LP-løsning.
-  \item Tag $U = \{v \mid \overline{X}(v) \ge \frac{1}{2}\}$
+	\item Løs $Z_{LP} = \min \sum_{v \in V} X(v)$ således at $X(u)+X(v) \ge 1 \; \forall (u,v) \in E$ og $0 \le X(u) \le 1$.
+	\item Lad $\hat{X}$ være en optimal LP-løsning.
+	\item Tag $U = \{v \mid \hat{X}(v) \ge \frac{1}{2}\}$
 \end{enumerate}
 
-Denne algoritme var en $2$-approksimationsalgoritme, altså hvor $\frac{|U|}{|U_{\text{opt}}|} \le 2$. Til denne algoritme vil vi opdele knuderne i 3 mængder: $V_{<}, V_{=}, V_{>}$, hvor $V_{<}$ er mængden af knuder, hvor $\overline{X}(v) < \frac{1}{2}$, $V_{=}$ er mængden af knuder, hvor $\overline{X}(v) = \frac{1}{2}$, og $V_{>}$ er mængden af knuder, hvor $\overline{X}(v) > \frac{1}{2}$. Bemærk her at $V_{<}$ er uafhængig, hvilket betyder at der ingen kanter er mellem knuderne, da det er et krav at $\forall (u,v) \in E \mid X(u) + X(v) \ge 1$. Derudover er der heller ingen kanter mellem $V_{<}$ og $V_{=}$ da $X(u) + X(v) < 1$ når $u \in V_{<}$ og $v \in V_{=}$. Der kan til gengæld være kanter imellem knuder i $V_{>}$ og (få) i $V_{=}$, samt kan der være kanter mellem $V_{>}$ og $V_{<}$ samt $V_{>}$ og $V_{=}$.
+Denne algoritme var en $2$-approksimationsalgoritme, altså hvor $\frac{|U|}{|U_{\text{opt}}|} \le 2$. Til denne algoritme vil vi opdele knuderne i 3 mængder: $V_{<}, V_{=}, V_{>}$, hvor $V_{<}$ er mængden af knuder, hvor $\hat{X}(v) < \frac{1}{2}$, $V_{=}$ er mængden af knuder, hvor $\hat{X}(v) = \frac{1}{2}$, og $V_{>}$ er mængden af knuder, hvor $\hat{X}(v) > \frac{1}{2}$. Bemærk her at $V_{<}$ er uafhængig, hvilket betyder at der ingen kanter er mellem knuderne, da det er et krav at $\forall (u,v) \in E \mid X(u) + X(v) \ge 1$. Derudover er der heller ingen kanter mellem $V_{<}$ og $V_{=}$ da $X(u) + X(v) < 1$ når $u \in V_{<}$ og $v \in V_{=}$. Der kan til gengæld være kanter imellem knuder i $V_{>}$ og (få) i $V_{=}$, samt kan der være kanter mellem $V_{>}$ og $V_{<}$ samt $V_{>}$ og $V_{=}$.
 
 \begin{theorem}[Nemhauser-Trotter]
-Der eksisterer et optimalt vertex-cover $U^{*}$ således at $V_{>} \subseteq U^{*} \subseteq V_{=} \cup V_{>}$
+	Der eksisterer et optimalt vertex-cover $U^{*}$ således at $V_{>} \subseteq U^{*} \subseteq V_{=} \cup V_{>}$
 \end{theorem}
 
 Altså bruger det optimale vertex cover \textbf{ingen} knuder fra $V_{<}$.
 
 \begin{proof}
-  Antag at $X$ er et optimal vertex-cover af $G = (V,E)$ og at $X \cap V_{<} \ne \emptyset$. Lad $X' = (X \setminus V_{<}) \cup V_{>}$. Så er $X'$ et vertex-cover da $V_{<}$ er en uafhængig mængde og der er ingen kanter $(u,v)$ hvor $u \in V_{<}$ og $v \in V_{=}$.
-  Hvis $|X'| \le |X|$ er vi færdige, så vi antager at $|X'| > |X|$, dermed:
-  \begin{equation}
-\label{eq:vmxgtxcvl}
-|V_{>} \setminus X| > |X \cap X_{<}|
-  \end{equation}
+	Antag at $X$ er et optimal vertex-cover af $G = (V,E)$ og at $X \cap V_{<} \ne \emptyset$. Lad $X' = (X \setminus V_{<}) \cup V_{>}$. Så er $X'$ et vertex-cover da $V_{<}$ er en uafhængig mængde og der er ingen kanter $(u,v)$ hvor $u \in V_{<}$ og $v \in V_{=}$. Det er et vertex-cover fordi det tilføjer kanter i $U_{>}$, som er en mængde vi ved har kanter mellem sig.
+	Hvis $|X'| \le |X|$ er vi færdige, så vi antager at $|X'| > |X|$, dermed:
+	\begin{equation}
+		\label{eq:vmxgtxcvl}
+		|V_{>} \setminus X| > |X \cap X_{<}|
+	\end{equation}
 
-  Lad \(\varepsilon = \min_{v \in V_{<} \cup V_{>}} |\frac{1}{2} - X(v)| \).
+	Lad \(\varepsilon = \min_{v \in V_{<} \cup V_{>}} |\frac{1}{2} - \hat{X}(v)| \).
 
-  \begin{itemize}
-	\item For $v \in V_{>} \setminus X$ lad $X(v) =  \overline{X}(v) - \varepsilon$
-	\item For $v \in V_{<} \cap X$ lad $X(v) = \overline{X}(v) + \varepsilon$
-	\item For alle andre $v$ lad $X(v) = \overline{X}(v)$
-  \end{itemize}
+	\begin{itemize}
+		\item For $v \in V_{>} \setminus X$ lad $X(v) =  \hat{X}(v) - \varepsilon$
+		\item For $v \in V_{<} \cap X$ lad $X(v) = \hat{X}(v) + \varepsilon$
+		\item For alle andre $v$ lad $X(v) = \hat{X}(v)$
+	\end{itemize}
+
+	Fra~(\ref{eq:vmxgtxcvl}) får vi nu at:
+	\begin{equation*}
+		\sum_{v \in V} X(v) < \sum_{v \in V} \hat{X}(v)
+	\end{equation*}
+	Hvilket er et modstrid for vores udsagn om at $\hat{X}$ er en optimal LP-løsning.
 
 \end{proof}
 
-% 38-ish
+Lad $k^{*} = |U^{*}|$, og husk at vi kan antage at $V_{>} \subseteq U^{*}$.  Lad $G' $ være delgrafen af $V_{=}$, og lad $k' = k - |V_{>}|$. Bemærk at hvis $|V_{>}| > k$, så er $k^{*} > k$, da sætningen garanterer at $V_{>} \subseteq U^{*}$ (hvor $\subseteq$ betyder at \textbf{hele} $V_{>}$ er en delmængde) hvor $U^{*}$ er en eller anden optimal løsning. Dermed kan vi svare ``Nej'' til $(G,k)$ og outputte $(G' = K_{k'+2},k')$.
+
+Hvis $|V_{>}|=k$, så tjekker vi om $V_{=}$ er uafhængigt, og hvis det er, så er $|V_{>}|$ et vertex-cover af størrelse $k$ i $G$ (Husk at uafhængigt betyder at der er ingen kanter mellem knuderne). Ellers svarer vi nej til $(G,k)$. Vi kan nu antage at $|V_{>}| < k$ og så $(G', k')$ er en kernel \textbf{og} $|V(G')| = |V_{=}| \le 2k$ da $k \ge \sum_{v \in V_{=}} \hat{X}(v) = \frac{1}{2}|X_{=}|$. Vi kan antage at $k \ge \sum_{v \in V} \hat{X}(v)$, da der ellers ikke er et vertex-cover af størrelse $k$.
+
+Vi går nu tilbage til barkampsanalogien og ser hvordan denne løsning hjælper. Først løser vi det lineære programmeringsproblem. Så finder vi $V_{<}, V_{=}$ og $V_{>}$. Hvis $|V_{>}| \ge k$ afviser vi, undtagen hvis $|V_{>}| = k$  og $|V_{>}|$ er et vertex-cover. Ellers løser vi problemet med $V_{=}$ med parametre $k' \le k$. Dette kan gøres i $O(\binom{2k}{k} \cdot k^{2})$ tid. Hvis $k = 10$, så $\binom{20}{10} = 184756$ hvilket vi nemt kan løse på få sekunder, selv hvis vi bruger brutce force. Hvis $k = 50$, får vi dog et tal lignende $1.01 \cdot 10^{29}$, hvilket gør at brute force metoden stadig ikke er specielt god. Vi får en øvre grænse på $\binom{2k}{k} < 2^{2k} = 4^{k}$ dermed $O(4^{k} \cdot k^{2})$, hvilket ikke er specielt hurtigt hvis $k$ er et højt tal.
+
+\newpage
+\subsection{Træsøgning}%
+\label{subsec:treesearch}
+
+Vi vil nu vise hvordan man kan løse bedre end brute-force. Givet en instans $(G,k)$, prøv kanterne i en eller anden ordning, med tanken om at hvis $(u,v) \in E$, så er der mindst en af knuderne i kanten der må være i vertex-coveret.
+
+
+\begin{wrapfigure}{l}{0.5\textwidth}
+	\centering
+	\begin{tikzpicture}[level distance=1.5cm,
+			level 1/.style={sibling distance=3cm},
+			level 2/.style={sibling distance=1.5cm}]
+		\node {a-b}
+		child {node {b-c}
+				child {node {c-d}}
+				child {node {b-d}}
+			}
+		child {node {c-d}
+				child {node {d-e}}
+				child {node {e-f}}
+			};
+	\end{tikzpicture}
+	\caption{\label{fig:treesearchvc} Træsøgning til \textsc{Vertex-Cover}}
+\end{wrapfigure}
+
+I Figur~\ref{fig:treesearchvc} ses en træstruktur, hvor hver knude er en kant i den originale graf, og hver kant i træet er et valg om man tager den første eller anden knude i kanten til coveret.
+
+\begin{wrapfigure}{r}{0.5\textwidth}
+	\centering
+	\begin{tikzpicture}
+		[scale=1.8,every node/.style={circle,draw=black}]
+		\node (a) at (1,2) {a};
+		\node (b) at (1,1)  {b};
+		\node (c) at (2,2)  {c};
+		\node (d) at (2,1) {d};
+		\node (e) at (2.5,1.5)  {e};
+		\node (f) at (3,2)  {f};
+		\node (g) at (3,1)  {g};
+
+		\foreach \from/\to in {a/b, b/c, c/d, b/d, d/e, d/g, e/f, g/f} \draw (\from) -- (\to);
+		% \foreach \from/\to in {n6/n4,n4/n5,n5/n1,n1/n2,n2/n5,n2/n3,n3/n4}
+		% \draw (\from) -- (\to);
+	\end{tikzpicture}
+	\caption{\label{fig:treegraph} Grafen tilhørende træet.}
+\end{wrapfigure}
+
+I Figur~\ref{fig:treegraph} ses et eksempel på en graf hvor vertex coveret fundet ved hjælp af træsøgningsalgoritmen bliver $\{b,d,f\}$, og præcis den walk der går ned ad kant $b$, så $d$ og sidst $f$ er den eneste der giver et vertex cover hvis $k = 3$.
+
+Størrelsen af træet er højest $k-1$ og dybden er $k$, dermed er der højest $2^{k}-1$ delproblemer. Vi får fra regel 2 i vores kernelisering at hvis $d(v) \ge k+1$ skal den ud, så derfor kan vi antage at $\forall v \in V' | d(v) \le k$ og dermed $E = \frac{1}{2} \sum_{v \in V} \le \frac{1}{2}nk$. Dermed kan hver af de $2^{k}$ delproblemer løses i tid $O(nk)$, så den endelige køretid er $O(m+nk \cdot 2^{k})$.
 
 %%% Local Variables:
 %%% mode: latex

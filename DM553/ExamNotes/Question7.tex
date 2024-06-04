@@ -31,7 +31,7 @@ I Figur~\ref{fig:setcover} ses et eksempel på en løsning af en instans af set-
 
 Optimiseringsversionen af \textsc{Vertex-Cover} er et specielt case af \textsc{Set-Cover}, hvilket betyder, at når vi ved at \textsc{Vertex-Cover} problemet er svært at løse, så er \textsc{Set-Cover} også. Vi transformerer fra \textsc{VC} til \textsc{SC} som følger: Givet en graf $G = (V,E)$, konstruer en instans $(X, \mathcal{F})$ af \textsc{Set-Cover} problemet. Lad $X = E$ og $\mathcal{F} = \{S_{v} \mid v \in V\}$, hvor $S_{v}$ er mængden af kanter som $v$ ``dækker''. Dette er en reduktion, så dermed, siden decision versionen af \textsc{Vertex-Cover} er NP-komplet, så er decision versionen af \textsc{Set-Cover}, som tager en instans $(X, \mathcal{F}, k)$ og spørger om det er muligt at ``dækker'' alle mængder med højest $k$ delmængder. delmængder.
 
-I Algoritme~\ref{alg:greedysetcover} ses en grådig algoritme som finder et cover. I algoritmen er variablen $Z$ de elementer der endnu ikke er dækket, og $\mathcal{F}'$ er delmængderne som dækker den del af $X$ der er dækket, altså $\overline{Z}$. Løkken vælger en delmængde i $\mathcal{F}$ som dækker flest mulige nye elementer. Bemærk dog, at algoritmen antager at det er muligt at dækker alle elementer i $X$, altså $\bigcup_{s \in \mathcal{F}} s = X$.
+I Algoritme~\ref{alg:greedysetcover} ses en grådig algoritme som finder et cover. I algoritmen er variablen $Z$ de elementer der endnu ikke er dækket, og $\mathcal{F}'$ er delmængderne som dækker den del af $X$ der er dækket, altså $\hat{Z}$. Løkken vælger en delmængde i $\mathcal{F}$ som dækker flest mulige nye elementer. Bemærk dog, at algoritmen antager at det er muligt at dækker alle elementer i $X$, altså $\bigcup_{s \in \mathcal{F}} s = X$.
 
 \begin{algorithm}
 	\caption{\label{alg:greedysetcover}Grådig Set Cover}
@@ -200,9 +200,9 @@ Ved at bruge LP-relaxation, får vi en løsning hvor $Z_{LP} \le Z_{I} = \text{o
 
 \begin{proof}
 	\begin{align*}
-		\text{optimal} \ge Z_{LP} & = \sum_{v \in V} \overline{X}(v)w(v)                                      \\
-		                          & \ge \sum_{\{ v |\overline{X}(v) \ge \frac{1}{2}\}} \overline{X}(w)w(v)    \\
-		                          & \ge \sum_{\{ v |\overline{X}(v) \ge \frac{1}{2}\}} \frac{1}{2} \cdot w(v) \\
+		\text{optimal} \ge Z_{LP} & = \sum_{v \in V} \hat{X}(v)w(v)                                      \\
+		                          & \ge \sum_{\{ v |\hat{X}(v) \ge \frac{1}{2}\}} \hat{X}(w)w(v)    \\
+		                          & \ge \sum_{\{ v |\hat{X}(v) \ge \frac{1}{2}\}} \frac{1}{2} \cdot w(v) \\
 		                          & = \frac{1}{2} \sum_{v \in U} w(v) = \frac{1}{2} w(U)                      \\
 		                          & \Rightarrow w(U) \le 2 \cdot \text{ optimal}
 	\end{align*}
