@@ -1,5 +1,24 @@
 \chapter{Modstanderargumenter - teknikker, eksempler}
 
+\section{Terminologi og Notation}%
+\label{sec:terminologi}
+
+\begin{note}[Kilder]
+  \href{https://imada.sdu.dk/u/jbj/DM553/LBnoteJBJ21.pdf}{Jørgens Noter på Lower Bounds}
+\end{note}
+
+Da vi primært går ud fra Jørgens noter, og han forklarer dem til at starte med, vil jeg gøre det samme. Du kan se dette delkapitel som en form for \textit{ordbog} for resten af kapitlet.
+
+En \textit{digraph} er en rettet graf, og skrives $D = (V,A)$ hvor $V$ er mængden af knuder og $A$ mængden af kanter (arcs). $V(D)$ er mængden af knuder og $A(D)$ mængden af kanter. En kant der går rettet fra $u$ til $v$ skrives $u \rightarrow v$. Vi siger at en kant \textit{starter} i $u$ og \textit{slutter} i $v$. For hver knude $x \in V(D)$, lader vi $d^{+}_{D}(x)$ og $d^{-}_{D}(x)$ være henholdsvis antallet af kanter der starter i $x$ og antallet af kanter der slutter i $x$. $d_{D}(x)$ er alle kanter der er incident i $x$, altså enten starter eller slutter i $x$.
+
+En \textit{komplet graf} $K_{n}$ er en graf på $n$ knuder, hvor hver knude har en kant til alle andre knuder. Altså \(\forall u, v \in V : \exists (u,v)\). Bemærk her at en komplet graf ikke er rettet.
+
+Et \textit{out-træ} (out-arborescence på engelsk) er en orientering af et træ således at hver knude undtagen én, som vi kalder \textit{roden}, har præcis én kant der går til den, altså $d_{D}^{-}(v) = 1 \; \forall v \in V$. Ingen kanter går til roden.
+
+En rettet graf er \textit{acyklisk} hvis det ikke har en rettet kreds. Hvis en rettet graf $D$ på $n$ knuder er acyklisk, kan vi skrive dens knuder $v_{1}, v_{2}, \ldots, v_{n}$, således at der er ingen kant $v_{j} \rightarrow v_{i}$, hvor $i < j$.
+
+En \textit{turnering} er en orientering af en \textit{komplet graf}, altså en komplet graf men hvor kanterne er rettet, og der må højest være én kant mellem to knuder $u, v$. Der er præcist én acyklisk turnering på $n$ knuder. Vi kalder en sådan acyklisk turnering for en \textit{transitiv turnering} på $n$ knuder, fordi den har egenskaben, at hvis $x \rightarrow y$ og $y \rightarrow z$ er kanter, så er $x \rightarrow z$ også en kant.
+
 
 
 %%% Local Variables:

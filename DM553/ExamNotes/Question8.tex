@@ -1,5 +1,168 @@
 \chapter{Informationsteoretiske Nedre Grænser og Modstander Nedre Grænser for sortering ved sammenligninger}
 
+\section{Informationsteoretisk Nedre Grænse}%
+\label{sec:label}
+
+\begin{note}[Kilder]
+  Video 24\\
+  \href{https://imada.sdu.dk/u/jbj/DM553/Baaselowerbound.pdf}{Baase}
+\end{note}
+
+Vi vil i dette delkapitel bevise en nedre grænse på $n \log n$ for sammenligningsbaseret sorteringsalgoritmer, ved hjælp af \textit{decision træer}. Hver deterministisk sammenligningsbaseret sorteringsalgoritme $A$ kan blive associeret med et decision træ. Et decision træ, er et træ hvor knuderne er sammenligninger, og kanterne repræsenterer resultatet af en sammenligning.
+
+
+\begin{figure}[ht]
+  \centering
+\begin{tikzpicture}[node distance=3cm and 6cm]
+
+\tikzstyle{decision} = [ellipse, draw, text centered, minimum height=1cm]
+\tikzstyle{arrow} = [thick,->,>=stealth]
+
+% Nodes
+\node (root) [decision] {$X_{13} < X_{17}$};
+\node (left1) [decision, below left of=root, xshift=-2cm] {$X_{7} < X_{12}$};
+\node (right1) [decision, below right of=root, xshift=2cm] {$X_{8} < X_{9}$};
+
+% Leaves for left1
+\node (left1left) [below left of=left1, xshift=-1cm] {};
+\node (left1right) [below right of=left1, xshift=1cm] {};
+
+% Leaves for right1
+\node (right1left) [below left of=right1, xshift=-1cm] {};
+\node (right1right) [below right of=right1, xshift=1cm] {};
+
+% Paths
+\draw [arrow] (root) -- node[anchor=east] {N} (left1);
+\draw [arrow] (root) -- node[anchor=west] {Y} (right1);
+\draw [arrow] (left1) -- node[anchor=east] {N} (left1left);
+\draw [arrow] (left1) -- node[anchor=west] {Y} (left1right);
+\draw [arrow] (right1) -- node[anchor=east] {N} (right1left);
+\draw [arrow] (right1) -- node[anchor=west] {Y} (right1right);
+
+% Leaf nodes
+\draw (left1left) node[rectangle, draw] {};
+\draw (left1right) node[rectangle, draw] {};
+\draw (right1left) node[rectangle, draw] {};
+\draw (right1right) node[rectangle, draw] {};
+
+\end{tikzpicture}
+  \caption{\label{fig:decisiontree} Eksempel på et decision træ.}
+\end{figure}
+
+I Figur~\ref{fig:decisiontree} ses et eksempel på et decision træ, som har tre knuder. Den første spørger om element $X_{13}$ er mindre end $X_{17}$. Hvis svaret er ja, går den videre til knuden i højre siden, og ellers knuden i venstre. Dette mønster, hvor hvis svaret er ``ja'' går den til højre, og ellers venstre, fortsætter igennem træet. Dette korte træ, som næppe kan repræsentere en hel sortering, har 4 resultater, vist med $\square$ repræsenterer en unik permutation af elementerne der bliver sammenlignet, og er et blad i træet.
+
+Da hver permutation af tallene elementerne $\{1, 2, \ldots, n\}$ skal være et muligt blad, betyder det at der \textbf{mindst} er $n!$ blade. Det er dog muligt at der er flere blade med samme indhold. Vi kalder decision træet for en algoritme $A$ for $T_{A}$. Da $T_{A}$ er et binært træ, betyder det at der er højest $2^{h}$ blade, hvis $T_{A}$ har højde $h$. Dermed $2^{h} \ge n!$, hvilket betyder at $h \ge \log_{2}n! \approx n \log n - cn$.
+
+Hver vej, $P$, fra roden af $T_{A}$ til et blad svarer til de sammenligninger lavet af $A$ til at sortere et input, og antallet af sammenligninger er lig med længden af $P$. Så $A$ bruger mere end $n \log n - cn$ sammenligninger på et input. Det vil altså sige, at i \textit{worst case}, skal der bruges \textit{mindst} $n \log_{2} n - cn$ sammenligninger. Note: Baase siger $n \log_{2} n - \frac{3}{2}n$, jeg er ikke klar over hvorfor jørgen lader det være en ukendt værdi $c$.
+
+Lad $P$ være mængden af alle veje $p$ fra roden til et blad i $T_{A}$. Lad $\ell(P)$ være længden af vej $p$.
+
+\begin{definition}
+  External Path Length (EPL) er summen af længden af alle veje fra roden til et blad.
+  \begin{equation}
+	epl = \sum_{p \in P} \mathit{length}(p)
+  \end{equation}
+\end{definition}
+
+\begin{lemma}
+External Path Length er minimeret, når $T$ er \textit{næsten} balanceret. Det vil sige, at forskellen i højde for 2 blade er højest 1. Altså $\forall p,q$ hvor $p$ og $q$ er blade, gælder det at $|h(p) - h(q)| \le 1$, hvor $h(x)$ er niveauet for knude $x$.
+\end{lemma}
+
+\begin{figure}[ht]
+  \centering
+  \begin{tikzpicture}[node distance=1.5cm and 2cm]
+
+\tikzstyle{node} = [circle, draw, text centered, minimum size=0.6cm]
+\tikzstyle{arrow} = [thick,-]
+
+% Left tree
+\node (root1) [node] {};
+\node (left1) [node, below left of=root1] {};
+\node (right1) [node, below right of=root1] {X};
+\node (left2) [node, below of=left1] {$\vdots$};
+\node (left3) [node, below of=left2] {Y};
+\node (left4) [node, below left of=left3, xshift=0.5cm] {};
+\node (right4) [node, below right of=left3, xshift=-0.5cm] {};
+
+% Paths for left tree
+\draw [arrow] (root1) -- (left1);
+\draw [arrow] (root1) -- (right1);
+\draw [arrow] (left1) -- (left2);
+\draw [arrow] (left2) -- (left3);
+\draw [arrow] (left3) -- (left4);
+\draw [arrow] (left3) -- (right4);
+
+\node at (2.3, -1) {Level $k$};
+\node at (-3, -4) {Level $d-1$};
+\node at (-3, -5) {Level $d$};
+
+% Right tree
+\node (root2) [node, right of=root1, xshift=7cm] {};
+\node (left2_1) [node, below left of=root2] {};
+\node (right2_1) [node, below right of=root2] {X};
+\node (left2_2) [node, below of=left2_1] {$\vdots$};
+\node (left2_3) [node, below of=left2_2] {Y};
+\node (right2_2) [node, below left of=right2_1, xshift=0.5cm] {};
+\node (right2_3) [node, below right of=right2_1, xshift=-0.5cm] {};
+
+% Paths for right tree
+\draw [arrow] (root2) -- (left2_1);
+\draw [arrow] (root2) -- (right2_1);
+\draw [arrow] (left2_1) -- (left2_2);
+\draw [arrow] (left2_2) -- (left2_3);
+\draw [arrow] (right2_1) -- (right2_2);
+\draw [arrow] (right2_1) -- (right2_3);
+
+\node at (6, -1) {Level $k$};
+\node at (6, -2) {Level $k+1$};
+\node at (5.9, -4) {Level $d-1$};
+
+
+\end{tikzpicture}
+  \caption{\label{fig:decreaseepl} En måde at reducere \textit{epl} på.}
+\end{figure}
+
+\begin{proof}
+  I Figur~\ref{fig:decreaseepl} kan vi se et eksempel på hvordan man kan gøre et træ mere balanceret. Man tager to blade fra en knude på det laveste nivea, og giver dem til et blad der er på et højere niveau.
+
+  Altså fjerner vi to veje af længde $2d$ fra træet, samt en vej af længde $k$ fra træet. Vi tilføjer til gengæld to veje af længde $k+1$, og en af længde $d-1$. Dermed er den totale \textbf{reducering} $2d+k - (2(k+1)+d) > 0$, da $k \le d - 2$. Altså er reduceringen større end 0. Jørgen beskriver det omvendt. EPL'en \textit{stiger} med $2(k+1)-k + (d-1-2d) = k+1-d < 0$, altså er \textit{stigningen mindre end 0}, i.e. negativ. Dermed må \textit{epl} være minimum når træet {er} \textit{næsten} balanceret.
+\end{proof}
+
+\begin{lemma}
+Minimums \textit{epl}'en i et binært træ med $\ell$ blade er $\ell \lfloor \log \ell \rfloor + 2 ( \ell - 2^{\lfloor \log \ell \rfloor} )$
+\end{lemma}
+
+\begin{proof}
+  Hvis $\ell = 2^{k}$, så $2^{k} \cdot \lfloor \log 2^{k} \rfloor + 2(2^{k} - 2^{k}) = 2^{k} \cdot k $, altså $n \log n$. Hvis $\ell \ne 2^{k}$, så er dybden af træet $d = \lceil \log \ell \rceil $ og $d-1 = \lfloor \log_{2} \ell \rfloor$.
+
+  Antallet af blade på niveau $d$, som er det nederste niveau, er $2(\ell - 2^{d-1})$, altså hvor du tager det totale antal blade, og fjerner antallet af blade fra det tidligere niveau, og ganger med 2, da der er 2 børn per knude som ikke er et blad i niveau $d-1$. Dermed er \textit{epl}'en $\ell(d-1) + 2(\ell-2^{d-1}) = \ell \lfloor \log \ell \rfloor + 2(\ell - 2^{\lfloor \log \ell \rfloor})$
+\end{proof}
+
+\begin{lemma}
+  Den gennemsnitlige længde af en vej i et binært træ med $\ell$ blade er mindst $\lfloor \log \rfloor$
+\end{lemma}
+
+\begin{proof}
+  Den mindste gennemsnitlige vej er
+  \begin{equation*}
+\frac{\ell \lfloor \log \ell \rfloor + 2(\ell - 2^{\lfloor \log \ell \rfloor})}{\ell} = \lfloor \log \ell \rfloor + \varepsilon
+  \end{equation*}
+  $0 \le \varepsilon < 1 $, da $\ell - 2^{\lfloor \log \ell \rfloor} < \ell/2$.
+\end{proof}
+
+\begin{theorem}
+Det gennemsnitlige antal af sammenligninger lavet af en algoritme til at sortere $n$ tal gennem sammenligninger er mindst $\lfloor \log n! \rfloor = \Omega(n \log n)$
+\end{theorem}
+
+\section{Modstander nedre grænse ved permutationer}%
+\label{sec:label}
+
+Vi introducerer her en utroligt simpel, men også utroligt kraftig modstander. Modstanderen har mulig for \textit{altid} at vdejligeholde en liste \(\delta\) som indeholder \textbf{alle} permutationer af inputtet, konstistent med hvilke svar der er givet indtil videre (e.g., hvis 2 er blevet vist til at være det laveste tal, så fjerner modstanderen alle lister der starter med 2). Vi lader \(\delta_{i}\) være permutationen der stadig er mulig efter den $i$'e sammenligning. Dermed er $|\delta_{0}| = n!$.
+
+Strategien for modstanderen er, når vedkommende skal svare på spørgsmålet ``$x < y$?'' i skridt $i$, at vedkommende svarer så størrelsen på listen \textit{højest} halveres, altså $\frac{|\delta_{i}|}{|\delta_{i-1}|} \ge \frac{1}{2}$. Da antallet af mulige permutationer er $n!$, og listen højest halveres ved hvert skridt, vil det tage \textit{mindst} $\log_{2}n!$ sammenligninger før inputtet er sorteret, i.e. $|d_{k}| = 1$. Dermed skal $A$ mindst bruge $n \log n - cn$ sorteringer på et input.
+
+
+
 \section{En $\Omega (n \log n)$ nedre grænse til sortering ved sammenligninger}%
 \label{sec:sorteringsalgoritmesammenligninger}
 

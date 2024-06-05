@@ -208,6 +208,79 @@ Ved at bruge LP-relaxation, får vi en løsning hvor $Z_{LP} \le Z_{I} = \text{o
 	\end{align*}
 \end{proof}
 
+\subsection{Subset-sum problemet}%
+\label{subsec:subsetsumproblem}
+
+\textsc{Subset-Sum} er et problem der, givet en mængde $S = \{x_{1}, x_{2}, \ldots, x_{n}\}, \forall v_{i} \in S, v_{i} \in \mathbb{Z}_{+}$ og $t \in \mathbb{Z}_{+}$, skal udregne om der eksisterer en delmængde $I \subseteq \{1, 2, \ldots, n\}$ således at $\sum_{i \in I}x_{i} = t$. Vi kigger her på \textit{optimiseringsversionen}, der siger at \textbf{find et maksimum} $t^{*} \le t$ hvor $I \subseteq \{1, 2, \ldots, n\}$ med $\sum_{i \in I} x_{i} = t^{*}$.
+
+\begin{definition}[Approksimationsskema]
+  Et polynomielt approksimationsskema for et problem $Q$, er en algoritme $A = A(\varepsilon)$ hvor $A$ finder en løsning så er indenfor $(1+\varepsilon)$ af den optimale løsning:
+  \begin{equation*}
+\max\{\frac{C}{C^{*}}, \frac{C^{*}}{C}\} \le (1+ \varepsilon)
+\end{equation*}
+$A(\varepsilon)$ kører i tid som er polynomielt i $n(\text{størrelsen af inputtet})$ , men ikke nødvendigvis i $\frac{1}{\varepsilon}$, e.g. $n^{5/\varepsilon}$.
+\end{definition}
+
+Et approksimationsskema er fuldt polynomielt hvis det fungerer som i definitionen, men $A(\varepsilon)$ er et polynomie i \textbf{både} $n$ og $\frac{1}{\varepsilon}$, e.g. $\left( \frac{1}{\varepsilon} \right)^{6}n^{3}$.
+
+Vi kan nemt løse \textsc{Subset-Sum} problemet i eksponentiel tid. Givet $S = \{x_{1}, \ldots, x_{n}\}$ med $x_{1} \le x_{2} \le \cdots \le x_{n}$, lad $S_{i} = \{x_{1}, \ldots, x_{i}\}, i = 0, 1, \ldots, n$. $L_{i} = $ mængden af heltal vi kan lave som en sum af nogle elementer fra $S_{i}$. $L_{0} = 0, L_{1} = \{0, x_{1}\}, L_{2} = \{0, x_{1}, x_{2}, x_{1}+x_{2}\}$. For at gå fra $L_{i}$ til $L_{i+1}$ tilføjer vi $x_{i+1}$ til alle tal i $L_{i}$, og fjerner løsninger hvis værdier er større end $t$. Denne liste kan fordoble sig i hvert skridt, så $|L_{n}|$ kan være op til $2^{n}$, hvilket vil sige at algoritmen er eksponentiel. Et eksempel på et problem der fordobler sig i hvert skridt er $S= \{1, 2, 4, 8, 16, \cdots, 2^{n-1}\}$ hvor $t \ge 2^{n}$.
+
+Algoritmen er polynomiel hvis en af følgende gælder:
+\begin{enumerate}
+  \item $t$ er ``lille'' i som en funktion af $n$.
+  \item Alle $x_{i} \le p(n)$ for et polynomie $p$.
+\end{enumerate}
+
+Vi beskriver nu en idé til et approksimationsskema. Vi udfører \(\delta\)-trimming af listerne. Det vil sige at vi repræsenterer nogle værdier af mindre værdier. Altså, sletter vi tallet $y$, hvis $\frac{y}{(1+\delta)} \le z \le y$. For eksempel, lad $\delta = \frac{1}{10}$, og givet listen $L = \{0, 10, 11, 12, 15, 17, 18, 20, 24 \cdots\}$, så trimmer vi listen til at blive $L' = \{0, 10, 12, 15, 17, 20, 24, \cdots\}$. Processen er som følger ${10}\cdot{1.1} = 11$, dermed bliver 11 fjernet. $17 \cdot 1.1 = 18.7$, derfor ryger 18.
+
+Den ændret algoritme $A'$ fungerer som tidligere, udntagen, før vi bygger $L_{i+1}$ så trimmer vi $L_i$.
+
+\begin{theorem}
+$A'$ er et fuldt polynomielt approksimationsskema for \textsc{Subset-Sum} når vi bruger trim-faktoren $\delta = \frac{\varepsilon}{2n}$, hvor $0 <\varepsilon <1$.
+\end{theorem}
+\begin{proof}
+Vi vil gerne vise at $\frac{y^{*}}{<^{*}} \le (1+ \varepsilon)$ hvor $y^{*}$  er værdien af den optimale løsning og $z^{*}$ er outputtet fra $A'$ (som er det største tal i $L_{n}'$). Hvis vi fjerner værdien $y$ fra $L_{j}$ i skridt $j$, så indeholder $L_{j}'$ stadig en værdi $z$ hvor $\frac{y}{(1+\delta)} \le z \le y$. Hvis $z$ senere fjernes i skridt $j' > j$, så er $z$ repræsenteret i $L_{j'}'$  af en værdi $z'$ hvor $\frac{z}{(1+\delta)} \le z'$.
+
+Herfra får vi følgende:
+\begin{equation*}
+z' \ge \frac{z}{(1+\delta)} \ge \frac{\frac{y}{1+\delta}}{1+\delta} = \frac{y}{(1+\delta)^{2}}.
+\end{equation*}
+Altså i den sidste iteration er $y^{*}$ repræsentered af et element $z \in L_{n}'$ hvor
+\begin{equation}
+\frac{y^{*}}{(1+\delta)^{n}} \le z \le y^{*}
+\end{equation}
+Da $z \in L_{n}'$ er $z \le z^{*}$ hvilket medbærer at $\frac{y^{*}}{(1+\delta)^{n}} \le z \le z^{*}$, så $\frac{y^{*}}{z^{*}} \le (1+\delta)^{n} = (1+ \frac{\varepsilon}{2n})^{n}$. Fra kalkulus ved vi at $(1+ \frac{\varepsilon/2}{n})^{n} \le e^{\varepsilon/2} = 1 + \frac{\varepsilon}{2}+ \left( \frac{\varepsilon}{2} \right)^{2} + \cdots \le 1 + \varepsilon$ når $0 < \varepsilon < 1$. Dermed $\frac{y^{*}}{z^{*}} \le (1+\varepsilon)$. Dermed er $A'$ en $(1+\varepsilon)$-approoksimationsalgoritme.
+\end{proof}
+
+Vi vil nu finde køretiden for algoritmen $A'$. Bemærk at $L_{n}'$ altid vil være en variation af $\{0, a_{1}, a_{2}, \ldots, a_{r+1}\}$. $a_{i+1} > \left( 1+ \frac{\varepsilon}{2n} \right)a_{i} \; \forall i$, da $a_{i+1}$ ikke blev fjernet under trimning. Dermed:
+\begin{align}
+  \left( 1+ \frac{\varepsilon}{2n} \right)^{r} a_{1} &< a_{r+1} \le t \label{l:1}\\
+  &\Downarrow\\
+  r + \log_{(1+\frac{\varepsilon}{2n})}(a_{1}) &< \log_{\left( 1+ \frac{\varepsilon}{2n} \right)} (t) \label{l:2}\\
+  &\Downarrow\\
+ r &< \log_{\left( 1 + \frac{\varepsilon}{2n} \right)}  (t) \label{l:3}\\
+  &= \frac{\ln t}{\ln \left( 1 + \frac{\varepsilon}{2n} \right) \label{l:4}}
+\end{align}
+
+\eqref{l:1} kommer fra at vi mindst skal så langt op for hvert nye element, grundet vores trimningsregler. Vi ved dog også at vi ikke kan komme op til $a_{r+1}$, da den ellers ville have været forsvundet i trimningen. Det er både muligt at $a_{r+1} = t$, men også at den endnu er mindre end $t$. Ved \eqref{l:2} har vi blot puttet logaritmen ind, men base i $1 + \frac{\varepsilon}{2n}$ for at isolere $r$. I ligning \eqref{l:3} fjerner vi $\log_{\left( 1+ \frac{\varepsilon}{2n} \right)}(t)$ fra venstresiden, hvilket giver et svagere argument, men det er stadig mindre end højresiden, som forbliver det samme. Ligning \eqref{l:3} får vi fra at $\log_{a}(x) = \frac{\ln x}{\ln a}$. Så
+\begin{align}
+  |L_{n}'| = r+2 &< 2 + \frac{\ln t}{\ln (1 + \frac{\varepsilon}{2n})} \label{l:5}\\
+ & \le 2 + \frac{2n ( 1 + \frac{\varepsilon}{2n} \ln t)}{\varepsilon} \label{l:6}\\
+ & \le 2 + \frac{3n \ln t}{\varepsilon} \label{l:7}\\
+ & = 3n \cdot \frac{1}{\varepsilon} \cdot \ln t + 2 \label{l:8}
+\end{align}
+
+Ligningen \eqref{l:6} får vi fra \eqref{eq:l6help}.
+\begin{equation}
+  \label{eq:l6help}
+\frac{x}{1+x} \le \ln (1+x) \Rightarrow \frac{1+x}{x} \ge \frac{1}{\ln (1+x)}, x = \frac{\varepsilon}{2n}
+\end{equation}
+
+Dette betyder at $A'$ er polynomiel i $n$, $\frac{1}{\varepsilon}$ og $\ln t$.
+
+
+
+
 %%% Local Variables:
 %%% mode: latex
 %%% TeX-engine: xetex
