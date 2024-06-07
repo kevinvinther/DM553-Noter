@@ -1,4 +1,193 @@
-\chapter{Pumpelemmaet for regulære og kontekstfrie sprog}
+\chapter{Afgørlighed}
+
+\section{Uafgørlighed}%
+\label{sec:label}
+
+\begin{note}[Kilder]
+	Video 12
+\end{note}
+
+Vores mål til at starte med, er at bevise at $A_{TM}$ er uafgørligt. FØr vi gør det, kigger vi på teori omkring uendeligheder.
+
+\begin{definition}[Tællelig mængde]
+	En mængde $S$ er tællelig hvis:
+	\begin{enumerate}
+		\item $S$ er endelig, eller
+		\item $\exists f : S \rightarrow \mathbb{N}$ hvor $f$ er en-til-en og onto.
+	\end{enumerate}
+\end{definition}
+
+\begin{theorem}
+	Mængden $B$ af uendelige binære strenge er overtællelig.
+\end{theorem}
+
+\begin{proof}
+	Antag at $b_{1}, b_{2}, b_{3}, \ldots, b_{k}, b_{k+1}, \ldots$ er en liste af alle uendelige binære strenge.
+	Vi definerer $b^{*}$ til at være en binær streng, som altid vil være anderledes end alle andre (og derfor ikke tillader one-to-one og onto). Vi definerer $b^{*}(i)$ til at være den $i$'e plads i $b^{*}$:
+	\begin{equation}
+		b^{*}(i) = \begin{cases}
+			1 & \text{ hvis } b_{i}(i) = 0 \\
+			0 & \text{ hvis } b_{i}(i) = 1 \\
+		\end{cases}
+	\end{equation}
+	Ud fra denne definition vil $b^{*}$ \textbf{ikke} kunne være en del af $b_{1}, b_{2}, \ldots$, da den er forskellig fra alle strenge på en eller anden måde. Antag $b^{*} = b_{j}$, så $b^{*}(j) = 1 - b_{j}(j) \ne b_{j}(j)$. Altså $b^{*}$ på position $j$, men $b^{*}(j)$ er anderledes fra $b_{j}$.
+\end{proof}
+
+Hvert sprog over et alfabet $\Sigma$ er en delmængde af $P(\Sigma^{*})$ som er mængden af alle delmængder af $\Sigma^{*}$.  Vi ved at $\Sigma^{*}$ er tællelig, fordi vi kan ordne dem leksikografisk $w_{1}, w_{2}, \ldots$. $L$ over alfabetetet $\Sigma$ korresponderer one-to-one til en unik endelig binær streng $b_{L}$ hvor:
+\begin{equation}
+	b_{L}(i) = \begin{cases}
+		1 & \iff w_{i} \in L    \\
+		0 & \iff w_{i} \notin L
+	\end{cases}
+\end{equation}
+Det vil altså sige at der er lige så mange sprog, som der er binære strenge, hvilket er overtælleligt.
+
+\begin{corollary}
+	Mængden af alle sprog over et ikke-trivielt (\( |\Sigma| \ge 1\)) alfabet \(\Sigma\) er overtælleligt.
+\end{corollary}
+
+
+\textbf{MANGLER: Bevis for at der er tælleligt mange turingmaskiner. omkring 15:00-22:00 i video 12}.
+
+\begin{theorem}
+	$A_{TM}$ er uafgørligt.
+\end{theorem}
+
+\begin{proof}
+	Antag at $H$ er en Turingmaskine som afgører $A_{TM}$.
+
+	Vi kan definere $H$ til at være følgende:
+	\begin{equation}
+		H = \begin{cases}
+			\text{\textit{accept}} & \iff \langle M, w\rangle \in A_{TM}     \\
+			\text{\textit{afvis}}  & \iff \langle M, w \rangle \notin A_{TM}
+		\end{cases}
+	\end{equation}
+
+	Vi bruger $H$ som funktion i en ny Turingmaskine, $D$. $D$ tager kun et input, en kodning af en turingmaskine, i.e. $\langle M \rangle$. Denne kodning fodrer $D$ til $H$ som begge input, altså både som kodningen af turingmaskinen, og strengen den accepterer. I sin essens, spørger $D$ turingmaskinen $H$ om en Turingmaskine accepterer konfigurationen på en anden turingmaskine. Resultatet af dette omvendes så, så hvis $H$ accepterer, så \textit{afviser} $D$, og omvendt.
+
+	Et problem kommer frem her, for hvad hvis vi kører $D$ på input $\langle D \rangle$? Så vil følgende ske:
+	\begin{equation}
+		\label{eq:wrongatm}
+		D(\langle D \rangle ) = \begin{cases}
+			\text{\textit{accept}} & \text{ hvis } \langle D \rangle \notin L(D) \\
+			\text{\textit{afvis}}  & \text{ hvis } \langle D \rangle \in L(D)    \\
+		\end{cases}
+	\end{equation}
+	Altså ud fra \eqref{eq:wrongatm} får vi at $\langle D \rangle \in L(D) \iff \langle D \rangle \notin L(D)$. Dermed kan $H$ ikke eksistere.
+\end{proof}
+
+Givet en matrix af Turingmaskiner, hvor de yderste rækker og kolonner er alle de tælleligt uendelige kodninger til Turingmaskiner. Antag at $\langle m_{j} \rangle$. Den første kolonne er Turingmaskiner, og den første række er Turingmaskiner, men som sprog.
+
+Derfor, ved en celle i matrixen \(\langle m_{i} \rangle \langle m_{j} \rangle\)  hvor $m_{i}$ er fra første kolonne, og $m_{j}$ fra første række:
+\begin{equation*}
+	\langle m_{i} \rangle \langle m_{j} \rangle = \begin{cases}
+		1 & \text{ hvis } \langle m_{j} \rangle \in L(m_{i}) \\
+		0 & \text{ ellers}
+	\end{cases}
+\end{equation*}
+
+Vi antager at $H$ eksisterer. Dermed må $D$ også eksistere, da den bare swapper \textit{accept} og \textit{afvis} tilstande. $D = \langle m_{i} \rangle $ for en $m_{i}$ i listen af alle Turingmaskiner. Men $D$ er uenig med $m_{i}$ på input $\langle m_{i} \rangle $ $\langle m_{i} \rangle \in L(m_{i}) \iff \langle m_{i} \rangle \notin  L(D) = \langle m_{i} \rangle $. Dermed er $D$ ikke i listen og så eksisterer den ikke. Så $A_{TM}$ er \textbf{ikke} aførlig.
+
+
+\begin{theorem}
+	\label{teo:lnotlrec}
+	$L$ er Turing-afgørligt $\iff$ $L$ og $\overline{L}$ er Turing-genkendelige.
+\end{theorem}
+
+\begin{proof}
+	\(\Rightarrow\) Lad $m^{*}$ afgøre $L$. $m^{*}$stopper altid og $L(m^{*}) = L$ så $m^{*}$ genkender $L$ og $\overline{m^{*}}$ genkender $\overline{L}$ ved at tage outputtet fra $m^{*}$ og gøre det omvendt, i.e. afvise hvis den accepterer, og acceptere hvis den afviser.\\
+	\(\Leftarrow\) Lad $m_{L}, m_{\overline{L}}$ genkender hhv. $L$ og $\overline{L}$. Vi kan ikke lave en Turingmaskine der blot kører $m_{L}$ og tjekker om den accepterer eller ikke accepterer, da den ikke nødvendigvis er en afgører. Dermed, fremfor at lave en sådan Turingmaskine, laver vi en Turingmaskine $M$ der kører $m_{L}$ og $m_{\overline{L}}$ på samme tid på samme input $w$. Hvis $m_{L}$ accepterer, så accepterer $M$. Hvis $m_{\overline{L}}$ accepterer, så \textit{afviser} $M$. Omvendt, hvis $m_{L}$ afviser, så afviser $M$, og hvis $m_{\overline{L}}$ afviser, så \textit{accepterer} $M$.
+\end{proof}
+
+\begin{theorem}
+	For hvert sprog $L$ over det universelle alfabet, gælder præcis en af følgende:
+	\begin{enumerate}
+		\item $L$ og $\overline{L}$ er afgørlige
+		\item Ingen af $L$, $\overline{L}$ er genkendelige
+		\item $L$ er genkendeligt, men $\overline{L}$ er ugenkendeligt, eller omvendt.
+	\end{enumerate}
+
+\end{theorem}
+
+\begin{proof}
+	\[
+		\begin{array}{c|ccc}
+			\overline{L} \setminus L & A & G & IG \\
+			\hline
+			A                        & * & - & -  \\
+			G                        & - & - & *  \\
+			IG                       & - & * & *  \\
+		\end{array}
+	\]
+
+	\begin{align*}
+		A  & = \text{afgørlig}                      \\
+		G  & = \text{genkendelig men ikke afgørlig} \\
+		IG & = \text{ikke genkendelig}              \\
+		*  & = \text{mulig}                         \\
+		-  & = \text{umulig}
+	\end{align*}
+\end{proof}
+
+\begin{corollary}
+	$\overline{A_{TM}}$ er ugenkendelig.
+\end{corollary}
+\begin{proof}
+	$\overline{A_{TM}} = \{ \langle w' \rangle \mid \text{ 1. Ingen præfiks af } \langle w' \rangle \text{ koder en Turingmaskine eller}$
+	$\text{2. For hver } \langle m \rangle \text{ hvor } \langle w' \rangle = \langle m \rangle \langle w \rangle \text{ har vi at } w \notin L(m)\}$
+
+	Vi ved at $\overline{A_{TM}}$ er ugenkendelig, da, hvis den var genkendelig, så ville $A_{TM}$ være afgørlig (ud fra Sætning~\ref{teo:lnotlrec}).
+\end{proof}
+
+\section{Uafgørlige Problemer}%
+\label{sec:label}
+
+\begin{note}[Kilder]
+	Video 13
+\end{note}
+
+Vi starter med at definere standseproblemet, hvor vi hovedsageligt kommer til at bruge det engelske navn: \textit{Halting Problem}.
+\begin{equation*}
+	HALT = \{ \langle m \rangle \langle w \rangle \mid m \text{ er en Turingmaskine og } m \text{ stopper på }w\}
+\end{equation*}
+
+\begin{theorem}
+	$HALT$ er uafgørligt.
+\end{theorem}
+
+\begin{proof}
+	Antag at turingmaskinen $R$ afgører $HALT$. Vi viser nu at dette vil mene at $A_{TM}$ er afgørligt.
+\end{proof}
+
+
+\section{Flere uafgørlige problemer}%
+\label{sec:label}
+
+\begin{note}[Kilder]
+	Video 14
+\end{note}
+
+Givet sproget $H_{\varepsilon} = \{ \langle m \rangle  \mid m \text{ er en Turingmaskine og } \varepsilon \in L(M)\}$, følger følgende sætning:
+
+\begin{theorem}
+	$H_{\varepsilon}$ er uafgørligt.
+\end{theorem}
+
+Bemærk først, at sproget $\{w \mid w = \varepsilon\}$ er et afgørligt sprog, en DFA hvis en acceptstate er startsstaten har præcis dette sprog. En Chomsky Grammatik hvis startsymbol peger til den tomme streng har også dette sprog.
+
+\begin{proof}
+	Vi giver en mappingreduktion fra $A_{TM}$ til $H_{\varepsilon}$. $\langle m , w\rangle \stackrel{f}{\longrightarrow} \langle m_{w} \rangle $. Husk at en mappingreduktion tager et input, i dette tilfælde fra $A_{TM}$ til $H_{\varepsilon}$. Altså er $\langle m , w \rangle \in A_{TM} \iff \langle m_{W} \rangle \in H_{\varepsilon}$.
+
+	Vi lader sproget af $m_{w}$ være følgende:
+	\begin{equation*}
+		L(m_{w}) = \begin{cases}
+			\emptyset  & \text{ hvis } w \notin L(m) \\
+			\Sigma^{*} & \text{ hvis } w \in L(m)    \\
+		\end{cases}
+	\end{equation*}
+\end{proof}
+% 08:30
 
 
 
