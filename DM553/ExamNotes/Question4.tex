@@ -153,13 +153,173 @@ Vi starter med at definere standseproblemet, hvor vi hovedsageligt kommer til at
 \end{equation*}
 
 \begin{theorem}
+	\label{teo:halt}
 	$HALT$ er uafgørligt.
 \end{theorem}
 
 \begin{proof}
 	Antag at turingmaskinen $R$ afgører $HALT$. Vi viser nu at dette vil mene at $A_{TM}$ er afgørligt.
+
+	Udover denne, så konstruerer vi Turingmaskinen $A$ som tager \(\langle m \rangle \) som input, og giver \(\langle m' \rangle \) som output. Hvis \(\langle m \rangle \) er en korrekt kodning af en Turingmaskine, er $L(m') = L(m)$ men hvor $L(m')$ løkker på alle stringe der ikke er en del af $L(m')$. Omvendt, hvis $\langle m \rangle$ ikke er en korrekt kodning, så $\langle m' \rangle = \langle m \rangle$.
+
+	Vi konstruerer nu $m_{R}$ til at afgøre $A_{TM}$. Først giver vi inputtet \(\langle m \rangle \) til $A$ og \(\langle w \rangle \) til $R$, og så outputter vi \(\langle m' \rangle \) fra $A$ og giver videre til input i $R$. Hvis $R$ accepterer, så accepterer $m_{R}$ og omvendt. Dermed, hvis $w \in L(m')$ så accepterer vi, og hvis den løkker (som den kun kan gøre, hvis $w \notin L(m')$), så afviser vi. Dermed er $M_{R}$ en afgører for $A_{TM}$.
 \end{proof}
 
+Vi kigger nu på tomhedsproblemet:
+\begin{equation}
+	\label{eq:etm}
+	E_{TM} = \{\langle m \rangle \mid m \text{ er en Turingmaskine og } L(M) = \emptyset\}
+\end{equation}
+\begin{theorem}
+	$E_{TM}$ er uafgørligt.
+\end{theorem}
+\begin{proof}
+	Antag at $S$ er en Turingmaskine som afgører $E_{TM}$. Vi bruger $S$ til at konstruere en ny Turingmaskine som vil afgøre $A_{TM}$.
+
+	Derudover bruger vi Turingmaskinen $B$ som tager input \(\langle M, w \rangle \) og outputter $\langle M_{w} \rangle$. Den konstruerer $\langle M_{w} \rangle $ ved at først tjekke om \(\langle M \rangle \) er en korrekt kodning af en Turingmaskine. Hvis ikke, så er $\langle M_{w} \rangle $ (outputtet) en Turingmaskine, hvor $L(M_{w}) = \emptyset$. Hvis \(\langle m \rangle \) er en Turingmaskine, så er $M_{w}$ en turingmaskine med følgende sprog:
+	\begin{equation}
+		\label{eq:emptiness}
+		L(M_{w}) = \begin{cases}
+			\{w\}     & \text{ hvis } w \in L(m)    \\
+			\emptyset & \text{ hvis } w \notin L(m)
+		\end{cases}
+	\end{equation}
+	Altså vil $M_{w}$ kun acceptere $w$, hvis $w \in L(m)$ og ellers accepterer den det tomme sprog. Dermed vil $M_{w}$ blot være den følgende algoritme:
+	\begin{enumerate}
+		\item Tjek om input $x = w$
+		\item Hvis $x \ne w$, så \textit{afvis}.
+		\item Ellers simulér $M$ på $w$ og accepter hvis og kun hvis $M$ accepterer $w$.
+	\end{enumerate}
+
+	Vi kan nu konstruere $S^{*}$ til at afgøre $A_{TM}$. Først tager vi $\langle M , w\rangle $ som input til $B$, som så producerer $\langle M_{w} \rangle $. Vi fodrer så $\langle M_{w} \rangle $ til $S$, som accepterer hvis og kun hvis $w \notin L(M)$, og afviser ellers. $S^{*}$ tager så dette output, og bytter om på det, så en accept bliver afvist, og en afvisning bliver accepteret. Dermed har vi en afgører for $A_{TM}$.
+\end{proof}
+
+Vi kommer til at bruge mange maskiner med et sprog lignende den i \eqref{eq:emptiness} i fremtidige beviser om uafgørlighed. Det vigtige at forstå ved Turingmaskinen $M_{w}$ er at den \textit{ikke skal køres}. Vi bruger en anden Turingmaskine ved $M_{w}$, nemlig $R$ til at analysere den, og finde ud af noget om den, i dette tilfælde om dens sprog er tomt eller ej. Dette er et mønster vi kommer til at se mere af, og konkluderer i Rice's sætning.
+
+Vi kan faktisk genkende $\overline{E_{TM}}$. Vi kan genkende $\overline{E_{TM}}$ på følgende måde:
+\begin{enumerate}
+	\item Tjek om \(\langle w \rangle \) koder en Turingmaskine, hvis ikke, \textit{accepter}  \(\langle w \rangle \)
+	\item Lad $M$ være en Turingmaskine kodet af $\langle w \rangle $
+	\item Simulér $M$ på strenge over $\Sigma^{*}$ i leksikografisk ordning parallelt:
+	      \begin{enumerate}
+		      \item For $i = 1, 2, \ldots$
+		      \item Simuler $m$ på $i$ skridt på strengene $w_{1}, w_{2}, \ldots, w_{i}$ ifølge leksikografisk ordning.
+		      \item Stop når en streng accepteres.
+	      \end{enumerate}
+\end{enumerate}
+
+Bemærk at $\overline{E_{TM}}$, gennem den algoritme vi har konstrueret, \textbf{ikke} er afgørlig.
+
+\begin{corollary}
+	$E_{TM}$ er Turing-ugenkendeligt.
+\end{corollary}
+
+Corollarien kommer fra Sætning~\ref{teo:lnotlrec}.
+
+Vi definerer nu to specielle Turingmaskiner, som vi kommer til at bruge i fremtidige beviser:
+\begin{itemize}
+	\item $M_{\emptyset}$: Går direkte til sin afvisningstilstand, uanset input. $L(M_{\emptyset}) = \emptyset$
+	\item $M_{\Sigma^{*}}$: Går direkte til sin accepttilstand, uanset input. $L(M_{\Sigma^{*}}) = \Sigma^{*}$.
+\end{itemize}
+
+Vi vil nu kigge på lighedsproblemet.
+
+\begin{equation*}
+	EQ_{TM} = \{\langle m_{1}, m_{2} \rangle \mid m_{1} \text{ og } m_{2} \text{ er Turingmaskiner, hvor } L(m_{1}) = L(m_{2})\}
+\end{equation*}
+
+\begin{theorem}
+	$EQ_{TM}$ er uafgørlig.
+\end{theorem}
+
+\begin{proof}
+	Vi beviser ved at \textit{reducere} fra $E_{TM}$ \eqref{eq:etm} til $EQ_{TM}$.
+	Antag at $m_{EQ}$ afgører $EQ_{TM}$, så kan vi lave en Turingmaskien $m^{*}$ som givet $M_{\emptyset}$ og en Turingmaskine af eget valg, accepterer hvis og kun hvis $M_{\emptyset}$ og Turingmaskinen af eget valg er ens. Dette er umuligt, da $m^{*}$ afgører $E_{TM}$.
+\end{proof}
+
+\section{Mapping Reducerbarhed}%
+\label{sec:label}
+
+Nu stiller vi spørgsmålet: Er det muligt at formalisere idéen om at \textit{reducere} fra et problem til et andet? Svaret er ja!
+
+\begin{definition}
+	$f : \Sigma^{*} \rightarrow \Sigma^{*}$ er \textit{beregnelig} hvis der eksisterer en Turingmaskine $M_{f}$ som starter med $w$ og slutter med $f(w)$ på sit bånd, i.e. $q_{0}w \stackrel{*}{\Rightarrow} q_{acc}f(w)$.
+\end{definition}
+
+Bemærk, at når en funktion er beregnelig, så stopper den \textbf{altid}. Et eksempel på en beregnelig funktion er den Turingmaskine $A$ fra beviset i Sætning~\ref{teo:halt}. Denne tager input en streng \(\langle w \rangle \) og:
+\begin{enumerate}
+	\item Tjekker om \(\langle w \rangle \) er en Turingmaskine beskrivelse
+	      \begin{itemize}
+		      \item Hvis ja: så ouputter $A$  \(\langle m' \rangle \)hvor \(\langle m' \rangle =  \langle w \rangle \), men hvor den løkker på alle strenge den \textit{ikke} accepterer.
+		      \item Hvis nej: så outputter $A$ strengen \(\langle w \rangle \).
+	      \end{itemize}
+\end{enumerate}
+
+Så $A$ udregner funktionen $f : \langle w \rangle  \longrightarrow \langle w' \rangle $ hvor $\langle w' \rangle $ er outputtet fra $A$.
+
+\begin{definition}
+	Lad $A,B$ være sprog. Vi siger at $A$ er \textit{mapping reducerbart} til $B$ hvis der eksisterer en beregnelig funktion $f : \Sigma^{*} \longrightarrow \Sigma^{*}$ hvor $w \in A \iff f(w) \in B$. Vi skriver $A \le_{m} B$ og kalder $f$ en \textit{reduktion} af $A$ til $B$.
+\end{definition}
+
+Et eksempel på denne er vores tidligere brug af $EQ_{TM}$ til at afgøre $E_{TM}$. Der havde vi \(\langle m \rangle \stackrel{f}{\longrightarrow} \langle m \rangle \langle m_{\emptyset} \rangle \) som er en mapping reduktion fra $E_{TM}$ til $EQ_{TM}$.
+
+\begin{theorem}
+	Hvis $A \le_{m} B$, og $B$ er afgørligt, så er $A$ afgørligt.
+\end{theorem}
+\begin{proof}
+	Vi konstruerer en Turingmaskine $M_{A}$ der tager input $w$ og bruger to funktioner: $M_{f}$ og $M_{B}$. $M_{f}$ tager $w$ og beregner det til $f(w)$ på en sådan måde, at hvis $f \in A$ så er $f(w) \in B$. Dernæst tager vi $f(w)$ til $M_{B}$ som afgører hvorvidt $f(w)$ er i $B$ eller ej (og i forlængelse heraf, om $w$ er i $A$ eller ej).
+\end{proof}
+
+\begin{corollary}
+	Hvis $A \le_{m} B$ og $A$ er uafgørligt så er $B$ er uafgørligt.
+\end{corollary}
+\begin{theorem}
+	$A \le_{m} B$ og $B$ er genkendeligt så er $A$ genkendeligt.
+\end{theorem}
+
+\begin{corollary}
+	$A \le_{m} B$ og $A$ er \textbf{ikke} genkendeligt så er $B$ \textbf{ikke} genkendeligt.
+\end{corollary}
+
+\begin{claim}
+	$A_{TM} \le  \overline{E_{TM}}$
+\end{claim}
+
+\begin{proof}
+	Givet \(\langle m , w \rangle \) konstruerer vi $\langle m' \rangle $ således at $m'$ er en Turingmaskine og:
+	\begin{equation*}
+		L(m') = \begin{cases}
+			\emptyset  & \text{ hvis } m \text{ ikke er en TM eller } m \text{ er en TM, men } w \notin L(m) \\
+			\Sigma^{*} & \text{ ellers } (w \in L(m))
+		\end{cases}
+	\end{equation*}
+	Nu har vi at \(\langle m, w \rangle \in A_{TM} \iff \langle m' \rangle \in \overline{E_{TM}}\).
+\end{proof}
+
+\begin{remark}
+	\label{remark:albiffnalnb}
+	$A \le_{M} B \iff \overline{A} \le_{M} \overline{B}$
+\end{remark}
+\begin{proof}
+	Lad $f$ være en funktion hvor $w \in A \iff f(w) \in B$ så $w \in \overline{A} \iff w \notin A \iff f(w) \notin B \iff f(w) \in \overline{B}$.
+\end{proof}
+\begin{theorem}
+	Hverken $EQ_{TM}$ eller $\overline{EQ_{TM}}$ er genkendelige.
+\end{theorem}
+\begin{proof}
+	Vi ved at $\overline{A_{TM}}$ er ugenkendeligt, så det er nok at vise at $\overline{A_{TM}} \le_{m} EQ_{TM}$ og $\overline{A_{TM}} \le_{M} \overline{EQ_{TM}}$. Fra bemærkelse~\ref{remark:albiffnalnb} er dette det samme som at vise at $A_{TM} \le_{M} \overline{EQ_{TM}}$ og $A_{TM} \le_{M} EQ_{TM}$.
+
+	Vi viser nu reduktionerne:
+	$A_{TM} \le_{M} \overline{EQ_{TM}}$: Givet \(\langle M , w \rangle \) konstruer $\hat{M}_{w}$ hvor:
+	\begin{equation*}
+		L(\hat{M}_{w}) = \begin{cases}
+			\emptyset  & \text{ hvis } w \notin L(M) \text{ eller } \langle M \rangle \text{ ikke er en TM} \\
+			\Sigma^{*} & \text{ hvis } w \in L(M)
+		\end{cases}
+	\end{equation*}
+	Så gælder det at \(\langle M, w \rangle \in A_{TM} \iff \langle \hat{M}_{w} \rangle \langle M_{\emptyset} \rangle \in \overline{EQ_{TM}} \)
+	Ved $A_{TM} \le_{M} EQ_{TM}$, konstruer $\hat{M}_{W}$ som før. Så gælder det at $\langle M , w \rangle \in A_{TM} \iff \langle \hat{M}_{w} \rangle \langle M_{\Sigma^{*}} \rangle \in EQ_{TM}$.
+\end{proof}
 
 \section{Flere uafgørlige problemer}%
 \label{sec:label}
@@ -186,8 +346,113 @@ Bemærk først, at sproget $\{w \mid w = \varepsilon\}$ er et afgørligt sprog, 
 			\Sigma^{*} & \text{ hvis } w \in L(m)    \\
 		\end{cases}
 	\end{equation*}
+	Bemærk her at $\Sigma^{*}$ indeholder $\varepsilon$.
 \end{proof}
-% 08:30
+
+Vi kigger nu på om sproget der bestemmer om en Turingmaskines sprog er regulært.
+
+\begin{equation}
+	Regular_{TM} = \{ \langle m \rangle \mid m \text{ er en Turingmaskine og } L(m) \text{ er regulært} \}
+\end{equation}
+
+\begin{theorem}
+	$Regular_{TM}$ er uafgørligt.
+\end{theorem}
+
+\begin{proof}
+	Vi giver en mappignreduktion fra $A_{TM}$ til $Regular_{TM}$ ved at vise hvordan man konstruerer en Turingmaskine $m^{w}$\footnote{Jeg følger Jørgens notation (sådan da), og han bruger $m^{w}$ fordi han blev træt af $m_{w}$.} hvor:
+	\begin{equation*}
+		L(m^{w}) = \begin{cases}
+			L' = \{a^{n}b^{n} \mid n \ge 0\} & \text{ hvis } w \notin L(m) \\
+			\Sigma^{*}                       & \text{ hvis } w \in L(m)
+		\end{cases}
+	\end{equation*}
+	Vi kan tydeligt her se at $L(m^{w})$ er regulært hvis og kun hvis $\langle M, w \rangle \in A_{TM}$. Vi skal blot vise nu at en Turingmaskine kan konstruere $m^{w}$ fra $\langle M , w \rangle $.
+\end{proof}
+
+\section{Rice's Sætning}%
+\label{sec:label}
+
+En egenskab $P$ vedrører sproget for en Turing-maskine $M$, hvis $P$ handler om sproget for $M$ (det vil sige, om L(M)). Eksempler på sådanne egenskaber:
+\begin{itemize}
+	\item $L(M)$ er regulært
+	\item $L(M) = \emptyset$
+	\item $L(M)$ indeholder strenge $x,y$ hvor $|x| = |y|$
+	\item $L(M)$ indeholder en streng $x$ hvor $|x| = 22$
+	\item $\forall i = 1, 2, \ldots$ indeholder $L(M)$ $x_{i}$ hvor $|x_{i}| = i$
+\end{itemize}
+
+Følgende egenskab er \textbf{ikke}  om sproget af en Turingmaskine:
+\begin{itemize}
+	\item Der eksisterer en streng i $\Sigma^{*}$ hvor $M$ starter på $w$ og besøger alle dens tilstande undtagen en af $q_{acc}$, $q_{rej}$.
+\end{itemize}
+
+\begin{definition}
+	En egenskab $P$ om sproget af en Turingmaskine er \textit{ikke-trivielt} hvis
+	\begin{itemize}
+		\item Der eksisterer en Turingmaskine $M_{1}$ hvor $L(M_{1})$ har egenskaben $P$
+		\item Der eksisterer en Turingmaskine $M_{2}$ hvor $L(M_{2})$ \textbf{ikke} har egenskaben $P$.
+	\end{itemize}
+\end{definition}
+
+\begin{theorem}[Rice's Sætning]
+	\label{teo:rice}
+	Hver non-triviel egenskab $P$ om sproget af en Turingmaskine er uafgørligt.
+\end{theorem}
+
+\begin{proof}
+	Vi antager at det tomme sprog $L(M) = \emptyset$ ikke har egenskaben $P$, ellers kan man kigge på $\overline{P}$.
+	Antag at Turingmaskinen $M_{P}$ kan afgøre, for en given kodning $\langle M \rangle $ af en Turingmaskine, om $L(M)$ har en egenskab $P$. Lad $M_{1}$ være en Turingmaskine hvor $L(M_{1})$ har egenskaben $P$. Vi viser nu hvordan man konstruerer en Turingmaskine som, givet \(\langle M, w \rangle \) konstruerer en Turingmaskine $M(w)$ hvor:
+	\begin{equation*}
+		L(M(w)) = \begin{cases}
+			\emptyset & \text{ hvis } w \notin L(M) \text{ eller } m \text{ ikke er en TM} \\
+			L(M_{1})  & \text{ hvis } w \in L(M)
+		\end{cases}
+	\end{equation*}
+
+	Måden vi konstruerer $M(w)$ på, er ved at bruge to funktioner, en for $U'$ og en for $M_{1}$. Først tager vi \(\langle M, w \rangle \) og inputter til $U'$, som er en modificeret version af den universelle Turingmaskine. Hvis \(\langle M \rangle \) ikke er en Turingmaskine løkker den uendeligt. Hvis \(\langle M \rangle \) er en Turingmaskine kører den som normalt, og hvis den accepterer, så starter den $M_{1}$ som så kører som normalt. Det vil sige, at $L(M(w))$ har egenskaben $P$ $\iff$ $\langle M , w \rangle \in A_{TM}$. Så $\langle M, w \rangle \longrightarrow M(w)$ er en mapping reduktion.
+
+	Altså betyder det at for alle sprog der siger at en Turingmaskines sprog skal have en non-triviel egenskab er uafgørlige. Vi kan vise det ved at have en Turingmaskine $B$ som udregner $M(w)$ og så fodrer den til $M_{P}$. Det vil sige, at \(\langle M , w \rangle \) accepteres hvis og kun hvis $w \in L(M_{1})$.
+\end{proof}
+
+Vi går nu videre til et andet problem:
+\begin{align*}
+	L_{ALL} & = \{ \langle M \rangle \mid M \text{ er en Turingmaskine og når den starter}       \\
+	        & \text{på den tomme streng vil } M \text{ besøge alle dens tilstande undtagen en}\}
+\end{align*}
+
+\begin{theorem}
+	$L_{ALL}$ er uafgørligt.
+\end{theorem}
+
+\begin{proof}
+	Ide er at lave en mapping reduktion fra $A_{TM}$ til $L_{ALL}$. Givet en Turingmaskine $R$ med $r$ tilstande, kan vi ændre dens kode $\langle R \rangle$ til koden $\langle R^{*} \rangle $ af Turingmaskinen $R^{*}$ som følger:
+	\begin{itemize}
+		\item Tilføj en ny tilstand $q^{*}$ som ikke er i $R$'s mængde af tilstande
+		\item Tilføj et nyt symbol $\hat{a}$ som ikke er i $R$'s alfabet
+		\item Modificer $\delta$ således at:
+		      \begin{itemize}
+			      \item Hver overføring $\delta(q', \beta) = q_{accept}$ ændres til $\delta(q', \beta) = (q^{*}, \hat{a},S)$
+			      \item $\delta(q^{*}, \hat{a}) = (q, \hat{a}, S)$
+			      \item \(\delta(q_{i}, \hat{a}) = (q_{i+1}, \hat{a}, S)\) hvis $i < r -2$
+			      \item $\delta(q_{r-2}, \hat{a}) = q_{accept}$
+		      \end{itemize}
+	\end{itemize}
+
+	Så besøger $R^{*}$ alle tilstande undtagen en hvis og kun hvis den accepterer sit input.
+
+	Givert $\langle M , w \rangle $ kan vi konstruere en Turingmaskien $U_{M,w}$ som har alle koder af $M$ og $w$ i sin egen kode. Når $U_{M,w}$ bliver startet på den tomme streng:
+
+	\begin{enumerate}
+		\item Først printer den \(\langle w \rangle \) på bånd 1 og \(\langle m \rangle \) på bånd 2.
+		\item Så simulerer den $m$ på $w$, som den universelle Turingmaskine ville gøre det
+		\item Accepter hvis og kun hvis $m$ accepterer $w$.
+	\end{enumerate}
+
+	Nu har vi $\langle U^{*}_{M,W} \rangle \in L_{ALL} \iff \langle M, w \rangle \in A_{TM}$ og $\langle M , w \rangle \longrightarrow \langle U^{*}_{M,w} \rangle $ er en mappingreduktion. Dermed er $L_{ALL}$ uafgørlig.
+
+\end{proof}
+
 
 
 
