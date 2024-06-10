@@ -335,7 +335,171 @@ SAT er begrænset til at hver klausul har præcis $3$ literals. For eksempel $f 
 		\noindent
 		Hvis vi antager at alle $\lambda_{i}$ er falske, så ville vi være nødt til at sætte alle $y_{j}$ til at være sande. Problemet er dog at grundet vores sidste klausul, som ikke indeholder en u-negeret $y$ literal, ville blive falsk. Det er også derfor den anden vej virker, på et eller andet tidpsunkt skal $y$--erne skifte til at blive falske, og så er én af $\lambda$'erne nødt til at være sande i den klausul, da der ikke kan være 3 negative i $f$, da dette ville gøre den falsk.\footnote{Dette er meget svært at forklare. Jørgen er inde over det omkring 27 minutter inde i video 16.}
 	\end{proof}
+
+	Hvis $|C_{i}| = 2$ så gør vi som følger: $C_{i} = (\lambda_{1} \vee \lambda_{2}) \rightarrow X_{i} = (\lambda_{1} \vee \lambda_{2} \vee z) \wedge (\lambda_{1} \vee \lambda_{2} \vee \overline{z})$.
+
+	\begin{claim}
+		$X_{i}$ er sand $\iff$ mindst en af \(\lambda_{1}, \lambda_{2}\) er sande.
+	\end{claim}
+
+	\begin{proof}
+		Hvis både \(\lambda_{1}\) og \(\lambda_{2}\) var falske, så skulle både $z$ og $\overline{z}$ være sande, hvilke er umuligt.
+	\end{proof}
+
+	Hvis $|C_{i}| = 1, C_{i} = (\lambda) \rightarrow X_{i} = (\lambda \vee x \vee y) \wedge (\lambda \vee x \vee \overline{y}) \wedge (\lambda \vee \overline{x} \vee y) \wedge (\lambda \vee \overline{x} \vee \overline{y})$.
+
+	\begin{claim}
+		$X_{i}$ er sand $\iff$ \(\lambda\) er sand.
+	\end{claim}
+
+	\begin{proof}
+		Uanset hvad du sætter $x$ og $y$ til at være, vil du ende med at have mindst én af klausulerne være falske, hvis \(\lambda\) også er falsk. Omvendt, hvis \(\lambda\) er falsk, uanset hvad du vælger for $x$ og $y$ vil klausulen også være sand.
+	\end{proof}
+
+	Da størrelserne på 3-SAT klausuler er konstante (3) betyder det faktisk at denne transformation ikke bare er polynomiel, men endda lineær.
 \end{proof}
+
+\subsection{3-SAT $\le_{p}$ CLIQUE}%
+\label{subsec:label}
+
+\textbf{CLIQUE} problemet siger at given en instans \(\langle G, k\rangle \)hvor $G$ er en graf og $k \in \mathbb{Z}_{+}$, har $G$  en $k$-klikke?
+
+\begin{theorem}
+	CLIQUE \(\in \mathcal{NP}\)
+\end{theorem}
+
+\begin{proof}
+	Først certifikat, så reducering.
+	\begin{enumerate}
+		\item Certifikat et er en mængde af $k$ knuder $v_{i_{1}}, v_{i_{2}}, \ldots, v_{i_{k}}$ af $G$ hvor $v_{i_{q}}, v_{i_{p}}$ er en kant af $G$ for alle $q,p, q \ne p \in \{1, \ldots, k\}$
+		\item Sætning~\ref{teo:3satredclique}.
+	\end{enumerate}
+\end{proof}
+
+\begin{theorem}
+	\label{teo:3satredclique}
+	3-SAT $\le_{p}$ CLIQUE.
+\end{theorem}
+\begin{proof}
+	Følgende er et eksempel af en transformeret 3-SAT formel til CLIQUE problemet:
+	\begin{center}
+		\includegraphics[scale=0.5]{figur/figur733.png}
+	\end{center}
+
+	Denne kommer fra formlen $\phi = (x_{1} \vee x_{1} \vee x_{2}) \wedge (\overline{x_{1}} \vee \overline{x_{2}} \vee \overline{x_{2}}) \wedge (\overline{x_{1}} \vee x_{2} \vee x_{2})$.
+
+	Bemærk her at der er kanter mellem to knuder hvis:
+	\begin{enumerate}
+		\item De \textbf{ikke} er i klausul sammen
+		\item De \textbf{ikke} er omvendte af hinanden ($x_{i}$ og $\overline{x_{i}}$)
+	\end{enumerate}
+	Vi påstår at hvis hver literal i en klikke evalueres til at være sand, så er det en sand sanhedsfordeling. For eksempel, i dette eksempel er $\overline{x_{1}}, x_{2}, x_{2}$ en klikke, og ved at lade disse evalueres til sand får vi en sand formel. Hvis $x_{1} = F$ så er $\overline{x_{1}} = T$ og $x_{2}$ er blot sand i begge tilfælde.
+
+	Vi kan beskrive kanternes konstruktion som følger:
+	\begin{equation*}
+		E(G) = \{v_{i,j} v_{i',j'} \mid i \ne i' \text{ og } \lambda_{i_{j}} \ne \overline{\lambda_{i'_{j'}}}\}
+	\end{equation*}
+
+	\begin{claim}
+		$G$ har en $k$-klikke $\iff$ $f$ er satisfiable.
+	\end{claim}
+
+	\begin{proof}
+		\(\Rightarrow\):\\
+		\noindent
+		Lad $H$ være en $k$-klikke  i $G$. Så
+		\begin{itemize}
+			\item $|H \cap \{v_{i,{1}}, v_{i,2}, v_{i_{3}}\}| = 1 \forall i \in \{1, 2, \ldots, k\}$
+			\item Hvis en knude $x_{j}$ er i $H$ så er der ingen knude $\overline{x_{j}}$ i $H$ .
+		\end{itemize}
+		Lad:
+		\begin{equation*}
+			\phi(x_{i}) = \begin{cases}
+				T \text{ hvis  en knude af H er kaldt} x_{i} \\
+				F \text{ hvis en knude af H er kaldt } \overline{x_{i}} \text{ eller ingen knude i H kaldes } x_{i} \text{ eller }  \overline{x_{i}}
+			\end{cases}
+		\end{equation*}
+		\(\Leftarrow\): \\
+		\noindent
+		Antag $p : \{x_{1}, x_{2}, \ldots, x_{n}\} \rightarrow \{T, F\}^{n}$ satisfier $f$:
+		\begin{itemize}
+			\item Vælg en sand literal \(\lambda_{i_{j}}\) i $c_{i}$ for $i = 1, 2, \ldots, k$
+			\item For $i := 1$ til $k$. Put knuden skrevet $\lambda_{ij}$ i $H$
+			\item $H$ er en $k$-klikke
+		\end{itemize}
+	\end{proof}
+	Dermed, given $f$ kan vi konstruere $\langle G, k \rangle$ i tid $O(|f|^{2})$.
+\end{proof}
+
+\subsection{CLIQUE $\le_{p}$ Independent Set}%
+\label{subsec:label}
+
+
+
+\begin{definition}[Komplement af en graf]
+	\textit{Komplemented} af en graf $G = (V, E)$ er en graf $\overline{G} = (V, \overline{E})$ som indeholder alle de knuder der ikke var i $G$, men ingen af de knuder der var i $G$, altså $(u,v) \in \overline{E} \iff (u,v) \notin E$.
+\end{definition}
+Bemærk ud fra denne definition at $(V, E \cup \overline{E})$ giver en komplet graf.
+
+\begin{definition}[Uafhængig delmængde]
+	Lad $G = (V,E)$ være en graf. En delmængde $W \subseteq V$ er \textit{uafhængig} hvis ingen kant $(u,v) \in E$ har $|\{u,v\} \cap W| = 2$
+\end{definition}
+
+Altså vil det sige at for hver to knuder i en uafhængig mængde er der ingen kanter mellem dem, trods der muligvis ville være i $V$.
+
+Vi opstiller nu problemet \textit{Uafhængig Mængde} (på engelsk Independent Set, forkortet IS): Given en graf $G = (V,E)$ og $q \in \mathbb{Z}_{+}$, har $G$ en uafhængig mængde af størrelse $q$?
+
+\begin{theorem}
+	Independent Set \(\in \mathcal{NPC}\)
+\end{theorem}
+
+\begin{proof}
+	Vi viser først et certifikat, så en reduktion.
+	\begin{enumerate}
+		\item Certifikatet er en mængde af knuder, som ingen kanter har mellem sig.
+		\item CLIQUE $\le_{p}$ IS:
+	\end{enumerate}
+	$X$ er en klikke i $G \iff X$  er en uafhængig mængde i $\overline{G}$. \(\langle G, k \rangle \in\) CLIQUE $\iff$ \(\langle \overline{G}, k \rangle \in\) uafhængig mængde. Vi laver en polynomiel reduktion.
+\end{proof}
+
+\subsection{Independent Set $\le_{p}$ Vertex-Cover}%
+\label{subsec:label}
+
+\begin{definition}
+	Et \textit{vertex cover} i en graf $G = (V,E)$ er en delmængde $U \subseteq V$ hvor $|\{u,v\} \cap U| \ge 1 \; \forall (u,v) \in E$.
+\end{definition}
+
+Vertex-Cover problemet siger: Given en graf $G = (V,E)$ og $p \in \mathbb{Z}_{+}$, har $G$ en dækning af knuder af størrelse $p$?
+
+\begin{theorem}
+	Vertex-Cover $\in \mathcal{NPC}$
+\end{theorem}
+\begin{proof}
+	Vi viser først et certifikat og så reduktion.
+	\begin{enumerate}
+		\item Certifikatet er en mængde $U \subseteq V$ hvor, hvis man fjerne $U$ så fjerner det \textit{alle} kanterne.
+		\item Independent Set $\le_{p}$ Vertex-Cover
+	\end{enumerate}
+	$X$ er uafhængigt i $G$ $\iff$ $V \setminus X$ er en dækning af knuder i $\overline{G}$. Dermed \(\langle G, q \rangle \in \) Independent Set $\iff$ \(\langle \overline{G}, |V(G)| - q \rangle \in \) Vertex-Cover.
+\end{proof}
+
+
+\subsection{3-SAT $\le_{p}$ Vertex-Cover}%
+\label{subsec:label}
+
+Vi har allerede set SAT $\le_{p}$ 3-SAT $\le_{p}$ Clique $\le_{p}$ Independent Set $\le_{p}$ Vertex-Cover. Her giver vi en direkte reduktion 3-SAT $\le_{p}$ Vertex-Cover.
+
+Givet en instans $f = C_{1} \wedge C_{2} \wedge \ldots \wedge C_{m}$ af 3-SAT med variablerne $x_{1}, x_{2}, \ldots, x_{n}$:
+\begin{itemize}
+	\item Lad $k = n + 2m$ og konstruer en graf $G = G(f')$ med $2n+3m$ knuder.
+	      \begin{itemize}
+		      \item Hver variabel $x_{i}$ repræsenteres af $(v_{i}, \overline{v_{i}})$ i $G$
+		      \item Hver klausul $c_{j}$ repræsenteres af
+	      \end{itemize}
+\end{itemize}
+
+
+
 
 
 
