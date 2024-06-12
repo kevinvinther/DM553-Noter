@@ -1,6 +1,248 @@
-\chapter{Pumpelemmaet for regulære og kontekstfrie sprog}
+\chapter{Turingmaskiner}
+
+\section{Turingmaskiner}%
+\label{sec:label}
+
+En Turingmaskine minder om en endelig automat, men med et uendeligt og ubegrænset bånd (fremfor et uendeligt men begrænset bånd som i en PDA). I overføringsfunktionen bestemmes om hovedet på båndet går til venstre eller højre, og hvad den skriver, hvis noget, givet hvad der allerede står på båndet. En Turingmaskine har 3 specielle tilstande:
+\begin{itemize}
+	\item $q_{0}$: Den initielle tilstand
+	\item $q_{acc}$: Den accepterence tilstand
+	\item $q_{rej}$ Den afvisende tilstand
+\end{itemize}
+
+Både den accepterende og den afvisende tilstand træder i kraft så snart de nåes, altså stopper en Turingmaskine hvis en af disse nåes.
+
+Der findes mange forskellige varianter af Turingmaskiner (som vi kommer ind på senere), men den \textit{konventionelle} Turingmaskine har et uendeligt bånd til højre, men har en start til venstre.
+
+Følgende er den formelle definition af en Turingmaskine:
+
+\begin{definition}[Formel Definition af en Turingmaskine]
+	\label{def:formalturing}
+	En \textbf{Turingmaskine} er en 7-tuple $(Q, \Sigma, \Gamma, \delta, q_{0}, q_{\text{accept}}, q_{\text{reject}})$, hvor $Q, \Sigma, \Gamma$ alle er endelige sæt, og
+	\begin{enumerate}
+		\item $Q$ er sættet af states.
+		\item $\Sigma$ er inputalfabetet ikke indeholdende det blanke symbol, $\sqcup$.
+		\item $\Gamma$ er båndalfabetet, hvor $\sqcup \in \Gamma$ og $\Sigma \subseteq \Gamma$.
+		\item $\delta, Q \times \Gamma \longrightarrow Q \times \Gamma \times \{L, R\}$ er transitionsfunktionen.
+		\item $q_{0} \in Q$ er startstaten.
+		\item $q_{\text{accept}} \in Q$ er accept staten.
+		\item $q_{\text{reject}} \in Q$ er afvis staten, hvor $q_{\text{accept}} \neq q_{\text{reject}}$.
+	\end{enumerate}
+\end{definition}
+
+\subsection{Konfigurationer}%
+\label{subsec:label}
 
 
+En konfiguration er en indikation på hvor på båndet en Turingmaskine befinder sig, samt i hvilken tilstand. ``$uqv$'', $q \in Q, u, v \in \Gamma^{*}$ betyder at båndhovedet er over ``$v$'', og at vi er i tilstanden $q$.
+
+Vi siger at en konfiguration $C_{1}$ \textit{giver} $C_{2}$ hvis $M$ kan gå fra $C_{1}$ til $C_{2}$ i ét skridt.
+
+For eksempel $uaq_{i}bv \rightarrow uq_{j}acv$ (hvor \(\rightarrow\) betyder ``giver''), er det samme som $\delta(q_{i},b) = (q_{j}, c, L)$
+
+Hvis hovedet forsøger at gå til venstre, når den allerede er på den venstremest position, vil den forblive der, og altså ikke flytte sig. Den kan sevlfølgelig stadig ændre på båndindholdet osv. Der er nogle der mener at en Turingmaskine der vil gå til venstre når den allerede er helt til venstre skal afvises, men sådan ser vi ikke på det. Altså $q_{i}bv \rightarrow q_{j}cv$ hvis $\delta(q_{i},b) = (q_{j}, c, L)$
+
+Der er nogle specielle konfigurationer:
+
+\begin{itemize}
+	\item Startkonfigurationen $q_{0}w$ hvor $w$ er input
+	\item Acceptkonfigurationen $uq_{acc}v$
+	\item Afvisningskonfigurationen $u'q_{rej}v'$
+\end{itemize}
+
+Vi kan derfor definere alle sprog der accepteres af en Turingmaskine således:
+\begin{equation}
+	L(m) = \{w \mid q_{0}w \stackrel{*}{\longrightarrow} uq_{acc}v \text{ for en }u,v \in \Gamma^{*}\}
+\end{equation}
+
+$q_{0}w = c_{0} \rightarrow c_{1} \rightarrow c_{2} \rightarrow \cdots \rightarrow c_{n} = uq_{acc}v$
+
+\begin{definition}
+	$L$ er \textit{Turing-genkendeligt} (også kaldt rekursivt enumerabelt) $\iff$ $L = L(m)$ for en Turingmaskine $m$.
+\end{definition}
+
+Der er tre muligheder når en Turingmaskine $m$ starter på en streng $w$:
+\begin{itemize}
+	\item $m$ accepterer $w$: $q_{0}w \rightarrow uq_{acc}v$
+	\item $m$ afviser $w$: $q_{0}w \rightarrow u'q_{rej}v'$
+	\item $m$ kører for evigt
+\end{itemize}
+
+\begin{definition}[Afgører]
+	En Turingmaskine $m$ er en \textit{afgører} hvis $m$ altid stopper.
+\end{definition}
+
+\begin{definition}
+	$L$ er \textit{afgørligt} $\iff$ $L = L(m)$ for en afgører $m$.
+\end{definition}
+
+\section{Varianter af Turingmaskiner}%
+\label{sec:label}
+
+Som tidligere skrevet er der flere varianter af Turingmaskiner. Vi vil kigge på dem her, og gennemgå konvertering fra denne variant til vores enkeltbånds deterministiske Turingmaskine, som er den vi kender nu.
+
+\subsection{Flere bånd}%
+\label{subsec:label}
+
+En variant af en Turingmaskine er en der har mere end ét bånd. Det kan være så mange bånd, som man ønsker, \textit{men} det kan ikke ændres i køretiden.
+
+Overføringsfunktionen for en sådan Turingmaskine er lidt sjov: $\delta(q, a_{1}, a_{2}, \ldots, a_{k}) = (p, b_{1}, b_{2}, \ldots, b_{k}, \delta_{1}, \delta_{2}, \ldots, \delta_{k})$. Her går vi fra tilstand $q$ til $p$ og erstatter $a_{i}$ med $b_{i}$ og flytter hovedet ifølge $\delta_{i}$, hvor \(\delta \in \{L, R, S\}\).
+
+En flerbånds Turingmaskine kan lave nogle ting hurtigere end en ``normal'' Turingmaskine. For eksempel kan den kopiere en streng i $O(|w|)$ tid ved brug af 2 bånd, hvor en normal ville bruge $O(|w|^{2})$ tid.
+
+\subsection{2-vejs uendeligt bånd}%
+\label{subsec:label}
+
+Dette er en Turingmaskine hvor både venstre og højresiden er uendelig, og ikke kun højresiden.
+
+\subsection{Nondeterministisk Turingmaskine}%
+\label{subsec:label}
+
+En nondeterministisk Turingmaskine, kontrær til en deterministisk Turingmaskine, kan gætte fra en tilstand $q$ på et symbol $a \in \Sigma$, hvor der kan være op til $B = |Q| \cdot |\Gamma| \cdot 3$ forskellige overføringer.
+
+\subsection{Et bånd med flere hoveder}%
+\label{subsec:label}
+
+Denne variant af en Turingmaskine har mere end blot et enkelt hoved.
+
+\subsection{To-dimensionelt Bånd}%
+\label{subsec:label}
+
+Det er også muligt at have en Turingmaskien hvis bånd nærmest er matriks-agtigt, som går uendeligt op og tilhøjre.
+
+Bemærk at alle disse varianter kan konverteres til en deterministk Turingmaskine, dog med forskellige køretider (eksponentiel, i tilfældet af en NDTM).
+
+\subsection{Konvertering af Flerbånds til Enkeltbånds}%
+\label{subsec:label}
+
+Når vi konverterer fra flere bånd til et enkelt bånd skal dette enkelte bånd kunne gøre atld et som flere bånd kunne, dog ikke (nødvendigvis) ligeså hurtigt. Vi indikerer på båndet skiftet mellem to bånd ved \#. Så eksempelvis kan \textit{\#aabb\#bbaa\#hhii} være 3 bånd med indholdet på aabb første bånd, bbaa på andet bånd og hhii på tredje bånd. Hvis et bånd vil videre til højre, så bruger vi blot rightshift. Vi simulerer hovederne ved at have et specielt symbol korresponderende til hvert symbol i maskinen. Jørgen bruger f.eks. $\stackrel{\circ}{a}$ til $a$.
+
+Vi vil dog gerne se præcis hvordan vi implementerer den her simulering, hvor vi går fra $k$ bånd til ét.
+
+Antag at $M$ er en $k$-bånds Turingmaskine. For hver tilstand $q_{i}$ af $M$ har vi følgende tilstande:
+\begin{itemize}
+	\item $q^{i}_{(\alpha_{1}, \alpha_{2}, \ldots, \alpha_{k})}$ hvor $a_{i} \in \Gamma \cup \{-\}$
+	      \begin{itemize}
+		      \item Her betyder $\{-\}$ at vi endnu ikke ved, hvad der skal stå der.
+	      \end{itemize}
+	\item $p^{i}_{(\delta_{1}, \delta_{2}, \ldots, \delta_{k}, b_{1}, b_{2}, \ldots, b_{k}, \gamma_{1}, \gamma_{2}, \ldots, \gamma_{k})}$ hvor $\delta_{i} \in \Gamma \cup \{-\}, b_{i} \in \Gamma, \gamma_{i} \in \{R, L, S\}$
+\end{itemize}
+
+Når vi er i tilstand $q^{i}_{(\beta_{1}, \beta_{2}, \ldots, \beta_{r}, -, -, \ldots, -)}$ har vi samlet symbolerne under hovederne i de første $r$ tilstande.
+
+Når vi er i tilstand $p^{i}_{(b_{1}, \ldots, b_{q}, -, \ldots, -, b_{1}, \ldots, b_{k}, \gamma_{1}, \gamma_{2}, \ldots, \gamma_{k})}$ har vi ændfret på båndcellerne under de første $q$ hoveder og flyttet det $i$'e hoved ( hvor $i \le q$ ) ifølge $\gamma_{i}$ (og muligvis rightshiftet en del af båndet).
+
+Bemærk at dette er \textit{utroligt} mange tilstande. For $q^{i}$ i sig selv er der $(\Gamma+1)^{k}$ muligheder. Ved $p^{i}$ er der $3^{k} \cdot \Gamma^{k} + (\gamma+1)^{k}$ muligheder. \textbf{Men} det er polynomielt!
+
+Vi vil nu gå ind i hvordan man implementerer ét skridt \(\delta(q_{i}, a_{1}, a_{2}, \ldots, a_{k}) = (q_{j}, b_{1}, b_{2}, \ldots, b_{k}, \gamma_{1}, \gamma_{2}, \ldots, \gamma_{k})\):
+\begin{enumerate}
+	\item $M'$ starter i tilstanden $q^{i}_{(-,-,\ldots, -)}$ på den venstremest del af båndet.
+	\item I tilstanden $q^{i}_{(a_{1}, \ldots, a_{r}, -,-, \ldots, -)}$ hvor $r < k$ bevæger $m'$ sit hoved fremad til at kopiere indeholdet under $M'$s $(r+1)$'e hoved.
+	\item Når vi når til tilstanden $q^{i}_{(a_{1}, a_{2}, \ldots, a_{k})}, a_{i} \in \Gamma$ har vi samlet alle karaktererne under $M$'s hoveder og overfører til staten $p^{j}(-,\ldots,-,b_{1},\ldots, b_{k}, \gamma_{1}, \ldots, \gamma_{k})$ som afgænger af overføringsfunktionen ($p^{j}$ fordi overføringsfunktionen vil have os til $q_{j}$, hvor $p$ = predecessor, en der kommer før).
+	\item I tilstanden $p^{j}_{(b_{1}, \ldots, b_{s}, -, \ldots, -, b_{1}, b_{2}, \ldots, b_{k}, \gamma_{1}, \gamma_{2}, \ldots, \gamma_{k})}$ hvor $s < k$, sker følgende:
+	      \begin{itemize}
+		      \item Flyt til positionen af det $(s+1)$'e hoved.
+		      \item Erstat $a_{s+1}$ med $b_{s+1}$ ifølge overføringsfunktionen, og flyt det virtuelle hoved i forhold til \(\gamma_{s+1}\).
+		      \item  Hvis $s+1 < k$ gå til tilstand $p^{j}_{(b_{1}, \ldots, b_{s+1}, - , \ldots, - , b_{1}, b_{2}, \ldots, b_{k}, \gamma_{1}, \ldots, \gamma_{k})}$ og start forfra. Ellers bevæg hovedet til den venstremest position og tå til tilstanden $q^{j}_{(-, \ldots, -)}$ da vi nu (endelig) er kommet til tilstanden $q_{j}$.
+	      \end{itemize}
+\end{enumerate}
+
+\subsubsection{Køretid for Simuleringen}
+
+Antag at $M$ tager $t$ skridt på input $w$, hvor $|w| = n$. Så kan inputtet højest indholde $ n  + t$ symboler udover det tomme symbol, og alle andre bånd har højest $t$ symboler udover det tomme symbol, da de starter med at være tomme.
+
+Vi kigger på to muligheder, først at det ikke har været nødvendigt at lave nogen rightshifts, og derefter hvor det har været. At simulere et skridt hvor ingen rightshift har været nødvendigt tager $O(\Sigma \text{ længden af båndet}) = O(n+kt)$, hvor $n$ er længden af inputtet $w$ og $kt$ er skridt taget per bånd, $t$ ganget med antallet af bånd $k$.
+
+Det er dog meget usandsynligt at der \textit{ikke} bliver lavet mange rightshifts. Hvis vi rightshifter hver eneste gang er der $O((k-1)t + (k-2)t + \cdots + t) = O(k^{2}t)$.
+
+Det samlede arbejde for at simulere ét skridt er $O(n+kt) + O(k^{2}t) = O(n+k^{2}t)$. Det smalede arbejde for at simulere $t$ skridt er så $O(n \cdot t + k^{2}t^{2})$.
+
+\subsection{Konverting af Nondeterministisk til Deterministisk}%
+\label{subsec:label}
+
+En nondeterministisk endelig automat har overføringsfunktionen $Q \times \Gamma \rightarrow \mathcal{P}(Q \times \Gamma \times \times \{L,R,S\})$. Dette er utroligt mange muligheder, \textbf{men det er ikke uendelige}! Der er $B$ muligheder, hvor $B \le |Q| \cdot |\Gamma| \cdot 3$. Vi kan se på komputeringen af en nondeterministisk Turingmaskine $M$ på  en streng $w$ som et træ, hvor hver knude har \textbf{højest} $B$ børn. Hver vej i dette træ korresponderer derfor til et specifikt valg for hver af tilstandene.
+
+
+\begin{definition}
+	Den nondeterministiske Turingmaskine $M$ \textit{genkender} $L$ hvis der er en komputering for $M$ på $w$ som leder til en accepttilstand.
+\end{definition}
+Altså behøver alle grene ikke føre til en accepttilstand.
+
+\begin{definition}
+	En nondeterministisk Turingmaskine $M$ \textit{afgører} $L$ hvis $\forall w \in \Sigma^{*}$:
+	\begin{enumerate}
+		\item \(\exists k = k(M, w)\) hvor $M$ aldrig tager mere end $k$ skridt på $w$.
+		\item $w \in L \iff M$ har mindst en accepterende udregning på $w$.
+	\end{enumerate}
+\end{definition}
+
+Altså er forskellen på en afgører og en genkendende nondeterministisk Turingmaskine bare at en afgører har en ``grænse'' på hvor lang hver vej er, hvor en genkendende ikke har, der behøver bare at være en accepterende tilstand.
+
+\begin{theorem}
+	For hver nondeterministisk Turingmaskine $M$ eksisterer der en deterministisk Turingmaskine $D$ således at:
+	\begin{enumerate}
+		\item $L(D) = L(M)$ og
+		\item $D$ afgører $L \iff M$ afgører $L$
+	\end{enumerate}
+
+
+\end{theorem}
+\begin{proof}
+	Vores idé er at simulére $M$'s mulige udregninger på $w$ ved at bruge Breadth-First-Search. DFS fungerer ikke, da der kan være uendelige veje i træet.
+
+	Husk at \(\delta_{M}(q,a)\) har højest $B$ værdier af formen $(p, b, \gamma)$.
+
+	Givet en Turingmaskine, som vi skal konvertere, lader vi $B = \max\{ | \delta(q,a) | \mid q \in Q, a \in \Gamma\}$. Dermed er $B$ det maksimum antal af forskellige overføringer $M$ har fra en tilstand til et symbol.
+
+	For at gøre det nemmere for os antager vi at alle \(\delta(q,a)\) har præcis $B$ overføringer, eller ingen. Vi får dette til at ske ved at kopiere en af overføringerne så det bliver til $B$ overføringer i alt.
+
+	Vi kan nu beskrive $M$'s udregninger ved strenge af tal i base $B+1$, plus en fordi vi ikke gider at bruge $0$ til noget. Så vil strengen $235$ være en streng hvor vi i 1. tilstand vælger den anden overføring, i 2. tilstand vælger vi den tredje overføring, og i 3. tilstand vælger vi den 5.
+
+	Dermed, for en given streng $g_{1}g_{2}\ldots g_{k}, g_{i} \in \{1, 2, \ldots, B\}$ kan vi simulere komputeringen af $M$ ved at tage det $g_{i}$'e valg i skridt $i$.
+
+	I den deterministiske maskine som simulerer $M$ går vi leksikografisk igennem alle strengene, og stopper kun hvis der er en accepttilstand, eller hvis der ikke er mere at gøre (og så afviser vi).
+
+	En måde vi kan holde styr på hvor langt vi er, er ved at bruge et bånd hvor vi tager hvert tal i unær notation. For eksempel vil strengen ``235'' være som følger:
+	\begin{center}
+		\textit{\#00\#000\#00000\#}
+	\end{center}
+	Hvis $B \ge 6$ vil den næste så være
+	\begin{center}
+		\textit{\#00\#000\#000000\#}
+	\end{center}
+	Og hvis $B = 6$ vil den næste være:
+	\begin{center}
+		\textit{\#00\#0000\#0\#}
+	\end{center}
+
+	Men vi skal selvfølgelig lave mere end bare at holde styr på dem, og derfor bruger vi 3 bånd. Vi har tidligere vist at $k$ bånd kan, i polynomiel tid, konverteres til en enkeltbånds Turingmaskine (som også er deterministisk).
+
+	Båndene er som følger:
+	\begin{enumerate}
+		\item $w_{1}w_{2} \ldots w_{n}$
+		\item $M$'s udregninger på $w$
+		\item Tallene i base $B+1$
+	\end{enumerate}
+
+	Bemærk også, at det er muligt at vi kommer ind i en såkaldt ``dead-end'', hvor der ikke sker mere. Her springer vi bare over.
+
+	Formelt gør vi følgende:
+	\begin{enumerate}
+		\item Opsætter de tre bånd som beskrevet tidligere.
+		\item Kopiér bånd 1 til bånd 2
+		\item Simulér $m$ på bånd 2 ved at bruge tallene på bånd 3 til at vælge den næste overføring indtil enten:
+		      \begin{itemize}
+			      \item Dead end = ingen overføring på $(q,a)$
+			      \item $M$ accepterer, så accepterer $D$ også og stopper.
+			      \item $M$ afviser
+			      \item Der er ikke flere tal på bånd 3
+		      \end{itemize}
+		\item Erstat $d_{1}d_{2} \ldots d_{r}$ på bånd 3 med det næste i leksikografisk orden
+		\item Gå til skridt 2
+	\end{enumerate}
+\end{proof}
+
+Hvor lang tid tager den her simulering så? Vi antager at $M$ kører i $r$ skridt, og så simulerer $D$ højest $B + B^{2} + \cdots + B^{r} \le B^{r+1}$ skridt af $M$ hvilket altså er eksponentielt.
 
 %%% Local Variables:
 %%% mode: latex
