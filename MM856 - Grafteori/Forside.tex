@@ -1,0 +1,45 @@
+\begin{center}
+	\noindent
+	{\huge \bfseries \sffamily \color{DeepSeaBlue} MM856 - Grafteori}\\
+	\vspace{0.2cm}
+	{\large \sffamily Noter til kursets indhold og opgaver}\\
+	\vspace{1.0cm}
+
+	\begin{center}
+
+		\begin{tikzpicture}
+			% Define the inner circle nodes
+			\foreach \i in {1,...,8} {
+					\node[draw, circle] (inner\i) at ({360/8 * (\i - 1)}:1.5cm) {};
+				}
+
+			% Define the outer circle nodes
+			\foreach \i in {1,...,8} {
+					\node[draw, circle] (outer\i) at ({360/8 * (\i - 1)}:3cm) {};
+				}
+
+			% Connect the inner circle nodes
+			\foreach \i in {1,...,8} {
+					\pgfmathtruncatemacro{\nexti}{mod(\i,8) + 1}
+					\draw (inner\i) -- (inner\nexti);
+				}
+
+			% Connect the outer circle nodes
+			\foreach \i in {1,...,8} {
+					\pgfmathtruncatemacro{\nexti}{mod(\i,8) + 1}
+					\draw (outer\i) -- (outer\nexti);
+				}
+		\end{tikzpicture}
+	\end{center}
+	\vspace{3.8cm}
+	{\large \sffamily \color{gray} Kevin Vinther}\\
+	{\large \sffamily \color{gray} 2024-2025}
+\end{center}
+
+\thispagestyle{empty}
+%%% Local Variables:
+%%% mode: latex
+%%% TeX-engine: xetex
+%%% TeX-command-extra-options: "-shell-escape"
+%%% TeX-master: "main"
+%%% End:

@@ -1,5 +1,18 @@
 % !TEX TS-program = xelatex
 % !TEX encoding = UTF-8 Unicode
+
+%% Dette er preamble til alle mine noter, pånær slides, som har sine egne preambles (as of writing).
+%% Dette tillader tikz grafer, et pænt layout i a4 side, med udgangspunkt i danske noter.
+% Tilgængelige farver
+% DeepSeaBlue, TurquoiseGreen, SunnyYellow, SunsetOrange, CoralRed, Light, Steel, Dark
+% Lysere:
+% DeepSeaBlueLighter, TurquoiseGreenLighter, SunnyYellowLighter, SunsetOrangeLighter, CoralRedLighter
+% Mørkere:
+% DeepSeaBlueDarker, TurquoiseGreenDarker, SunnyYellowDarker, SunsetOrangeDarker, CoralRedDarker
+% Dæmpede:
+% DeepSeaBlueMuted, TurquoiseGreenMuted, SunnyYellowMuted, SunsetOrangeMuted, CoralRedMuted
+
+
 \documentclass[12pt, oneside, a4paper]{book}
 
 \usepackage[top=3cm, bottom=3cm, left=3cm, left=3cm, right=3cm, headsep=10pt,a4paper]{geometry}
@@ -41,10 +54,10 @@
 
 \usepackage{tikz} % Til grafer
 \usetikzlibrary{automata} % Til automatgrafer
-\usetikzlibrary{shapes.geometric} % Ellipse
+\usetikzlibrary{graphs}
+\usetikzlibrary{shapes} % Ellipse
 \usetikzlibrary{trees} % Til træstrukturer
 \usetikzlibrary{positioning} % Positionering af knuder
- \usetikzlibrary {graphs.standard}  % til grafer
 \usetikzlibrary{arrows.meta, arrows} % arrows til at ændre kanter
 \tikzset{
 	node distance=2.5cm, % minimumsdistancen mellem to knuderj
@@ -124,7 +137,7 @@
 
 \hypersetup{
 	pdfauthor={Kevin Vinther},
-	pdftitle={DM553 Noter},
+	pdftitle={Noter},
 	pdfsubject={computer science, complexity, computability},
 	colorlinks=true,
 	linkcolor=DeepSeaBlue,

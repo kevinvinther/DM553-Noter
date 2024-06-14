@@ -1,0 +1,324 @@
+\input{../../preamble}
+
+
+\section*{Pumping Lemmas For Regular And Context-Free Languages}
+
+\begin{itemize}
+	\item Regulære Sprog
+	\item Nonregulæritet
+	\item $\{0^{n}1^{n} \mid n \ge 0\}$
+	      \begin{itemize}
+		      \item Pumpelemmaet for regulære sprog
+		            \begin{itemize}
+			            \item $xy^{i}z$
+			            \item $y \ne \varepsilon$
+			            \item $|xy| \le p$
+		            \end{itemize}
+		      \item Bevis
+		            \begin{itemize}
+			            \item $p = $antal tilstande
+			            \item Hvis $y = \varepsilon$ så er sætningen trivielt sand, da $\varepsilon^{i} = \varepsilon \forall i$
+			            \item En tilstand må gentages
+			                  \begin{itemize}
+				                  \item Fordi vi tager den første gentagne tilstand kan vi sige at $|xy| \le p$
+			                  \end{itemize}
+		            \end{itemize}
+	      \end{itemize}
+	\item Kontekstfrie Sprog
+	\item Nonkontekstfrie Sprog
+	\item $\{a^{n}b^{n}c^{n} \mid n \ge 0\}$
+	      \begin{itemize}
+		      \item Pumpelemmaet for kontekstfrie sprog
+		            \begin{itemize}
+			            \item $uv^{i}xy^{i}z$
+			            \item $y \ne \varepsilon$
+			            \item $|vxy| \le p$
+		            \end{itemize}
+		      \item Bevis
+		            \begin{itemize}
+			            \item $p = 2^{|V|+1}$
+			            \item For en streng $|w| \ge p$ vil parsetræet have $\ge 2^{|V|+1}$ blade.
+			            \item Højden af træet er mindst $|V|+2$ fordi en ekstra til at gå fra variabel til terminal.
+			            \item Én af dise $|V|+2$ variabler må være gentagen.
+			            \item Betingelser:
+			                  \begin{itemize}
+				                  \item 1. gælder da den gentagne variabel kan gentages igen og igen, og man kan også bare gå videre til at udlede $x$ fremfor $v$ og $y$.
+				                  \item 2. gælder da sætningen er trivielt sand ellers
+				                  \item $|vxy| \le p$ gælder, da vi ellers skulle have mere end $2^{|V|+1}$ blade.
+			                  \end{itemize}
+		            \end{itemize}
+	      \end{itemize}
+\end{itemize}
+
+\section*{Pushdown Automata And Context-Free Languages}
+
+\begin{itemize}
+	\item Introduktion
+	      \begin{itemize}
+		      \item Forklar hvad kontekstfrie sprog er, CFG og PDA
+	      \end{itemize}
+	\item Kontekstfrie Sprog
+	      \begin{itemize}
+		      \item CFG - 4 Tuple ($V, \Sigma, R, S$)
+		      \item Chomsky Normal Form, $2|w|-1$
+		      \item Pushdown Automat - som en NFA (skal være nondeterministisk!) men med en stak, man kan nemt se hvordan $a^{n}b^{n}$ kan afgøres her.
+	      \end{itemize}
+	\item Ækvivalens mellem PDA og CFG
+	\item Fra CFG til PDA:
+	      \begin{itemize}
+		      \item Start med pushing af start-symbolet
+		      \item Venstremest afledning
+		      \item Accep tinput ved at tjekke terminalerne
+	      \end{itemize}
+	\item Fra PDA til CFG:
+	      \begin{itemize}
+		      \item Skridt 1:
+		      \item Forklar først om den begrænset PDA
+		      \item 1. Én accept tilstand
+		      \item 2. Der skal enten pushes eller poppes
+		      \item 3. Stakken tømmes altid før accept
+		      \item Vis at man sagtens kan gøre dette
+
+		      \item Skridt 2:
+		      \item Hvis den går fra $\mathdollar$ i stakken til $\mathdollar$ i stakken på et læst $w$, vil den gøre det samme med niveau $\ell$.
+		      \item Skridt 3:
+		      \item \(\forall p, q \in Q\) vil der være en variabel $A_{pq}$ som vil generere alle strenge $w \in \Sigma^{*}$ hvor stakken ikke går ned
+		      \item Der er to scenarier: enten pusher den et symbol der først poppes til sidst, in that case: $aA_{rs}b$
+		      \item Ellers kommer den ned på et andet tidpsunkt, in that case: $A_{pr}A_{sq}$.
+		      \item Grammatikken er så som følger: $V = \{A_{pq} \mid p, q \in Q\}$
+		      \item $S = A_{q_{0}q_{accept}}$
+		      \item Regler: $\forall p, q, r, s \in Q, \forall t \in \Gamma, \forall a, b \in \Sigma_{\varepsilon}$ hvor den læser et a, pusher et t laver alt muligt, så læser et b og popper det t laver vi reglen $A_{pq} \rightarrow aA_{rs}b$ til $R$
+		      \item $\forall p,q,r \in Q$ lad $A_{pq} \rightarrow A_{pr}A_{rq}$
+		      \item $\forall p \in Q $ lad $A_{pp} \rightarrow \varepsilon$.
+	      \end{itemize}
+\end{itemize}
+
+\section*{Turing Maskiner}
+\begin{itemize}
+	\item Kort introduktion til hvad en Turingmaskine er: som en DFA med ubegrænset bånd
+	\item En 7-tuple: $(\Sigma, \Gamma, Q, q_{0}, q_{accept}, q_{reject}, \delta)$
+	\item Grundlæggende om hvordan mskinen læser, skriver og bevæger åndet
+	\item \textit{Konfigurationer}
+	      \begin{itemize}
+		      \item Hvad er en konfiguration
+		      \item Hvad vil det sige at en konfiguration giver en andnen? $C_{1} \rightarrow C_2$
+		            \begin{itemize}
+			            \item At den kan gå fra $C_{1}$ til $C_{2}$ på ét skridt
+		            \end{itemize}
+		      \item Specielle konfigurationer: start, accept, afvisning
+	      \end{itemize}
+	\item \textit{Nondeterministiske Turingmaskiner}
+	      \begin{itemize}
+		      \item Forskelle
+		            \begin{itemize}
+			            \item Den kan gætte sig frem, og kan derfor have $B = |Q| \cdot |\Gamma| \cdot 3$ overføringer, fremfor kun én.
+			            \item God til for eksempel at finde ud af primtal, da den kan gætte på tal der skal kunne ganges i.
+		            \end{itemize}
+		      \item Konvertering til deterministisk
+		            \begin{itemize}
+			            \item Lad hver overføring være $B$ eller $0$, og repræsenter valget som en streng i base $B$.
+			            \item $283$ vil sige at det første skridt har taget anden overføring, andet skridt har taget ottende overføring og tredje skridt har taget tredje overføring.
+			            \item Den deterministiske Turingmaskine har så 3 bånd: et bånd med input, et bånd der ændrer i forhold til hvad NDTM'en ville gøre, og et bånd til hvor vi er med strengen.
+			            \item Vi bruger breadth first search, i en shortlex metode.
+			            \item $B + B^2 + B^{3} + B^{4} \cdots B^{r}$: \textit{Eksponentielt}
+		            \end{itemize}
+	      \end{itemize}
+	\item \textit{Multibånds Turingmaskiner}
+	      \begin{itemize}
+		      \item Mere end ét bånd, specifikt $k$ som ikke kan ændre sig i køretiden
+		      \item Hvert bånd har hvert sit hoved, og derfor er overføringsfunktionen også ændrende i hovederne på hvert bånd
+		      \item Konvertering er relativt simpel.
+		      \item Et bånd der simulerer 3: \texttt{\#aaaaaå\#aaaåaaa\#aåaaa}
+		      \item Nyt symbol for hver allerede eksisterende symbol, til at vise at det er der hovedet befinder sig
+		      \item Hvis den vil til højre for båndet skal man lave et rightshift
+		      \item Vi implementere ved at bruge tilstande som hukommelse: for hver tilstand $q_{i}$ har vi to tilstande i enkeltbåndsversionen:
+		            \begin{itemize}
+			            \item $q^{i}(a_{1}, a_{2}, \ldots, a_{k})$ hvor $a_{i} \in \Gamma \cup \{-\}$
+			                  \begin{itemize}
+				                  \item Når vi er i tilstanden $q^{i}_{(a_{1}, \ldots a_{i}, -, \ldots, -)}$ har vi set hvad der er under hovederne på de første $i$ bånd.
+			                  \end{itemize}
+			            \item $p^{i}(\delta_{1}, \delta_{2}, \ldots, \delta_{k}, b_{1}, b_{2}, \ldots, b_{k}, \gamma_{1}, \gamma_{2}, \ldots, \gamma_{k})$ hvor $\delta_{i} \in \Gamma \cup \{-\}$, $b_{i} \in \Gamma$, $\gamma_{i} \in \{R,L,S\}$
+			                  \begin{itemize}
+				                  \item I tilstand $p^{i}(b_{1}, \ldots, b_{i}, -, \ldots, -, b_{1}, b_{2}, \ldots, b_{k}, \gamma_{1}, \ldots, \gamma_{k})$ har vi ændret de første $i$ bånd, og flyttet hovedet.
+			                  \end{itemize}
+			            \item Mange tilstande, men polynomielt mange.
+		            \end{itemize}
+	      \end{itemize}
+\end{itemize}
+
+\newpage
+
+\section*{Afgørlighed}
+
+\begin{itemize}
+	\item Hvad er afgørlighed?
+	\item Hvad er uafgørlighed?
+	\item Eksempler på afgørlige problemer, i.e., problemer hvor der findes en afgører:
+	      \begin{itemize}
+		      \item $A_{DFA}$ -> Trivielt
+		      \item $A_{NFA}$ -> Konvertering, derefter kør DFA
+		      \item $A_{REX}$ -> Konvertering, derefter kør NFA
+		      \item $A_{CFG}$ -> konvertering til CNF, kør alle afledening $2|w|-1$
+		      \item $E_{CFG}$ -> Markér terminaler
+	      \end{itemize}
+	\item Uafgørlige:
+	      \begin{itemize}
+		      \item $A_{TM}$, givet en TM $M$, accepterer den $w$?
+		      \item Bemærk: Den er genkendelig, bare brug $U$.
+		      \item Antag $H$ er en Turingmaskine der afgører $A_{TGM}$
+		      \item Der bliver lavet en ny, $D$ som bruger $H$, men tager svaret, og gør det omvendte. I.e., hvis den accepterer, så afvis og omvendt, og den tager en Turingmaskine som input både til strengen der bliver accepteret, og maskinen.
+		      \item Hvad sker der så hvis $D$ kører på sig selv? Så ville den acceptere, hvis og kun hvis den afviser og omvendt. Dette er et modstrid, og er umuligt.
+	      \end{itemize}
+	\item Standseproblemet:
+	      \begin{itemize}
+		      \item Standseproblemet siger ``Givet en Turingmaskine og en streng, standser maskinen på denne streng?'' Hvis ja, så accepter, ellers afvis.
+		      \item Vi antager at $R$ afgører standseproblemet, og bruger den i en ny Turingmaskine, $M_{R}$ som først tager Turingmaskinen, og outputter en ny Turingmaskine som løkker på alt input den ikke ville acceptere.
+		      \item Vi giver denne nye Turingmaskine, sammen med inputtet $w$ til $R$, som accepterer $\iff$ w \(\in L(m)\), og afviser $\iff w \notin L(m)$.
+	      \end{itemize}
+\end{itemize}
+
+\newpage
+
+\section*{NP-Komplethedsbeviser - Eksempler}
+
+\begin{itemize}
+	\item $P$ = Klassen af problemer der kan løses af en deterministisk maskine i polynomiel tid
+	\item $NP$ = Klassen af problemer hvis løsning kan verificeres af en deterministisk maskine i polynomiel tid
+	\item $NP$-Komplet: Klassen af problemer som er i NP, men hvor alle andre problemer også kan reduceres til dette (gjort muligt af Cook-Levin sætningen).
+	\item Polynomiel Reduktion:
+	      \begin{itemize}
+		      \item Funktion der går fra A til B:  $f : \Sigma^{*} \rightarrow \Sigma^{*}$ således at $x \in A \iff f(x) \in B$
+		      \item Det er polynomielt, i.e., der findes en konstant hvorledes $f(x)$ kan beregnes i tid $O(|x|^{k})$
+		      \item Vi skriver $A \le_{p} B$ hvis $A$ reduceres til $B$.
+		      \item Dermed hvis $A \le_{P} B$ og $B \in P$ så er $A \in P$, da reduceringen kun tager polynomiel tid, og vi kan køre $B$ i polynomiel tid.
+	      \end{itemize}
+	\item Hvordan man beviser NP-Komplet
+	      \begin{itemize}
+		      \item Problemet skal være i $NP$
+		      \item Et andet NP-Komplet problem skal kunne reducere til det
+	      \end{itemize}
+	\item Eksempel: SAT $\le_{p}$ 3-SAT
+	      \begin{itemize}
+		      \item Alle klausuler skal have størrelse $= 3$
+		      \item Reducering fra $|C| \ge 4, |C| = 2, |C| = 1$
+	      \end{itemize}
+	\item Eksempel 3-SAT $\le_{p}$ CLIQUE
+	      \begin{itemize}
+		      \item Klausuler må ikke have kanter imellem sig, $X$ og $\overline{X}$ må ikke have kanter mellem sig. Hvis der eksisterer en klikke, så giv literals værdier så de evaluerer sig til sand
+	      \end{itemize}
+	\item Eksempel CLIQUE $\le_{P}$ Independent-Set
+	      \begin{itemize}
+		      \item Hvis man kan finde et independent set, tager man bare komplementet af knuderne for at få klikken
+	      \end{itemize}
+	\item Eksempel Independent Set $\le_{P}$ vertex Cover
+	      \begin{itemize}
+		      \item $X$ er Independent $\iff$ $V \setminus X$ er et Vertex Cover
+	      \end{itemize}
+\end{itemize}
+
+\section*{Cook-Levin}
+
+\begin{itemize}
+
+	\item P er de problemer der kan løses deterministisk i polynomiel tid
+	\item NP er de problemer hvis løsning kan verificeres i polynomiel tid
+	\item Cook-Levin sætningen er basis for NP-komplethed, som altså siger at alle NP problemer kan reduceres til dette.
+	\item Det vil sige, at hvis $SAT \in P$, så $P = NP$
+	\item En tableau for $N$ er en gren af en nondeterministisk maskine på en streng $w$.
+	\item Hvis $N$ er en NDTM der afgører $A$ i tid $n^{k}$ minus en konstant vil tableauen være af størrelse $n^{k}$ i begge sider, altså både rækker og kolonner.
+	\item Hele første kolonne er fyldt med \# for at indikere start, samme med den sidste for at indikere slut.
+	\item Hver række er en konfiguration.
+	\item Første række er startkonfigurationen.
+	\item En \textit{accepterende} tableu er en tableu hvor mindst én af rækkende svarer til en accepterende konfiguration af $N$ på $w$.
+	\item Hvis en række er accepterende, lader vi de resterende rækker efter denne også være accepterende.
+	\item Vores mål er at lave Satisfiability formlen der er sand hvis og kun hvis der er en accepterende tableau for $N$ på $w$: $\phi = \phi_{cell} \wedge \phi_{start} \wedge \phi_{accept} \wedge \phi_{bevæg}$
+	\item $X_{i,j,a} = 1$ hvis på række $i$, kolonne $j$ er der symbolet $a$. Der må kun være ét symbol i hver ``celle'', så vi får:
+	      \begin{equation*}
+		      \phi_{cell} = \bigwedge_{i,j \in [n^{k}]} \left( \left(   \bigvee_{s\in C} x_{i,j,s} \right) \wedge \left( \bigwedge_{s,t \in C, s \ne t} (\overline{x_{i,j,s}} \vee \overline{x_{i,j,t}}) \right)\right)
+	      \end{equation*}
+	\item Vi vil gerne at startrækken indeholder input.
+	      \begin{equation*}
+		      \phi_{start} = x_{1,1,\#} \wedge x_{1,2,q_{0}} \wedge \left( \bigwedge_{j=1}^{n} x_{1,2+j,w_{j}}  \right) \wedge \left( \bigwedge_{j=n+3}^{t-1} x_{1,j,\sqcup} \right) \wedge x_{1,t,\#}
+	      \end{equation*}
+	\item Et eller andet sted skal der bare være en accepttilstand:
+	      \begin{equation*}
+		      \bigvee_{1 \le i,j \le t} x_{i,j,q_{accept}}
+	      \end{equation*}
+
+	\item Move er den sværeste. Vi har et \(3 \times 2\) vindue som vi skal ``køre rundt'' på hele tableuen, for at sikre at alle konfigurationer er lovlige i forhold til overføringsfunktionen.
+	\item Vi kalder et vindue lovligt hvis de 3 nederste celler kan resultere fra de 3 øverste celler i et skridt
+
+	      \[
+		      \varphi_{move} = \bigwedge_{1 \leq i < t \atop 1 \leq j < t} (\text{(i, j) - window is legal})
+	      \]
+
+	      \[
+		      \bigvee_{(a_1, a_2, a_3, a_4, a_5, a_6) \text{ is a legal window}} (x_{i, j-1, a_1} \land x_{i, j, a_2} \land x_{i, j+1, a_3} \land x_{i+1, j-1, a_4} \land x_{i+1, j, a_5} \land x_{i+1, j+1, a_6})
+	      \]
+	\item Der er højest $|C|^{6}$ lovlige vinduer.
+	\item Dermed, hvis \(\phi\) er satisfiable, så accepterer $N$ $w$ hvis $w \in A$.
+	\item Vis nu at reduktionen er polynomiel:
+	      \begin{itemize}
+		      \item Antallet af variabler er $n^{2k} \cdot |c| \in O(n^{2k})$
+		      \item $|\phi_{start}| \in O(n^{k})$
+		      \item $|\phi_{accept}| \in O(n^{2k})$
+		      \item $|\phi_{cell}| \in O(n^{2k})$
+		      \item $|\phi_{move}| \in O(n^{2k})$ da antallet af lovlige vinduer afhænger af $N$'s overføringstabel.
+		      \item $O(\log n)$ til at håndtere indeks
+		      \item I alt $|\phi| \in O(n^{2k} \log n)$ som er polynomielt i $n = |w|$.
+	      \end{itemize}
+\end{itemize}
+\newpage
+
+\section*{Approksimationsalgoritmer}
+\begin{itemize}
+	\item Introduktion
+	      \begin{itemize}
+		      \item Hvad er approksimationsalgoritmer?
+		      \item Anderledes end afgørseslproblemer: I stedet for at være givet et $k$ forsøger den at finde noget nær-optimalt.
+	      \end{itemize}
+	\item Løsninger
+	      \begin{itemize}
+		      \item Vi kalder vores løsning $C$, og den optimale $C^{*}$
+		      \item Approksimationsforholdet \(\rho(n)\) for et problem kan udregnes ved \[ \max \{ \frac{C}{C^{*}}, \frac{C^{*}}{C} \} \le \rho(n)\]
+		      \item Dette afhænger af om det er et maksimerings eller minimeringsproblem.
+		      \item Maksimering: $C \le C^{*}$, Minimering: $C \ge C^{*}$
+	      \end{itemize}
+	\item Eksempel 1: Vertex Cover
+	      \begin{itemize}
+		      \item 2-approksimationsalgoritme.
+		      \item Simpel algoritme: Vælg tilfældigt en kant og fjern alle kanter incident til knuderne i kanten.
+		      \item Bliv ved indtil der ikke er flere kanter
+		      \item Kanterne giver en matching med $2k$ knuder, hvor $k$ er antal kanter
+		      \item $|X^{*}|$ err det optimale vertex cover, og $|X^{*}| \ge k$, fordi der mindst må bruges $k$ knuder
+		      \item Dermed, da vi har $2k$ er $\frac{|X|}{|X^{*}|} \le 2$, så det er en 2-approksimationsalgoritme
+		      \item Algoritmen kører i polynomiel tid i antallet af kanter.
+	      \end{itemize}
+	\item Eksempel 2: TSP med $\Delta$-ulighed
+	      \begin{itemize}
+		      \item \(\Delta\)-uligheden siger at $c_{ij} \le c_{ik} + c_{kj}$ $\forall i,j,k \in V$, altså er det aldrig \textit{hurtigere} end at gå direkte fra $a$ til $b$ end at gå fra $a$ til $c$ til $b$.
+		      \item Lav et træ, og så en hamiltoniansk kreds hvor $\frac{c(H)}{c(H^{*})} \le 2$, hvor $H^{*}$ er den optimale tur.
+		      \item $c(T^{*}) \le c(H^{*})$: Hvis vi har en hamiltoniansk kreds, og fjerner en kant får vi et spanning træ. Dermed $c(H^{*}) \ge c(T') \ge c(T^{*})$
+		      \item Vi laver en walk i Træet, og fjerner duplicates, så vi får en kreds.
+		      \item $c(H) \le c(W)$ ud fra trekantsuligheden, hvor $w$ er walken.
+		      \item Da walken er $2c(T^{*})$ da vi både går frem og tilbage, og $c(H) \le c(W)$ får vi $c(H) \le c(W) = 2c(T^{*}) \le 2c(H^{*})$
+		      \item Dermed $\frac{c(H)}{c(H^{*})} \le 2$
+	      \end{itemize}
+	\item TSP  uden Trekantsulighed er ikke mulig som approksimationsalgoritme.
+\end{itemize}
+
+\section*{Informationsteoretiske Nedre Grænser}
+
+\section*{Modstanderargumenter - Teknikker og Eksempler}
+
+\section*{Algoritmer med faste parametre, parameteriseret kompleksitet og ekaskte eksponentielle algoritmer}
+
+
+\newpage
+
+\end{document}
+%%% Local Variables:
+%%% mode: latex
+%%% TeX-engine: xetex
+%%% TeX-command-extra-options: "-shell-escape"
+%%% End:
