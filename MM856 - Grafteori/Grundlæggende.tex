@@ -43,6 +43,13 @@ En \textbf{graf} $G$ er en triple indeholdende knudemængden $V(G)$, en mængde 
 
 Jeg har allerede brugt ordene ``knuder'' og ``kanter''. I Figur~\ref{fig:konigsberggraf} kan man se et eksempel på en graf, hvor knuderne er repræsenteret af cirkler med et ``navn'' (inde i cirklen) og en kant der går mellem. Dette er den mest normale måde at repræsentere en graf på. Mængden af kanter er $\{w,x,y,z\}$ og mængden af kanter er unavngivet. En anden måde at definere en graf på er ved at bruge en 2-tuple (også kaldet et par), hvor knuderne forbliver defineret på samme måde, men kanterne i stedet defineres som en mængde af par, hvor parrene er to knuder. Her ville vi kunne definere kanterne som den følgende mængde: $\{(w,x), (x,w), (w,z), (z,w), (w,y), (x,y), (z,y)\}$. West bruger også denne notation, dog uden at gøre det til par, i.e. bliver vores mængde til $\{wx, xw, wz, zw, wy, xy, zy\}$
 
+\index{graf!simpel}
+\begin{definition}[Simpel Graf]
+En graf er \textbf{simpel} hvis måden kanterne sammensættes på kan ses som et par af uordnet knuder.
+\end{definition}
+
+Definitionen fra \href{https://www.georgmohr.dk/noter/grafteori2014.pdf}{Kristen Rosenkildes noter på grafteori} lægger også vægt i at der højest er en kant mellem to knuder (hvilket også kommer fra vores sammenligning) og at en knude ikke må gå til sig selv (løkke).
+
 \index{graf!løkke}
 \index{graf!multiple kanter}
 \index{graf!nabokanter}
@@ -171,6 +178,70 @@ En graf $G$ er $k$-delelig hvis $V(G)$ kan udtrykkes som foreningsmængden af (m
 \begin{example}
 Hvis vi har en mængde af komitéer, hvor nogle personer er i mere end en komité, og vi gerne vil planlægge tidspunktet for møder i disse komitéer, hvor mange forskellige tidspunkter skal vi bruge? Her er tidspunkterne farverne, så det minimum antal farver vi skal bruge, er også det minimum antal tidspunkter.
 \end{example}
+
+Vi kan bruge kromatiske tal til at generalisere todelelige grafer til $k$-delelige grafer. En graf er $k$-delelige hvis og kun hvis dens kromatiske tal er højest $k$. En delelig mængde (partite set på engelsk).
+
+\index{graf!sti}
+\begin{definition}[Sti]
+En \textit{sti} (path) er en simpel graf hvis knuder kan ordnes således at to knuder er naboer hvis og kun hvis de kommer efter hinanden i listen.
+\end{definition}
+
+Altså er en sti simpelt bare en graf hvor du kan gå fra knude $a$ til $b$ til $c$ etc.
+
+\index{graf!kreds}
+\begin{definition}[Kreds]
+En \textit{kreds} (cycle) er en graf med et lige antal af knuder og kanter, og hvor kanternes knuder kan blive placeret rundt i en cirkel således at to knuder er naboer hvis og kun hvis de er optræder efter hinanden i cirklen.
+\end{definition}
+
+\begin{example}
+Følgende er to grafer. Figur~\ref{fig:sti} er en sti, og Figur~\ref{fig:kreds} er en kreds.
+
+\begin{figure}[H]
+  \centering
+  \begin{minipage}{0.45\textwidth}
+    \centering
+    \begin{tikzpicture}[main/.style = {draw, circle}]
+      \node[main] (x) at (0,0) {$x$};
+      \node[main] (z) at (1,0) {$z$};
+      \node[main] (a) at (2, -0.5) {$a$};
+      \node[main] (y) at (0,-1) {$y$};
+      \node[main] (b) at (1,-1) {$b$};
+
+      \draw (x) to (b)
+      (b) to (a)
+      (a) to (z)
+      (z) to (y);
+    \end{tikzpicture}
+    \caption{\label{fig:sti} En Sti}
+  \end{minipage}
+  \hfill
+  \begin{minipage}{0.45\textwidth}
+    \centering
+    \begin{tikzpicture}[main/.style = {draw, circle}]
+      \node[main] (x) at (0,0) {$x$};
+      \node[main] (z) at (1,0) {$z$};
+      \node[main] (a) at (2, -0.5) {$a$};
+      \node[main] (y) at (0,-1) {$y$};
+      \node[main] (b) at (1,-1) {$b$};
+
+      \draw (x) to (b)
+      (b) to (a)
+      (a) to (z)
+      (z) to (y)
+      (y) to (x);
+    \end{tikzpicture}
+    \caption{\label{fig:kreds} En Kreds}
+  \end{minipage}
+\end{figure}
+Bemærk her, at hvis man fjerner én kant fra en kreds bliver det til en sti.
+\end{example}
+
+Når vi snakker om stier og kredse er det ofte i forbindelse med om der er en sti eller kreds i en graf som i sig selv ikke er en sti eller en kreds.
+
+\index{graf!delgraf}
+\begin{definition}[Delgraf]
+En \textit{delgraf} af en graf $G$ er en graf $H$ hvor $V(H) \subseteq V(G)$ og $E(H) \subseteq E(G)$, og at tildelingen af endepunkter til kanter i $H$ er det samme som i $G$.
+\end{definition}
 
 
 %%% Local Variables:
