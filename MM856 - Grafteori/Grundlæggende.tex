@@ -7,45 +7,45 @@ Königsberg-problemet er ofte sagt til at være problemet der ``startede'' graf-
 
 
 \begin{figure}[h!]
-  \centering
-  \begin{minipage}{0.45\textwidth}
-    \centering
-    \includegraphics[width=\textwidth]{figurer/Königsberg.jpg}
-    \caption{\label{fig:konigsberg} Königsberg Broer}
-  \end{minipage}
-  \hfill
-  \begin{minipage}{0.45\textwidth}
-    \centering
-    \begin{tikzpicture}[main/.style = {draw, circle}]
-      \node[main] (w) {$w$};
-      \node[main] (x) [above right of =w]{$x$};
-      \node[main] (z) [below right of = w]{$z$};
-      \node[main] (y) [above right of =z]{$y$};
+	\centering
+	\begin{minipage}{0.45\textwidth}
+		\centering
+		\includegraphics[width=\textwidth]{figurer/Königsberg.jpg}
+		\caption{\label{fig:konigsberg} Königsberg Broer}
+	\end{minipage}
+	\hfill
+	\begin{minipage}{0.45\textwidth}
+		\centering
+		\begin{tikzpicture}[main/.style = {draw, circle}]
+			\node[main] (w) {$w$};
+			\node[main] (x) [above right of =w]{$x$};
+			\node[main] (z) [below right of = w]{$z$};
+			\node[main] (y) [above right of =z]{$y$};
 
-      \draw (w) [bend right] to (x);
-      \draw (x) [bend right] to (w);
-      \draw (x) to (y);
-      \draw (w) to (y);
-      \draw (z) to (y);
-      \draw (w) [bend right] to (z);
-      \draw (z) [bend right] to (w);
-    \end{tikzpicture}
-    \caption{\label{fig:konigsberggraf} Graf til Königsberg Broer}
-  \end{minipage}
+			\draw (w) [bend right] to (x);
+			\draw (x) [bend right] to (w);
+			\draw (x) to (y);
+			\draw (w) to (y);
+			\draw (z) to (y);
+			\draw (w) [bend right] to (z);
+			\draw (z) [bend right] to (w);
+		\end{tikzpicture}
+		\caption{\label{fig:konigsberggraf} Graf til Königsberg Broer}
+	\end{minipage}
 \end{figure}
 
 Vi vil nu definere hvad en \textit{graf} egentlig er.
 
 \index{graf!definition}
 \begin{definition}[Graf]
-En \textbf{graf} $G$ er en triple indeholdende knudemængden $V(G)$, en mængde af kanter $E(G)$ og en relation som associerer hver kant til to knuder, kaldet endepunkter.
+	En \textbf{graf} $G$ er en triple indeholdende knudemængden $V(G)$, en mængde af kanter $E(G)$ og en relation som associerer hver kant til to knuder, kaldet endepunkter.
 \end{definition}
 
 Jeg har allerede brugt ordene ``knuder'' og ``kanter''. I Figur~\ref{fig:konigsberggraf} kan man se et eksempel på en graf, hvor knuderne er repræsenteret af cirkler med et ``navn'' (inde i cirklen) og en kant der går mellem. Dette er den mest normale måde at repræsentere en graf på. Mængden af kanter er $\{w,x,y,z\}$ og mængden af kanter er unavngivet. En anden måde at definere en graf på er ved at bruge en 2-tuple (også kaldet et par), hvor knuderne forbliver defineret på samme måde, men kanterne i stedet defineres som en mængde af par, hvor parrene er to knuder. Her ville vi kunne definere kanterne som den følgende mængde: $\{(w,x), (x,w), (w,z), (z,w), (w,y), (x,y), (z,y)\}$. West bruger også denne notation, dog uden at gøre det til par, i.e. bliver vores mængde til $\{wx, xw, wz, zw, wy, xy, zy\}$
 
 \index{graf!simpel}
 \begin{definition}[Simpel Graf]
-En graf er \textbf{simpel} hvis måden kanterne sammensættes på kan ses som et par af uordnet knuder.
+	En graf er \textbf{simpel} hvis måden kanterne sammensættes på kan ses som et par af uordnet knuder.
 \end{definition}
 
 Definitionen fra \href{https://www.georgmohr.dk/noter/grafteori2014.pdf}{Kristen Rosenkildes noter på grafteori} lægger også vægt i at der højest er en kant mellem to knuder (hvilket også kommer fra vores sammenligning) og at en knude ikke må gå til sig selv (løkke).
@@ -54,14 +54,14 @@ Definitionen fra \href{https://www.georgmohr.dk/noter/grafteori2014.pdf}{Kristen
 \index{graf!multiple kanter}
 \index{graf!nabokanter}
 \begin{definition}[Løkke]
-En løkke er en kant hvis endepunkter er ens. Hvis et par af knuder har det samme par af endepunkter, kaldes de \textit{multiple kanter}. Når to kanter $u$ og $v$ er endepunkter af en kant er de \textit{naboer}\footnote{På engelsk siger man også at de to knuder er \textit{adjacent}.}. Vi skriver $u \leftrightarrow v$ til at mene ``$u$ og $v$ er nabokanter''.
+	En løkke er en kant hvis endepunkter er ens. Hvis et par af knuder har det samme par af endepunkter, kaldes de \textit{multiple kanter}. Når to kanter $u$ og $v$ er endepunkter af en kant er de \textit{naboer}\footnote{På engelsk siger man også at de to knuder er \textit{adjacent}.}. Vi skriver $u \leftrightarrow v$ til at mene ``$u$ og $v$ er nabokanter''.
 \end{definition}
 
 En graf er \textit{endelig} hvis mængden af kanter og knuder er endelige. Grafer i disse noter er endelige, undtagen hvis andet er sagt.
 
 \index{graf!tom}
 \begin{remark}
-\textit{Den tomme graf} (engelsk: null graph) er grafen hvis mængder af kanter og knuder er tomme. Den bliver generelt ikke brugt, og skal derfor ikke haves i baghovedet når man læser teksten.
+	\textit{Den tomme graf} (engelsk: null graph) er grafen hvis mængder af kanter og knuder er tomme. Den bliver generelt ikke brugt, og skal derfor ikke haves i baghovedet når man læser teksten.
 \end{remark}
 
 \subsection{Grafer som Modeller}%
@@ -70,56 +70,56 @@ En graf er \textit{endelig} hvis mængden af kanter og knuder er endelige. Grafe
 Vi kan bruge grafer til at modellere mange problemer. Før vi går videre til et eksempel, giver vi definitionen på komplementet af en graf:
 \index{graf!komplement}
 \begin{definition}[Komplement af en graf]
-Komplementet $\overline{G}$ af en simpel graf $G$ er denne simple graf med knudemængden $V(G)$ defineret ved at $(u,v) \in E(\overline{G})$ hvis og kun hvis $(u,v) \in E(G)$.
+	Komplementet $\overline{G}$ af en simpel graf $G$ er denne simple graf med knudemængden $V(G)$ defineret ved at $(u,v) \in E(\overline{G})$ hvis og kun hvis $(u,v) \in E(G)$.
 \end{definition}
 
 Vi kan nu se på et eksempel. Vi kan bruge grafer til at modellere om folk kender hinanden eller ej (ligeledes om deres forhold generelt: venner, fjender, bekendte, etc).
 
 
 \begin{example}
-  \label{ex:1.1.7}
-Har alle mængder af seks personer 3 fælles bekendte eller 3 fælles fremmede? Vi kan modellere dette med grafer, ved den viden at bekendtskaber er fælles. Hver knude repræsenterer en person, og hver kant et bekendtskab. Dermed, hvis der er en kant mellem to knuder er disse personer bekendte.
-\begin{figure}[H]
-  \centering
-  \begin{minipage}{0.45\textwidth}
-    \centering
-    \begin{tikzpicture}[main/.style = {draw, circle}]
-      \node[main] (u) at (0,0) {$u$};
-      \node[main] (y) at (-1,-1) {$y$};
-      \node[main] (x) at (-0.5,-2) {$x$};
-      \node[main] (w) at (0.5,-2) {$w$};
-      \node[main] (v) at (1,-1) {$v$};
+	\label{ex:1.1.7}
+	Har alle mængder af seks personer 3 fælles bekendte eller 3 fælles fremmede? Vi kan modellere dette med grafer, ved den viden at bekendtskaber er fælles. Hver knude repræsenterer en person, og hver kant et bekendtskab. Dermed, hvis der er en kant mellem to knuder er disse personer bekendte.
+	\begin{figure}[H]
+		\centering
+		\begin{minipage}{0.45\textwidth}
+			\centering
+			\begin{tikzpicture}[main/.style = {draw, circle}]
+				\node[main] (u) at (0,0) {$u$};
+				\node[main] (y) at (-1,-1) {$y$};
+				\node[main] (x) at (-0.5,-2) {$x$};
+				\node[main] (w) at (0.5,-2) {$w$};
+				\node[main] (v) at (1,-1) {$v$};
 
-      \draw (y) to (u)
-      (u) to (v)
-      (v) to (w)
-      (w) to (x)
-      (x) to (y)
-      (u) to (x);
+				\draw (y) to (u)
+				(u) to (v)
+				(v) to (w)
+				(w) to (x)
+				(x) to (y)
+				(u) to (x);
 
-    \end{tikzpicture}
-    \caption{\label{} Grafen $G$}
-  \end{minipage}
-  \hfill
-  \begin{minipage}{0.45\textwidth}
-    \centering
-    \begin{tikzpicture}[main/.style = {draw, circle}]
-      \node[main] (u) at (0,0) {$u$};
-      \node[main] (y) at (-1,-1) {$y$};
-      \node[main] (x) at (-0.5,-2) {$x$};
-      \node[main] (w) at (0.5,-2) {$w$};
-      \node[main] (v) at (1,-1) {$v$};
+			\end{tikzpicture}
+			\caption{\label{} Grafen $G$}
+		\end{minipage}
+		\hfill
+		\begin{minipage}{0.45\textwidth}
+			\centering
+			\begin{tikzpicture}[main/.style = {draw, circle}]
+				\node[main] (u) at (0,0) {$u$};
+				\node[main] (y) at (-1,-1) {$y$};
+				\node[main] (x) at (-0.5,-2) {$x$};
+				\node[main] (w) at (0.5,-2) {$w$};
+				\node[main] (v) at (1,-1) {$v$};
 
-      \draw (u) to (w)
-      (w) to (y)
-      (y) to (v)
-      (v) to (x);
+				\draw (u) to (w)
+				(w) to (y)
+				(y) to (v)
+				(v) to (x);
 
-    \end{tikzpicture}
-    \caption{Grafen $\overline{G}$}
-  \end{minipage}
-\end{figure}
-  Her kan vi se at komplementet, giver de personer der er fremmede endnu.
+			\end{tikzpicture}
+			\caption{Grafen $\overline{G}$}
+		\end{minipage}
+	\end{figure}
+	Her kan vi se at komplementet, giver de personer der er fremmede endnu.
 \end{example}
 
 
@@ -127,7 +127,7 @@ Har alle mængder af seks personer 3 fælles bekendte eller 3 fælles fremmede? 
 \index{graf!klikke}
 \index{graf!uafhængig mængde}
 \begin{definition}[Klikke, uafhængig mængde]
-En \textit{klikke} i en graf er en mængde af parvise naboknuder. En \textit{uafhængig mængde} (eller en stabil mængde) i en graf er en mængde af parvise knuder der \textbf{ikke} er naboer.
+	En \textit{klikke} i en graf er en mængde af parvise naboknuder. En \textit{uafhængig mængde} (eller en stabil mængde) i en graf er en mængde af parvise knuder der \textbf{ikke} er naboer.
 \end{definition}
 
 Husk at to knuder er naboer når der er en kant imellem dem. Dermed kan du omformulere begge definition til at være følgende: En klikke er en delgraf hvor alle knuderne har kanter til alle andre knuder. En uafhængig graf er en delgraf hvor ingen af knuderne har kanter til nogen af de andre knuder.
@@ -136,117 +136,183 @@ I eksempel~\ref{ex:1.1.7} er $\{u,x,y\}$ en klikke af størrelse 3, og $\{u,w\}$
 
 \index{graf!todelt}
 \begin{definition}[Todelt Graf]
-En graf $G$ er todelt (bipartite) hvis $V(G)$ er foreningsmængden af to disjunkte uafhængige mængder kaldet \textit{delte mængder} (partite sets) af $G$.
+	En graf $G$ er todelt (bipartite) hvis $V(G)$ er foreningsmængden af to disjunkte uafhængige mængder kaldet \textit{delte mængder} (partite sets) af $G$.
 \end{definition}
 
 \begin{example}
-Hvis vi har $m$ jobs og $n$ personer, men ikke alle personer er kvalificeret til alle jobs, kan vi udfylde jobsne med kvalificeret personer? Vi kan modellere dette med en todelt graf, hvor jobs er en delgraf og personer er en anden. En person $p$ er nabo med job $j$ hvis $p$ er kvalificeret til $j$.
-\begin{center}
-\begin{tikzpicture}[main/.style = {draw, circle}]
-\node[main] (p1) at (0,1) {};
-\node[main] (p2) at (1,1) {};
-\node[main] (p3) at (2,1) {};
-\node[main] (p4) at (3,1) {};
-\node (personer) at (5,1) {Personer};
-\node[main] (j1) at (0,0) {};
-\node[main] (j2) at (1,0) {};
-\node[main] (j3) at (2,0) {};
-\node[main] (j4) at (3,0) {};
-\node (jobs) at (5,0) {Jobs};
+	Hvis vi har $m$ jobs og $n$ personer, men ikke alle personer er kvalificeret til alle jobs, kan vi udfylde jobsne med kvalificeret personer? Vi kan modellere dette med en todelt graf, hvor jobs er en delgraf og personer er en anden. En person $p$ er nabo med job $j$ hvis $p$ er kvalificeret til $j$.
+	\begin{center}
+		\begin{tikzpicture}[main/.style = {draw, circle}]
+			\node[main] (p1) at (0,1) {};
+			\node[main] (p2) at (1,1) {};
+			\node[main] (p3) at (2,1) {};
+			\node[main] (p4) at (3,1) {};
+			\node (personer) at (5,1) {Personer};
+			\node[main] (j1) at (0,0) {};
+			\node[main] (j2) at (1,0) {};
+			\node[main] (j3) at (2,0) {};
+			\node[main] (j4) at (3,0) {};
+			\node (jobs) at (5,0) {Jobs};
 
-\draw (p1) to (j1)
-(p2) to (j1)
-(p2) to (j2)
-(p3) to (j3)
-(p3) to (j4)
-(p4) to (j1)
-(p4) to (j2);
-\end{tikzpicture}
-\end{center}
+			\draw (p1) to (j1)
+			(p2) to (j1)
+			(p2) to (j2)
+			(p3) to (j3)
+			(p3) to (j4)
+			(p4) to (j1)
+			(p4) to (j2);
+		\end{tikzpicture}
+	\end{center}
 \end{example}
 
 \index{graf!kromatisk tal}
 \begin{definition}[Kromatisk Tal]
-Det kromatiske tal af en graf $G$, skrevet $\chi(G)$ er minimumsantallet af farver nødvendige at give til knuder, således at naboknuder har forskellige farver.
+	Det kromatiske tal af en graf $G$, skrevet $\chi(G)$ er minimumsantallet af farver nødvendige at give til knuder, således at naboknuder har forskellige farver.
 \end{definition}
 
 \index{graf!$k$-delelighed}
 \begin{definition}[$k$-delelighed]
-En graf $G$ er $k$-delelig hvis $V(G)$ kan udtrykkes som foreningsmængden af (muligvis tomme) uafhængige mængder.
+	En graf $G$ er $k$-delelig hvis $V(G)$ kan udtrykkes som foreningsmængden af (muligvis tomme) uafhængige mængder.
 \end{definition}
 
 \begin{example}
-Hvis vi har en mængde af komitéer, hvor nogle personer er i mere end en komité, og vi gerne vil planlægge tidspunktet for møder i disse komitéer, hvor mange forskellige tidspunkter skal vi bruge? Her er tidspunkterne farverne, så det minimum antal farver vi skal bruge, er også det minimum antal tidspunkter.
+	Hvis vi har en mængde af komitéer, hvor nogle personer er i mere end en komité, og vi gerne vil planlægge tidspunktet for møder i disse komitéer, hvor mange forskellige tidspunkter skal vi bruge? Her er tidspunkterne farverne, så det minimum antal farver vi skal bruge, er også det minimum antal tidspunkter.
 \end{example}
 
 Vi kan bruge kromatiske tal til at generalisere todelelige grafer til $k$-delelige grafer. En graf er $k$-delelige hvis og kun hvis dens kromatiske tal er højest $k$. En delelig mængde (partite set på engelsk).
 
 \index{graf!sti}
 \begin{definition}[Sti]
-En \textit{sti} (path) er en simpel graf hvis knuder kan ordnes således at to knuder er naboer hvis og kun hvis de kommer efter hinanden i listen.
+	En \textit{sti} (path) er en simpel graf hvis knuder kan ordnes således at to knuder er naboer hvis og kun hvis de kommer efter hinanden i listen.
 \end{definition}
 
 Altså er en sti simpelt bare en graf hvor du kan gå fra knude $a$ til $b$ til $c$ etc.
 
 \index{graf!kreds}
 \begin{definition}[Kreds]
-En \textit{kreds} (cycle) er en graf med et lige antal af knuder og kanter, og hvor kanternes knuder kan blive placeret rundt i en cirkel således at to knuder er naboer hvis og kun hvis de er optræder efter hinanden i cirklen.
+	En \textit{kreds} (cycle) er en graf med et lige antal af knuder og kanter, og hvor kanternes knuder kan blive placeret rundt i en cirkel således at to knuder er naboer hvis og kun hvis de er optræder efter hinanden i cirklen.
 \end{definition}
 
 \begin{example}
-Følgende er to grafer. Figur~\ref{fig:sti} er en sti, og Figur~\ref{fig:kreds} er en kreds.
+	Følgende er to grafer. Figur~\ref{fig:sti} er en sti, og Figur~\ref{fig:kreds} er en kreds.
 
-\begin{figure}[H]
-  \centering
-  \begin{minipage}{0.45\textwidth}
-    \centering
-    \begin{tikzpicture}[main/.style = {draw, circle}]
-      \node[main] (x) at (0,0) {$x$};
-      \node[main] (z) at (1,0) {$z$};
-      \node[main] (a) at (2, -0.5) {$a$};
-      \node[main] (y) at (0,-1) {$y$};
-      \node[main] (b) at (1,-1) {$b$};
+	\begin{figure}[H]
+		\centering
+		\begin{minipage}{0.45\textwidth}
+			\centering
+			\begin{tikzpicture}[main/.style = {draw, circle}]
+				\node[main] (x) at (0,0) {$x$};
+				\node[main] (z) at (1,0) {$z$};
+				\node[main] (a) at (2, -0.5) {$a$};
+				\node[main] (y) at (0,-1) {$y$};
+				\node[main] (b) at (1,-1) {$b$};
 
-      \draw (x) to (b)
-      (b) to (a)
-      (a) to (z)
-      (z) to (y);
-    \end{tikzpicture}
-    \caption{\label{fig:sti} En Sti}
-  \end{minipage}
-  \hfill
-  \begin{minipage}{0.45\textwidth}
-    \centering
-    \begin{tikzpicture}[main/.style = {draw, circle}]
-      \node[main] (x) at (0,0) {$x$};
-      \node[main] (z) at (1,0) {$z$};
-      \node[main] (a) at (2, -0.5) {$a$};
-      \node[main] (y) at (0,-1) {$y$};
-      \node[main] (b) at (1,-1) {$b$};
+				\draw (x) to (b)
+				(b) to (a)
+				(a) to (z)
+				(z) to (y);
+			\end{tikzpicture}
+			\caption{\label{fig:sti} En Sti}
+		\end{minipage}
+		\hfill
+		\begin{minipage}{0.45\textwidth}
+			\centering
+			\begin{tikzpicture}[main/.style = {draw, circle}]
+				\node[main] (x) at (0,0) {$x$};
+				\node[main] (z) at (1,0) {$z$};
+				\node[main] (a) at (2, -0.5) {$a$};
+				\node[main] (y) at (0,-1) {$y$};
+				\node[main] (b) at (1,-1) {$b$};
 
-      \draw (x) to (b)
-      (b) to (a)
-      (a) to (z)
-      (z) to (y)
-      (y) to (x);
-    \end{tikzpicture}
-    \caption{\label{fig:kreds} En Kreds}
-  \end{minipage}
-\end{figure}
-Bemærk her, at hvis man fjerner én kant fra en kreds bliver det til en sti.
+				\draw (x) to (b)
+				(b) to (a)
+				(a) to (z)
+				(z) to (y)
+				(y) to (x);
+			\end{tikzpicture}
+			\caption{\label{fig:kreds} En Kreds}
+		\end{minipage}
+	\end{figure}
+	Bemærk her, at hvis man fjerner én kant fra en kreds bliver det til en sti.
 \end{example}
 
 Når vi snakker om stier og kredse er det ofte i forbindelse med om der er en sti eller kreds i en graf som i sig selv ikke er en sti eller en kreds.
 
 \index{graf!delgraf}
 \begin{definition}[Delgraf]
-En \textit{delgraf} af en graf $G$ er en graf $H$ hvor $V(H) \subseteq V(G)$ og $E(H) \subseteq E(G)$, og at tildelingen af endepunkter til kanter i $H$ er det samme som i $G$.
+	En \textit{delgraf} af en graf $G$ er en graf $H$ hvor $V(H) \subseteq V(G)$ og $E(H) \subseteq E(G)$, og at tildelingen af endepunkter til kanter i $H$ er det samme som i $G$. Vi siger ``G \textit{indeholder} H'' og skriver $H \subseteq G$.
+\end{definition}
+
+\index{graf!sammenhængende}
+\begin{definition}[Sammenhængende Graf]
+	En graf $G$ er sammenhængende hvis hvert par af knuder i $G$ hører til en sti, ellers er $G$ usammenhængende.
+\end{definition}
+
+En måde at tænke på en sammenhængende graf på, er ved at spørge om man kan opdele de to eller flere grafer i hver deres mængder af knuder, uden at miste nogle kanter. Hvis dette \textit{ikke} er muligt, er grafen sammenhængende. Ellers er den usammenhængende.
+
+
+\subsection{Matricer og Isomorfi}%
+\label{subsec:label}
+
+Vi har set hvordan vi kan specificere grafer ved at tegne cirkler som knuder og streger som kanter, men der er andre måder at gøre det på. En graf er \textit{løkkeløs} hvis multiple kanter er tilladt, men løkker ikke er. I Figur~\ref{fig:pp7g} kan grafen ses, som vil bruges til at vise hvordan man ellers kan repræsentere en graf.
+
+
+\index{graf!repræsentationer!nabo-matrix}
+\begin{definition}[Nabo-matrix]
+    Lad $G$ være en løkkeløs graf med knudemængden $V(G) = \{v_{1}, \ldots, v_{n}\}$ og kantemængden $E(G) = \{e_{1}, \ldots, e_{m}\}$. Nabo-matricen af $G$, skrevet $A(G)$ er en $n \times n$ matrix hvori hver post i matricen $a_{i,j}$ er antallet af knuder i $G$ med endepunkterne $\{v_{i}, v_{j}\}$.
+\end{definition}
+
+\begin{figure}[H]
+    \vspace{-20pt} % Adjusts the vertical space
+    \centering
+    \begin{tikzpicture}
+        \graph [spring layout, nodes={circle, draw}] {
+            w --[edge label={$a$}] x,
+            w --[edge label={$b$}] y,
+            x --[bend left, edge label={$d$}] y,
+            y --[bend left, edge label={$c$}] x,
+            y --[edge label={$e$}] z
+        };
+    \end{tikzpicture}
+    \caption{\label{fig:pp7g} $G$}
+\end{figure}
+
+
+Følgende er nabo-matricen for grafen $G$ i Figur~\ref{fig:pp7g}:
+\begin{equation}
+A(G) = \begin{pmatrix}
+0 & 1 & 1 & 0 \\
+1 & 0 & 2 & 0 \\
+1 & 2 & 0 & 1 \\
+0 & 0 & 1 & 0
+\end{pmatrix}
+\end{equation}
+
+\index{graf!repræsentationer!incidens-matrix}
+\begin{definition}[Incidens-matrix]
+    Incidens-matricen af $G$, skrevet $M(G)$  er en $N \times m$ matrix hvori post $m_{i,j}$ er 1 hvis $v_{i}$ er et endepunkt af $e_{j}$, og ellers 0.
+\end{definition}
+
+Følgende er incidens-matricen for $G$ i Figur~\ref{fig:pp7g}:
+\begin{equation}
+M(G) = \begin{pmatrix}
+1 & 1 & 0 & 0 & 0 \\
+1 & 0 & 1 & 1 & 0 \\
+0 & 1 & 1 & 1 & 1 \\
+0 & 0 & 0 & 0 & 1
+\end{pmatrix}
+\end{equation}
+
+\index{graf!incidens}
+\index{graf!valens}
+\begin{definition}[Incidens og Valens]
+    Hvis knude $v$ er et endepunkt af kant $e$, så er $v$ og $e$ \textit{incidente}. Valensen (også kaldet graden, \textit{degree} på engelsk) af knuden $v$ af antallet af incidente kanter, minus løkker.
 \end{definition}
 
 
 %%% Local Variables:
 %%% mode: latex
-%%% TeX-engine: xetex
+%%% TeX-engine: luatex
 %%% TeX-command-extra-options: "-shell-escape"
 %%% TeX-master: "main"
 %%% End:
