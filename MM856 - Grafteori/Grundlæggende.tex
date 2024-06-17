@@ -259,55 +259,215 @@ Vi har set hvordan vi kan specificere grafer ved at tegne cirkler som knuder og 
 
 \index{graf!repræsentationer!nabo-matrix}
 \begin{definition}[Nabo-matrix]
-    Lad $G$ være en løkkeløs graf med knudemængden $V(G) = \{v_{1}, \ldots, v_{n}\}$ og kantemængden $E(G) = \{e_{1}, \ldots, e_{m}\}$. Nabo-matricen af $G$, skrevet $A(G)$ er en $n \times n$ matrix hvori hver post i matricen $a_{i,j}$ er antallet af knuder i $G$ med endepunkterne $\{v_{i}, v_{j}\}$.
+	Lad $G$ være en løkkeløs graf med knudemængden $V(G) = \{v_{1}, \ldots, v_{n}\}$ og kantemængden $E(G) = \{e_{1}, \ldots, e_{m}\}$. Nabo-matricen af $G$, skrevet $A(G)$ er en $n \times n$ matrix hvori hver post i matricen $a_{i,j}$ er antallet af knuder i $G$ med endepunkterne $\{v_{i}, v_{j}\}$.
 \end{definition}
 
 \begin{figure}[H]
-    \vspace{-20pt} % Adjusts the vertical space
-    \centering
-    \begin{tikzpicture}
-        \graph [spring layout, nodes={circle, draw}] {
-            w --[edge label={$a$}] x,
-            w --[edge label={$b$}] y,
-            x --[bend left, edge label={$d$}] y,
-            y --[bend left, edge label={$c$}] x,
-            y --[edge label={$e$}] z
-        };
-    \end{tikzpicture}
-    \caption{\label{fig:pp7g} $G$}
+	\vspace{-20pt} % Adjusts the vertical space
+	\centering
+	\begin{tikzpicture}
+		\graph [spring layout, nodes={circle, draw}] {
+		w --[edge label={$a$}] x,
+		w --[edge label={$b$}] y,
+		x --[bend left, edge label={$d$}] y,
+		y --[bend left, edge label={$c$}] x,
+		y --[edge label={$e$}] z
+		};
+	\end{tikzpicture}
+	\caption{\label{fig:pp7g} $G$}
 \end{figure}
 
 
 Følgende er nabo-matricen for grafen $G$ i Figur~\ref{fig:pp7g}:
 \begin{equation}
-A(G) = \begin{pmatrix}
-0 & 1 & 1 & 0 \\
-1 & 0 & 2 & 0 \\
-1 & 2 & 0 & 1 \\
-0 & 0 & 1 & 0
-\end{pmatrix}
+	A(G) = \begin{pmatrix}
+		0 & 1 & 1 & 0 \\
+		1 & 0 & 2 & 0 \\
+		1 & 2 & 0 & 1 \\
+		0 & 0 & 1 & 0
+	\end{pmatrix}
 \end{equation}
 
 \index{graf!repræsentationer!incidens-matrix}
 \begin{definition}[Incidens-matrix]
-    Incidens-matricen af $G$, skrevet $M(G)$  er en $N \times m$ matrix hvori post $m_{i,j}$ er 1 hvis $v_{i}$ er et endepunkt af $e_{j}$, og ellers 0.
+	Incidens-matricen af $G$, skrevet $M(G)$  er en $N \times m$ matrix hvori post $m_{i,j}$ er 1 hvis $v_{i}$ er et endepunkt af $e_{j}$, og ellers 0.
 \end{definition}
+
+Bemærk at en nabo-matrix er \textit{symetrisk} altså, $a_{i,j} = a_{j,i}$ for alle $i,j$, det vil sige at der ikke kan være rettet kanter\footnote{Vi har endnu ikke snakket om rettet grafer, kun urettet.}.
 
 Følgende er incidens-matricen for $G$ i Figur~\ref{fig:pp7g}:
 \begin{equation}
-M(G) = \begin{pmatrix}
-1 & 1 & 0 & 0 & 0 \\
-1 & 0 & 1 & 1 & 0 \\
-0 & 1 & 1 & 1 & 1 \\
-0 & 0 & 0 & 0 & 1
-\end{pmatrix}
+	M(G) = \begin{pmatrix}
+		1 & 1 & 0 & 0 & 0 \\
+		1 & 0 & 1 & 1 & 0 \\
+		0 & 1 & 1 & 1 & 1 \\
+		0 & 0 & 0 & 0 & 1
+	\end{pmatrix}
 \end{equation}
 
 \index{graf!incidens}
 \index{graf!valens}
 \begin{definition}[Incidens og Valens]
-    Hvis knude $v$ er et endepunkt af kant $e$, så er $v$ og $e$ \textit{incidente}. Valensen (også kaldet graden, \textit{degree} på engelsk) af knuden $v$ af antallet af incidente kanter, minus løkker.
+	Hvis knude $v$ er et endepunkt af kant $e$, så er $v$ og $e$ \textit{incidente}. Valensen (også kaldet graden, \textit{degree} på engelsk) af knuden $v$ af antallet af incidente kanter, minus løkker.
 \end{definition}
+
+\index{graf!isomorfi}
+\begin{definition}[Isomorfi]
+	En \textit{isomorfi} fra en simpel graf $G$ til en simpel graf $H$ er en bijektion $f : V(G) \rightarrow V(H)$ hvor $(u,v) \in E(G)$ hvis og kun hvis $(f(u), f(v)) \in E(H)$. Vi siger at ``$G$ er isomorfisk til $H$'', skrevet $G \cong H$, hvis der er en isomorfi fra $G$ til $H$.
+\end{definition}
+
+\begin{example}[Isomorfi fra $G$ til $H$]
+	Vi kigger nu på et eksempel, på hvordan en graf $G$ kan blive isomorfisk til en graf $H$.
+
+	\begin{center}
+		\begin{tikzpicture}
+			\graph [spring layout, nodes={circle, draw, minimum size=0.8cm}] {
+				w[x=0,y=0] -- x[x=0,y=-2],
+				x -- y[x=2,y=0],
+				y -- z[x=2,y=-2]
+			};
+		\end{tikzpicture}
+	\end{center}
+
+	Vi definerer nu en funktion som tager alle knuderne i $G$ og laver dem om til knuderne i en graf $H$: $f : V(G) \rightarrow V(H)$, $f(w) = a, f(x) = d, f(y) = b, f(z) = c$.
+	Dette giver grafen:
+	\begin{center}
+		\begin{tikzpicture}
+			\graph [spring layout, nodes={circle, draw, minimum size=0.8cm}] {
+				c[x=0,y=0] -- b[x=2,y=-2],
+				b -- d[x=2,y=0],
+				d -- a[x=0,y=-2]
+			};
+		\end{tikzpicture}
+	\end{center}
+	Bemærk her, at trods knuderne i en anden ``rækkefølge'' end tidligere, er det en isomorfi. Vi kan verificere dette ved at lave en nabo-matrix til begge, og se hvordan vi kan ændre nabo-matricen til at gøre det mere klart.\footnote{Desværre gør \LaTeX\ det ikke nemt at lave etiketter til matricer, så i stedet skriver vi det som en tabel.}
+	\begin{equation}
+		A(G) =
+		\begin{array}{c|cccc}
+			  & w & x & y & z \\
+			\hline
+			w & 0 & 1 & 0 & 0 \\
+			x & 1 & 0 & 1 & 0 \\
+			y & 0 & 1 & 0 & 1 \\
+			z & 0 & 0 & 1 & 0 \\
+		\end{array}
+	\end{equation}
+	\begin{equation}
+		A(H) =
+		\begin{array}{c|cccc}
+			  & a & b & c & d \\
+			\hline
+			a & 0 & 0 & 0 & 1 \\
+			b & 0 & 0 & 1 & 1 \\
+			c & 0 & 1 & 0 & 0 \\
+			d & 1 & 1 & 0 & 0 \\
+		\end{array}
+	\end{equation}
+	Bemærk dog at de ikke er helt ens. Vi kan gøre dem ens, ved at omarrangere etiketterne:
+	\begin{equation}
+		A(G) =
+		\begin{array}{c|cccc}
+			  & w & y & z & x \\
+			\hline
+			w & 0 & 0 & 0 & 1 \\
+			y & 0 & 0 & 1 & 1 \\
+			z & 0 & 1 & 0 & 0 \\
+			x & 1 & 1 & 0 & 0 \\
+		\end{array}
+	\end{equation}
+\end{example}
+
+Ud fra dette eksempel kan vi se, at to grafer, $A(H)$ og $A(G)$ er isomorfiske hvis og kun hvis deres nabo-matricer har en permutation af rækker og kolonner \(\sigma\), hvor $A(H)$ og $A(G)$ er ens.
+
+Vi har indtil nu kun identificeret isomorfi for simple grafer, men det er også muligt for grafer med multiple kanter og løkker at være isomorfiske:
+
+\begin{definition}[Isomorfi for ikke-simple grafer]
+	En isomorfi fra $G$ til $H$ er en bijektion $f$ som afbilder $V(G)$ til $V(H)$ og $E(G)$ til $E(H)$ således at hver kant af $G$ med endepunkter $u$ og $v$ er afbildet til en kant med endepunkter $f(u)$ og $f(v)$.
+\end{definition}
+
+Bemærk \textit{at være isomorfisk} er ikke muligt i sig selv. En graf $G$ kan ikke være isomorfisk, men et par af grafer, $G$ og $H$ kan være isomorfiske til hinanden.
+
+\index{mængde!relation}
+\index{mængde!ækvivalensrelation}
+\begin{definition}
+	En \textit{relation} på en mængde $S$ er en samling af orndet par fra $S$. En \textit{ækvivalensrelation} er en relation som er refleksiv, symmetrisk og transitiv.
+\end{definition}
+
+For eksempel er nabo-relationen på en mængde af knuder af en graf symmetrisk, men ikke releksiv og sjældent transitiv. Dog er den isomorfiske relation, indeholende mængden af ordnet par ($G, H$) hvor $G$ er isomorfisk til $H$ både transitiv, symmetrisk og refleksiv.
+
+\begin{proposition}
+	Den isomorfiske relation er en ækvivalensrelation på mængden af simple grafer.
+\end{proposition}
+
+\begin{proof}
+	\textit{Refleksiv}: Identitetspermutationen på $V(G)$ er en isomorfi fra $G$ til selg selv, dermed $G \cong G$.\footnote{Jeg forstår ikke helt det her. Identitetspermutation betyder bare at hver mængde afbilder til sig selv i en mængde.} \\
+	\noindent
+	\textit{Symmetrisk}: Hvis $f : V(G) \rightarrow V(H)$ er en isomorfi fra $G$ til $H$ så er $f^{-1}$ en isomorfi fra $H$ til $G$, fordi udsagnet ``$(u,v) \in E(G) \iff (f(u),f(v)) \in E(H)$'' giver $(x,y) \in E(H)$ hvis og kun hvis $f^{-1}(x)f^{-1}(y) \in E(H)$. Dermed $G \cong H \implies H \cong G$\\
+	\noindent
+	\textit{Transitiv}: Antag at $f : V(F) \rightarrow V(G)$ og $g : V(G) \rightarrow V(H)$ er isomorfier. Vi er givet udsagnet ``$(u,v) \in E(F) \iff (f(u), f(v)) \in E(G)$'' og ``$(x,y) \in E(G) \iff (g(x),g(y)) \in E(H)$''. Siden $f$ er en isomorfi, for hvert $(x,y) \in E(G)$ kan vi finde $(u,v) \in E(F)$ således at $f(u) = x$ og $f(v) = y$. Dette giver ``$uv \in E(F) \iff (g(f(u)),g(f(v))) \in E(H)$''.
+\end{proof}
+
+
+
+\index{graf!isomorfi!isomorfisme klasse}
+\begin{definition}
+	En \textit{isomorfisme klasse} af grafer er en ækvivalensklasse af grafer under isomorfismerelationen.
+\end{definition}
+
+
+\index{graf!komplet}
+\index{graf!$n$-kreds}
+\index{graf!todelelig!komplet}
+\begin{definition}[Komplet graf, $n$-kreds]
+	Stien og kredesen med $n$ knuder skrives henholdsvis $P_{n}$ og $C_{n}$. En $n$-kreds er en kreds med $n$ knuder. En \textit{komplet graf} er en graf hvis knuder er parvise naboer, og skrives $K_{n}$ for $n$ knuder. En \textit{komplet todelelige graf}, også kaldet \textit{biklikke} (biclique på engelsk) er en todelelig graf hvor to knuder er naboer hvis og kun hvis de er i forskellige delelige mængder. Når mængderne har størrelser $r$ og $s$ skrives biklikken $K_{r,s}$.
+\end{definition}
+
+Den komplette graf kan også forklares som værende grafen hvor alle knuder har kanter til alle andre knuder.
+
+Figurene~\ref{fig:k23pp9} og~\ref{fig:k5pp9} viser henholdsvis en biklikke, $K_{2,3}$, og en komplet graf, $K_{5}$. Bemærk at jeg har navngivet knuderne, trods dette ikke er nødvendigt i disse eksempler. Bogen bemærker endda i definitionen at dette gælder umærket grafer.
+
+
+\begin{figure}[H]
+	\centering
+	\begin{tikzpicture}
+		\graph [spring layout, nodes={circle, draw, minimum size=0.8cm}] {
+			a[x=0,y=0] -- c[x=-1,y=-2],
+			c -- b[x=2,y=0],
+			b -- d[x=1, y=-2],
+			b -- e[x=3, y=-2],
+			e -- a -- d
+		};
+	\end{tikzpicture}
+	\caption{\label{fig:k23pp9} $K_{2,3}$}
+\end{figure}
+
+\begin{figure}[H]
+	\centering
+	\begin{tikzpicture}
+		\graph [spring layout, nodes={circle, draw, minimum size=0.8cm}] {
+		a -- {b, c, d, e},
+		b -- {c, d, e},
+		c -- {d, e},
+		d -- {e}
+		};
+	\end{tikzpicture}
+	\caption{\label{fig:k5pp9} $K_{5}$}
+\end{figure}
+
+I en graf med en mængde af knuder $X$ som har størrelse $n$, kan hvert par af knuder blive til en kant, eller det kan ikke. Antallet af grafer med mængden af knuder $X$ er $2^{\binom{n}{2}}$, fordi der er $2^{\binom{n}{2}}$ forskellige måder at vælger kanter mellem knuderne på. Hvis, for eksempel, $n = 4$, så er der $2^{\binom{4}{2}} = 2^{6} = 64$ forskellige grafer med den mængde af knuder.
+
+\subsection{Nedbrydning og Specielle Grafer}%
+\label{subsec:label}
+
+\index{graf!selv-komplementær}
+\index{graf!nedbrydning}
+\begin{definition}[Selv-komplementær og Nedbrydning]
+	En graf er \textit{selv-komplementær} hvis den er isomorfisk til dens komplement. En \textit{nebdrydning} af en graf er en liste af delgrafer hvor hver kant opstår i præcis en delgraf i listen.
+\end{definition}
+
+Ud fra denne definition, er det klart at en $n$-knude graf $H$ er selv-komplementær hvis og kun hvis den komplette graf med $n$ knuder, $K_{n}$ har en nedbrydning af to kopier af $H$.
+
+
 
 
 %%% Local Variables:
