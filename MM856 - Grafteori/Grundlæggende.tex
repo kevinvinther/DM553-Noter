@@ -465,10 +465,63 @@ I en graf med en mængde af knuder $X$ som har størrelse $n$, kan hvert par af 
 	En graf er \textit{selv-komplementær} hvis den er isomorfisk til dens komplement. En \textit{nebdrydning} af en graf er en liste af delgrafer hvor hver kant opstår i præcis en delgraf i listen.
 \end{definition}
 
+Denne definition kan nemt misforstås. Jeg foretrækker at tænke på det som ``En nebdrydning af en graf er en liste af delgrafer, hvor kanterne forbliver de samme par, og ingen af knuderne fjernes, således at foreningsmængden af disse delgrafer giver den originale graf.''
 Ud fra denne definition, er det klart at en $n$-knude graf $H$ er selv-komplementær hvis og kun hvis den komplette graf med $n$ knuder, $K_{n}$ har en nedbrydning af to kopier af $H$.
 
+\begin{definition}[Petersen Grafen]
+	Petersen grafen er grafen hvis knuder er delmængder af 2 elementer af en mængde med 5 elementer, og hvis kanter er par af disjunkte delmængder af 2 elementer.
+\end{definition}
 
+Definitionen er lidt indviklet, så jeg vil komme med et eksempel. Givet en mængde med 5 elementer, $S = \{1, 2, 3, 4, 5\}$, er der $\binom{5}{2} = 10$ forskellige knuder. En af måderne vi kan gøre dette på giver os knuderne $V = \{12, 34, 51, 23, 45, 13, 35, 52, 24, 41\}$. Der er $\binom{3}{2}$ disjunkte delelementer af størrelse 2, så hver knude har 3 naboer. Vi definerer naboerne til at være de par som er disjunkte 2-element delmængder. Dermed, hvis vi har knuden $12$, vil de resterende elementer, i.e. naboerne, være $34, 45, 35$. Dette gør vi ved alle knuder. Antallet af kanter i alt er så $|E| = \frac{1}{2} \sum \text{deg}(v) = \frac{1}{2} (3 \cdot 10)  = 15$.
 
+\begin{figure}[ht]
+	\centering
+	\begin{tikzpicture}[every node/.style={draw,circle, minimum size=0.8cm}]
+		\graph[clockwise, radius=2cm] {subgraph C_n [n=5,name=A]};
+		\graph[clockwise, radius=1cm] {subgraph I_n [n=5,name=B]};
+
+		\foreach \i in {1,2,3,4,5}{\draw (A \i) -- (B \i);}
+		\newcounter{j}
+		\foreach \i in {1,2,3,4,5}{%
+				\pgfmathsetcounter{j}{ifthenelse(mod(\i+2,5),mod(\i+2,5),5)}
+				\draw (B \i) -- (B \thej);
+			}
+	\end{tikzpicture}
+	\caption{\label{fig:petersengraf} Petersen Graf}
+\end{figure}
+
+I Figur~\ref{fig:petersengraf} ses en Petersengraf, dog med tvetydige etikketer.
+
+\begin{proposition}
+	\label{prop:petersenonecommon}
+	Hvis to knuder ikke er naboer i Petersengrafen, så har de præcis én nabo.
+\end{proposition}
+
+\begin{proof}
+	Knuder som ikke er naboer er mængder af størrelse 2, som deler ét element. Deres fællesmængde $S$ har størrelse 3. Dette er fordi naboerne er de eneste knuder som ikke deler elementer. Siden de mængder af størrelse 2 er valgt fra $\{1,2,3,4,5\}$, er der præcis én mængde af størrelse 2 som er disjunkt fra $S$.
+\end{proof}
+
+\index{graf!omkreds}
+\begin{definition}[Omkreds]
+	\textit{Omkredsen} (engelsk: girth) af en kraf med en kreds er længden af dens korteste kreds. En graf uden kreds er uendelig omkreds.
+\end{definition}
+
+\begin{corollary}
+	Petersengrafen har omkreds 5.
+\end{corollary}
+\begin{proof}
+	Da grafen er simpel (uden løkker eller multiple kanter) har den ingen 1-kreds eller 2-kreds. En 3-kreds ville kræve tre parvise disjunkte mængder af størrelse 2, hvilket ikke er muligt med 5 elementer, som i Petersengrafen.
+	En 4-kreds kræver ikke-nabo-knuder med to ens naboer, hvilket Proposition~\ref{prop:petersenonecommon} viser værende umuligt.
+	Knuderne $12, 34, 51, 23, 45$ giver en 5-kreds, så omkredsen er 5.
+\end{proof}
+
+Petersengrafen er meget symmetrisk. Hver permutation af $\{1,2,3,4,5\}$ genererer en permutation af delmængder af størrelse 2, som opretholder disjunktrelationen. Dermed er der mindst $5! = 120$ isomorfismer fra Petersengrafen til sig selv.
+
+\index{graf!automorfisme}
+\index{graf!knudetransitiv}
+\begin{definition}[Automorfi og Knudetransitiv]
+	En \textit{automorfi} af $G$ er en isomorfi fra $G$ til $G$. En graf $G$ er \textit{knudetransitiv}, hvis, for hvert par $(u,v) \in V(G)$ er der en automorfi som afbilder $u$ til $v$.
+\end{definition}
 
 %%% Local Variables:
 %%% mode: latex
