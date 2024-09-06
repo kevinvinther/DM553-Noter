@@ -523,6 +523,81 @@ Petersengrafen er meget symmetrisk. Hver permutation af $\{1,2,3,4,5\}$ generere
 	En \textit{automorfi} af $G$ er en isomorfi fra $G$ til $G$. En graf $G$ er \textit{knudetransitiv}, hvis, for hvert par $(u,v) \in V(G)$ er der en automorfi som afbilder $u$ til $v$.
 \end{definition}
 
+\section{Stier, Kredse og Ture}%
+\label{sec:label}
+
+\index{graf!vandring}
+\index{graf!trail}
+\begin{definition}[Vandring og Tur]
+	En \textit{vandring} er en liste $v_{0},e_{1},v_{1}, \ldots, e_{k}, v_{k}$ af knuder og kanter således at for $1 \le i \le k$; har kanten $e_{i}$ endepunkter $v_{i-1}$ og $v_{i}$. En \textit{tur} er en vandring med ingen gentagne kanter. En $u,v$-vandring eller $u,v$-tur har første knude $u$ og sidste knude $v$, disse er dens \textit{endepunkter}. En $u,v$-sti er en sti hvis knuder af valens 1 er $u$ og $v$, dem imellem kaldes \textit{interne knuder}. \textit{Længden} af en vanding, tur, sti eller en kreds er antallet af kanter den går igennem. En vandring eller tur er \textit{lukket} hvis dens endepunkter er ens.
+\end{definition}
+
+Ydermere har to kanter med ens endepunkter en kreds af længde 2, og en løkke en kreds af længde 1.
+
+Grunden til vi både skriver kanter og knuder i listen, er fordi vandringer også bruges i grafer der ikke er simple. I grafer der er simple er der meget normalt udelukkende at skriver knuderne.
+
+Hvis vi følger en sti fra $u$ til $v$ og så fra $v$ til $w$, er resultatet ikke nødvendigvis en $u,w$-sti. Dette er fordi en $u,v$-sti og en $v,w$-sti kan have en eller flere interne knuder til fælles. Dog laver det en $u,w$-vandring.
+
+Man siger at en vandring $W$ \textit{indeholder} en sti $P$, som betyder at knuderne og kanterne af $P$ fremkommer som en delliste af knuderne og kanterne af $W$ i den korrekte orden, men ikke nødvendigvis efter hinanden.
+
+\begin{lemma}
+	\label{lemma:uvwalkuvpath}
+	Hvor $u,v$-vandring indeholder en $u,v$-sti.
+\end{lemma}
+
+\begin{proof}
+	Vi beviser ved induktion på længden $l$ af en $u,v$-vandring $W$.\\
+	\noindent
+	\textit{Basisskridt: $l = 0$.} \\
+	\noindent
+	Uden nogen kanter er $W$ en enkelt knude, $u = v$. Denne knude er en $u,v$-sti af længde 0.\\
+	\noindent
+	\textit{Induktionsskridt: $l \ge 1$}. \\
+	\noindent
+	Vi antager at udsagnet holder når vandringer er af længde mindre end $l$. Hvis $W$ har ingen gentagen knude, så er dens knuder og kanter en $u,v$-sti. Hvis $W$ har en gentagen knude $w$, så, hvis vi sletter knuderne og kanterne mellem første $w$ og sidste $w$, så der kun er ét $w$ tilbage, så får vi  kortere $u,v$-vandring $W'$ indholdt i $W$. Ved induktionshypotesen indeholder $W'$ en $u,v$-sti $P$, og $P$ er indeholdt i $W$.
+\end{proof}
+
+\begin{figure}[ht]
+	\centering
+	\begin{tikzpicture}
+		\node[state, initial](u) {$u$};
+		\node[state, right=of u] (w) {$w$};
+		\node[state, right=of w] (v) {$v$};
+
+		\draw[->] (u) edge (w)
+		(w) edge[loop above] (w)
+		(w) edge (v);
+
+	\end{tikzpicture}
+	\caption{\label{fig:bevispp21} Simplificeret graf der visualiserer beviset til Lemma~\ref{lemma:uvwalkuvpath}.}
+\end{figure}
+
+\begin{definition}[Sammenhængende, usammenhængende]
+	En graf $G$ er sammenhængende hvis den har en $u,v$-sti når $u,v \in V(G)$, eller er den usammenhængende. Hvis $G$ har en $u,v$-sti, så er $u$ forbundet til $v$ i $G$. Forbindingsrelationen på $V(G)$ bestå af de ordnet par $(u,v)$ således at $u$ er forbundet $v$.
+\end{definition}
+
+\begin{remark}
+	Fra Lemma~\ref{lemma:uvwalkuvpath} kan vi vise at en graf er sammenhængende ved at vise at fra hver knude er der en vandring til en specifik knude. Af samme Lemma ser vi at forbindingsrelationen er transitiv. Hvis $G$ har en $u,v$-sti og en $v,w$-sti, så har $G$ en $u,w$-sti. Den er også refleksiv ved stier af længde 0, og symmetrisk da vejene kan omvendes. Dermed er det en ækvivalensrelation.
+\end{remark}
+
+\index{graf!komponent}
+\begin{definition}[Komponeneter af en Graf]
+	Komponenterne af en graf $G$ er dens maksimalt forbundet delgrafer. En komponent (eller graf) er \textit{triviel} hvis den ikke har nogen kanter, ellers er den \textit{nontriviel}. En \textit{isoleret knude} er en knude af valens 0.
+\end{definition}
+
+Jeg ved ikke helt om West bare forklarer det dårligt her, men så vidt jeg forstår (både fra senere forklaringer i bogen, og internettet) så er en komponent bare en del af en graf som er disjunkt fra de andre komponenter.
+
+\begin{proposition}
+	Alle grafer med $n$ knuder og $k$ kanter har mindst $n-k$ komponenter.
+\end{proposition}
+\begin{proof}
+	En $n$-knude graf med ingen kanter har $n$ komponenter. Hver komponent tilføjet reducerer dette med \textbf{højest} 1. Dermed, når $k$ kanter er blevet tilføjet, er antallet af komponenter stadig mindst $n-k$.
+\end{proof}
+
+En spændende ting ved at komponenter, er at vi ved at slette én kant højest kan få én ny komponent, hvor hvis vi sletter én knude kan vi få mange. $K_{1,m}$ giver $m$ komponenter ud fra 1 tidligere, hvis den del af den todelelige graf som har én knude bliver slettet.
+
+
+
 %%% Local Variables:
 %%% mode: latex
 %%% TeX-engine: luatex

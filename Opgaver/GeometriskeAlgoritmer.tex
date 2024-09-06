@@ -1,0 +1,137 @@
+\chapter{Geometriske Algoritmer}
+
+\section{9/9}%
+\label{sec:99}
+
+Exercises (1.1, 1.2,) 1.3, 1.4.a, 1.7, 1.8, 1.9.
+
+Exercises 1.1 and 1.2 are about proving that the intersection of all convex sets containing P equals the smallest-perimeter polygon with vertices from P containing P. A better sequence of small proofs is the one below, which we will carry out instead of following the outline of Exercises 1.1 and 1.2. Prove that
+
+the intersection of a collection of convex sets is again convex.
+any smallest-perimeter polygon containing P has vertices only from P.
+any smallest-perimeter polygon containing P is contained in any convex set containing P.
+any smallest-perimeter polygon containing P is convex.
+any smallest-perimeter polygon with vertices from P equals the intersection of all convex sets containing P (making the polygon unique).
+
+Many of the arguments are most easily carried out as proofs by contradiction.
+
+In 1.8.a, you may assume that the two convex hulls are separated by a vertical line.
+
+\noindent
+\textbf{1.1, 1.2}
+
+Prove that:
+
+\begin{itemize}
+	\item The intersection of a collection of convex sets is again convex
+	      \begin{itemize}
+		      \item Given: Convex sets. Transform: Intersection. Result: Convex Set.
+		      \item \textbf{Intuition}: If every set in a collection is convex, and we take two points in the intersection of all these sets, then the line segment between those two points must be inside every indivudal convex set. Therefore, it has to be in the intersection, too.
+		      \item \textbf{Proof}: If the intersection weren't convex, you'd be able to find two points in the intersection whose connection line isn't fully inside. If that were true, the connecting line would have to leave at least one of the original convex sets, which is impossible. Hence, the intersection of conves sets must also be convex.
+	      \end{itemize}
+	\item Any smallest-perimeter polygon containing $P$ has vertices only from $P$.
+	      \begin{itemize}
+		      \item \textbf{Proof}. Imagine building the smallest polygon. But, while building, instead of using only vertices from $P$, we make a new vertex outside of $P$. This would make a larger polygon, and therefore would not be the smallest-perimeter polygon. This contradicts the idea that we started with the smallest possible perimeter.
+	      \end{itemize}
+	\item Any smallest-perimeter polygon containing $P$ is contained in any convex set containing $P$.
+	      \begin{itemize}
+		      \item This is about proving that, if we have $P$ which is smallest-perimeter, then it must fit in any set containing $P$.
+		      \item \textbf{Proof}. If our smallest-perimeter polygon wasn't contained in this convex set, $C$, we could adjust it to fit inside $C$ while still keeping the perimeter as small as possible. This would imply that the polygon wasn't truly the smallest perimeter after all, which contradicts our assumption. So, the polygon must be inside any convex set that contains $P$.
+	      \end{itemize}
+	\item Any smallest perimeter polygon containing $P$ is convex.
+	      \begin{itemize}
+		      \item \textbf{Intuition}: If the polygon isn't convex, then it's possible to make it smaller. Recall that a convex polygon is one that doesn't ``cave in'' anywhere.
+
+		      \item \textbf{Proof}: Suppose that our polygon isn't convex. That would mean theres's a pair of points on the boundary where the straight line between them cuts outside the polygon. If this is the case, we could replace the non-convex part with a convex one, and shorten the perimeter. This would contradict the idea that our polygon was already the smallest-perimeter polygon. So, the polygon must be convex.
+	      \end{itemize}
+	\item Any smallest-perimeter polygon with vertices from $P$ equals the intersection of all convex sets containing $P$ (making the polygon unique).
+	      \begin{itemize}
+		      \item \textbf{Proof}: The smallest-perimeter polygon is contained in every convex set that contains $P$, as showed earlier. This means it has to be part of the intersection of all those sets. Conversely, since the intersection of convex sets is itself convex, the polygon has to be convex too, and it's vertices are from $P$. Therefore, the smallest-perimeter polygon is exactly the intersection of all convex sets containing $P$, and this makes the polygon unique.
+	      \end{itemize}
+\end{itemize}
+
+\noindent
+\textbf{1.3}\\\\
+\noindent
+Let $E$ be an unsorted set of $n$ segments that are the edges of a convex polygon. Describe an $O(n \log n)$ algorithm that computes from $E$ a list containing all vertices of the polygon, sorted in clockwise order.
+
+\begin{verbatim}
+Algorithm FIND_POLYGON_VERTICES(E)
+Input: An unsorted set E of n segments that form the edges of a convex polygon.
+Output: A list containing the vertices of the polygon, sorted in clockwise order.
+
+1. Create an empty dictionary `adjacency` to store the adjacency list for each
+vertex.
+2. for each edge (p, q) in E:
+     - Add q to the adjacency list of p: adjacency[p].append(q)
+     - Add p to the adjacency list of q: adjacency[q].append(p)
+
+3. Pick an arbitrary vertex `start_vertex` (e.g., any key from the adjacency
+dictionary).
+
+4. Initialize an empty list `clockwise_vertices` to store the sorted vertices.
+5. Set `current_vertex` to `start_vertex` and `previous_vertex` to None.
+
+6. while there are still unexplored edges:
+     a. Append `current_vertex` to `clockwise_vertices`.
+     b. Find the next vertex:
+        - Look at the neighbors of `current_vertex` in the adjacency list.
+        - Exclude `previous_vertex` from consideration (to avoid moving backward).
+        - If `previous_vertex` is None (starting case), just pick any adjacent
+						vertex.
+     c. Update `previous_vertex` to `current_vertex`.
+     d. Update `current_vertex` to the next vertex.
+
+7. Continue until `current_vertex` equals `start_vertex` (closing the loop).
+
+8. Return `clockwise_vertices`.
+\end{verbatim}
+
+(Is something wrong here, is this not $O(n)$?)
+\\\\
+\noindent
+\textbf{1.4.a}\\
+\noindent
+For the convex hull algorithm we have to be able to test whether a point $r$ lies left or right of the directed line through two points $p$ and $q$. Let $p = (p_{x}, p_{y}), q = (q_{x}, q_{y})$ and $r = (r_{x}, r_{y})$
+
+Show that the sign of the determinant
+
+\begin{equation}
+	D = \left| \begin{array}{ccc}
+		1 & p_x & p_y \\
+		1 & q_x & q_y \\
+		1 & r_x & r_y \\
+	\end{array} \right|
+\end{equation}
+
+determines whether $r$ lies left or right of this line.
+
+
+If the triangle is oriented in a counterclockwise direction, that is, if $r$ is to the left of the line from $p$ to $q$, the area will be \textbf{positive}. If the triangle is oriented in a clockwise direction (which means $r$ is to the right of the line from $p$ to $q$), the area will be \textbf{negative}. if the three points lie on the same straight line, the area will be \textbf{zero} (because there's no actual triangle formed). Thus:
+
+\begin{itemize}
+	\item $D > 0$: $r$ is \textbf{left} of the line
+	\item $D < 0$: $r$ is \textbf{right} of the line
+	\item $D = 0$: $r$ is \textbf{on} the line.
+\end{itemize}
+\noindent
+\textbf{1.7}\\
+\noindent
+Consider the following alternative approach to computing the convex hull of a set of points in the plane: We start with the rightmost point. This is the first point $p_{1}$ of the convex hull. Now imagine that we start with a vertical line and rotate it clockwise until it hits another point, $p_{2}$. This is the second point in the convex hull. We continue rotating the line but this time around $p_{2}$ until we hit a point $p_{3}$. In this way we continue until we reach $p_{1}$ again.
+
+\begin{enumerate}
+	\item Give pseudocode for this algorithm.
+	\item Which degenerate cases can occur and how can we deal with them?
+	\item Prove that the algorithm correctly computes the convex hull.
+	\item Prove that the algorithm can be implemented to run in time $O(n \cdot h)$, where $h$ is the complexity of the convex hull.
+	\item What problems might occur when we deal with inexact floating point arithmetic?
+\end{enumerate}
+
+
+
+%%% Local Variables:
+%%% mode: latex
+%%% TeX-engine: luatex
+%%% TeX-command-extra-options: "-shell-escape"
+%%% TeX-master: "main"
+%%% End:
