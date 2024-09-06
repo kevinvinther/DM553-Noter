@@ -27,26 +27,45 @@ Prove that:
 	      \begin{itemize}
 		      \item Given: Convex sets. Transform: Intersection. Result: Convex Set.
 		      \item \textbf{Intuition}: If every set in a collection is convex, and we take two points in the intersection of all these sets, then the line segment between those two points must be inside every indivudal convex set. Therefore, it has to be in the intersection, too.
-		      \item \textbf{Proof}: If the intersection weren't convex, you'd be able to find two points in the intersection whose connection line isn't fully inside. If that were true, the connecting line would have to leave at least one of the original convex sets, which is impossible. Hence, the intersection of conves sets must also be convex.
+		      \item \textbf{Proof}: Assume the intersection isn't convex. In that case, you'd be able to find two points in the intersection whose line $\overline{pq}$ would go outside the convex set. For this to be true, at least one point would have to be \textit{outside} of the original convex sets. This is a contradiction, as taking the intersection of sets introduces no new elements of the set.
 	      \end{itemize}
 	\item Any smallest-perimeter polygon containing $P$ has vertices only from $P$.
 	      \begin{itemize}
-		      \item \textbf{Proof}. Imagine building the smallest polygon. But, while building, instead of using only vertices from $P$, we make a new vertex outside of $P$. This would make a larger polygon, and therefore would not be the smallest-perimeter polygon. This contradicts the idea that we started with the smallest possible perimeter.
+		      \item \textbf{Proof}. Imagine building the smallest polygon. But, while building, instead of using only vertices from $P$, we include a new vertex outside of $P$, which we assume would make the polygon's perimeter smaller. For it to become smaller, however, the point not in $P$ would have to be in $P$. This is a contradiction, as we assumed the point to not be in $P$.
 	      \end{itemize}
 	\item Any smallest-perimeter polygon containing $P$ is contained in any convex set containing $P$.
 	      \begin{itemize}
 		      \item This is about proving that, if we have $P$ which is smallest-perimeter, then it must fit in any set containing $P$.
-		      \item \textbf{Proof}. If our smallest-perimeter polygon wasn't contained in this convex set, $C$, we could adjust it to fit inside $C$ while still keeping the perimeter as small as possible. This would imply that the polygon wasn't truly the smallest perimeter after all, which contradicts our assumption. So, the polygon must be inside any convex set that contains $P$.
+		      \item \textbf{Proof}.
+								Assume that our smallest-perimeter polygon $P$ wasn't contained in the convex set, which we call $C$. There are two possibilites now:
+								\begin{enumerate}
+									\item We can adjust $P$ such that it fits inside $C$, since $C$ contains $P$.
+												\begin{itemize}
+													\item \textbf{Contradiction}: We did not start with the smallest set.
+												\end{itemize}
+									\item The set $C$ does not contain all the points of $P$.
+												\begin{itemize}
+													\item \textbf{Contradiction}: This is impossible as it is stated that $C$ contains $P$.
+												\end{itemize}
+								\end{enumerate}
+
 	      \end{itemize}
 	\item Any smallest perimeter polygon containing $P$ is convex.
 	      \begin{itemize}
 		      \item \textbf{Intuition}: If the polygon isn't convex, then it's possible to make it smaller. Recall that a convex polygon is one that doesn't ``cave in'' anywhere.
 
-		      \item \textbf{Proof}: Suppose that our polygon isn't convex. That would mean theres's a pair of points on the boundary where the straight line between them cuts outside the polygon. If this is the case, we could replace the non-convex part with a convex one, and shorten the perimeter. This would contradict the idea that our polygon was already the smallest-perimeter polygon. So, the polygon must be convex.
+		      \item \textbf{Proof}:
+								Assume that the smallest-perimeter polygon isn't convex. Then, we have a concave polygon. At least one point in this concave polygon has a interior angle which is greater than 180 degrees. Assuming that we can list the points in an order, where the lines segments endpoints are ordered in such a way that the line segment $\overline{qr}$ will come after $\overline{pq}$. Then we can remove the line which has an interior angle of above 180 degrees, along with the next line, i.e. if we call the point $p_{i}$, then we remove $\overline{p_{i}p_{i+1}}$ and $\overline{p_{i+1}p_{i+2}}$ and replace it with the line segment $\overline{p_{i}p_{i+2}}$. We can algorithmically look at the same point again, and see if it has a interior angle of above 180 degrees, and, if so, we continue until the interior angle is below 180 degrees. However, this would shorten the perimeter, as there are no longer any reflex angles, which would keep the perimeter longer. This is a contradiction as we started with the shortest perimeter polygon.
 	      \end{itemize}
 	\item Any smallest-perimeter polygon with vertices from $P$ equals the intersection of all convex sets containing $P$ (making the polygon unique).
 	      \begin{itemize}
-		      \item \textbf{Proof}: The smallest-perimeter polygon is contained in every convex set that contains $P$, as showed earlier. This means it has to be part of the intersection of all those sets. Conversely, since the intersection of convex sets is itself convex, the polygon has to be convex too, and it's vertices are from $P$. Therefore, the smallest-perimeter polygon is exactly the intersection of all convex sets containing $P$, and this makes the polygon unique.
+					\item \textbf{Proof that the smallest-perimeter polygon equals the intersection of all convex sets containing $P$}: We have earlier shown this to be the case, albeit we didn't specify the set $P$ to be the result of the intersection of multiple convex sets. However this is the exact same proof.
+					\item \textbf{Proof that the polygon is unique}: The resulting polygon is one which fulfills the following conditions:
+							\begin{enumerate}
+								\item It is smallest-perimeter
+								\item It is convex
+							\end{enumerate}
+							There is only one polygon which fulfills these (i.e., the convex hull) therefore making it unique.
 	      \end{itemize}
 \end{itemize}
 
@@ -106,28 +125,134 @@ Show that the sign of the determinant
 
 determines whether $r$ lies left or right of this line.
 
+\noindent
+\textbf{Answer}:
+\noindent
 
-If the triangle is oriented in a counterclockwise direction, that is, if $r$ is to the left of the line from $p$ to $q$, the area will be \textbf{positive}. If the triangle is oriented in a clockwise direction (which means $r$ is to the right of the line from $p$ to $q$), the area will be \textbf{negative}. if the three points lie on the same straight line, the area will be \textbf{zero} (because there's no actual triangle formed). Thus:
+The determinant of a $3 \times 3$ matrix is defined by:
+\begin{equation}
+\begin{vmatrix}
+a & b & c \\
+d & e & f \\
+g & h & i
+\end{vmatrix}
+= aei + bfg + cdh - ceg - bdi - afh
+\end{equation}
 
+
+Thus we can find the determinant of the matrix defined earlier as the following:
+
+\begin{equation}
+	D = \left| \begin{array}{ccc}
+		1 & p_x & p_y \\
+		1 & q_x & q_y \\
+		1 & r_x & r_y \\
+	\end{array} \right| = 1 \cdot q_{x} \cdot r_{y} + p_{x} \cdot q_{y} \cdot 1 + p_{y} \cdot 1 \cdot r_{x} - p_{y} \cdot q_{x} \cdot 1 - p_{x} \cdot 1 \cdot r_{y} - 1 \cdot q_{y} \cdot r_{x}
+\end{equation}
+
+Of course we can simplify this a lot:
+\begin{equation}
+q_{x} \cdot r_{y} + p_{x} \cdot q_{y} + p_{y} \cdot r_{x} - p_{y} \cdot q_{x} - p_{x} \cdot r_{y} - q_{y} \cdot r_{x}
+\end{equation}
+
+If we try plotting the number's of three points, where $r$ lies to the \textit{right}, we get the following:
+
+$$p = (1,1)$$
+$$q = (2,2)$$
+$$r = (1,2)$$
+
+We get $1$ which is a positive number, indicating that positive numbers means that the point lays on the left of the line.
+On the other hand, if we change $r$ to be $(2, -2)$ we get $-4$ which is a negative number, indicating that it is indeed on the right side of the line. Now, if $r$ is a colinear point, e.g. with the coordinates $(1.5, 1.5)$ we get the result $0$ which we now know to be indicative of a colinear point (i.e., a point on the line).
+
+We summarize:
 \begin{itemize}
-	\item $D > 0$: $r$ is \textbf{left} of the line
-	\item $D < 0$: $r$ is \textbf{right} of the line
+	\item $D > 0$: $r$ is \textbf{left} of the line.
+	\item $D < 0$: $r$ is \textbf{right} of the line.
 	\item $D = 0$: $r$ is \textbf{on} the line.
 \end{itemize}
+
+We get these results, as the determinant gives us values based on how the transformation either grows or shrinks the area of the triangle which we create. If the point lies to the right of the line, the area is shrunk, while if it's on the left of the line, the area has grown. While, if it's on the line, we're dealing with a straight line, which doesn't shrink nor grow.
+
 \noindent
 \textbf{1.7}\\
 \noindent
 Consider the following alternative approach to computing the convex hull of a set of points in the plane: We start with the rightmost point. This is the first point $p_{1}$ of the convex hull. Now imagine that we start with a vertical line and rotate it clockwise until it hits another point, $p_{2}$. This is the second point in the convex hull. We continue rotating the line but this time around $p_{2}$ until we hit a point $p_{3}$. In this way we continue until we reach $p_{1}$ again.
 
 \begin{enumerate}
-	\item Give pseudocode for this algorithm.
-	\item Which degenerate cases can occur and how can we deal with them?
-	\item Prove that the algorithm correctly computes the convex hull.
-	\item Prove that the algorithm can be implemented to run in time $O(n \cdot h)$, where $h$ is the complexity of the convex hull.
-	\item What problems might occur when we deal with inexact floating point arithmetic?
+	\item[1.] Give pseudocode for this algorithm.
 \end{enumerate}
 
 
+\begin{algorithmic}
+    \STATE Let $p$ be the rightmost point
+    \WHILE{the current point is not the first point}
+        \STATE The next point $q$ is the point to which all points lie to the right of $\overrightarrow{pq}$
+        \STATE $\text{Next[p]} = q$
+        \STATE $p = q$ for the next iteration
+    \ENDWHILE
+\end{algorithmic}
+
+\begin{enumerate}
+	\item[2.] Which degenerate cases can occur and how can we deal with them?
+\end{enumerate}
+\textbf{Colinear Points}\\
+\noindent
+\textit{Fix}: Modify 2.1 to be: "The next point $q$ is the point to which all points lie to the right of $\overrightarrow{pq}$, and if applicable in the middle of $\overline{pq}$."
+I.e. we treat colinear points as being to the right\\
+\noindent
+\textbf{Two or more points share the same $x$-coordinate:}\\
+\noindent
+\textit{Fix}: Sort lexigraphically
+
+
+\begin{enumerate}
+	\item[3.] Prove that the algorithm correctly computes the convex hull.
+\end{enumerate}
+
+We prove by induction.
+
+\textbf{Induction Hypothesis}: The convex hull in iteration $i$ is correct.
+
+\textbf{Base Case $i = 1$}. Trivial case, the first point is constant, being the rightmost point.
+
+\textbf{Inductive Step}: Assume we have a hull $\{p_{1}, \ldots, p_{i}\}$. Any line segment $\overline{p_{i-1}p_i}$ is part of the hull, since we iteratively go over every point, and check that all other points are to the right. If any one point is to the left, we choose that as the new point, meaning that it is impossible to have the wrong point.
+
+\begin{enumerate}
+	\item[4.] Prove that the algorithm can be implemented to run in time $O(n \cdot h)$, where $h$ is the complexity of the convex hull.
+\end{enumerate}
+
+We iteratively choose the new best point, looking over all $n$ points. We do this for the number of vertices in the convex hull, as we always find the next point. Therefore, for each point in the convex hull $h$, we use $n$ calculations, giving us $O(n \cdot h)$. In the worst case, the convex hull uses all points, giving us $n = h, O(n^2)$. This also means that the algorithm is \textbf{output-sensitive}.
+
+\begin{enumerate}
+	\item[5.] What problems might occur when we deal with inexact floating point arithmetic?
+\end{enumerate}
+
+We might end up with a point being calculated as being the next (i.e., all points are to the right) even though it is not, because of floating point arithmetic. We also have no chance of it getting fixed, as when we are done with the current point, we don't look back to fixing it.
+\\\\
+\noindent
+\textbf{1.8}\\
+\noindent
+
+
+\noindent
+\textbf{1.9}\\
+\noindent
+Given a set $S$ we find min, max and median. We can do this in $O(n)$ time, as each operation takes $O(n)$ time.
+
+Now that we have these values, we traverse $S$. For each value $x \in S$, we compare $x$ with the median \textit{med}. Then, depending on the result:
+\begin{itemize}
+	\item If $x \le $ \textit{med}: Assign the coordinate $(x,\log x)$
+	\item If $x > $ \textit{med}: Assign the coordinate $(\max - x + \min + 1, - \log (\max - x + \min))$.
+\end{itemize}
+First off: The coordinate associated with a value greater than \textit{med} always has a lower $x$-value than the median, and a lower $y$-value, as it is negative, which any number greater than \textit{med} cannot be.
+
+This forms a kind of triangle (almost, if it wasn't for the logarithm, which is necessary as to not create any colinear points). This triangle will itself be the hull, and there will be no points within the triangle.
+
+We run the \textsc{ConvexHull} algorithm on the coordinates, and in return get the edges sorted in order. If we assume we use the algorithm found in the book, we will get a correctly sorted output, in the form of edges, since that algorithm starts on the leftmost point, which we have put to be 1. Note that the last point will have the coordinates $(\min, -\log(\min))$, which will be computed after the first point.
+
+When we have the result, we traverse the result (one last time), and we extract the x-coordinates, as well as checking if $x > $ \textit{med}, and if so, we do the constant time operation $x + max - min - 1$ to get the original $x$ value.
+
+The running time is $O(n)$ (max, min) + $O(n)$ (median) + $O(n)$ (coordinate-creation) + $\Omega (n \log n)$ (\textsc{ConvexHull}) + $O(n)$ (x-coordinate extraction).
 
 %%% Local Variables:
 %%% mode: latex
