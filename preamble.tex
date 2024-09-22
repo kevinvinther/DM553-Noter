@@ -53,6 +53,7 @@
 \usepackage{amsmath, amsfonts, mathtools, amsthm, amssymb}
 
 
+\usepackage{circuitikz}
 \usepackage{tikz} % Til grafer
 \usetikzlibrary{automata} % Til automatgrafer
 \usetikzlibrary{graphs, graphdrawing, graphs.standard}
@@ -137,38 +138,38 @@
 
 % Chapter title formatting
 \titleformat{\chapter}[block] % 'block' for inline display
-  {\normalfont\sffamily\huge\bfseries\color{HeadingColor}} % Chapter title styling
-  {\thechapter. } % Prefix for the title, such as "1. "
-  {0pt} % Space between the number and title
-  {} % Additional formatting for the title
+{\normalfont\sffamily\huge\bfseries\color{HeadingColor}} % Chapter title styling
+{\thechapter. } % Prefix for the title, such as "1. "
+{0pt} % Space between the number and title
+{} % Additional formatting for the title
 
 % Section title formatting
 \titleformat{\section}
-  {\normalfont\sffamily\Large\bfseries\color{HeadingColor}}
-  {\thesection} % Section number
-  {1em} % Space between number and section title
-  {}
+{\normalfont\sffamily\Large\bfseries\color{HeadingColor}}
+{\thesection} % Section number
+{1em} % Space between number and section title
+{}
 
 % Subsection title formatting
 \titleformat{\subsection}
-  {\normalfont\sffamily\large\bfseries\color{HeadingColor}}
-  {\thesubsection} % Subsection number
-  {1em} % Space between number and subsection title
-  {}
+{\normalfont\sffamily\large\bfseries\color{HeadingColor}}
+{\thesubsection} % Subsection number
+{1em} % Space between number and subsection title
+{}
 
 % Subsubsection title formatting
 \titleformat{\subsubsection}
-  {\normalfont\sffamily\normalsize\bfseries\color{HeadingColor}}
-  {\thesubsubsection} % Subsubsection number
-  {1em} % Space between number and subsubsection title
-  {}
+{\normalfont\sffamily\normalsize\bfseries\color{HeadingColor}}
+{\thesubsubsection} % Subsubsection number
+{1em} % Space between number and subsubsection title
+{}
 
 % For subsubsections, if needed, you can define a \paragraph formatting
 \titleformat{\paragraph}[runin]
-  {\normalfont\sffamily\normalsize\bfseries\color{HeadingColor}}
-  {\theparagraph} % Paragraph number
-  {1em} % Space between number and paragraph title
-  {}
+{\normalfont\sffamily\normalsize\bfseries\color{HeadingColor}}
+{\theparagraph} % Paragraph number
+{1em} % Space between number and paragraph title
+{}
 
 % Adjust spacing around sectional units
 \titlespacing*{\chapter}{0pt}{50pt}{40pt}
@@ -203,56 +204,56 @@
 
 % Green Box
 \declaretheoremstyle[
-    headfont=\bfseries\sffamily\color{TurquoiseGreen!70!black},
-    notefont=\bfseries\sffamily\color{TurquoiseGreen!70!black}, % same style for the note
-    notebraces={}{}, % to remove parentheses around the note
-    bodyfont=\normalfont,
-    postheadspace=\newline, % adds a new line after the theorem head
-    headformat={\NAME\ \NUMBER\ \NOTE \vspace{0.2cm}}, % Custom head format
-    mdframed={
-        linewidth=2pt,
-        rightline=false, topline=false, bottomline=false,
-        linecolor=TurquoiseGreen, backgroundcolor=TurquoiseGreen!5,
-        nobreak=false,
-		innerbottommargin=10pt, % Adjust the inner bottom margin within the frame
-    skipbelow=10pt,         % Adjust the space after the frame
-    }
+	headfont=\bfseries\sffamily\color{TurquoiseGreen!70!black},
+	notefont=\bfseries\sffamily\color{TurquoiseGreen!70!black}, % same style for the note
+	notebraces={}{}, % to remove parentheses around the note
+	bodyfont=\normalfont,
+	postheadspace=\newline, % adds a new line after the theorem head
+	headformat={\NAME\ \NUMBER\ \NOTE \vspace{0.2cm}}, % Custom head format
+	mdframed={
+			linewidth=2pt,
+			rightline=false, topline=false, bottomline=false,
+			linecolor=TurquoiseGreen, backgroundcolor=TurquoiseGreen!5,
+			nobreak=false,
+			innerbottommargin=10pt, % Adjust the inner bottom margin within the frame
+			skipbelow=10pt,         % Adjust the space after the frame
+		}
 ]{thmgreenbox}
 
 % Red Box
 \declaretheoremstyle[
-    headfont=\bfseries\sffamily\color{CoralRed!70!black},
-    notefont=\bfseries\sffamily\color{CoralRed!70!black}, % same style for the note
-    notebraces={}{}, % to remove parentheses around the note
-    bodyfont=\normalfont,
-    postheadspace=\newline, % adds a new line after the theorem head
-    headformat={\NAME\ \NUMBER\ \NOTE \vspace{0.2cm}}, % Custom head format
-    mdframed={
-        linewidth=2pt,
-        rightline=false, topline=false, bottomline=false,
-        linecolor=CoralRed, backgroundcolor=CoralRed!5,
-        nobreak=false,
-		innerbottommargin=10pt, % Adjust the inner bottom margin within the frame
-    skipbelow=10pt,         % Adjust the space after the frame
-    }
+	headfont=\bfseries\sffamily\color{CoralRed!70!black},
+	notefont=\bfseries\sffamily\color{CoralRed!70!black}, % same style for the note
+	notebraces={}{}, % to remove parentheses around the note
+	bodyfont=\normalfont,
+	postheadspace=\newline, % adds a new line after the theorem head
+	headformat={\NAME\ \NUMBER\ \NOTE \vspace{0.2cm}}, % Custom head format
+	mdframed={
+			linewidth=2pt,
+			rightline=false, topline=false, bottomline=false,
+			linecolor=CoralRed, backgroundcolor=CoralRed!5,
+			nobreak=false,
+			innerbottommargin=10pt, % Adjust the inner bottom margin within the frame
+			skipbelow=10pt,         % Adjust the space after the frame
+		}
 ]{thmredbox}
 
 % Blue Box
 \declaretheoremstyle[
-    headfont=\bfseries\sffamily\color{DeepSeaBlue!70!black},
-    notefont=\bfseries\sffamily\color{DeepSeaBlue!70!black}, % same style for the note
-    notebraces={}{}, % to remove parentheses around the note
-    bodyfont=\normalfont,
-    postheadspace=\newline, % adds a new line after the theorem head
-    headformat={\NAME\ \NUMBER\ \NOTE \vspace{0.2cm}}, % Custom head format
-    mdframed={
-        linewidth=2pt,
-        rightline=false, topline=false, bottomline=false,
-        linecolor=DeepSeaBlue, backgroundcolor=DeepSeaBlue!5,
-        nobreak=false,
-		innerbottommargin=10pt, % Adjust the inner bottom margin within the frame
-    skipbelow=10pt,         % Adjust the space after the frame
-    }
+	headfont=\bfseries\sffamily\color{DeepSeaBlue!70!black},
+	notefont=\bfseries\sffamily\color{DeepSeaBlue!70!black}, % same style for the note
+	notebraces={}{}, % to remove parentheses around the note
+	bodyfont=\normalfont,
+	postheadspace=\newline, % adds a new line after the theorem head
+	headformat={\NAME\ \NUMBER\ \NOTE \vspace{0.2cm}}, % Custom head format
+	mdframed={
+			linewidth=2pt,
+			rightline=false, topline=false, bottomline=false,
+			linecolor=DeepSeaBlue, backgroundcolor=DeepSeaBlue!5,
+			nobreak=false,
+			innerbottommargin=10pt, % Adjust the inner bottom margin within the frame
+			skipbelow=10pt,         % Adjust the space after the frame
+		}
 ]{thmbluebox}
 
 \declaretheorem[style=thmredbox, name=Sætning, numberlike=mycounter]{theorem}
@@ -274,23 +275,23 @@
 \let\endproof\undefined
 
 \declaretheoremstyle[
-    headfont=\bfseries\sffamily\color{CoralRed!70!black},
-    notefont=\bfseries\sffamily,
-    notebraces={}{},
-    bodyfont=\normalfont,
-    postheadspace=\newline,
-    headformat={\NAME\ \NOTE},
-    mdframed={
-        linewidth=2pt,
-        rightline=false,
-        topline=false,
-        bottomline=false,
-        linecolor=CoralRed,
-        backgroundcolor=CoralRed!1
-    },
-    qed=\qedsymbol,
-    spacebelow=\parsep,
-    spaceabove=\parsep
+	headfont=\bfseries\sffamily\color{CoralRed!70!black},
+	notefont=\bfseries\sffamily,
+	notebraces={}{},
+	bodyfont=\normalfont,
+	postheadspace=\newline,
+	headformat={\NAME\ \NOTE},
+	mdframed={
+			linewidth=2pt,
+			rightline=false,
+			topline=false,
+			bottomline=false,
+			linecolor=CoralRed,
+			backgroundcolor=CoralRed!1
+		},
+	qed=\qedsymbol,
+	spacebelow=\parsep,
+	spaceabove=\parsep
 ]{proofstyle}
 
 \declaretheorem[style=proofstyle, name=Bevis, numbered=no]{proof}

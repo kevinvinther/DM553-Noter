@@ -1,6 +1,6 @@
 \chapter{Geometriske Algoritmer}
 
-\section{9/9}%
+\section{Kapitel 1}%
 \label{sec:99}
 
 Exercises (1.1, 1.2,) 1.3, 1.4.a, 1.7, 1.8, 1.9.
@@ -37,17 +37,17 @@ Prove that:
 	      \begin{itemize}
 		      \item This is about proving that, if we have $P$ which is smallest-perimeter, then it must fit in any set containing $P$.
 		      \item \textbf{Proof}.
-								Assume that our smallest-perimeter polygon $P$ wasn't contained in the convex set, which we call $C$. There are two possibilites now:
-								\begin{enumerate}
-									\item We can adjust $P$ such that it fits inside $C$, since $C$ contains $P$.
-												\begin{itemize}
-													\item \textbf{Contradiction}: We did not start with the smallest set.
-												\end{itemize}
-									\item The set $C$ does not contain all the points of $P$.
-												\begin{itemize}
-													\item \textbf{Contradiction}: This is impossible as it is stated that $C$ contains $P$.
-												\end{itemize}
-								\end{enumerate}
+		            Assume that our smallest-perimeter polygon $P$ wasn't contained in the convex set, which we call $C$. There are two possibilites now:
+		            \begin{enumerate}
+			            \item We can adjust $P$ such that it fits inside $C$, since $C$ contains $P$.
+			                  \begin{itemize}
+				                  \item \textbf{Contradiction}: We did not start with the smallest set.
+			                  \end{itemize}
+			            \item The set $C$ does not contain all the points of $P$.
+			                  \begin{itemize}
+				                  \item \textbf{Contradiction}: This is impossible as it is stated that $C$ contains $P$.
+			                  \end{itemize}
+		            \end{enumerate}
 
 	      \end{itemize}
 	\item Any smallest perimeter polygon containing $P$ is convex.
@@ -55,17 +55,17 @@ Prove that:
 		      \item \textbf{Intuition}: If the polygon isn't convex, then it's possible to make it smaller. Recall that a convex polygon is one that doesn't ``cave in'' anywhere.
 
 		      \item \textbf{Proof}:
-								Assume that the smallest-perimeter polygon isn't convex. Then, we have a concave polygon. At least one point in this concave polygon has a interior angle which is greater than 180 degrees. Assuming that we can list the points in an order, where the lines segments endpoints are ordered in such a way that the line segment $\overline{qr}$ will come after $\overline{pq}$. Then we can remove the line which has an interior angle of above 180 degrees, along with the next line, i.e. if we call the point $p_{i}$, then we remove $\overline{p_{i}p_{i+1}}$ and $\overline{p_{i+1}p_{i+2}}$ and replace it with the line segment $\overline{p_{i}p_{i+2}}$. We can algorithmically look at the same point again, and see if it has a interior angle of above 180 degrees, and, if so, we continue until the interior angle is below 180 degrees. However, this would shorten the perimeter, as there are no longer any reflex angles, which would keep the perimeter longer. This is a contradiction as we started with the shortest perimeter polygon.
+		            Assume that the smallest-perimeter polygon isn't convex. Then, we have a concave polygon. At least one point in this concave polygon has a interior angle which is greater than 180 degrees. Assuming that we can list the points in an order, where the lines segments endpoints are ordered in such a way that the line segment $\overline{qr}$ will come after $\overline{pq}$. Then we can remove the line which has an interior angle of above 180 degrees, along with the next line, i.e. if we call the point $p_{i}$, then we remove $\overline{p_{i}p_{i+1}}$ and $\overline{p_{i+1}p_{i+2}}$ and replace it with the line segment $\overline{p_{i}p_{i+2}}$. We can algorithmically look at the same point again, and see if it has a interior angle of above 180 degrees, and, if so, we continue until the interior angle is below 180 degrees. However, this would shorten the perimeter, as there are no longer any reflex angles, which would keep the perimeter longer. This is a contradiction as we started with the shortest perimeter polygon.
 	      \end{itemize}
 	\item Any smallest-perimeter polygon with vertices from $P$ equals the intersection of all convex sets containing $P$ (making the polygon unique).
 	      \begin{itemize}
-					\item \textbf{Proof that the smallest-perimeter polygon equals the intersection of all convex sets containing $P$}: We have earlier shown this to be the case, albeit we didn't specify the set $P$ to be the result of the intersection of multiple convex sets. However this is the exact same proof.
-					\item \textbf{Proof that the polygon is unique}: The resulting polygon is one which fulfills the following conditions:
-							\begin{enumerate}
-								\item It is smallest-perimeter
-								\item It is convex
-							\end{enumerate}
-							There is only one polygon which fulfills these (i.e., the convex hull) therefore making it unique.
+		      \item \textbf{Proof that the smallest-perimeter polygon equals the intersection of all convex sets containing $P$}: We have earlier shown this to be the case, albeit we didn't specify the set $P$ to be the result of the intersection of multiple convex sets. However this is the exact same proof.
+		      \item \textbf{Proof that the polygon is unique}: The resulting polygon is one which fulfills the following conditions:
+		            \begin{enumerate}
+			            \item It is smallest-perimeter
+			            \item It is convex
+		            \end{enumerate}
+		            There is only one polygon which fulfills these (i.e., the convex hull) therefore making it unique.
 	      \end{itemize}
 \end{itemize}
 
@@ -131,12 +131,12 @@ determines whether $r$ lies left or right of this line.
 
 The determinant of a $3 \times 3$ matrix is defined by:
 \begin{equation}
-\begin{vmatrix}
-a & b & c \\
-d & e & f \\
-g & h & i
-\end{vmatrix}
-= aei + bfg + cdh - ceg - bdi - afh
+	\begin{vmatrix}
+		a & b & c \\
+		d & e & f \\
+		g & h & i
+	\end{vmatrix}
+	= aei + bfg + cdh - ceg - bdi - afh
 \end{equation}
 
 
@@ -152,7 +152,7 @@ Thus we can find the determinant of the matrix defined earlier as the following:
 
 Of course we can simplify this a lot:
 \begin{equation}
-q_{x} \cdot r_{y} + p_{x} \cdot q_{y} + p_{y} \cdot r_{x} - p_{y} \cdot q_{x} - p_{x} \cdot r_{y} - q_{y} \cdot r_{x}
+	q_{x} \cdot r_{y} + p_{x} \cdot q_{y} + p_{y} \cdot r_{x} - p_{y} \cdot q_{x} - p_{x} \cdot r_{y} - q_{y} \cdot r_{x}
 \end{equation}
 
 If we try plotting the number's of three points, where $r$ lies to the \textit{right}, we get the following:
@@ -184,12 +184,12 @@ Consider the following alternative approach to computing the convex hull of a se
 
 
 \begin{algorithmic}
-    \STATE Let $p$ be the rightmost point
-    \WHILE{the current point is not the first point}
-        \STATE The next point $q$ is the point to which all points lie to the right of $\overrightarrow{pq}$
-        \STATE $\text{Next[p]} = q$
-        \STATE $p = q$ for the next iteration
-    \ENDWHILE
+	\STATE Let $p$ be the rightmost point
+	\WHILE{the current point is not the first point}
+	\STATE The next point $q$ is the point to which all points lie to the right of $\overrightarrow{pq}$
+	\STATE $\text{Next[p]} = q$
+	\STATE $p = q$ for the next iteration
+	\ENDWHILE
 \end{algorithmic}
 
 \begin{enumerate}
@@ -253,6 +253,267 @@ We run the \textsc{ConvexHull} algorithm on the coordinates, and in return get t
 When we have the result, we traverse the result (one last time), and we extract the x-coordinates, as well as checking if $x > $ \textit{med}, and if so, we do the constant time operation $x + max - min - 1$ to get the original $x$ value.
 
 The running time is $O(n)$ (max, min) + $O(n)$ (median) + $O(n)$ (coordinate-creation) + $\Omega (n \log n)$ (\textsc{ConvexHull}) + $O(n)$ (x-coordinate extraction).
+
+\section{Kapitel 2}
+\noindent
+\textbf{2.1}\\
+\noindent
+\textit{Let $S$ be a set of $n$ disjoint line segments whose upper endpoints lie on the line $y = 1$ and whose lower endpoints lie on the line $y = 0$. These segments partition the horizontal strip $[-\infty : \infty] \times [0 : 1]$ into $n+1$ regions. Give an $O(n \log n)$ time algorithm to build a binary search tree on the segments in $S$ such that the region containing a query points can be determined in $O(\log n)$ time. Also describe the query algorithm in detail.}
+
+
+\begin{algorithm}
+	\label{alg:balancedbinarytree}
+	\caption{Balanced Median Insertion Algorithm}
+	\begin{algorithmic}[1]
+		\REQUIRE A list of line segments
+		\STATE Initialize an empty list of tuples $\textit{tuples}$
+		\FOR{each line segment $l_i$ in the list of line segments}
+		\STATE Extract the $x$-coordinate from $l_i$
+		\STATE Add tuple $(x, l_i)$ to $\textit{tuples}$
+		\ENDFOR
+		\STATE Sort $\textit{tuples}$ by the $x$-coordinate
+		\STATE Call \textsc{Median} on the sorted list of tuples
+	\end{algorithmic}
+\end{algorithm}
+
+\begin{algorithm}
+	\label{alg:median}
+	\caption{Median Function}
+	\begin{algorithmic}[1]
+		\REQUIRE A sorted list of tuples $L$
+		\STATE Find the median of $L$
+		\STATE Remove the median from $L$
+		\STATE Split $L$ into two sublists: $L_{\textit{left}}$ and $L_{\textit{right}}$
+		\STATE Insert the median into a balanced search tree
+		\IF{length of $L$ is not zero}
+		\STATE Call \textsc{Median} on $L_{\textit{left}}$
+		\STATE Call \textsc{Median} on $L_{\textit{right}}$
+		\ENDIF
+	\end{algorithmic}
+\end{algorithm}
+
+In algorithm \ref{alg:balancedbinarytree} and \ref{alg:median}, you can see an algorithm which inserts the points in a balanced binary search tree in time $O(n \log n)$.
+\begin{enumerate}
+	\item Extraction: $O(n)$
+	\item Sorting: $O(n \log n)$
+	\item Median-finding: $O(n)$ \textbf{however}, $n$ shrinks by $2$, thus $O(n) + O(n/2) + O(n/2) + O(n/4) \cdots O(1) = O(n \log n)$. \textbf{Comment: The median can be found in constant time, as the input is sorted. Thus this is $O(n)$ rather than $O(n \log n)$.}
+	\item Inserting into the tree: $O(\log n)$.
+	\item In total: $O(n \log n)$.
+\end{enumerate}
+
+We will in words describe the algorithm used in order to determine which points is closest to the region: We will take an $x$-value and traverse the binary search tree, and return the closest $x$-value. As the binary search tree is balanced, it's height is $\log n$, the time to find a point is $O(\log n)$. We just return the second part of the tuple, i.e., the reference to the line segment.
+\\\\
+\noindent
+\textbf{2.2}\\
+\noindent
+\textit{The intersection detection problem for a set $S$ of $n$ line segments is to determine whether there exists a pair of segments in $S$ that intersect. Give a plane sweep algorithm that solves the intersection detection problem in $O(n \log n)$ time.}
+
+We reuse the algorithm found on page 25, \textsc{FindIntersections(S)}. However, we add a line to this specific algorithm, \textit{return False}. Moreover, we modify line 2 in the function \textsc{FindNewEvent} on page 27 to be \textit{return True}.
+\\\\
+\noindent
+\textbf{2.3}\\
+\noindent
+\textit{Change the code of algorithm \textsc{FindIntersections} (and of the procedures that it calls) such that the working storage is $O(n)$ instead of $O(n+k)$.}
+
+By page 29: ``There is a relatively simple way to do this: only store inteersection points of pairs of segments that are currently adjacent on the sweep line. [...] The modifications required in the algorithm is that the intersection point of two segments must be deleted when they stop being adjacent.''
+\\\\
+\noindent
+\textbf{2.4}\\
+\noindent
+\textit{Let $S$ be a set of $n$ line segments in the plane that may (partly) overlap each other. For example, $S$ could contain the segments $(0,0)(1,0)$ and $(-1,0)(2,0)$. We want to compute all intersections in $S$. More precisely, we want to compute each proper intersection of two segments in $S$ (that is, each intersection of two non-parallel segments) and for each endpoint of a segment all segments containing the point. Adapt algorithm \textsc{FindIntersections} to this end.}
+
+In essence, this question asks to make the algorithm not consider if a line segment lies inside another line segment. Using the same algorithm as presented in the book, when reporting an intersection we check whether the slopes are identical. If they are, we ignore them and do not report the intersection.
+\\\\
+\noindent
+\textbf{2.14}\\
+\noindent
+\textit{Let $S$ be a set of $n$ disjoint line segments in the plane, and let $p$ be a point not on any of the line segments of $S$. We wish to determine all line segments of $S$ that $p$ can see, that is, all line segments of $S$ that contain some point $q$ so that the open segment $\overline{pq}$ doesn't intersect any line segment of $S$. Give an $O(n \log n)$ time algorithm for this problem that uses a rotating half-line with its endpoint at $p$.}
+
+We set up a sweepline algorithm. We define the events and status as following:
+\begin{itemize}
+	\item \textit{Events}: Endpoints in order of angle from $p$.
+	\item \textit{Status}: Segments intersecting the sweepline, in order closest to furthest.
+\end{itemize}
+
+We initialize the status going through all $n$ line segments, and if they intersect, then we insert into a tree $T$. We initialize the event by inserting according to actions. If we are at the start of a segment, we insert it into $T$, while if we are at the end, we delete it from $T$.
+
+To determine in which order we should insert segments which intersect the sweepline, we use distance from $p$, which we relate to``closeness''.
+
+\noindent
+\textbf{Degeneracies/Special Cases}:
+\begin{itemize}
+	\item Multiple end points intersecting with the sweep line at the same angle. \textit{In this case we take the closest point}.
+	\item If a segments endpoint and startpoint are on the same angle from $p$. \textit{We first define whether or not we actually see them, as they in mathematical terms have no width. The described algorithm should work with this special case already.}
+\end{itemize}
+
+\textbf{Comment}: In the project don't spend time implementing too hard data structures (such as red black trees). We don't require a balanced search tree.
+\\\\
+\noindent
+\textbf{Ekstraopgave 1}\\
+\noindent
+\textit{Assume that we have n disjoint horizontal line segments and m disjoint vertical line segments. Give an $O((m+n)\log(m+n))$ algorithm for finding the number of intersection points among the horizontal and vertical lines. Note that intersections points should not be reported, merely counted.}
+
+\textbf{Comment: What I Don't Want To See In An Assignment (Based On Reality):}
+\begin{itemize}
+	\item Think about Kim as a User. Wants to check quickly which ones work and which ones don't.
+	\item Report should give a manual about input format, how to compile it, how to run it, give an example.
+	\item Flexibility is important. If you decide to use floating points, and Kim writes ``1'', and it doesn't work, that's a problem.
+	\item Output should be standardized in the format, but input should be flexible.
+	\item No requirements to the user (e.g. sort the input yourself).
+	\item Be succinct.
+	\item Input of points should be something like ``42 17'' rather than ``(42, 17)'' or ``P(42, 17)'' etc. A line could be ``42 17 5 9'' and understood as x y x y.
+	\item Graphical output should be delivered along with textual output.
+	\item Fine to use many packages, but definitely not required.
+	\item Graphical output can be pdf, png, etc, but should not be something like latex code without running pdflatex.
+	\item Very important for it to be easy with text examples for Kim (such as a flexible input file).
+	\item No interactions in the program (e.g. 'please write points: ').
+	\item Options are OK, for example to use interactions.
+\end{itemize}
+
+\section{Kapitel 3}
+\noindent
+\textbf{3.1}\\
+\noindent
+\textit{Prove that any polygon admits a triangulation, even if it has holes. Can you say anything about the number of triangles in the triangulation?}\\
+Following the proof laid out in the book, we continue getting triangles like normally. The holes will come in, when you cannot draw a line from $a$ to $b$, and thus you have to put a line on a vertex in the hole. Thus the proof works here as well. However, the induction part on getting the number of triangles does not work here. This is because the holes will introduce
+\\\\
+\noindent
+\textbf{3.2}\\
+\noindent
+\textit{A rectilinear polygon is a simple polygon of which all edges are horizontal or vertical. Let P be a rectilinear polygon with n vertices. Give an example to show that $n/4$ cameras are sometimes necessary to guard it.}
+\begin{figure}[!ht]
+	\centering
+	\resizebox{5cm}{!}{%
+		\begin{circuitikz}
+			\tikzstyle{every node}=[font=\LARGE]
+
+
+
+			\draw [short] (4,11.25) -- (11.25,11.25);
+			\draw [short] (11.25,11.25) -- (11.25,6.25);
+			\draw [short] (11.25,6.25) -- (9.75,6.25);
+			\draw [short] (9.75,6.25) -- (9.75,9.75);
+			\draw [short] (9.75,9.75) -- (8.5,9.75);
+			\draw [short] (8.5,9.75) -- (8.5,6.25);
+			\draw [short] (8.5,6.25) -- (7,6.25);
+			\draw [short] (7,6.25) -- (7,9.75);
+			\draw [short] (7,9.75) -- (5.5,9.75);
+			\draw [short] (5.5,9.75) -- (5.5,6.25);
+			\draw [short] (5.5,6.25) -- (4,6.25);
+			\draw [short] (4,6.25) -- (4,11.25);
+			\draw  (10.5,6.75) ellipse (0.25cm and 0.25cm);
+			\draw  (7.75,10.5) ellipse (0.25cm and 0.25cm);
+			\draw  (4.75,6.75) ellipse (0.25cm and 0.25cm);
+		\end{circuitikz}
+	}%
+
+	\label{fig:my_label}
+\end{figure}
+
+Here the circles represent cameras.
+\\\\
+\noindent
+\textbf{3.3}\\
+\noindent
+\textit{Prove or disprove: The dual graph of the triangulation of a monotone polygon is always a chain, that is, any node in this graph has degree at most two.}\\
+\begin{figure}[!ht]
+	\centering
+	\resizebox{5cm}{!}{%
+		\begin{circuitikz}
+			\tikzstyle{every node}=[font=\normalsize]
+
+
+			\draw [short] (2.5,2.75) -- (6.25,2.75);
+			\draw [short] (6.25,2.75) -- (6.25,6.5);
+			\draw [short] (6.25,6.5) -- (10,6.5);
+			\draw [short] (10,6.5) -- (10,10.25);
+			\draw [short] (10,10.25) -- (6.25,10.25);
+			\draw [short] (6.25,10.25) -- (6.25,14);
+			\draw [short] (6.25,14) -- (2.5,14);
+			\draw [dashed] (2.5,2.75) -- (4.5,2.75);
+			\draw [short] (2.5,2.75) -- (4.5,2.75);
+			\draw [short] (2.5,2.75) -- (2.5,6.5);
+			\draw [short] (2.5,6.5) -- (-1.25,6.5);
+			\draw [short] (-1.25,6.5) -- (-1.25,10.25);
+			\draw [short] (-1.25,10.25) -- (2.5,10.25);
+			\draw [short] (2.5,10.25) -- (2.5,14);
+			\draw [dashed] (-1.25,6.5) -- (2.5,10.25);
+			\draw [dashed] (2.5,6.5) -- (2.5,10.25);
+			\draw [dashed] (2.5,10.25) -- (6.25,14);
+			\draw [dashed] (2.5,6.5) -- (6.25,10.25);
+			\draw [dashed] (2.5,10.25) -- (6.25,10.25);
+			\draw [dashed] (2.5,6.5) -- (6.25,6.5);
+			\draw [dashed] (6.25,6.5) -- (6.25,10.25);
+			\draw [dashed] (6.25,6.5) -- (10,10.25);
+			\draw [dashed] (2.5,2.75) -- (6.25,6.5);
+			\draw  (5.25,4) circle (0.25cm);
+			\draw  (3.5,5.5) circle (0.25cm);
+			\draw  (8.75,7.75) circle (0.25cm);
+			\draw  (7.25,9.25) circle (0.25cm);
+			\draw  (5.25,8) circle (0.25cm);
+			\draw  (3.75,9.25) circle (0.25cm);
+			\draw  (5,11.75) circle (0.25cm);
+			\draw  (3.75,13.25) circle (0.25cm);
+			\draw  (1.75,8) circle (0.25cm);
+			\draw  (0.25,9.25) circle (0.25cm);
+			\begin{scope}[rotate around={116.5:(5.25,4)}]
+				\draw[domain=5.25:7.5,samples=100,smooth] plot (\x,{1*sin(1*\x r -5.25 r ) +4});
+			\end{scope}
+			\begin{scope}[rotate around={48.25:(3.5,5.5)}]
+				\draw[domain=3.5:6.5,samples=100,smooth] plot (\x,{1*sin(1*\x r -3.5 r ) +5.5});
+			\end{scope}
+			\begin{scope}[rotate around={18.5:(5.25,8)}]
+				\draw[domain=5.25:7.5,samples=100,smooth] plot (\x,{1*sin(1*\x r -5.25 r ) +8});
+			\end{scope}
+			\begin{scope}[rotate around={-66.75:(7.25,9.25)}]
+				\draw[domain=7.25:9.25,samples=100,smooth] plot (\x,{1*sin(1*\x r -7.25 r ) +9.25});
+			\end{scope}
+			\begin{scope}[rotate around={113.25:(5.25,8)}]
+				\draw[domain=5.25:7.25,samples=100,smooth] plot (\x,{1*sin(1*\x r -5.25 r ) +8});
+			\end{scope}
+			\begin{scope}[rotate around={56.25:(3.75,9.25)}]
+				\draw[domain=3.75:6.5,samples=100,smooth] plot (\x,{1*sin(1*\x r -3.75 r ) +9.25});
+			\end{scope}
+			\begin{scope}[rotate around={106:(5,11.75)}]
+				\draw[domain=5:6.75,samples=100,smooth] plot (\x,{1*sin(1*\x r -5 r ) +11.75});
+			\end{scope}
+			\begin{scope}[rotate around={18.5:(1.75,8)}]
+				\draw[domain=1.75:4,samples=100,smooth] plot (\x,{1*sin(1*\x r -1.75 r ) +8});
+			\end{scope}
+			\begin{scope}[rotate around={119.75:(2,8)}]
+				\draw[domain=2:4,samples=100,smooth] plot (\x,{1*sin(1*\x r -2 r ) +8});
+			\end{scope}
+		\end{circuitikz}
+	}%
+
+	\label{fig:my_label}
+\end{figure}
+\\\\
+\noindent
+\textbf{3.6}\\
+\noindent
+\textit{Give an algorithm that computes in O(n log n) time a diagonal that splits a simple polygon with n vertices into two simple polygons each with at most $\lfloor 2n/3 + 2 \rfloor$ vertices. Hint: Use the dual graph of a triangulation.}
+\\\\
+\noindent
+\textbf{3.11}\\
+\noindent
+\textit{Give an efficient algorithm to determine whether a polygon P with n vertices is monotone with respect to some line, not necessarily a horizontal or vertical one.}\\
+We make a sweep line algorithm with the degree that we want, and if it at any point shows non-connectedness, we return False.
+\\\\
+\noindent
+\textbf{3.13}\\
+\noindent
+\textit{The stabbing number of a triangulated simple polygon P is the maximum
+	number of diagonals intersected by any line segment interior to P. Give
+	an algorithm that computes a triangulation of a convex polygon that has
+	stabbing number O(log n).}
+\\\\
+\noindent
+\textbf{Kim's Opgave}\\
+\noindent
+\textit{Will algorithm MAKEMONOTONE divide a simple polygon up into the smallest number of y-monotone polygons possible? Prove that it does or find an example where it does not. }
+
+
 
 %%% Local Variables:
 %%% mode: latex
