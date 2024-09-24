@@ -1,0 +1,26 @@
+\chapter{Linear Algebra}
+
+\section{Scalars, Vectors, Matrices and Tensors}%
+\label{sec:2.1}
+
+A \textbf{scalar} is just a single number. Scalars are written in \textit{italics}, and are usually given lower-case names.
+
+A \textbf{vector} is an array of numbers, arranged in an order. Names are typically written in \textbf{lowercase bold}. If we are accessing only a part of vector, e.g. $\{x_{1}, x_{3}, x_{10}\}$ we can give this part the name $S$, and write $\mathbf{x}_{S}$ to mean the part of $\mathbf{x}$ which holds $S$. Furthermore, if we want everything except an element or set, we write $\mathbf{x}_{-x_{1}}$ or $\mathbf{x}_{-S}$.
+
+A \textbf{matrix} is a 2D array of numbers. Matrices are usually given \textbf{uppercase bold} names. If a matrix $\mathbf{A}$ has a height $m$ and width $n$ and contains real numbers, we say that $\mathbf{A} \in \mathbb{R}^{m \times n}$. If we need to do some computations on $\mathbf{A}$ and then find the index, we write $f(\mathbf{A})_{i,j}$, to get element at index $(i,j)$.
+
+A \textbf{tensor} is like a matrix, but with more than two axes. The book uses a different typeface, but we'll just use both \textbf{\textit{bold and italic.}}
+
+An important operation on \textit{matrices} is the \textbf{transpose} operation. This is the mirror image of the matrix on a diagonal line, called the \textit{main diagonal}. We denote the transpotision of $\mathbf{A}$ as $\mathbf{A}^{T}$. We define it as such:
+\begin{equation*}
+	(\mathbf{A}^{T})_{i,j} = A_{j,i}
+\end{equation*}
+
+The transposition of a vector is just an array. For a tensor, $a = a^{T}$.
+
+%%% Local Variables:
+%%% mode: latex
+%%% TeX-engine: luatex
+%%% TeX-command-extra-options: "-shell-escape"
+%%% TeX-master: "main"
+%%% End:

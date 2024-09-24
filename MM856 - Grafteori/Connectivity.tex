@@ -1,0 +1,233 @@
+\chapter{Connectivity and Paths}
+
+\section{Cuts and Connectivity}%
+\label{sec:4.1}
+
+We aim to have networks that remain stable (connected) even when some edges or vertices fail. For the rest of this chapter, we assume all graphs to have \textbf{no loops}, as they are irrelevant to connectivity.
+
+A \textbf{seperating set} (or \textbf{vertex cut}) of a graph $G$ is a set $S \subseteq V(G)$ such that $G - S$ has more than one component. The \textbf{connectivity} of $G$, $\kappa(G)$ is the minimum size of a set $S \subseteq V(G)$, such that $G-S$ is disconnected or has only one vertex. We say that $G$ is $k$-connected if it has connectivity at least $k$.
+
+The connectivity of the complete graph $K_{n}$ is $n-1$. I.e., you would have to remove all vertices save 1. However, if $G$ is not a complete graph, then $\kappa(G) \le n-2$. For complete bipartite graphs, then $\kappa(K_{m,n}) = \min\{n,m\}$.
+
+\textbf{Harary graphs} are well-known graphs in Graph Theory. Let $k < n$, we define $H_{k,n}$ to be a Harary Graph. We distinguish between two cases:
+
+(Note from lecture: Connects to the $\frac{k}{2}$ preceding and $\frac{k}{2}$ following vertices.)
+\begin{enumerate}
+	\item $k$ is even:
+	      \begin{itemize}
+		      \item We let $V(H_{k,n}) = \{v_{0}, v_{1}, \ldots, v_{n-1}\}$.
+		      \item We add edges from $v_{i}$ to $v_{i-\frac{k}{2}}, v_{i-\frac{k}{2}k+1}, \ldots, v_{i-1}, v_{i+1}, v_{i+2}, \ldots, v_{i+\frac{k}{2}}$.
+		      \item Here we treat all indices with modulo $n$.
+		      \item In essence, this means we connect $v_{i}$ to the preceding $\frac{k}{2}$ vertices and the following $\frac{k}{2}$ vertices in the cyclic order.
+	      \end{itemize}
+	\item $k$ is odd and $n$ is even:
+	      \begin{itemize}
+		      \item Make each vertex adjacent to the nearest $\frac{k-1}{2}$ vertices in each direction and to the diametrically opposite vertex.
+		      \item (note from lecture): See it as the unique diametrically oposite vertex. THis is guaranteed as $n$ is even.
+	      \end{itemize}
+	\item $k$ is odd and $n$ is odd:
+	      \begin{itemize}
+		      \item Start with $H_{k-1,n}$ and then add edges from $v_{i}$ to $v_{i+(n-1)/2}$ for all $0 \le i \le \frac{n-1}{2}$.
+	      \end{itemize}
+\end{enumerate}
+
+\begin{theorem}[Harary, 1962]
+	\(\kappa(H_{k,n}) = k \), and hence the minimum number of edges in a $k$-connected graph on $n$ vertices is $\lceil kn / 2 \rceil$
+\end{theorem}
+
+In a $k$-connected graph, every vertex has a degree of at least $k$ (since if $d(x) < k$, then $N(x)$ is a cut-set of size less than $k$, which is a contradiction). So if $G$ is $k$-connected, then $2|E(G)| = \sum_{u \in V(G)} d(u) \ge kn$. Thus $|E(G)|\ge \frac{kn}{2}$ and as $|E(G)|$ is an integer we always have the following:
+\begin{equation*}
+	|E(G)| \ge \left \lceil \frac{kn}{2}  \right \rceil
+\end{equation*}
+
+The Harary graphs show that this is best possible, as $|E(H_{k,n})| = \lceil \frac{kn}{2}  \rceil$.
+
+A \textbf{disconnecting set} of edges is a set $F \subseteq E(G)$, such that $G - F$ has more than one component. A graph $G$ is $k$\textbf{-edge-connected} if every disconnecting set has at least $k$ edges. The \textbf{edge-connectivity} of $G$, $\kappa'(G)$, is the minimum size of a disconnecting set in $G$. We denote by $[S, T]$ all the edges between vertex sets $S$ and $T$. An \textbf{edge-cut} is an edge set $[S, \overline{S}]$, where $\emptyset \subset S \subset V(G)$ (i.e. $S$ is a non-empty proper subset of $V(G)$). Thus the edge-cut $[S, \overline{S}]$ connects all vertices in $S$ to all other vertices, and if cut, will disconnect the graph.
+
+The difference between and edge-cut and a disconnecting set, is that a disconnecting set \textit{may} not be an edge cut, however, a \textit{minimal disconnecting set} is an edge-cut and vice-versa.
+
+\begin{theorem}
+	\(\kappa(G) \le \kappa'(G) \le \delta(G)\)
+\end{theorem}
+
+That is, the connectivity is smaller than or equal to the edge connectivity which is smaller than or equal to the minimum degree.
+
+\begin{proof}
+	We prove in two parts:
+
+	\begin{enumerate}
+		\item \(\kappa'(G) \le \delta(G)\)
+		\item \(\kappa(G) \le \kappa'(G)\). Let $[S, \overline{S}]$ be a smallest edge-cut. We will prove the result in the following subcases.
+		      \begin{itemize}
+			      \item All edges between $S$ and $\overline{S}$ exist in $G$.
+			      \item All edges between $S$ and $\overline{S}$ do not exist in $G$.
+		      \end{itemize}
+	\end{enumerate}
+\end{proof}
+
+
+\begin{theorem}
+	If $G$ is a 3-regular graph, then \(\kappa(G) = \kappa'(G)\).
+\end{theorem}
+
+We omit the proof.
+
+\begin{proposition}
+	Let $S \subseteq V(G)$ be arbitrary. Then
+
+	\begin{equation*}
+		|[S, \overline{S}]| = \left( \sum_{v \in S} d(v) \right) - 2|E(G[S])|
+	\end{equation*}
+\end{proposition}
+
+That is, the edge cut's size is equal to the degree of all vertices in $S$ summed, subtract twice the induced subgraph of $S$.
+
+\begin{corollary}
+	If $G$ is a simple graph and $|[S, \overline{S}]| < \delta(G)$, then $|S| > \delta(G)$.
+\end{corollary}
+
+
+We refer to a minimal non-empty edge cut as a \textbf{bond}.
+
+\begin{proposition}
+	If $G$ is a connected graph, then an edge cut $F$ is a bond if and only if $G-F$ has exactly two components.
+\end{proposition}
+
+We define a \textbf{block} of a graph to be a maximal connected subgraph of $G$ that has no cut-vertex. If $G$ itself has no cut-vertex and is connected, then we say that $G$ itself is a block.
+
+\begin{proposition}
+	Two blocks in a graph share at most one vertex.
+\end{proposition}
+
+\begin{proof}
+	Given two blocks $B_{1}$ and $B_{2}$. Assume for the sake of contradiction, that they share at least two vertices.
+
+	We will show that $B^{*} = B_{1} \cup B_{2}$ is a connected subgraph with no cut-vertex (which contradicts the assumption that $B_{1}$ and $B_{2}$ are maximal, from the definition).
+
+	Let $\{x,y\} \subseteq V(B_{1}) \cap V(B_{2})$ and let $z \in V(B^{*})$ be arbitrary. WLOG, $z \ne y$ (otherwise $z \ne x$).
+
+	All vertices in $B_{1}-z$ can reach $y$ and all vertices in $B_{2}-z$ can reach $y$. So $B^{*}$ is connected. As $z$ was arbitrary, $B^{*}$ cannot be disconnected by deleting one vertex.
+\end{proof}
+
+The blocks of the graph \textit{decompose} the graph (i.e., each block shares no edge with other blocks, but may share a vertex (if it wasn't blocks, the definition would instead be \textit{vertices})).
+
+\section{$k$-connected graphs}%
+\label{sec:4.2}
+
+We say that two $(u,v)$-paths are \textbf{internally disjoint} if they have no common internal vertex. Recall that an internal vertex is every vertex in the path except $u$ and $v$.
+
+\begin{theorem}
+	\label{the:4.2.2}
+	A graph $G$ with $n(G) \ge 3$ is $2$-connected if and only if for each $u,v \in V(G)$ there exist two internally disjoint $(u,v)$-paths in $G$.
+\end{theorem}
+Recall that $k$-connectivity means that at least $k$ vertices need to be deleted, in order for the graph to end up disconnected.
+
+
+\begin{proof}
+	We prove both directions: \\
+	\noindent
+	\textbf{``\(\forall u,v \in V(G)\): $G$ contains two internally disjoint $(u,v)$-paths \(\Rightarrow\) $G$ is $2$-connected.''}\\
+	\noindent
+	Choose an arbitrary $z \in V(G)$. We will show that $G - z$ is connected. Choose arbitrary $u, v \in V(G-z)$. From the assumption, we know that there exist two internally disjoint $(u,v)$-paths. \textit{At least} one of these do not contain $z$, thus this path exists in $G-z$. So there is a $(u,v)$-path in $G-z$. As $u$ and $v$ were arbitrary, $G-z$ is connected. As $z$ was arbitrary, $G$ is $2$-connected.\\
+	\noindent
+	\textbf{``$G$ is $2$-connected \(\Rightarrow\) \(\forall u,v \in V(G)\): $G$ contains two internally disjoint $(u,v)$-paths.''}\\
+	\noindent
+	Suppose $G$ is $2$-connected and $\exists u,v \in V(G)$. We will prove that $G$ contains two internally disjoint $(u,v)$-paths, by induction on $d(u,v)$.\\
+	\noindent
+	\textit{Base Case $d(u,v) = 1$}: Let $w \in N(u) \setminus \{v\}$ be arbitrary. We know it to exist because it is 2-connected. There is then a $(w,v)$-path $P$	in $G-u$, as $G$ is 2-connected. The paths $uv$ and $uP$ are internally disjoint $(u,v)$-paths in $G$ (as the path has size 1).\\
+	\noindent
+	\textit{Inductive Step, $d(u,v) > 1$}: We assume the statement holds for all pairs of vertices at distance less than $d(u,v)$ (by the induction hypothesis). Let $up_{1}p_{2} \ldots p_{l}v$ be a shortest $(u,v)$-path in $G$. By induction there exists internally disjoint $(u, p_{l})$-paths $P$ and $Q$ in $G$ as $d(u,p_{l}) < d(u,v)$.
+
+	We may assume that $v \notin V(P) \cup V(Q)$, as, if $v \in V(P)$ or $v \in V(Q)$ then we are done, as we would have the paths needed. Since $G$ is $2$-connected, there exists a $(v,u)$-path, $R = vz_{1}z_{2} \ldots z_{r}u$ in $G_{p_{l}}$. If $R$ is internally disjoint from $P$ (or $Q$) we immediately get internally disjoint $(u,p_{l})$-paths ($R$ and $Pv$). So $R$ intersects $V(P) \cup V(Q) \setminus \{u,v\}$. Let $z_{i} \in V(P) \cup V(Q)$ be chosen such that $i$ is minimum. If $z_{i} \in V(P)$, then $vz_{1}\ldots z_{i-1}P[z_{i},u]$ and $Qv$ are internally disjoint $(u,v)$-paths. If $z_{i} \in V(Q)$, then $vz_{1}\ldots z_{i-1}Q[z_{i},u]$ and $Pv$ are internally disjoint $(u,v)$-paths.
+\end{proof}
+
+\begin{lemma}[Expansion Lemma]
+	If $G$ is a $k$-connected graph and $G'$ is obtained from $G$ by adding a new vertex $y$ with at least $k$ neighbours in $G$, then $G'$ is connected.
+\end{lemma}
+
+\begin{theorem}
+	Let $G$ be a graph with $n(G) \ge 3$. The following conditions are now equivalent:
+	\begin{enumerate}
+		\item $G$ is connected and has no cut-vertex
+		\item \(\forall x, y \in V(G)\), there are internally disjoint $(x,y)$-paths.
+		\item \(\forall x,y \in V(G)\), there is a cycle through $x$ and $y$.
+		\item \(\delta(G) \ge 1\), and every pair of edges in $G$ lie on a common cycle.
+	\end{enumerate}
+\end{theorem}
+
+\begin{proof}
+	We prove:
+	\begin{itemize}
+		\item $1 \iff 2$: Was proved in Theorem~\ref{the:4.2.2}.
+		\item $2 \iff 3$: Together they form a cycle.
+		\item $4 \Rightarrow 3$
+		\item $1 \text{ \& } 3 \Rightarrow 4$
+	\end{itemize}
+\end{proof}
+
+A \textbf{subdivision} of an edge $uv$ in a graph $G$ is the operation of replacing $uv$ with a path $uwv$ through new vertex $v$. I.e., you add a new vertex which will be in the middle of the $uv$ path.
+
+\begin{corollary}
+	If $G$ is $2$-connected, then the graph $G'$ obtained by subdividing an edge $G$ is $2$-connected.
+\end{corollary}
+
+We define an \textbf{ear} of a graph to be the maximal path whose internal vertices have degree $2$ in $G$. Furthermore, an \textbf{ear decomposition} of $G$ is a decomposition $P_{0},P_{1},\ldots, P_{k}$ such that $P_{0}$ is a cycle and $P_{i}$ is an ear in $P_{0} \cup \cdots \cup P_{i}$ for all $i = 1, 2, \ldots, k$.
+
+\begin{theorem}
+	A graph is $2$-connected if and only if it has an ear-decomposition.
+\end{theorem}
+
+A \textbf{closed-ear} of a graph is a cycle, $C$, such that all vertices on $C$ have degree 2, except one. A \textbf{closed-ear decomposition} of $G$ is a decomposition $P_{0},P_{1}, \ldots, P_k$ such that $P_{0}$ is a cycle and $P_{i}$ is either a closed-ear or an open ear in $P_{0} \cup \cdots \cup P_{i}$ for all $i = 1, 2, \ldots, k$.
+
+\begin{theorem}
+	A graph is $2$-edge-connected if and only if it has a closed-ear decomposition.
+\end{theorem}
+
+We now turn our attention to connectivity in digraphs. We define connectivity analogously to graphs. A \textbf{seperating set} or \textbf{vertex cut} of a digraph $D$ is a set $S \subseteq V(D)$ such that $D-S$ is not strongly connected. A digraph is $k$-connected if every vertex cut has at least $k$ vertices. The minimum size of a vertex cut is the connectivity \(\kappa(D)\).
+
+For $S, T \subseteq V(G)$ let $[S, T]$ denote all arcs from $S$ to $T$ (Not the other way around, nor is it interchangeable!). An \textbf{arc cut} is the set $[S, \overline{S}]$ for some $\emptyset \ne S \subset V(D)$. A digraph is $k$-\textbf{arc-connected} if every arc cut has at least $k$ edges. The minimum size of the arc cut is the \textbf{arc-connectivity} \(\kappa'(D)\).
+
+\begin{proposition}
+	Adding a directed ear to a strong digraph $D$ produces another (larger) strong digraph $D'$.
+\end{proposition}
+
+While we will not show a direct proof, there are two main ways of proving this:
+\begin{enumerate}
+	\item[Way 1: ] Show that every set $\emptyset \ne S \subset V(D')$ has an arc out of it.
+	\item[Way 2: ] Show that for every $x,y \in V(D')$ there is a $(x,y)$-path in $D'$.
+\end{enumerate}
+
+An \textbf{orientation} of a graph is a digraph obtained by directing each edge.
+
+\begin{theorem}
+	A graph $G$ has a strong orientation if and only if $G$ is $2$-edge-connected.
+\end{theorem}
+
+\textbf{``Strong Orientation \(\Rightarrow\) 2-edge-connected''}: We can either prove this directly or by contradiction.
+
+\textbf{``Strong Orientation \(\Leftarrow\) 2-edge-connected''}: We prove this by considering an ear decomposition of $G$.
+
+Given $x, y \in V(G)$, a set $S \subseteq V(G) \setminus \{x,y\}$ is a $(x,y)$-\textbf{seperator} (or $(x,y)$-cut) if $G-S$ has no $(x,y)$-path. We let $\kappa(x,y)$ be the minimum size of a $(x,y)$-cut. Let \(\lambda(x,y)\) be the maximum number of pairwise internally disjoint $(x,y)$-paths. For $X, Y \subseteq V(G)$ we define an $(X,Y)$-path to be a path starting in $X$ and ending in $Y$, and having no internal vertices in $X \cup Y$. We always have \(\kappa(x,y) \ge \lambda(x,y)\) as there cannot be fewer cuts than paths.
+
+\begin{theorem}[Menger, 1927]
+	Let $x,y \in V(G)$ be arbitrary such that $xy \notin E(G)$. Then \(\kappa(x,y) = \lambda(x,y)\)
+\end{theorem}
+
+That is, the minimum size of a $(x,y)$-cut is equal to the maximum amount of pairwise internally disjoint $(x,y)$-paths.
+
+\begin{proof}
+	We have shown that \(\kappa(x,y) \ge \lambda(x,y)\), thus to complete the proof we shall show that $\kappa(x,y) \le \lambda(x,y)$ thus making \(\kappa(x,y) = \lambda(x,y)\). Let $S$ be a minimum $(x,y)$-cut. Then there is no $(x,y)$-path in $G-S$ and $|S| = \kappa(x,y)$. To complete the proof, we show that there are $|S|$ pairwise internally disjoint $(x,y)$-paths. We prove by induction on $n = n(G)$.\\
+	\noindent
+	\textit{Base Case $n = 2$}: In this case $V(G) = \{x,y\}$. As $xy \notin E(G)$, we have $\kappa(x,y) = 0 = \lambda(x,y)$.\\
+	\noindent
+	\textit{Inductive Step $n > 2$}: We assume the theorem holds for graphs of order $< n$. We consider two cases:\\
+	1. There exists  a minimum $(x,y)$-cut different than $N(x)$ and $N(y)$. Let $S$ be such a cut. We define $V_{1}$ to contain all vertices on $(x,S)$-paths in $G$, and $V_{2}$ to contain all vertices on $(S,y)$-paths in $G$. We will then show that $S = V_{1} \cap V_{2}$. As $S$ is minimal $(x,y)$-cut, $S \subseteq V_{1} \cap V_{2}$. If $V_{1} \cap V_{2}$, then $v \in S$, as $S$ is a $(x,y)$-cut. So $S = V_{1} \cap V_{2}$, as desired.
+\end{proof}
+
+
+%%% Local Variables:
+%%% mode: latex
+%%% TeX-engine: luatex
+%%% TeX-command-extra-options: "-shell-escape"
+%%% TeX-master: "main"
+%%% End:

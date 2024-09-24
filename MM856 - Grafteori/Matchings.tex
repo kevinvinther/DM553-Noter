@@ -1,0 +1,149 @@
+\chapter{Matchings and Factors}
+
+\section{Matchings and Covers}%
+\label{sec:3.1}
+
+A \textbf{matching} in a graph $G$ is a set of non-loop edges with no shared endpoints. We say that vertices incident to edges in a matching are \textbf{saturated} by the matching. A \textbf{maximal matching} is a matching that cannot be enlarged by adding another edge. A \textbf{maximum matching} contains the maximum number of edges. (Maximal = There may be a better one, but it cannot become better by adding a new edge, maximum = there is not a better one). We call a matching where all vertices are saturated a \textbf{perfect matching}.
+
+Given a bipartite graph $K_{n,n}$, how many perfect matchings can you find? For the first vertex there are $n$ possibilities, for the second $n-1$, $\ldots$, for the last there is 1 possibility. Therefore there are $n!$ perfect matchings for $K_{n,n}$.
+
+Given a matching $M$, we define $M$\textbf{-augmenting} paths as to be a path, where every other edge is in the matching. Both endpoints of the path has to be non-saturated, and every other edge has to be in $M$. If we do not require the endpoints to be non-saturated, we are working with a $M$-\textbf{alternating} path. If an $M$-augmenting path exists, then we can increase the size of the matching.
+
+\begin{theorem}[Berge, 1957]
+	A matching $M$ is maximum if and only if there is no $M$-augmenting path.
+\end{theorem}
+
+\begin{theorem}[Hall, 1935]
+	A bipartite graph, with partite sets $X$ and $Y$, has a matching that saturates $X$ if and only if $\forall S \subseteq X \mid |N(S)| \ge |S|$.
+\end{theorem}
+
+A \textbf{vertex cover} of a graph $G$ is a set $Q \subseteq V(G)$ that contains at least one end-point of every edge.
+
+\begin{theorem}[König, 1931, König-Egervary Theorem]
+	If $G$ is a bipartite graph then the maximum size of a matching in $G$ is equal to the minimum size of a vertex cover in $G$.
+\end{theorem}
+
+The \textbf{independence number} of a graph $G$, is the size of a largest independent set in $G$. An \textbf{edge cover} of $G$ is a set of edges $L$, such that $V(L) = G$. That is, every vertex of $G$ is an endpoint of some edge in $L$.
+
+We now present some variables, which will be important later.
+\begin{itemize}
+	\item \(\alpha(G)\) = Maximum size of independent set
+	\item \(\alpha'(G)\) = Maximum size of matching
+	\item \(\beta(G)\) = Minimum size of vertex cover
+	\item \(\beta'(G)\) = Minimum size of edge cover
+\end{itemize}
+
+\begin{lemma}
+	\(\alpha(G) + \beta(G) = n(G)\)
+\end{lemma}
+
+So, the maximum size of independent set + the minimum size of vertex cover is equal to the number of vertices.
+
+\begin{proof}
+	A set $S$ is independent if and only if $\overline{S}$ is a vertex cover.
+\end{proof}
+
+\begin{theorem}
+	Let $G$ be a graph without isolated vertices. Then $\alpha'(G) + \beta'(G) = n(G)$
+\end{theorem}
+
+I.e., the maximum size of a matching + the minimum size of an edge cover is equal to the number of vertices.
+
+\begin{proof}
+	Let $M$ be a maximum matching.
+
+	Then there exists an edge cover of size $|M| = (n(G) - 2|M|) = n(G) - |M|$. So \(\beta'(G) \le n(G) - |M| = n(G) - \alpha'(G)\).
+
+	Now, let $L$ be a minimum edge cover. Assume the components in $G[L]$ are $C_{1}, \ldots, C_r$. Each $C_{i}$ is a tree, so $|E(C_{i})| = |V(C_{i})|-1$. So $|L| = \sum_{i=1}^r |E(C_{i})| = \sum_{i=1}^r (|V(C_{i})|-1) = n(G)-r$.
+
+	There exist a matching of size $r$ (take one edge from each component). So \(\alpha'(G) \ge r = n(G) - |L| = n(G) - \beta'(G)\). As $\beta'(G) \le n(G) - \alpha'(G)$, so \(\beta'(G) = n(G)-\alpha'(G)\).
+\end{proof}
+
+\begin{corollary}
+	Let $G$ be a bipartite graph without isolated vertices. Then $\alpha(G) = \beta'(G)$.
+\end{corollary}
+
+\begin{proof}
+	Königs Theorem \(\alpha'(G) = \beta(G)\).
+\end{proof}
+
+A set $S \subseteq V(G)$ is said to be a \textbf{dominating set} in $G$ if every vertex not in $S$ has a neighbour with $S$. The \textbf{domination number} \(\gamma(G)\) is the minimum size of a dominating set in $G$.
+
+\begin{example}
+	Given a road network, at how few intersections do we need to place a guard, such that every intersection is either guarded or a guard is at a neighbouring intersection?
+\end{example}
+
+Let $G$ be a $k$-regular graph. What can we say about \(\gamma(G)\)? \(\gamma(G) = \frac{n(G)}{k+1}\).
+
+\begin{theorem}
+	Every graph of order $n$ and \(\delta(G) \ge k\) has \(\gamma(G) \le n \frac{1+ \ln (k+1)}{k+1}\).
+\end{theorem}
+
+We now define some more things regarding dominating sets.
+\begin{itemize}
+	\item $S$ is a \textbf{connected dominating set} if $G[S]$ is connected.
+	\item $S$ is an \textbf{independent dominating set} if $G[S]$ is independent.
+	\item $S$ is a \textbf{total dominating set} if $G[S]$ has no isolated vertices.
+\end{itemize}
+
+$S$ is a dominating set if and only if $N[S] = V(G)$. $S$ is a total dominating set if and only if $N(S) = V(G)$.
+
+\section{Algorithms and Applications}%
+\label{sec:3.2}
+
+We begin by introducing an algorithm which gives us a maximum perfect matching in $K_{n,n}$, where we are given weights on the edges. The problem of finding a minimum weight perfect matching in $K_{n,n}$ is equivalent. The algorithm is called \textit{The Hungarian Method} and can solve this problem in time $O(n^{3})$, however, we will not look at this.
+
+\section{Matchings in General Graphs}%
+\label{sec:3.3}
+
+A \textbf{factor} in a graph is a spanning subgraph of $G$. A $k$-factor is a spanning $k$-regular subgraph. An \textbf{odd component} is a component of odd order. We denote the number of odd components in $H$ by $o(H)$.
+
+The difference between a perfect matching and a 1-factor is that a perfect matching is a set of edges, while a 1-factor is a subgraph, whose edges form a perfect matching.
+
+\begin{theorem}[Tutte's 1-Factor Theorem]
+	A graph has a 1-factor (a perfect matching) if and only if $o(G-S) \le |S|$ for every $S \subseteq V(G)$.
+\end{theorem}
+
+\begin{proof}
+	We begin by proving the easier direction:
+	``If $G$ has a 1-factor, then $o(G-S) \le |S|$ for every $S \subseteq V(G)$.''\\
+	\noindent
+	Assume $G$ has a 1-factor. Call this $F$. Let $S \subseteq V(G)$ be an arbitrary subset. Let $C_{1}, \ldots, C_{o(G-S)}$ be the odd components in $G-S$.
+
+	Since $G$ has a 1-factor, each vertex in $G$ is matched by an edge in $F$. For each odd component $C_{i}$ in $G-S$, there must be an edge in $F$ connecting a vertex in $C_{i}$ to a vertex in $S$. This is because odd components have an odd number of vertices.
+
+	Since each odd component in $G-S$ is connected to a distinct vertex in $S$, the number of vertices in $S$ must be at least as large as the number of odd components. Therefore
+	\begin{equation*}
+		|S| \ge o(G-S)
+	\end{equation*}
+
+	Next we prove the harder direction: ``If $o(G-S) \le |S|$ for every $S \subseteq V(G)$ then $G$ has a 1-factor''.\\
+	\noindent
+	We begin by assigning these some value:
+	\begin{enumerate}
+		\item[(A)] $o(G-S) \le |S| \text{ for every } S \subseteq V(G)$
+		\item[(B)] $G$ has a 1-factor.
+	\end{enumerate}
+
+	For the sake of contradiction, assume that $(A)$ holds for $G$, but $(B)$ does not. We will keep adding edges $e$ to $G$, as long as $(B)$ still does not hold for $G+e$. Let $G'$ be the final graph. (A) still holds for $G'$, as adding edges to a graph does not increase the number of odd components.
+
+	Consider adding one more edge $uv$ to $G'$, where $uv \notin E(G')$. This edge will \textbf{force} $(B)$ to hold for $G'$ (as we defined $G'$ to have all possible edges without $(B)$ holding).
+
+	Let $U$ be all vertices in $G'$ of degree $n-1$ (i.e., they are adjacent to all other vertices). We now have two cases:
+
+	\textbf{Case 1}:\\
+	\noindent
+	Every component in $G'-U$ is a complete graph (i.e., a clique).\\
+	In this case, we can find a 1-factor as $o(G'-U) \le |U|$. \\
+	\noindent
+	\textbf{Case 2:}\\
+	\noindent
+	There exist some $x,y,z \in V(G'-U)$ such that $xy,yz \in E(G'-U)$ and $xz \notin E(G'-U)$.
+\end{proof}
+
+%%% Local Variables:
+%%% mode: latex
+%%% TeX-engine: luatex
+%%% TeX-command-extra-options: "-shell-escape"
+%%% TeX-master: "main"
+%%% End:

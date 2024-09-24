@@ -1,0 +1,20 @@
+\chapter{Chapter 5 - Orthogonal Range Searching}
+
+Given a database with some parameters, we want to be able to search in this database. For example, with 2 parameters, \textit{age} and \textit{income}, you would be able to present this in a 2-dimensional coordinate system and find everything which fits within a certain query. Of course, you can extend this to more than 2 parameters, however, this would also extend to $n$ dimensions (given $n$ parameters).
+
+A query is a \textit{rectangular range query} or \textit{orthogonal range query}, if a query asks to report all records whose fields lie between specified values which is then interpreted as a query asking for all points inside a $n$-dimensional axis-parallel box.
+
+\subsection{1-Dimensional Range Searching}%
+\label{subsec:5.1}
+
+Given a range we want $[x : x']$ and a list of points in one dimension, which lies on a real line $P := \{p_{1}, p_{2}, \ldots, p_{n}\}$ we can solve the problem of 1-dimensional range searching using a balanced binary search tree. The leaves of $\mathcal{T}$ store the points of $P$ and the internal nodes store splitting values to guide the search. We denote the splitting value stored at a node $v$ by $x_{v}$. We then assume that the left subtree of $v$ contains all the points smaller than or equal to $x_{v}$, and the right tree strictly larger than.
+
+Given our range $[x : x']$, we denote by $\mu, \mu'$ the two leaves where the searches end. The points will then be between \(\mu\) and \(\mu'\).
+
+
+%%% Local Variables:
+%%% mode: latex
+%%% TeX-engine: luatex
+%%% TeX-command-extra-options: "-shell-escape"
+%%% TeX-master: "main"
+%%% End:

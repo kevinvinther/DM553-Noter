@@ -1,0 +1,28 @@
+\chapter{Deep Feedforward Networks}
+
+\begin{note}
+	These notes are based on:
+	\begin{itemize}
+		\item Deep Learning Chapter 6
+		\item Slides 2
+	\end{itemize}
+	It is unclear what part of chapter 6 the slides cover, thus this might not cover it all.
+\end{note}
+
+We now introduce \textbf{Deep Feedforward Networks}, which also goes by the names \textbf{Feedforward Neural Networks} and \textbf{Multilayer Perceptrons}.
+
+The goal of a feedforward network (FFN) is to approximate some function, $f^{*}$. Given a function $y = f^{*}(x)$, a FFN defines a mapping $y = f(x; \theta)$ and learns the value of the parameters \(\theta\) that result in the best function approximation. It is a feed\textbf{forward} network, as the information flows through the function, through intermediate computations, and lastly to the output $y$. There is at no point feed\textbf{back}.
+
+FFN's are called \textbf{networks} because they typically are represented by composing together many different functions. Given three functions $z, p, t$ we might have $f(x) = z(p(t(x)))$. We define the functions as \textit{layers}, in this case the first layer would be $z$, the second $p$ and the third $t$. The length of this is called the \textbf{depth}. It is from this that the name \textit{deep learning} comes from. The final layer is called the \textbf{output layer}.
+
+During the training of the neural network, we drive $f(x)$ to match $f^{*}(x)$. The training examples specify what the output layer must do at each point $x$; i.e., a value that is close to $y$.
+
+The reason we call FFN's \textit{neural} is because they are loosely inspired by neuroscience.
+
+
+%%% Local Variables:
+%%% mode: latex
+%%% TeX-engine: luatex
+%%% TeX-command-extra-options: "-shell-escape"
+%%% TeX-master: "main"
+%%% End:
