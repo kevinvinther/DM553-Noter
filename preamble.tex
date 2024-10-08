@@ -13,9 +13,10 @@
 % DeepSeaBlueMuted, TurquoiseGreenMuted, SunnyYellowMuted, SunsetOrangeMuted, CoralRedMuted
 
 
-\documentclass[12pt, oneside, a4paper]{book}
+\documentclass[12pt, twoside]{book}
 
-\usepackage[top=3cm, bottom=3cm, left=3cm, left=3cm, right=3cm, headsep=10pt,a4paper]{geometry}
+
+\usepackage{fancyhdr}
 
 
 \usepackage{sourcesanspro}
@@ -32,10 +33,6 @@
 
 \usepackage{imakeidx}
 
-% Sæt sproget til dansk
-\usepackage{polyglossia}
-\setdefaultlanguage{danish}
-\setotherlanguages{english}
 
 % Til ordbogen
 \usepackage{longtable}
@@ -184,7 +181,6 @@
 
 
 
-
 % Now apply the custom style
 \theoremstyle{customstyle}
 
@@ -256,16 +252,16 @@
 		}
 ]{thmbluebox}
 
-\declaretheorem[style=thmredbox, name=Sætning, numberlike=mycounter]{theorem}
+\declaretheorem[style=thmredbox, name=Proof, numberlike=mycounter]{theorem}
 \declaretheorem[style=thmgreenbox, name=Definition, numberlike=mycounter]{definition}
 \declaretheorem[style=thmredbox, name=Lemma, numberlike=mycounter]{lemma}
 \declaretheorem[style=thmredbox, name=Proposition, numberlike=mycounter]{proposition}
 \declaretheorem[style=thmredbox, name=Corollary, numberlike=mycounter]{corollary}
-\declaretheorem[style=thmredbox, name=Formodning, numberlike=mycounter]{conjecture}
-\declaretheorem[style=thmbluebox, name=Påstand, numberlike=mycounter]{claim}
-\declaretheorem[style=thmbluebox, name=Eksempel, numberlike=mycounter]{example}
-\declaretheorem[style=thmbluebox, name=Opgave, numberlike=mycounter]{exercise}
-\declaretheorem[style=thmbluebox, name=Bemærkning, numberlike=mycounter]{remark}
+\declaretheorem[style=thmredbox, name=Conjecture, numberlike=mycounter]{conjecture}
+\declaretheorem[style=thmbluebox, name=Claim, numberlike=mycounter]{claim}
+\declaretheorem[style=thmbluebox, name=Example, numberlike=mycounter]{example}
+\declaretheorem[style=thmbluebox, name=Exercise, numberlike=mycounter]{exercise}
+\declaretheorem[style=thmbluebox, name=Remark, numberlike=mycounter]{remark}
 \declaretheorem[style=thmbluebox, name=Note, numberlike=notecounter]{note}
 
 
@@ -294,7 +290,31 @@
 	spaceabove=\parsep
 ]{proofstyle}
 
-\declaretheorem[style=proofstyle, name=Bevis, numbered=no]{proof}
+\declaretheorem[style=proofstyle, name=Proof, numbered=no]{proof}
+
+
+\fancyhf{}  % Clears all header and footer fields
+
+% Command to format chapter title in the header (without bold)
+\fancyhead[LO]{\textnormal{Chapter \thechapter: \leftmark}}  % Left header on Odd pages
+\fancyhead[RE]{\textnormal{Chapter \thechapter: \leftmark}}  % Right header on Even pages
+
+\fancyfoot[C]{\thepage}  % Centered page number in the footer
+
+% Additional setup to extract the chapter name
+\renewcommand{\chaptermark}[1]{\markboth{#1}{}}
+
+% Custom headrule that adjusts length dynamically based on the text width
+\renewcommand{\headrule}{%
+	\ifodd\value{page}
+		% For odd pages: left-aligned rule with dynamic width
+		\makebox[0pt][l]{\rule[0.5\baselineskip]{\widthof{\textnormal{Chapter \thechapter: \leftmark}}}{\headrulewidth}}%
+	\else
+		% For even pages: right-aligned rule with dynamic width
+		\makebox[\textwidth][r]{\rule[0.5\baselineskip]{\widthof{\textnormal{Chapter \thechapter: \leftmark}}}{\headrulewidth}}%
+	\fi
+	\vskip-\headrulewidth
+}
 
 \makeindex
 
@@ -306,8 +326,8 @@
 
 \begin{document}
 
-\pagestyle{empty}
 
+\pagestyle{fancy} % Ensure that the fancy page style is applied to the entire document
 \emergencystretch 3em
 
 %%% Local Variables:

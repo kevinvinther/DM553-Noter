@@ -305,6 +305,121 @@ A \texttt{symmetric matrix} is a matrix which is equal to its transpose:
 	A = A^{T}
 \]
 
+\section{Matrices as Linear Transformation}%
+\label{sec:label}
+
+A matrix defines a \textit{linear transformation}. A matrix represents a set of rules that tells you how to move a vector in space. You can think of a matrix like a machine that takes in a vector, and outputs another vector after having done some operations on the vector. We say the transformation is ``linear'' as it preserves operations like addition and scaling. The reason we care for matrices as linear transformations, is because they help us perform complex operations on vectors efficiently by condensing multiple operations (scaling, rotating, reflecting, etc.) into a single mathematical object.
+
+A matrix $\mathbf{A} \in \mathbb{R}^{n \times m}$ projects points from $\mathbb{R}^{n}$ to their image in $\mathbb{R}^{m}$. If you have a vector $\mathbf{x} \in \mathbb{R}^{n}$, and a matrix $\mathbf{A} \in \mathbb{R}^{n \times m}$, then the matrix-vector multiplication $\mathbf{Ax}$ results in a new vector $\mathbf{y} \in \mathbb{R}^{m}$.
+
+\begin{example}[3D to 2D space using a matrix]
+	Given a vector $\mathbf{x} \in \mathbb{R}^{3}$ (i.e., in 3D space), and a matrix $\mathbf{A} \in \mathbb{R}^{2 \times 3}$, then the result is a vector in 2d space. Thus the transformation ``projects'' the vector from its 3D position to some new position in the 2D plane.
+\end{example}
+
+We can use matrices for the hidden layers in a neural network. Each hidden layer transforms the input in same way. Thus, using matrices makes it more manageable and the data flow more systematic.
+
+\begin{example}[Reflection on the $x$-axis]
+	\begin{equation*}
+		\mathbf{M}x = \begin{vmatrix}
+			1 & 0  \\
+			0 & -1
+		\end{vmatrix} \cdot \begin{vmatrix}
+			x \\
+			y
+		\end{vmatrix} = \begin{vmatrix}
+			x \\
+			-y
+		\end{vmatrix}
+	\end{equation*}
+
+	Having an image projection, using this matrix would effectively ``flip'' the image upside-down.
+\end{example}
+
+\section{System of Linear Equations}%
+\label{sec:systemoflinearequations}
+
+A system of linear equations, also called a linear system, is a collection of two or more linear equations involving the same set of variables. For example, the three linear equations following:
+\begin{align*}
+	a_{11}x_{1}a_{12}x_{2}a_{13}x_{3} & = b_{1} \\
+	a_{21}x_{1}a_{22}x_{2}a_{23}x_{3} & = b_{2} \\
+	a_{31}x_{1}a_{32}x_{2}a_{33}x_{3} & = b_{3}
+\end{align*}
+
+Can be represented as a matrix as such:
+\[
+	\begin{pmatrix}
+		a_{11} & a_{12} & a_{13} \\
+		a_{21} & a_{22} & a_{23} \\
+		a_{31} & a_{32} & a_{33}
+	\end{pmatrix}
+	\begin{pmatrix}
+		x_1 \\
+		x_2 \\
+		x_3
+	\end{pmatrix}
+	=
+	\begin{pmatrix}
+		b_1 \\
+		b_2 \\
+		b_3
+	\end{pmatrix}
+\]
+
+And thus it becomes $\mathbf{Ax} = \mathbf{b}$. We are often in a situation where we are given $\mathbf{A}$ and $\mathbf{b}$ and are looking for an $\mathbf{x}$ to satisfy our system of linear equations. Every linear system may only have one of three possible solutions:
+\begin{enumerate}
+	\item The system has a single unique solution.
+	\item The system has infinitely many solutions.
+	\item The system has 0 solutions.
+\end{enumerate}
+
+If looking at it geometrically, you can think of the variables $x$ and $y$ as linear equations which determine a line on the $xy$-plane. Then the solutions are either:
+\begin{enumerate}
+	\item An intersection of the lines, thus having one solution.
+	\item The lines themselves intersect throughout, thus having infinitely many solutions.
+	\item The lines don't intersect at all, having 0 solutions.
+\end{enumerate}
+
+We say that a linear system is \textbf{consistent} if it has at least one solution, and \textbf{inconsistent} if it has zero. A linear system is said to be \textbf{independent} if none of the equations can be written as a linear combination of others. For example $x+y=2$ and $2x+2y=4$ are not, as the first can be obtained through division by the second, or the other way around.
+
+\section{Matrix Decomposition}%
+\label{sec:label}
+
+You can decompose a matrix into \textit{factors} in order to learn about it's properties, which is not discernible from their representation.
+In deep learning or data analysis, decomposing matrices can help uncover hidden patterns (e.g., the directions in which data varies the most). Decomposition allows us to look beyond the numbers in the matrix and understand the underlying structure.
+
+An \textbf{eigenvector} of a square matrix \textbf{A} is a non-zero vector $\mathbf{v}$, such that multiplication by $\mathbf{A}$ only changes the scale of \textbf{$v$}. The only thing that happens to an eigenvector when a matrix $\mathbf{A}$ is applied to it is that it gets scaled by a constant (the eigenvalue).
+
+If $Av = \lambda v$, $v$ is an eigenvector, and $\lambda$ is the corresponding eigenvalue.
+
+Consider the operation $Av = w$. We are particularly interested in the special case when $v$ is an eigenvector, which means that the result of applying $A$ to $v$ doesn't change its direction, only its magnitude. This can be rewritten using the eigenvalue equation $Av = \lambda v$, where \(\lambda\) is the \textit{eigenvalue}, that describes the scale by which the vector scales.
+
+
+\subsection{Eigendecomposition}%
+\label{subsec:label}
+
+Suppose that matrix $A$ has $n$ linearly independent eigenvectors $\{v^{(1)}, \ldots, v^{(n)}\}$ with the eigenvalues $\{\lambda_{1}, \ldots, \lambda_{n}\}$. We can concatenate the eigenvectors to get the matrix $V$. Furthermore, we can concatenate the eigenvalues and get a vector $\lambda = [\lambda_{1}, \ldots, \lambda_{n}]$ which is normally presented in descending order. The \textit{eigendecomposition} of $A$ is given by $A = Vdiag(\lambda)V^{-1}$
+
+When you decompose a matrix $A$ into its eigenvectors and eigenvalues, you get a clearer picture of how the matrix transforms space. You can think of it as breaking down $A$ into simple, independent transformations that occur along specific directions (eigenvectors).
+
+The decomposition expresses the matrix as a product of: $V$, a matrix of eigenvectors that define the important directions, and $diag(\lambda)$, a diagonal matrix that scales these eigenvectors by the corresponding eigenvalues.
+This is useful because diagonal matrices are easy to work with — multiplication, inversion, etc., all become simpler.
+
+Every real symmetric matrix $A$ can be decomposed into real-valued eigenvectors and eigenvalues.
+
+A matrix whose eigenvalues are:
+\begin{itemize}
+	\item All positive is called \textbf{positive definite}
+	\item All positive or zero-valued is called \textbf{positive semidefinite}
+	\item All negative is called \textbf{negative definite}
+	\item All negative or zero-valued is called \textbf{negative semidefinite}.
+\end{itemize}
+
+
+
+
+
+
+
 
 
 

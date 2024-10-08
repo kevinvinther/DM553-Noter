@@ -514,6 +514,148 @@ We make a sweep line algorithm with the degree that we want, and if it at any po
 \textit{Will algorithm MAKEMONOTONE divide a simple polygon up into the smallest number of y-monotone polygons possible? Prove that it does or find an example where it does not. }
 
 
+\section{Chapter 4}%
+\label{sec:label}
+
+In this chapter we studied the casting problem for molds of one piece. A
+sphere cannot be manufactured in this manner, but it can be manufactured
+if we use a two-piece mold. Give an example of an object that cannot be
+manufactured with a two-piece mold, but that can be manufactured with
+a three-piece mold.
+
+
+\section{Chapter 5}%
+\label{sec:label}
+\noindent
+\textbf{5.1}\\
+\noindent
+\textit{In the proof of the query time of the kd-tree we found the following recurrence:}
+
+\begin{equation}
+	Q(n) = \begin{cases}
+		O(1),      & \text{ if } n = 1, \\
+		2+2Q(n/4), & \text{ if } n > 1
+	\end{cases}
+\end{equation}
+
+\textit{	Prove that this reccurence solves to $Q(n) = O(\sqrt{n})$. Also show that $\Omega (\sqrt{n})$ is a lower bound for querying in a kd-tree by defining a set of n points and a query rectangle appropriately.}
+
+You can use the master theorem, which gets this result.
+
+\begin{equation*}
+	Q(n) = 2+2Q(\frac{n}{4}) = 2 + 2 \cdot (2 + 2Q(\frac{n}{16})) = 2 + 2^{2} + 2^{2} \cdot Q(\frac{n}{16}) = 2 + ^{2} + 2^{3} + 2^{3} \cdot Q(\frac{n}{64})
+\end{equation*}
+
+In the end this becomes
+
+\begin{equation*}
+	2 + 2^{2} + 2^{3} + \cdots + 2^{\log_{4}n} + 2^{\log_{4}n} \cdot Q(1)
+\end{equation*}
+
+If we look at each (led?), the further from the end you go, the more it halves. Therefore, The sum up till $2^{\log_{4}n} \le 2^{\log_{4}n} \le 3 \cdot 2^{\log_{4}n} = n^{\log_{4}2}$.
+
+We get the last equality by putting $\log_{4}$ on each side such that $\log_{4}n \cdot \log_{4}2 = \log_{4}2 \cdot \log_{4}n$. The number you need in order to get $\log_{4} x = 2$ is $\frac{1}{2}$, therefore $n^{\log_{4}2} = n^{\frac{1}{2}} = \sqrt{n}$.
+
+The recursion formula $Q(n)$ is not only an upper-bound but also a lower-bound.
+\\\\
+\noindent
+\textbf{5.3}\\
+\noindent
+\textit{In Section 5.2 it was indicated that kd-trees can also be used to store sets of points in higher-dimensional space. Let P be a set of n points in d-dimensional space. In parts a. and b. you may consider d to be a constant.}
+
+\begin{enumerate}
+	\item[a) ] Describe an algorithm to construct a d-dimensional kd-tree for the points in P. Prove that the tree uses linear storage and that your algorithm takes $O(n \log n)$ time.
+\end{enumerate}
+We use the same algorithm as for 2 dimensions, but instead of half, we do $\mod d$.
+
+We will have $d$ lists (copies), which we will need to sort by $x, y, z, \ldots, d$. For each of the $d$ lists we will check ``is this higher or lower than this element?''
+
+The time for this algorithm can be found by this equation:
+\begin{equation*}
+	O(d \cdot n \log n) + (T(n) = O(d \cdot n) + 2 \cdot T(\frac{n}{2}) \in O(d \cdot n \log n))
+\end{equation*}
+
+
+
+\begin{enumerate}
+	\item[b) ] Describe the query algorithm for performing a d-dimensional range query. Prove that the query time is bounded by $O(n^{1 - 1/d} + k)$.
+\end{enumerate}
+
+
+The time to search can be described by the formula:
+
+\begin{equation*}
+	Q(n) = c + 2^{d-1} \cdot Q \left( \frac{n}{2^{d}} \right)
+\end{equation*}
+
+\begin{equation*}
+	(2^{d-1})^{\log_{2^{d}}n} = n^{\log_{2^{d}} 2^{d-1}}
+\end{equation*}
+
+Let $\log_{2^{d}} 2^{d-1} = x$. Then $2^{d\cdot x} = (2^{d})^{x} = 2^{d-1}$.
+$d \cdot x = d-{1}$
+$x = \frac{d-1}{d} = 1 - \frac{1}{d}$
+$n^{1- \frac{1}{d}}$.
+
+
+\begin{enumerate}
+	\item[c) ] Show that the dependence on d in the amount of storage is linear, that is, show that the amount of storage is O(dn) if we do not consider d to be a constant. Give the dependence on d of the construction time and the query time as well.
+\end{enumerate}
+
+\\\\
+\noindent
+\textbf{5.5 (ab)}\\
+\noindent
+\textit{Algorithm SEARCH K-D TREE can also be used when querying with other ranges than rectangles. For example, a query is answered correctly if the range is a triangle.}
+
+\begin{enumerate}
+	\item Show that the query time for range queries with triangles is linear in the worst case, even if no answers are reported at all. Hint: Choose all points to be stored in the kd-tree on the line y = x.
+\end{enumerate}
+It's impossible to get an output-sensitive algorithm with this. Instead we need $O(n)$ in the case where we want the uppermost point where the points are on the plane with $x=y$.
+\begin{enumerate}
+	\item Suppose that a data structure is needed that can answer triangular range queries, but only for triangles whose edges are horizontal, vertical, or have slope +1 or −1. Develop a linear size data structure that answers such range queries in O(n3/4 + k) time, where k is the number of points reported. Hint: Choose 4 coordinate axes in the plane and use a 4-dimensional kd-tree.
+\end{enumerate}
+\\\\
+\noindent
+\textbf{5.8}\\
+\noindent
+\textit{Theorem 5.8 showed that a range tree on a set of n points in the plane requires O(n log n) storage. One could bring down the storage requirements by storing associated structures only with a subset of the nodes in the main tree.
+\begin{enumerate}
+	\item Suppose that only the nodes with depth 0, 2, 4, 6, . . . have an associated structure. Show how the query algorithm can be adapted to answer queries correctly.
+\end{enumerate}
+
+\begin{enumerate}
+	\item Analyze the storage requirements and query time of such a data struc- ture.
+\end{enumerate}
+\begin{enumerate}
+	\item Suppose that only the nodes with depth 0, 1j log n , 2j log n , . . . have an associated structure, where j ⩾ 2 is a constant. Analyze the storage requirements and query time of this data structure. Express the bounds in n and j.
+\end{enumerate}
+\\\\
+\noindent
+\textbf{5.10}\\
+\noindent
+\textit{In some applications one is interested only in the number of points that lie in a range rather than in reporting all of them. Such queries are often referred to as range counting queries. In this case one would like to avoid having an additive term of O(k) in the query time.}
+\begin{enumerate}
+	\item Describe how a 1-dimensional range tree can be adapted such that a range counting query can be performed in O(log n) time. Prove the query time bound.
+	\item Using the solution to the 1-dimensional problem, describe how d- dimensional range counting queries can be answered in O(logd n) time. Prove the query time.
+	\item Describe how fractional cascading can be used to improve the running time with a factor of O(log n) for 2- and higher-dimensional range counting queries.
+\end{enumerate}
+\\\\
+\noindent
+\textbf{5.13}\\
+\noindent
+\textit{In many application one wants to do range searching among objects other than points.}
+\begin{enumerate}
+	\item Let S be a set of n axis-parallel rectangles in the plane. We want to be able to report all rectangles in S that are completely contained in a query rectangle [x : x ] × [y : y ]. Describe a data structure for this problem that uses O(n log3 n) storage and has O(log4 n + k) query time, where k is the number of reported answers. Hint: Transform the problem to an orthogonal range searching problem in some higher- dimensional space.
+	\item Let P consist of a set of n polygons in the plane. Again describe a data structure that uses O(n log3 n) storage and has O(log4 n + k) query time to report all polygons completely contained in the query rectangle, where k is the number of reported answers.
+	\item Improve the query time of your solutions (both for a. and b.) to O(log3 n + k).
+\end{enumerate}
+
+\\\\
+\noindent
+\textbf{Kim's Opgave}\\
+\noindent
+\textit{Devise a method for building a red-black tree in linear time from a sorted sequence of n different keys. The tree should be external (also called leaf-oriented), i.e., all keys should be placed in the leaves and internal nodes hold copies of the keys directing searches to the correct locations. One potential difficulty in this problem is that not all trees have a form such that a red-black tree can be created by coloring nodes red or black.}
 
 %%% Local Variables:
 %%% mode: latex

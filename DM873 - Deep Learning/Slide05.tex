@@ -1,0 +1,179 @@
+\chapter{Linear Regression}
+
+\section{Simple Linear Regression}%
+\label{sec:label}
+
+
+
+Linear regression is one of the foundational concepts in deep learning.
+
+Linear regression is an approach to supervised learning, where the primary assumption is that there is a linear relationship between the input variables $X_{1}, X_{2}, \ldots, X_{p}$ and the output $y$ is linear. Although this is rarely the case in true regression functions, we can use linear regression to approximate and understand the relationships.
+
+Simple linear regression assumes the model $Y = \beta_{0} + \beta_{1}X + \varepsilon$. Here $Y$ is the value we want to predict. This could for example be sales, temperatures etc. $X$ is the independent variable, also called the feature. This could, for example, be the advertising budget. \(\beta_{0}\) is the intercept, indicating the value of $Y$ when $X = 0$. \(\beta_{1}\) is the slope, representing how much $Y$ changes for a unit change in $X$. \(\varepsilon\) is the error term, capturing deviations from the fitted line.
+
+The goal of linear regression is to find the best possible \(\beta_{0}\) and \(\beta_{1}\). We represent these as \(\hat{\beta_{0}}\) and $\hat{\beta_{1}}$. Thus we can represent the prediction model as $\hat{Y} = \hat{\beta_{0}} + \hat{\beta_{1}}$, where $\hat{Y}$ is the predicted value for a given $X$.
+
+Let $\hat{y_{i}} = \hat{\beta_{0}} + \hat{\beta_{1}}x_{i}$ be the prediction of $Y$ in the $i$th observation. Then we define the residual, $e_{i}$ for the $i$th observation to be the difference between the actual value $y_{i}$ and the predicted value $\hat{Y}_{i}$:
+\[
+	e_{i} = y_{i} - \hat{Y_{i}}
+\]
+
+We now define the \textit{residual sum of squares}. Let $RSS$ be the residual sum of squares, then:
+\begin{equation}
+	\label{eq:rss}
+	\begin{split}
+		RSS & = e_{1}^{2}+e_{2}^{2}+e_{3}^{2}+ \cdots + e_{n}^{2}                                                                                                                                                          \\
+		& = \left( y_{1} - \hat{\beta_{0}} - \hat{\beta_{1}}x_{1} \right)^{2} + \left( y_{2}- \hat{\beta_{0}}- \hat{\beta_{1}}x_{2} \right ) + \cdots + \left( y_{n} - \hat{\beta_{0}} - \hat{\beta_{1}} x_{n} \right) \\
+		& = \sum_{i=1}^n (y_{i} - \hat{\beta_{0}} - \hat{\beta_{1}}x_{i})^{2}
+	\end{split}
+\end{equation}
+
+
+Our task is to find the $\hat{\beta_{0}}$ and $\hat{\beta_{1}}$ while \textit{minimizing} the residual sum of squares.
+
+With a simple derivation we can show that the formula for the slope can be calculated as follows:
+\begin{equation}
+	\hat{\beta_{1}} = \frac{\sum_{i=1}^n (x_{i} - \bar{x})(y_{i}- \bar{y})}{\sum_{i=1}^n (x_{i}- \bar{x})^{2}}
+\end{equation}
+
+Where $\bar{x}$ is the mean value of $x$, and $\bar{y}$ is the mean value of $y$, i.e.:
+
+\begin{align}
+	\bar{y} & = \frac{1}{n}\sum_{i=1}^n y_{i} \\
+	\bar{x} & = \frac{1}{n}\sum_{i=1}^n x_{i}
+\end{align}
+
+The numerator of the formula is the covariance between the two variables, indicating whether they tend to increase or decrease. The denominator represents the variance of $X$. This tells us how spread out the values are around their mean, $\bar{x}$.
+
+Now that we have a formula which calculates the slope, we can also calculate $\hat{\beta_{0}}$, i.e., the intersect, using the following formula:
+\begin{equation}
+	\hat{\beta_{0}} = \bar{y} - \bar{\beta_{1}} \bar{x}
+\end{equation}
+
+\section{Interpretation}%
+\label{sec:label}
+
+
+
+We will now introduce the \textit{standard error}. The standard error measures the average amount by which our estimated coefficient $\hat{\beta_{j}}$ differs from the true value ${\beta_{j}}$.
+
+In general, we define the term mathematically as follows:
+\begin{align}
+	SD & = \sqrt{Var(X)}       \\
+	SE & = \frac{SD}{\sqrt{N}}
+\end{align}
+
+\begin{equation}
+	\text{SE}(\hat{\beta}_0)^2 = \sigma^2 \left[ \frac{1}{n} + \frac{\bar{x}^2}{\sum_{i=1}^{n} (x_i - \bar{x})^2} \right]
+\end{equation}
+
+\begin{equation}
+	\text{SE}(\hat{\beta}_1)^2 = \frac{\sigma^2}{\sum_{i=1}^{n} (x_i - \bar{x})^2}
+\end{equation}
+
+We can use these standard errors to compute confidence intervals. A 95\% confidence interval is defined as a range of values such that there is a 95\% probability the range will contain the true unknown value of the parameter. This has the form:
+\begin{equation}
+	\hat{\beta_{1}} \pm 2 \cdot SE(\hat{\beta_{1}})
+\end{equation}
+
+To word this a little bit differently, there is a 95\% chance that the interval $[\hat{\beta_{1}} - 2 \cdot SE(\hat{\beta_{1}}), \hat{\beta_{1}} + 2 \cdot SE(\hat{\beta_{1}})]$ will contain the true value  of $\hat{\beta_{1}}$.
+
+We can also use the standard errors to perform hypothesis tests on the coefficients. The most common hypothesis test involves testing the \textit{null hypothesis} of $H_{0}$: There is no relationship between $X$ and $Y$ and $H_{A}$: There is some relationship between $X$ and $Y$. To test this, we compute a \textbf{$t$-statistic}, given by the following equation:
+
+\begin{equation}
+	t = \frac{\hat{\beta_{0}}-0}{SE(\hat{\beta_{1}})}
+\end{equation}
+
+This statistic calculates how far from zero the estimated coefficient, \(\hat{\beta_{1}}\) is, relative to its standard error.
+
+The resulting $t$ statistic follows a $t$-distribution with $n-2$ degrees of freedom, where $n$ is the number of observations. With this $t$-value we can compute the $p$-value, which tells us the probability of observing such an extreme value if $H_{0}$ were true. A low $p$-value indicates that such an extreme is unlikely under $H_{0}$ leading to us rejecting $H_{0}$ and concluding that there is a significant relationship between $X$ and $Y$. The decision is taken based on a significance level, \(\alpha\), which we usually set to be $0.05$. Thus, if the $p$-value is less than \(\alpha\), we reject $H_{0}$.
+
+With the Residual Sum of Squares (\autoref{eq:rss}) we can define the Residual Standard Error (RSE):
+\begin{equation}
+	RSE = \sqrt{\frac{1}{n-2}RSS}
+\end{equation}
+
+Now, given the Total Sum of Squares (TSS), which we define as following:
+\begin{equation}
+	TSS = \sum_{i=1}^n (y_{i}-\bar{y})^{2}
+\end{equation}
+
+We can define the $R^{2}$ (or $R$-squared) measure. This allows us to assess how much of the variance is explained. We use the following formula to find $R^{2}$:
+\begin{equation}
+	R^{2} = \frac{TSS-RSS}{TSS} = 1 - \frac{RSS}{TSS}
+\end{equation}
+
+You can think of the difference between RSS and TSS as RSS being the difference to the estimate, and TSS being the difference to the mean.
+
+When there is only one independent variable, there is a direct correlation between the correlation coefficient $r$, and $R^{2}$:
+
+\begin{equation}
+	r = \frac{\sum_{i=1}^n (x_{i}-\bar{x})(y_{i}-\bar{y})}{\sqrt{\sum_{i=1}^n (x_{i}-\bar{x})^{2} \sqrt{\sum_{i=1}^n (y_{i}-\bar{y})^{2}}}}
+\end{equation}
+
+
+\section{Multiple Linear Regression}%
+\label{sec:label}
+
+Now we take a look at \textit{multiple linear regression}. This extends the idea of simple linear regression to include multiple independent variables. In a simple linear regression we have the predictor variable $X$ and the response variable $Y$. However, in real-world scenarios $Y$ is usually influenced by several independent factors, not just one.
+
+The general form of the multiple linear regression can be expressed as:
+
+\begin{equation}
+	Y = \beta_{0} + \beta_{1}X_{1} + \beta_{2}X_{2} + \cdots + \beta_{p}X_{p} + \varepsilon
+\end{equation}
+
+We define the variables much like in simple linear regression. \(\beta_{0}\) continues to be our intercept term, and $Y$ continues to be the value we want to predict (i.e., the dependent variable), and \(\varepsilon\) continues to be the error term. However, $X_{1}, \ldots, X_{p}$ are now the features or predictors (independent variables) and $\beta_{1}, \ldots, \beta_{p}$ are the coefficients corresponding to each independent variable, representing how much $Y$ changes on average, when $X_{j}$ is changed by one unit.
+
+We can reformulate the entire linear regression into Matrix form. $y = Xb+e$. Here \(\mathbf{y}\) is the \( n \times 1 \) vector of the response variable \( Y \):
+\[
+	\mathbf{y} = \begin{bmatrix} y_1 \\ y_2 \\ \vdots \\ y_n \end{bmatrix}
+\]
+It contains all the observations made of the dependent variable for \(n\) observations.
+
+\(\mathbf{X}\) is the \( n \times (p+1) \) design matrix:
+\[
+	\mathbf{X} = \begin{bmatrix} 1 & x_{11} & x_{12} & \cdots & x_{1p} \\ 1 & x_{21} & x_{22} & \cdots & x_{2p} \\ \vdots & \vdots & \vdots & \ddots & \vdots \\ 1 & x_{n1} & x_{n2} & \cdots & x_{np} \end{bmatrix}
+\]
+
+This matrix includes all the values of the independent variables (predictors) for all \( n \) observations. The first column is a column of ones, representing the intercept term \( \beta_0 \).
+
+	{\({\beta}\)} is the \( (p+1) \times 1 \) vector of regression coefficients:
+\[
+	\boldsymbol{\beta} = \begin{bmatrix} \beta_0 \\ \beta_1 \\ \beta_2 \\ \vdots \\ \beta_p \end{bmatrix}
+\]
+It includes the intercept \( \beta_0 \) and the coefficients \( \beta_1, \beta_2, \ldots, \beta_p \) for each of the \( p \) predictors.
+	{\(\mathbf{e}\)} is the \( n \times 1 \) vector of error terms (residuals):
+\[
+	\mathbf{e} = \begin{bmatrix} \varepsilon_1 \\ \varepsilon_2 \\ \vdots \\ \varepsilon_n \end{bmatrix}
+\]
+This vector captures the difference between the observed values \( y_i \) and the values predicted by the model \( \hat{y}_i \).
+
+
+We now turn our attention to the following question: ``Given $p$ predictors are all $X_{1}, \ldots, X_{p}$ useful in predicting the response, or is it only a subset of these?''. To answer this question, we use the $F$-statistic:
+\begin{equation}
+	F = \frac{\frac{(TSS-RSS)}{p}}{\frac{RSS}{(n-p-1)}}
+\end{equation}
+
+This is similar to a $T$ statistic from a $T$-test. Where the $T$ test will tell you if a single variable is significant, the $F$ test will tell you if a group of variables are jointly significant.
+
+The \textit{all-subsets} approach is the most direct approach. We compute the least squares fit for all possible subsets and then choose between them based on some criterion that balances training error with model size.
+
+However, when there are many possible subsets, this can take a very long time. Indeed, given $p$ is the number of predictors, there are $2^{p}$ different subsets with these. If $p = 40$ there are over a billion subsets. We will now look at two different approaches, \textit{forward} selection and the \textit{backward} selection.
+
+For \textit{forward selection}, begin with the \textbf{null-model}, which is a model with an intercept but no predictors. Fit $p$ simple linear regressions and add to the null model the variable that results in the lowest RSS. Add to that model the variable that results in the lowest RSS amongst all two-variable models. Then continue until some stopping rule is satisfied, for example when all remaining variables have a p-value above some threshold.
+
+With \textit{backward selection} we start with all variables in the model. Then remove the variable with the largest $p$-value. This is the variable that is the least statistically significant. The new $(p-1)$ model is then fit and the variable with the largest $p$-value is removed. Again we continue until a stopping rule is reached.
+
+% Missing about 15 slides.
+
+
+
+
+
+%%% Local Variables:
+%%% mode: latex
+%%% TeX-engine: luatex
+%%% TeX-command-extra-options: "-shell-escape"
+%%% TeX-master: "main"
+%%% End:

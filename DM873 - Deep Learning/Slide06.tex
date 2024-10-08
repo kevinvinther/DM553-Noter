@@ -1,0 +1,143 @@
+\chapter{Statistics}
+
+\section{Introduction to Probability}%
+\label{sec:label}
+
+We start by looking at a simple experiment. Assume we have two boxes, one red and one blue. We denote these boxes by $r$ (red) and $b$ (blue). Each box contains either apples ($a$) or oranges ($o$). We choose a box randomly. The random variable $B$ is the variable which decides which box will be chosen. It either takes the value $r$ or the value $b$. We denote the fruit $F$ which takes the values $o$ and $a$.
+
+Let's assume we select the blue box 60\% of the time. Thus selecting the red box happens 40\% of the time. We formally write this as follows:
+
+\begin{equation}
+	p(B=r) = \frac{4}{10} \;\;\; p(B=b) = \frac{6}{10}
+\end{equation}
+
+Note that, if the events are mutually exclusive and if they include all possible outcomes, the probabilities of the event must sum to 1.
+
+Now that we have the basic definitions out of the way, we can begin to ask some more complicated questions, such as ``Given we picked an apple, what is the chance that this apple was picked from the blue box?''.
+
+To answer these questions we need to know about the \textit{sum rule} and the \textit{product rule}.
+
+Consider that we have two random variables: $X$ and $Y$. $X$ can take any of the values $x_{i}$ where $i = 1, 2, \ldots, M$, and $Y$ can take the values $y_{j}$ where $j = 1, \ldots, L$. Now, consider a total of $N$ samples. Let the number of trials in which $X = x_{i}$ and $Y = y_{j}$ be $n_{ij}$. The number of trials in which $X$ takes the value $x_{i}$ is $c_{i}$ i.e. the column $i$, and corresponding to $Y$ taking the value $y_{j}$ is $r_{j}$ i.e. the row $j$. We write the probability that $X$ takes the value $x_{i}$ and $Y$ takes the value $y_{j}$ as the following:
+\begin{equation*}
+	p(X =  x_{i}, Y = y_{j})
+\end{equation*}
+
+We call this the \textit{joint probability distribution}. It is given by the fractions of point in $N$, cell $i,j$.
+
+\begin{equation*}
+	p(X =  x_{i}, Y = y_{j}) = \frac{n_{ij}}{N}
+\end{equation*}
+
+Now, back to the question of the sum rule and product rule. The probability that $X$  takes the value $x_{i}$ irrespective of the value of $Y$ is written as $p(X = x_{i})$, and is given by the fraction of points in the column $i$:
+\begin{equation*}
+	p(X = x_{i}) = \frac{c_{i}}{N}
+\end{equation*}
+
+Since $c_{i}$ is just the  sum of the cells of the column, it can also be written as:
+
+\begin{equation*}
+	p(X = x_{i}) = \sum_{j=1}^L p(X=x_{i}, Y=y_{j})
+\end{equation*}
+
+Now for the \textit{product rule}. We will now look at cases where $X = x_{i}$. If $X$ is fixed to $x_{i}$ what is the probability that $Y = y_{j}$? We write this as following:
+
+\begin{equation*}
+	p \left( Y=y_{j} \mid X = x_{i} \right) = \frac{n_{ij}}{c_{i}}
+\end{equation*}
+
+This is known as \textit{conditionatl probability}. With the results from before we get:
+
+\begin{equation*}
+	p \left( X = x_{i}, Y = y_{j} \right) = \frac{n_{ij}}{N} = \frac{n_{ij}}{c_{i}} \cdot \frac{c_{i}}{N} = p \left( Y = y_{j} \mid X = x_{i} \right) p \left( X = x_{i} \right)
+\end{equation*}
+
+So, to sum up:\\
+\noindent
+\textit{Sum Rule}:
+\begin{equation}
+	p(X) = \sum_Y p(X,Y)
+\end{equation}
+\noindent
+\textit{Product Rule}:
+\begin{equation}
+	p(X,Y) = p(Y \mid X)	p(X)
+\end{equation}
+
+From the rules we've looked at, we can derive \textit{Bayes' Theorem}.
+
+\begin{equation}
+	\underbrace{P(Y \mid X)}_{\text{posterior}} = \frac{\underbrace{P(X \mid Y)}_{\text{likelihood}} \underbrace{P(Y)}_{\text{prior}}}{\underbrace{P(X)}_{\text{evidence}}}
+\end{equation}
+
+In this formula:
+\begin{itemize}
+	\item \textit{Prior} is our assumptions about $Y$ before observing the data
+	\item \textit{Likelihood} is the effect of the observed data $X$
+	\item \textit{Posterior} is the uncertainty in $Y$ after we have observed $X$.
+\end{itemize}
+
+
+\section{Random Variables}%
+\label{sec:label}
+
+A \textit{random variable} $X$ is a variable that can take on different values (randomly). On it's own, a random variable is nothing more than a description of the possible states the variable describes. Random variables may be discrete or continuous. Only together with a probability, can the random variable be used for anything useful.
+
+A probability distribution is a description of how likely a random variable or a set of random variables is to take each of its possible states. The way we describe this distribution depends on whether the distribution is discrete or continuous.
+
+The probability distribution over discrete variables is given by a \textit{probability mass function} (PMF). These are denoted by $P$ and inferred from their argument, e.g., $P(x)$, $P(y)$. They can act on many variables and are known as a joint distribution, written $P(x,y)$. To be a probability mass function, it must satisfy the following criteria:
+\begin{itemize}
+	\item The domain of $P$ is the set of all possible states of $x$.
+	\item $\forall x \in X, 0 \le P(x) \le 1$
+	\item $\sum_{x \in X} P(x) = 1$
+\end{itemize}
+
+However, when working with continuous variables, we describe probability distributions using \textit{probability density functions} (PDF). For a probability distribution to be a PDF it must satisfy the following criteria:
+\begin{itemize}
+	\item The domain of $p$ must be the set of all possible states of $X$.
+	\item $\forall x \in X, p(x) \ge 0$ (note that there is no requirement for $\le 1$)
+	\item $\int p(x)dx = 1$
+\end{itemize}
+
+
+\subsection{Expectation and Variance}%
+\label{subsec:label}
+
+The expectation (or expected value) of $f(x)$ w.r.t $P(X)$ is the average or mean value that $f$ takes when $x$ is drawn from $P$.
+
+When calculating these values, we again distinguish between discrete and continuous variables. For discrete variables this can be calculated as follows:
+\begin{equation}
+	E[X] = \sum_{x \in X} P(x) \cdot x
+\end{equation}
+While for continuous variables it is calculated as follows:
+\begin{equation}
+	E[X] = \int_{x} p(x)x \, dx
+\end{equation}
+
+The variance measures how much the value of $f(x)$ can vary from the expectation. A low value means that the values cluster around the expectation. We calculate the variance as follows:
+
+\begin{equation}
+	Var(X) = E \left[ (x-E[X])^{2} \right]
+\end{equation}
+
+And we calculate the standard deviation using the variance, as follows:
+
+\begin{equation}
+	SD(X) = \sqrt{Var(X)}
+\end{equation}
+
+\section{Important Distribution Functions}%
+\label{sec:label}
+
+%% Missing...
+
+
+
+
+
+
+%%% Local Variables:
+%%% mode: latex
+%%% TeX-engine: luatex
+%%% TeX-command-extra-options: "-shell-escape"
+%%% TeX-master: "main"
+%%% End:

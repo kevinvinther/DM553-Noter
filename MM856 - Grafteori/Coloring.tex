@@ -1,0 +1,304 @@
+\chapter{Colouring of Graphs}
+
+\section{Vertex Colouring and Upper Bounds}%
+\label{sec:label}
+
+Our goal of graph-colouring is to find the minimum number of colours in a graph such that each vertex has a unique color w.r.t. each of its neighbours. I.e., each neighbour should have a different color from the vertex itself. Note that two neighbours may have the same color, provided they are not neighbours themselves.
+
+One of the most famous theorems within graph theory is a colouring theorem: The 4-colour theorem. It asks the following question: ``Given a map, can we color it with 4 colours such that any two countries sharing a border (of positive length) receive different colors?''
+
+A $k$-colouring of a graph $G$ is a labeling $f : V(G) \rightarrow S$, where $|S| = k$ often ($S = [k]$). These ``labels'' are in fact just colours. From the definition just given, each colour is just a number from $1$ to $k$, inclusive. The vertices which share a color form a \textbf{color class}. We say that a colouring is \textbf{proper} if adjacent vertices have different labels (colours). A graph is said to be $k$-colourable if it has proper $k$-colouring. The chromatic number, denoted by $\chi (G)$ is the smallest $k$ such that $G$ is $k$-colourable.
+
+An important property about colourability is the fact that the colour classes in a proper colouring form independent sets. Thus, from the definition of $\chi (G)$, the vertices of $G$ can be partitioned into $\chi (G)$ independent sets. Another way to say this is that $G$ is $\chi (G)$-partite. A graph is said to be $k$-chromatic if $\chi (G) = k$. We say that a graph $G$ is \textbf{colour-critical} or $k$-\textbf{critical} if $\chi (H) < \chi (G) = k$ for all proper subgraphs $H \subset G$. Some examples of colour-critical graphs are $C_{5}, C_{7}, K_{n}$ etc.
+
+The \textbf{clique number} of $G$, \(\omega(G)\), is the number of vertices in a maximum clique in $G$. $\alpha(G)$ was the number of vertices in the maximum independent set in $G$.
+
+\begin{proposition}
+	For every $G$, $\chi (G) \ge \omega (G)$ and $\chi (G)\ge \frac{n(G)}{\alpha(G)}$.
+\end{proposition}
+
+\begin{proof}
+	Warning: This proof is not in the slides and is entirely my own, and thus is probably wrong.
+
+	We break this down into two parts:
+
+	$\chi(G) \ge \omega (G)$: This is trivially true, as if there is a clique of size $k$, then there must be at least $k$ colours.
+
+	$\chi (G) \ge \frac{n(G)}{\alpha(G)}$: Let's look at this from the point of view, where every vertex is independent: Then $\frac{n(G)}{\alpha(G)} = 1 = \chi (G)$. Once we start adding edges, this number decreases drastically Say we have 10 independent vertices, and add one edge. Now we have 8 independent vertices. Thus we get $\frac{10}{8} = 1 \frac{1}{4} \le \chi (G) = 2$.
+\end{proof}
+
+
+The \textbf{cartesian product} of $G$ and $H$ is the graph $G \square H$, with the vertex set $V(G \square H) = V(G) \times V(H)$ and the following edge set:
+
+\begin{align*}
+	E(G \square H) = & \{(u,v)(u',v') \mid u = u' \text{ and } vv' \in E(H)\} \cup \\
+	                 & \{(u,v)(u'v') \mid v = v' \text{ and } uu' \in E(G)\}
+\end{align*}
+
+Note that $G \square H = H \square G$.
+
+\begin{proposition}
+	$\chi (G \square H) = \max\{\chi (G) , \chi (H)\}$
+\end{proposition}
+
+\begin{proof}
+	Let $\theta = \max\{\chi(G), \chi(H)\}$
+
+	As $G \square H$ contains many copies of $G$ and $H$, we have $\chi (G \square H) \ge \theta$. We will now show that $\chi (G \square H) \le \theta$.
+
+	Let $g$ be a proper $\chi (G)$-colouring of $G$, where the colours are $\{0, \ldots, \chi(G)-1\}$.
+
+	Let $h$ be a proper $\chi(H)$-colouring of $H$, where the colours are $\{0, \ldots, \chi(H)-1\}$.
+
+	Let $(u,v) \in V(G \square H)$ get the colour $c((u,v) = g(u) + h(v) \mod \theta)$. We will now show that $c$ is a proper colouring of $G \square H$. Let $(u,v)$ and $(u', v')$ be adjacent in $G \square H$. First assume that $u = u'$ and $vv' \in E(H)$. Then $g(u) = g(u')$ and $0 < |h(v) - h(v')| < \chi (H) \le \theta$. Thus $(g(u)+h(v))$ and $(g(u') + h(v'))$ differ by between 1 and \(\theta -1\), and therefore $c((u,v) \ne c((u',v')))$.
+
+	The case when $v = v'$ and $uu' \in E(G)$ is handled analogously.
+\end{proof}
+
+We now present an algorithm, \textit{the greedy colouring algorithm}. Let $V(G) = \{v_{1}, v_{2}, \ldots, v_{n}\}$: For $i = 1, 2, \ldots, n$ in that order, colour $v_{i}$ with the smallest non-negative integer different from all $v_{i}$'s neighbours in $\{v_{1}, v_{2}, \ldots, v_{i-1}\}$.
+
+\begin{proposition}
+	\label{prop:chiledelta}
+	$\chi (G) \le \Delta(G)+1$
+\end{proposition}
+
+\begin{proof}
+	This follows from the greedy algorithm.
+\end{proof}
+
+The bound from Proposition~\ref{prop:chiledelta} in the $G$ from before\footnote{If I have still not put this into the notes, it can be found on the Slide 09 pp. 20 (73 in long)} is $\chi(G) \le \Delta(G) + 1 = 4 + 1 = 5$ (from $v_{5}$). Thus the chromatic number is less than 5. Indeed, with the greedy colouring algorithm on this graph we get $\chi(G) = 4$. Can we do even better?
+
+
+\begin{proposition}
+	\label{prop:minmaxhihigraphhh}
+	Let $G$ be a graph with degree sequence $d_{1} \ge d_{2} \ge \cdots \ge d_{n}$, then $\chi(G) \le 1 + \max_{i}\{min\{d_{i}, i-1\}\}$.
+\end{proposition}
+
+\begin{proof}
+	Again this follows form the greedy algorithm.
+\end{proof}
+
+The degree sequence from the graph from before is \texttt{4433222}, so we take the maximum of \texttt{0123222}, which is $3$. Since this was $+1$, we don't need more than 4 colours according to Proposition~\ref{prop:minmaxhihigraphhh}. This is a stronger bound than the one from Proposition~\ref{prop:chiledelta}.
+
+However, if we do find the optimal colouring (which we do not with the greedy approach), we get a chromatic number of three!
+
+
+We now look to \textbf{interval graphs}. The interval graph is defined as follows: Let $\mathcal{F}$ be a family of intervals $((s_{1}, e_{1}), (s_{2}, e_{2}), \ldots, (s_{n}, e_{n}))$. Let $G$ be the graph with $V(G) = \{v_{1}, v_{2}, \ldots, v_{n}\}$ and the following edge set
+\[
+	E(G) = \{v_{i}v_{j} \mid (s_{i},e_{i}) \cap (s_{j},e_{j}) \ne \emptyset\}
+\]
+That is, there is an edge between two vertices in $G$, if and only if the corresponding intervals intersect. $G$ is called an interval graph, as it can be constructed in the above way from a set of intervals.
+
+Look at the image in pp. 23 in Slides 09.
+
+We can use interval graphs for example for class management. Given 10 time intervals, each being a class, how many classrooms do we need? We create the interval graph from the time intervals, and then colour this graph. The resulting chromatic number from this graph is the number of classrooms needed.
+
+\begin{proposition}
+	If $G$ is an interval graph, then $\chi(G) = \omega (G)$.
+\end{proposition}
+
+\begin{proof}
+	Order the vertices according to the $s_{i}$'s (i.e., the left points in the interval). Then apply the greedy colouring algorithm and assume that $v_{i}$ receives $k$, the maximum colour assigned. When $v_{i}$ is coloured it is already adjacent to vertices that have received colours $1, 2, \ldots, k-1$.
+
+	These vertices correspond to intervals containing the points $s_{i}$, and thus form a clique of size $k$ together with $v_{i}$. So $k \le \omega (G)$, and as we earlier states that $k \ge \omega (G)$ then $k = \omega (G)$.
+\end{proof}
+
+\begin{theorem}
+	If $G$ is a graph, then $\chi (G) \le 1 + \max_{H \subseteq G} \delta (H)$.
+\end{theorem}
+
+That is, $\chi(G)$ is less than or equal to one plus the subset with maximum minimum degree, i.e., the subset with the largest minimum degree.
+
+\begin{proof}
+	Let $k = \max_{H \subseteq G} \delta (H)$. Let $v_{n}$ be a vertex of minimum degree in $G$ ($d(v_{n}) \le k$). Let $v_{n-1}$ be a vertex of minimum degree in $G - \{v_{n}\}$. Let $v_{n-2}$ be a vertex of minimum degree in $G - \{v_{n}, v_{n-1}\}$. We continue this until we have ordered the vertices in $G$ $v_{1}, \ldots, v_{n}$. We now apply the greedy algorithm to the vertex ordering $v_{1}, \ldots, v_{n}$. Whenever a vertex is coloured at most $k$ of its neighbours already have a colour, so we never use more than $k+1$ colours.
+\end{proof}
+
+Graphs with the property as above are said to be $k$-degenerate.
+
+\begin{theorem}
+	If $D$ is an orientation of a graph $G$ with longest path length $l(D)$, then $\chi(G) \le 1+l(D)$.
+\end{theorem}
+
+\begin{proof}
+	Let $D'$ be a maximal spanning subdigraph of $D$ containing no cycle. Let $v_{1}, v_{2}, \ldots, v_{n}$ be an acyclic ordering of $V(D)$ (i.e., if $v_{i}v_{j} \in A(D)$ then $i < j$). For $i = 1, 2, \ldots, n$ (in that order) color $v_{i}$ as follows:
+	\begin{itemize}
+		\item If $d^{-}_{D'} = 0$ then $c(v_{i}) = 1$.
+		\item Otherwise, $c(v_{i})=1+ \max\{c(v_{j}) \mid v_{j}v_{i} \in A(D')\}$ (note that if $v_{j}v_{i} \in A(D')$ then $j<i$).
+	\end{itemize}
+
+	Our goal is now to prove that this is a proper $(1+l(D))$-colouring.
+
+	Let $v_{i}v_{j}$ be arbitrary. If $v_{i}v_{j} \in A(D')$, then $i < j$ and when we colour $v_{j}$ it got a colour larger than $v_{i}$. If $v_{i}v_{j} \notin A(D')$, then there is a cycle in $D' + v_{i}v_{j}$, so there is a $(v_{j},v_{i})$-path in $D'$. As colours increase along this $(v_{j},v_{i})$-path in $D'$, we note that $c(v_{j}) < c(v_{i})$. So $c(v_{i}) \ne c(v_{j})$. Thus $c$ is a proper colouring in $G$. If the colouring uses $k$ colours, then a vertex with color $k$ has an in-neighbour (in $D'$) of color $k-1$, which has an in-neighbour of color $k-2$, etc. So there is a path  in $D$ of length $k-1$, so $k \le l(D') + 1 \le l(D)+1$
+
+	Assume we are given a proper $k$-colouring $c$ of $G$, where $k = \chi(G)$. Create $D$ by orienting every edge $uv \in E(G)$ from $u$ to $v$ if and only if $c(u)  < c(v)$. As colors increase along paths in $D$ we note that $l(D) \le k-1$. Therefore $l(D) + 1 \le 1 + \chi(G)$. As we have shown $\chi(G) \le l(D)+1$ we must have $\chi(G) = l(D) +1$ for the given orientation of $G$.
+\end{proof}
+
+Recall that $\chi(G) \le \Delta(G)+1$ and we have equality for complete graphs $K_{n}$ and odd cycles $C_{2k+1}$.
+
+\begin{theorem}[Brook's Theorem]
+	If $G$ is a connected graph other than the complete graph or an odd cycle, then $\chi(G) \le \Delta(G)$.
+\end{theorem}
+
+Before showing the proof, there is an article on itslearning with an alternate proof of this.
+
+\begin{proof}
+	Let \(\Delta(G) = k\). If $k = 1$ or $k = 2$ then the theorem holds, as these would be either disconnected or complete (or with an odd cycle). Thus we assume that $k \ge 3$. We will now prove a number of claims:\\
+	\noindent
+	\textbf{Claim 1}: $\chi(H) \le k$ for all subgraphs $H \subseteq G$ with $n(H) < n(G)$.\\
+	\noindent
+	\textit{Proof}: We show this by induction on $n(H)$. When $n(H) \le 3$ then $\chi(H) \le 3 \le k$, which completes the base case. As $G$ is connected, no component, $C$, in $H$ is $k$-regular. So there exists a $x \in  V(C)$, such that $d_{C}(x) < k$. By induction each component in $C-x$ is $k$-colourable and as $d_{C}(x) < k$ we can assign $x$ a colour from $[k]$ which is not on any of its neighbours in $C$. Thus this gives us a $k$-colouring in $C$. Doing this for all components in $H$ gives us a $k$-colouring of $H$.\\
+	\noindent
+	\textbf{Claim 2}: If \(\delta(G) < k\) then $\chi(G) \le k$.\\
+	\noindent
+	\textit{Proof}: If $d_{G}(x) < k$, then we can $k$-colour every component in $G-x$ ( by claim 1 ). We can assign $x$ a color from $[k]$ which is not on any of its neighbours $N(x)$. Therefore $\chi(G) \le k$. So we may assume that $G$ is $k$-regular. (QED of Claim 2.)\\
+	\noindent
+	Let $u \in V(G)$ be arbitrary. As $G$ is $k$-regular $|N(u)|= k$. As $G$ is not a complete graph, there must exist $x,y \in N(U)$ such that $xy \notin E(G)$. Let $P$ be a maximal length path starting with $xuy$. Let $P = v_{1}v_{2} \ldots v_{r}$ (where $v_{1} = x, v_{2} = u, \ldots$). We now consider two cases when $r = n(G)$ and when $r < n(G)$ separately.\\
+	\noindent
+	\textit{Case A, $r = n(G)$}: As $k \ge 3$ there exists a $v_{j} \in N(v_{2}) \setminus \{v_{1}, v_{3}\}$. Apply the greedy algorithm with the following vertex order $v_{1}, v_{3}, v_{4}, v_{5}, \ldots, v_{j-1}, v_{n}, v_{n-1}, v_{n-2}, \ldots, v_{j}, v_{2}$. Note that apart from $v_{2}$ every vertex has at least one edge to a vertex later in the order. So each vertex, apart from $v_{2}$ has at most $k-1$ neighbours earlier in the order so the greedy algorithm uses at most $k$ colours on $V(G) \setminus \{v_{2}\}$. As $c(v_{1}) = c(v_{3}) = 1$ we note that the neighbours of $v_{2}$ have at most $k-1$ different colours. So all of $G$ will be $k$-coloured.  So $\chi(G) \le k$.\\
+	\noindent
+	\textit{Case B: $r < n(G)$}: By the maximality of $r$ all neighbours of $v_{r}$ lie in $V(P)$. Let $j$ be minimum such that $v_{j}v_{r} \in E(G)$ and let $C = \{v_{j},v_{j+1}, \ldots, v_{r}\}$. Note that $N(v_{r}) \subseteq C$. Let $H = G - C$. Let $l$ be maximum such that $v_{l}$ has an edge $v_{l}z$ to $z \in V(H)$. Note that $l$ exists, as $G$ is connected (and $H \ne \emptyset$) and $j \le l < r$. By claim 1 we can let $c$ be a $k$-colouring of $H$. Let $c(v_{l+1}) = c(z)$. We now have a $k$-colouring of $V(H) \cup \{v_{l+1}\}$. Continue with the greedy colouring, considering the vertices in the following order:
+	\[
+		v_{l+2}v_{l+3} \cdots v_{r}v_{j}v_{j+1}v_{j+2} \cdots v_{l}
+	\]
+	Note that apart from $v_{l}$ every vertex in the above order has at least one edge to a vertex later in the order.
+
+	So each vertex, apart from $v_{l}$ has at most $k-1$ neighbours  earlier in the order so the greedy algorithm uses at most $k$ colors in the above vertices disregarding $v$. As $c(z) = c(v_{l}+1)$ we note that the neighbours of $v_{l}$ have at most $k-1$ different  colors, so all of $G$ will be $k$-colored. So $\chi(G) \le k$.
+\end{proof}
+
+
+\subsection{Structure of $k$-chromatic graphs}%
+\label{subsec:label}
+
+Recall that $\omega(G)$ is the number of vertices in a maximum clique in $G$. We have previously observed that $\chi(G) \ge \omega(G)$. If $G$ is a graph and $\chi(G) = \omega(H)$ for all $H \subseteq G$, then $G$ is said to be \textbf{perfect}. The research area behind perfect graphs is big. A graph $G$ is perfect if and only if $\overline{G}$ is perfect.
+
+The famous \textit{Strong Perfect Graph Theorem} states that $G$ is perfect if and only if neither $G$ nor $\overline{G}$ contains a chordless odd cycle of length at least 5.
+
+We are not going to go further into perfect graphs. We will, however, discuss how bad of a bound $\chi(G) \ge \omega(G)$ can be.
+
+We will now look at \textbf{Mycielski's Construction}. Let $G$ be a graph with $V(G) = \{v_{1}, v_{2}, \ldots, v_{n}\}$. We will create a new graph $G'$ from $G$, first by adding the vertices $U = \{u_{1}, u_{2}, \ldots, u_{n}\}$, and then adding the vertex $w$. For each $u_{i} \in U$ we add edges from $u_{i}$ to $N(v_{i})$. Last we add all edges from $w$ to $U$.
+
+%% MANGLER GRAF: SE SIDE 39 I SHORT PDF
+
+\begin{theorem}[Mycielski, 1955]
+	From a $k$-chromatic triangle-free graph $G$, Mycielski's construction produces a $(k+1)$-chromatic triangle-free graph $G'$.
+\end{theorem}
+
+\begin{proof}
+	In order to prove this, we show the following steps:
+
+	\begin{enumerate}
+		\item[Step 1. ] If $G$ is a triangle-free graph, then $G'$ is triangle-free.
+		\item[Step 2. ] $\chi(G') \le \chi(G)+1$
+		\item[Step 3. ] $\chi(G) \le \chi(G')-1$
+	\end{enumerate}
+	Steps 2 and 3 imply that $\chi(G') = \chi(G)+1$.
+
+	\textbf{Step 1}: Assume that $G$ is triangle free. When adding the construction, no triangle contains $w$ as $U$ is independent. $G$ is triangle-free, so any 3-cycle, $C$ in $G'$ would contain vertex $u_{i} \in U$. As $U$ is independent $C = v_{j}u_{i}v_{k}v_{j}$ for some $j,k$. This implies that $v_{j}v_{i}v_{k}v_{j}$ is a triangle in $G$, which is a contradiction. Thus $G'$ is triangle-free.
+
+	\textbf{Step 2}: Let $c$ be any proper $k$-colouring of $G$ with $k = \chi(G)$. Let $c'$ be obtained from $c$ by letting $c'(v_{i}) = c'(u_{i})=c(v_{i})$. We define $c'$ to be obtained by letting $c'(v_{i}) = c'(u_{i}) = c(v_{i})$. Let $c'(w) = k+1$. This gives us a proper $k+1$ colouring of $G'$. So $\chi(G') \le \chi(G) +1$.
+
+	\textbf{Step 3}: $\chi(G) \le \chi(G')-1$. Let $c'$ be any $(k+1)$-colouring of $G'$. We may assume that $w$ has color $k+1$. No vertex in $U$ has colour $k+1$. Let $A = \{\text{all vertices in } U \text{ with colour }k+1\}$. If $v_{i} \in A$, then recolor $v_{i}$ with colour $c'(u_{i})$. We will now show that this $k$-colouring is proper. Let $v_{i}v_{j} \in E(G)$ be arbitrary. If $\{v_{i}v_{j}\} \cap A = \emptyset$, then $c(v_{i}) = c'(v_{i}) \ne c'(v_{j}) = c(v_{j})$. So we assume w.log. that $v_{i} \in A$. $c'(v_{i}) \ne c'(v_{j})$ (as $v_{i}v_{j} \in E(G)$) and therefore $v_{j} \notin A$. As $v_{j}u_{i} \in E(G')$ we have $c(v_{j}) = c'(v_{j}) \ne c'(u_{i}) = c(v_{i})$. As $c(v_{i}) \ne c(v_{j})$ for all edges in $G$ and $c$ is a proper $k$-colouring of $G$.
+\end{proof}
+
+An observation: Using Mycielski's Construction we can create graphs, $G$, where $\omega(G) = 2$ and $\chi(G)$ is arbitrarily large. Starting with $P_{2}$ and repeatedly applying Mycielski's Construction we get an arbitrarily large colouring, but only \(\omega(G) = 2\).
+
+How many/few edges can there be in a $k$-chromatic graph?
+
+\begin{proposition}
+	Every $k$-chromatic graph has at least $\binom{k}{2}$ edges.
+\end{proposition}
+
+There is no bound on how many edges at most.
+
+\begin{definition}
+	A \textbf{complete multipartite graph}, $G$, is a simple graph whose vertices can be partitioned into sets (called partite sets or colour classes) $V_{1}, V_{2}, \ldots, V_{k}$, such that $uv \in E(G)$ if and only if $u$ and $v$ lie in different sets. $K_{n_{1}, \ldots, n_{k}}$ denotes the complete $k$-partite graph with sets of size $n_{1}, n_{2}, \ldots, n_{k}$.
+\end{definition}
+
+The \textbf{Turan Graph} $T_{n,r}$ is the complete $r$-partite graph of order $n$ whose partite sets differ by at most one in size.
+
+\begin{lemma}
+	\label{5.2.8}
+	If $G$ is an $r$-chromatic graph of order $n$, and $G \ne T_{n,r}$, then $|E(G)| < |E(T_{n,r})|$
+\end{lemma}
+
+We can reformulate this as the following: \textit{Among all simple $r$-partite (i.e., $r$-colourable) graphs with $n$ vertices, the Turan graph is the unique graph with the most edges.}. We will prove this reformulation.
+
+\begin{proof}
+	Let $G$ be an $r$-partite graph with $n$ vertices, such that $|E(G)|$ is maximum.
+
+	\textbf{Claim 1}: $G$ is a complete $r$-partite graph.
+
+	\textbf{Claim 2}: The size of any two partite sets differ by at most one.
+\end{proof}
+
+\begin{theorem}[Turan, 1941]
+	Among all $n$-vertex simple graphs with no $(r+1)$-clique, $T_{n,r}$ has the maximum number of edges.
+\end{theorem}
+
+\begin{proof}
+	We will prove this by induction on $r$.
+
+	This theorem holds when $r = 1$. Now let $r \ge 2$ and let $G$ be an $n$-vertex simple graph with no $(r+1)$-clique. We will now construct an $r-$partite graph, $H$ of order $n$, with $|E(G)| \le |E(H)|$, which will complete the proof as \autoref{5.2.8} we have $|E(H)| \le |E(T_{n,r})|$
+
+	Let $x$ be a vertex in $G$ of maximum degree. I.e. $d(x) = \Delta = \Delta(G)$. Let $I$ be an independent set of size $n-\Delta$ and let $H = T_{\Delta,r-1} \lor I$. $H$ is $r$-partite, as $I$ must be in $r$ different partite sets. We now show that $|E(G)| \le |E(H)|$.
+
+	As there is no $r$-clique in $G[N(x)]$ we have (by induction) $|E(G[N(x)])|  \le |(E(T_{\Delta, r-1}))|$.
+
+	\begin{align*}
+		|E(H)| & = |E(T_{\Delta, r-1})| + \Delta(n-\Delta)                   \\
+		       & \ge |E(G[N(x)])| + \sum_{u \notin N(x)} d_{G}(u) \ge |E(G)|
+	\end{align*}
+\end{proof}
+
+We will now look at a fun application.
+
+In a set of $n$ points in the plane, with no pair more than distance 1 apart, the maximum number of pairs separated by distance more than $\frac{1}{\sqrt{2}}$ is $\lfloor \frac{n^{2}}{3}\rfloor$.
+
+\begin{proof}
+	Let $G$ be the distance where $uv \in E(G)$, if and only if, $d(u,v) > \frac{1}{\sqrt{2}}$. Go contains no $K_{4}$. So, by Turans Theorem, $|E(G)| \le |E(T_{n,3})|$. If $n = 3k+a+b$, where $0 \le a \le b\le 1$, then the following holds:
+	\begin{align*}
+		|E(T_{n,3})|    & = (k+a)(k+b)+k(k+a)+k(k+b)=3k^{2}+2(a+b)k+ab                    \\
+		\frac{n^{2}}{3} & = \frac{(3k+(a+b))^{2}}{3} = 3k^{2}+2(a+b)k+\frac{(a+b)^{2}}{3}
+	\end{align*}
+	So $|E(T_{n,3})| = \lfloor \frac{n^{2}}{3} \rfloor$.
+\end{proof}
+
+Recall that a graph is colour-critical if and only if \(\chi(H) < \chi(G)\) for all proper subgraphs $H \subset G$. Equivalently, a graph, $G$, with no isolated vertices, is color-critical if and only if \(\chi(G-e) < \chi(G)\) for all $e \in E(G)$.
+
+\begin{proposition}
+	(a) For all $v \in V(G)$ there is a proper $k$-colouring of $G$ in which the color on $v$ appears nowhere else, and the other $k-1$ colors appear on $N(v)$.\\
+	\noindent
+	(b)  For all $e \in E(G)$, every proper $(k-1)$-colouring of $G-e$ gives the same colour to the two end-points of $e$.
+\end{proposition}
+
+\begin{lemma}
+	\label{5.2.32}
+	Let $G$ be a graph with \(\chi(G) > k\) and let $(X,Y)$ be a partition of $V(G)$. If $G[X]$ and $G[Y]$ are $k$-colourable, then the edge cut $[X,Y]$ has at least $k$ edges.
+\end{lemma}
+
+\begin{proof}
+	Let $X_{1}, X_{2}, \ldots, X_{k}$, be the colour-classes in a proper $k$-colouring of $G[X]$.
+
+	Let $Y_{1}, Y_{2}, \ldots, Y_{k}$ be the colour-classes in a proper $k$-colouring of $G[Y]$.
+
+	We now build a bipartite graph $H$, with partite sets $\{x_{1}, \ldots, x_{k}\}$ and $\{y_{1}, \ldots, y_{k}\}$ where $x_{i}y_{j} \in E(H)$ if and only if $[X_{i}, Y_{j}] = \emptyset$.
+
+	Assume for the sake of contradiction that in $G$ the edge cut $[X,Y]$ has at most $k-1$ edges. This implies that $|E(H)| \ge k^{2}-(k-1) > k(k-1)$. This implies that \(\beta(H) \ge \frac{|E(H)|}{k} > k-1\). By König-Egervary we have $\alpha'(G) =  \beta(G)> k-1$. So there is a perfect matching $M$ in $H$.
+
+	If $x_{i}y_{j} \in M$ then $X_{i} \cup Y_{j}$ is independent, so using $M$ we can merge every $X_{i}$ with a $Y_{j}$ in order to obtain a proper $k$-colouring of $G$. A contradiction to \(\chi(G) > k\).
+\end{proof}
+
+\begin{theorem}[Dirac, 1953]
+	Every $k$-critical graph is $(k-1)$-edge-connected.
+\end{theorem}
+
+\begin{proof}
+	Let $G$ be a $k$-critical graph and let $[X,Y]$ be a minimum edge cut.  Since $G$ is $k$-critical, $G[X]$ and $G[Y]$ are $(k-1)$-colourable. By~\autoref{5.2.32} (with parameter $k-1$) we obtain that there are at least $k-1$ edges in $[X,Y]$. So $G$ is $(k-1)$-edge-connected.
+\end{proof}
+
+%%% Local Variables:
+%%% mode: latex
+%%% TeX-engine: luatex
+%%% TeX-command-extra-options: "-shell-escape"
+%%% TeX-master: "main"
+%%% End:

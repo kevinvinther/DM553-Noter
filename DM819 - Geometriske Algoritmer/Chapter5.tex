@@ -4,12 +4,33 @@ Given a database with some parameters, we want to be able to search in this data
 
 A query is a \textit{rectangular range query} or \textit{orthogonal range query}, if a query asks to report all records whose fields lie between specified values which is then interpreted as a query asking for all points inside a $n$-dimensional axis-parallel box.
 
-\subsection{1-Dimensional Range Searching}%
-\label{subsec:5.1}
+\section{1-Dimensional Range Searching}%
+\label{sec:5.1}
 
 Given a range we want $[x : x']$ and a list of points in one dimension, which lies on a real line $P := \{p_{1}, p_{2}, \ldots, p_{n}\}$ we can solve the problem of 1-dimensional range searching using a balanced binary search tree. The leaves of $\mathcal{T}$ store the points of $P$ and the internal nodes store splitting values to guide the search. We denote the splitting value stored at a node $v$ by $x_{v}$. We then assume that the left subtree of $v$ contains all the points smaller than or equal to $x_{v}$, and the right tree strictly larger than.
 
 Given our range $[x : x']$, we denote by $\mu, \mu'$ the two leaves where the searches end. The points will then be between \(\mu\) and \(\mu'\).
+
+At some point, in our search in the search tree, we will encounter a node, where we ``split''. I.e., to get to $\mu'$ you have to go right, and to get to $\mu$ you have to go left. We will now define a simple subroutine which finds the ``split'' node. Let \textit{lc(v)} and \textit{rc(v)} be the left and right child, respectively. In Algorithm~\ref{alg:findsplitnode} you can see an algorithm which finds the split node. Here $x_{v}$ is the value of node $v$.
+
+\begin{algorithm}
+	\caption{\label{alg:findsplitnode} FindSplitNode($\mathcal{T}, x, x'$)}
+	\begin{algorithmic}[1]
+		\STATE \textbf{Input}: A tree $\mathcal{T}$ and two values $x$ and $x'$ with $x \le x'$.
+		\STATE \textbf{Output}: The node $v$ where the paths $x$ and $x'$ split, or the leaf where both paths end.
+		\STATE $v \gets root(\mathcal{T})$
+		\WHILE{$v$ is not a leaf \textbf{and} ($x' \leq x_v$ \textbf{or} $x > x_v$)}
+		\IF{$x' \leq x_v$}
+		\STATE $v \gets lc(v)$
+		\ELSE
+		\STATE $v \gets rc(v)$
+		\ENDIF
+		\ENDWHILE
+		\RETURN $v$
+	\end{algorithmic}
+\end{algorithm}
+
+We give the split node the name $v_{split}$. At each node where the path goes left, we report all the leaves in the right subtree, and the other way around.
 
 
 %%% Local Variables:

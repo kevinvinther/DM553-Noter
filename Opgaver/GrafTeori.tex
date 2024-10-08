@@ -198,21 +198,187 @@ Missing.
 \noindent
 \textbf{Exercise 2.2.25}\\
 \noindent
-\textit{Prove that if $G$ is graceful and Eulerian, then $e(G)$ is congruent to 0 or 3 mod 4. (Hint: Sum the absolute edge differences (mod 2) in two different ways.)}
+\textit{Prove that if $G$ is graceful and Eulerian, then $e(G)$ is congruent to 0 or 3 mod 4. (Hint: Sum the absolute edge differences (mod 2) in two different ways.)}\\
+Missing.
 \section{Chapter 2.3}
-\textit{Use Dijkstra’s algorithm to find the shortest path from v1 to all other
-	vertices in the below graph and use Kruskal’s algorithm to find a minimum
-	spanning tree in the below graph.}
+\textit{Use Dijkstra’s algorithm to find the shortest path from v1 to all other vertices in the below graph and use Kruskal’s algorithm to find a minimum spanning tree in the below graph.}\\
+Missing.
 \section{Chapter 3.1}
 \noindent
 \textbf{Exercise 3.1.8}\\
 \noindent
-\textit{Prove or disprove: Every tree has at most one perfect matching.}
+\textit{Prove or disprove: Every tree has at most one perfect matching.}\\
+Missing.
 \\\\
 \noindent
 \textbf{Exercise 3.1.21}\\
 \noindent
-\textit{Let $G$ be an $X,Y$-bigraph such that $|N(S) > |S|$ whenever $\emptyset \ne S \in X$. Prove that every edge of $G$ belongs to some matching that saturates $X$.}
+\textit{Let $G$ be an $X,Y$-bigraph such that $|N(S)| > |S|$ whenever $\emptyset \ne S \subset X$. Prove that every edge of $G$ belongs to some matching that saturates $X$.}\\
+
+This is a restatement of Hall's marriage theorem.
+
+
+
+\section{Chapter 3.3}%
+\label{subsec:label}
+
+\noindent
+\textbf{Exercise 3.3.1}\\
+\noindent
+\textit{Determine whether the graph below has a 1-factor.}\\
+You can prove this with Tutte's theorem. Specifically when $|S| =4$.
+\\\\
+\noindent
+\textbf{Exercise 3.3.6}\\
+\noindent
+\textit{Prove that a tree $T$ has a perfect matching if and only if $o(T-v)=1$ for every $v \in V(T)$.}\\
+\noindent
+\textbf{Forward Direction}: If $T$ has a perfect matching, then $o(T-v) = 1$ for all $v \in V(T)$.
+\textit{Suppose} that $T$ has a perfect matching $M$. Consider any vertex $v \in V(T)$: Since $M$ is a perfect matching, $v$ is matched to exactly one vertex $u \in M$. When $v$ is removed from $T$, the vertex $u$ becomes unmatched.
+You cannot match on odd components, therefore there has to be at most one.\\
+\noindent
+\textbf{Reverse Direction}: If $o(T-v) = 1$ for every $v \in V(T)$, then $T$ has a perfect matching.\\
+\textit{Assume} for every vertex $v \in V(T), \; o(T-v)=1$.\\
+\textit{Base Case $|V(T)| = 2$}: This is trivially true, as there is one trivial perfect matching, and $\forall v \in V(T), \; o(T-v) =1$.\\
+\textit{Inductive Step $|V(T)| > 2|$, $|V(T)| = n$, assume all trees with fewer than $n$ vertices satisfying $\forall v \in V(T) : o(T-v)=1$ has a perfect matching}:
+\\\\
+\noindent
+\textbf{Exercise 3.3.25}\\
+\noindent
+\textit{A graph $G$ is \textbf{factor-critical} if each subgraph $G-v$ obtained by deleting one vertex has a 1-factor. Prove that $G$ is factor-critical if and only if $n(G)$ is odd and $o(G-S) \le |S|$ for all non-empty $S \subseteq V(G)$.}\\
+We prove both directions:
+
+\textbf{Forward Direction:} ``$G$ is factor-critical \(\Rightarrow\) $n(G)$ is odd and $\forall S \subseteq V(G) : o(G-S) \le |S|$''. \\
+To begin with: We know from the earlier exercise that a perfect matching must be even (and in this case, we can consider 1-factors to be equivalent to perfect matchings).
+
+\section{Chapter 4.1}%
+\label{sec:4.1}
+
+\noindent
+\textbf{Exercise 4.1.2 }\\
+\noindent
+\textit{Give a counterexample to the following statement, add a hypothesis to correct it, and prove the corrected statement: If $e$ is a cut-edge of $G$, then at least one vertex of $e$ is a cut-vertex of $G$.}\\
+Consider the graph $K_{2}$. Removing $e$ (of which there is only one) disconnects the graph. Removing any vertex does not disconnect the graph.\\
+We can correct it as follows:
+``If $G$ is a connected graph with \textbf{at least three} vertices and $e$ is a cut-edge of $G$, then at least one vertex of $e$ is a cut-vertex of $G$.''. Let's prove it:
+
+Given $e = uv$ is a cut-edge, removing the edge splits the graph into components $G_{1}$ and $G_{2}$. While it is arbitrary, we say that $u \in G_{1}$ and $v \in G_{2}$. If $G_{1} = \{u\}$, then there must be at least two more vertices, but $u$ is not a cut-vertex. However, $v$ is (as $e = uv$). If $u \subset G_{1} \land G_{1} \ne \{u\}$ then $u$ is a cut-vertex.
+
+This is wrong. Rather than updating it to be $n \ge 3$, it should be ``The valency of $v$ is larger than one for both vertices in $K_{2}$ in a non-$K_{2}$-free graph.'' Or not?
+\\\\
+\noindent
+\textbf{Exercise 4.1.4 }\\
+\noindent
+\textit{Prove that $G$ is $k$-connected if and only if $G \lor K_{r}$ is $k+r$-connected.}\\
+\textit{Claim}: Any disconnecting set $S$ of $G \land K_{r}$ must contain $K_{r}$. Assume otherwise: Then any two vertices $v_{1}, v_{2} \in G - S$ are connected in a way such that $K_{r}$ connects them.  If $K_{r} \setminus S$ has at least two vertices, then there is a connection in $K_{r} \setminus S$.
+
+\textit{Claim} \(\Rightarrow S = K_{r} \cup (S' \subseteq V(G)), S \text{ seperates } G \vee K_{r} \iff S' \text{ seperates } G\). This can be rewritten by observing that $(G \vee K_{r}) - S = G - S'$.
+
+So, if $G$ is $k$-connected, then $S' \ge k \Rightarrow S \ge k+r$. By the claim, $(S-K_{r}) = k$, so $S' \ge k \iff S \ge k+r$.
+\\\\
+\noindent
+\textbf{Exercise 4.1.6 }\\
+\noindent
+\textit{For a graph $G$ with blocks $B_{1}, \ldots, B_{k}$, prove that $n(G) = (\sum_{i=1}^k n(B_{i}))-k+1$.}\\
+
+In essence, this statement says that we sum the number of vertices in the blocks and subtract $k+1$ in order to get the number of vertices in the entire graph.
+
+Let's recall the definition of a \textit{block}:
+\begin{definition}[Block]
+	A \textbf{block} of a graph $G$ is a maximally connected subgraph of $G$ that has no cut-vertex. If $G$ itself is connected and has no cut-vertex, then $G$ is a block.
+\end{definition}
+
+Rather than proving inductively, I will give a short argument. Given $n = 1$, it is trivially true, as $n(G) = |B_{1}| = |B_{1}| + 1 - 1$.
+
+If we have $k$ blocks, then two of the blocks either share a vertex, or the block is an entire maximally connected subgraph.
+
+Given two maximally connected subgraphs with no cut-vertex $G_{1} \sqcup G_{2}$, $n(G) = |B_{1}| + |B_{2}| \ne |B_{1}| + |B_{2}| - 2 + 1$. Thus the statement is false. This would however be true if $G$ was connected.
+
+\textbf{Corrected statement: $G$ is connected}.
+
+\begin{definition}[Block-cutpoint Graph]
+	The block-cutpoint graph of a graph $G$ is a bipartite graph with one vertex set being the cut-vertices of $G$, and the other vertex set consisting of one vertex per block.
+\end{definition}
+
+Let $v$ be a cut-vertex of $G$, and $b_{i}$ be a vertex corresponding to a block. Then $vb_{i}$ is an edge if and only if $v$ belongs to the block.
+
+\textit{Claim}: There is one block which contains only one cut-vertex of $G$.
+
+This is implied by the fact that block-cutpoint graph is a tree. If not, it would contain a cycle. However, it does not contain a cycle, as you would then just be able to declare that a block in itself.
+
+So the fact that a tree has at least one leaf implies the claim.
+
+Let $b_{k}$ be this block and $v \in B_{k}$ be the cut-vertex of $G$. By induction on the number of blocks you get the formula:
+
+\[
+	n(G-(B_{k} \cdot v)) = \sum_{i=1}^{k-1} n(B_{i})-(k-1)+1
+\]
+
+This implies that $n(G) = \sum_{i=1}^k n(B_{k}) - k +1$.
+\\\\
+\noindent
+\textbf{Exercise 4.1.15 }\\
+\noindent
+\textit{Use Proposition 4.1.12 and Theorem 4.1.11 to prove that the Petersen Graph is 3-connected}\\
+
+\textbf{Theorem 4.1.11}: If $G$ is 3-regular, then \(\kappa(G) = \kappa'(G)\).
+
+\textbf{Proposition 4.1.12}:
+\[
+	|[S, \bar{S}]|| = \sum_{v \in S} d(v) - 2e(G[S])
+\]
+
+Let $[S, \bar{S}]$ be a minimal edge cut. Then $|[S, \bar{S}]| \ge 3$. We assume $|S| \le |\bar{S}|$, then $|S| \le 5$. Using Corollary 1.1.40 implies that $G$ has girth 5.
+
+\textit{Case 1}: $|S| < 5 \Rightarrow G[S]$ is a forest. This implies that $e(G[S]) \le |S|-1$.
+
+\textit{Case 2}: $|S| = 5$, and $S$ is a forest. Apply previous argument.
+
+\textit{Case 3}: $|S| = 5$ and is a 5-cycle.
+
+\section{Chapter 4.2}%
+\label{sec:label}
+
+\noindent
+\textbf{Exercise 4.2.4 }\\
+\noindent
+\textit{Prove or disprove: If $P$ is a $(u,v)$-path in a 2-connected graph $G$, then there is a $(u,v)$-path $Q$ that is internally disjoint from $P$.}\\
+If $P$ is a $(u,v)$-path in a 2-connected graph, then there is not necessarily an internally disjoint $(u,v)$-path. You can't fix one of the path's, the example given was $|V(G)| = 4$ with the path forming a $Z$ pattern, which could not give another internally disjoint path.
+\\\\
+\noindent
+\textbf{Exercise 4.2.6 }\\
+\noindent
+\textit{Use results from this section to prove that a simple graph $G$ is $2$-connected if and only if $G$ can be obtained from $C_{3}$ by a sequence of edge additions and edge subdivisions.}\\
+(For edge addition the endpoints must be distinct).
+
+To prove this we use the ear decomposition theorem.
+
+\textbf{Theorem}: $G$ is 2-connected $\iff$ it admits an ear-decomposition.
+
+Ear-decomposition: $G = C_{k} \cup P_{1} \cup \cdots \cup P_{k}$.
+
+We start with $C_{3}$, and subdivide edges until we obtain $C_{k}$. Add an edge at $C_{k} \cap P_{1}$ and subdivide until you get $C_{k} \cup P_{1}$.
+
+$C_{3} + $edge addition + subdivision \(\Rightarrow\) 2-connected.
+
+We prove this inductively upon the number of edges.
+
+\textit{Base Case} $C_{3}$: This is trivially 2-connected.
+
+\textit{Induction step}: Let $G$ be 2-connected and consider $G$ + edge addition. Adding edges does not decrease connectivity. Consider $G$ + subdivision.
+\\\\
+\noindent
+\textbf{Exercise 4.2.7 }\\
+\noindent
+\textit{Let $xy$ be an edge in a digraph $G$. Prove that $\kappa(G-xy) \ge \kappa(G) - 1$.}\\
+missing
+\\\\
+
+
+
+
+
+
 
 
 %%% Local Variables:

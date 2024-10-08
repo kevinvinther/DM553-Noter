@@ -1,3 +1,13 @@
+\documentclass{Book}
+
+
+\usepackage{amsthm}
+
+\newtheorem{theorem}{Theorem}
+
+
+\begin{document}
+
 \chapter{Connectivity and Paths}
 
 \section{Cuts and Connectivity}%
@@ -370,9 +380,4 @@ We can also use flows on undirected graphs. We replace each edge $e = uv$ with t
 
 Let $G$ be a graph and $s, t \in V(D)$. Make $G$ into a digraph $D$, by replacing each edge with an arc in each direction (as stated earlier). Let all capacities be $1$. Using the splitting transformation described earlier, let each vertex have a bottleneck edge of capacity 1. Now find the maximum flow in this resulting network. This flow transforms $val(f)$ into internally disjoint $(s,t)$-paths. Any $k$ internally disjoint $(s,t)$-paths  would give rise to a flow of value $k$. So this gives us the maximum number of internally disjoint $(s,t)$-paths in $G$.
 
-%%% Local Variables:
-%%% mode: latex
-%%% TeX-engine: luatex
-%%% TeX-command-extra-options: "-shell-escape"
-%%% TeX-master: "main"
-%%% End:
+\end{document}

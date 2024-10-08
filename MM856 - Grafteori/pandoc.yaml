@@ -1,0 +1,28 @@
+metadata:
+  link-citations: true
+
+blocks:
+  - name: theorem
+    id: theorem
+    name: Theorem
+    classes:
+      - theorem
+
+  - name: proof
+    id: proof
+    name: Proof
+    classes:
+      - proof
+
+  - name: lemma
+    id: lemma
+    name: Lemma
+    classes:
+      - lemma
+
+  - name: proposition
+    id: proposition
+    name: Proposition
+    classes:
+      - proposition
+
